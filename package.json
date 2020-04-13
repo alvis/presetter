@@ -1,0 +1,35 @@
+{
+  "name": "presetter",
+  "version": "1.0.0",
+  "engines": {
+    "node": ">=10.0.0"
+  },
+  "description": "Make project configurations clean with presets",
+  "keywords": [],
+  "homepage": "https://github.com/alvis/presetter#readme",
+  "bugs": {
+    "url": "https://github.com/alvis/presetter/issues"
+  },
+  "license": "MIT",
+  "author": "Alvis HT Tang <alvis@hilbert.space>",
+  "publishConfig": {
+    "registry": "https://npm.pkg.github.com",
+    "access": "public"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/alvis/presetter.git"
+  },
+  "scripts": {
+    "postinstall": "lerna bootstrap",
+    "build": "lerna run build",
+    "lint": "lerna run lint",
+    "test": "lerna run test",
+    "version": "lerna version --conventional-commits",
+    "prerelease": "npm run version -- --no-push --conventional-prerelease --preid next",
+    "release": "npm run version -- --no-push --conventional-graduate"
+  },
+  "devDependencies": {
+    "lerna": "^3.x"
+  }
+}
