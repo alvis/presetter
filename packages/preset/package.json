@@ -1,0 +1,24 @@
+{
+  "name": "presetter-preset",
+  "version": "1.0.0",
+  "description": "A collection of opinionated preset configurations for typescript projects",
+  "keywords": [],
+  "homepage": "https://github.com/alvis/presetter#readme",
+  "bugs": {
+    "url": "https://github.com/alvis/presetter/issues"
+  },
+  "license": "MIT",
+  "author": "Alvis HT Tang <alvis@hilbert.space>",
+  "main": "lib/index.js",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/alvis/presetter.git"
+  },
+  "scripts": {
+    "test": "true"
+  },
+  "devDependencies": {
+  },
+  "dependencies": {
+  }
+}
