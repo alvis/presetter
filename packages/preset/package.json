@@ -18,6 +18,15 @@
     "test": "true"
   },
   "peerDependencies": {
+    "@babel/cli": "^7.x",
+    "@babel/core": "^7.x",
+    "@babel/plugin-proposal-class-properties": "^7.x",
+    "@babel/plugin-proposal-decorators": "^7.x",
+    "@babel/plugin-proposal-nullish-coalescing-operator": "^7.x",
+    "@babel/plugin-proposal-object-rest-spread": "^7.x",
+    "@babel/plugin-proposal-optional-chaining": "^7.x",
+    "@babel/preset-env": "^7.x",
+    "@babel/preset-typescript": "^7.x",
     "@types/node": "^12.x",
     "npm-run-all": "^4.x",
     "shx": "^0.3",
