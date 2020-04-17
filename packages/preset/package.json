@@ -19,6 +19,8 @@
   },
   "peerDependencies": {
     "@types/node": "^12.x",
+    "npm-run-all": "^4.x",
+    "shx": "^0.3",
     "typescript": "^3.9.x"
   },
   "devDependencies": {
