@@ -27,10 +27,13 @@
     "@babel/plugin-proposal-optional-chaining": "^7.x",
     "@babel/preset-env": "^7.x",
     "@babel/preset-typescript": "^7.x",
+    "@types/jest": "^25.x",
     "@types/node": "^12.x",
+    "jest": "^25.x",
     "npm-run-all": "^4.x",
     "shx": "^0.3",
     "standard-version": "^7.x",
+    "ts-jest": "^25.x",
     "typescript": "^3.9.x"
   },
   "devDependencies": {
