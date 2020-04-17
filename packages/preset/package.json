@@ -17,6 +17,10 @@
   "scripts": {
     "test": "true"
   },
+  "peerDependencies": {
+    "@types/node": "^12.x",
+    "typescript": "^3.9.x"
+  },
   "devDependencies": {
   },
   "dependencies": {

@@ -1,0 +1,56 @@
+compilerOptions:
+  # emittance
+  outDir: lib
+  module: commonjs # node doesn't support anything non commonjs code yet
+  target: ES2017 # use ES2017 as it's the latest standard node 10 can be fully compatible with
+  declaration: true
+  sourceMap: true
+  noImplicitUseStrict: false
+  preserveConstEnums: true
+  removeComments: true
+
+  # compatibility
+  allowSyntheticDefaultImports: true
+  esModuleInterop: true
+  experimentalDecorators: true
+  emitDecoratorMetadata: true
+  isolatedModules: false
+
+  # strict type check
+  alwaysStrict: true
+  noImplicitAny: false
+  noImplicitThis: false
+  strictBindCallApply: true
+  strictFunctionTypes: true
+  strictNullChecks: true
+  strictPropertyInitialization: true
+  suppressImplicitAnyIndexErrors: true
+
+  # lint
+  allowUnreachableCode: false
+  allowUnusedLabels: false
+  forceConsistentCasingInFileNames: true
+  noImplicitReturns: true
+  noUnusedLocals: false
+  noUnusedParameters: false
+  noFallthroughCasesInSwitch: false
+  skipLibCheck: true
+
+  # module resolution
+  moduleResolution: node
+  resolveJsonModule: true
+  baseUrl: .
+  paths:
+    '#*':
+      - source/*
+    '*':
+      - types/*
+
+  # libraries
+  lib:
+    - ES2020
+include:
+  - '**/*.json'
+  - '**/*.ts'
+exclude:
+  - ./node_modules/**
