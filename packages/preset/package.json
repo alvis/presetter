@@ -31,6 +31,7 @@
     "@types/node": "^12.x",
     "jest": "^25.x",
     "npm-run-all": "^4.x",
+    "prettier": "^2.x",
     "shx": "^0.3",
     "standard-version": "^7.x",
     "ts-jest": "^25.x",
