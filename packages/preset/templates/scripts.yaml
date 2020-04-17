@@ -1,0 +1,21 @@
+build: run-s clean build:*
+build:typescript:
+  babel --extensions .ts,.tsx,.d.ts --source-maps --copy-files --out-dir
+  lib ./source
+build:types: run-s build:types:*
+build:types:declarations: tsc -p tsconfig.build.json --emitDeclarationOnly
+build:types:path: tscpaths -p tsconfig.json -s source -o lib
+clean: run-p clean:**
+clean:lib: shx rm -rf lib
+clean:coverage: shx rm -rf coverage
+develop:
+  cross-env-shell NODE_ENV=local ts-node-dev --transpile-only --require tsconfig-paths/register
+  --debounce 250 --respawn --clear --no-notify --tree-kill --dedupe --ignore-watch
+  node_modules -- $@
+lint: run-s lint:*
+lint:prettier: prettier --write --no-error-on-unmatched-pattern source spec
+lint:fixme: leasot --skip-unsupported --exit-nicely package.json source spec
+lint:eslint: eslint --fix --format codeframe --max-warnings 0  --no-error-on-unmatched-pattern source
+prepare: run-s test lint build
+release: standard-version
+test: jest --config "$(cat .jestrc)" --no-cache --passWithNoTests --verbose
