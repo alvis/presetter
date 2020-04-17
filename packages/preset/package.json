@@ -48,6 +48,7 @@
     "ts-node": "^8.x",
     "ts-node-dev": "1.0.0-pre.44",
     "tsconfig-paths": "^3.x",
+    "tscpaths": "0.0.9",
     "typescript": "^3.9.x"
   },
   "devDependencies": {
