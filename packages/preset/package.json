@@ -52,6 +52,8 @@
     "typescript": "^3.9.x"
   },
   "devDependencies": {
+    "@types/node": "^12.x",
+    "typescript": "^3.8.x"
   },
   "dependencies": {
   }
