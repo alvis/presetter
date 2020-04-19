@@ -1,3 +1,6 @@
 coverage
+dist
 lib
 node_modules
+.*rc
+tsconfig.*

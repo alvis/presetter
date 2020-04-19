@@ -2,3 +2,10 @@ coverage
 dist
 lib
 node_modules
+.babelrc
+.eslintrc
+.jestrc
+.gitignore
+.npmignore
+.prettierrc
+tsconfig.*
