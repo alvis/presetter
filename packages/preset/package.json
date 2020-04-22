@@ -73,14 +73,17 @@
     "typescript": "^3.9.x"
   },
   "devDependencies": {
+    "@types/fs-extra": "^9.x",
+    "@types/js-yaml": "^3.x",
     "@types/node": "^12.x",
     "install-peers": "^1.x",
-    "js-yaml": "^3.x",
     "npm-run-all": "^4.x",
     "prettier": "^2.x",
     "shx": "^0.3.2",
     "typescript": "^3.8.x"
   },
   "dependencies": {
+    "fs-extra": "^9.x",
+    "js-yaml": "^3.x"
   }
 }
