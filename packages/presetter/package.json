@@ -15,5 +15,10 @@
   "repository": {
     "type": "git",
     "url": "git+https://github.com/alvis/presetter.git"
+  },
+  "dependencies": {
+    "execa": "^4.x",
+    "read-pkg-up": "^7.x",
+    "write-pkg": "^4.x"
   }
 }
