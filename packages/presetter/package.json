@@ -16,9 +16,23 @@
     "type": "git",
     "url": "git+https://github.com/alvis/presetter.git"
   },
+  "scripts": {
+    "setup": "npm run ts-node -- --eval \"require('./source/preset.ts').bootstrapPreset()\"",
+    "ts-node": "ts-node --compiler-options=\"{\\\"esModuleInterop\\\":true,\\\"target\\\":\\\"es6\\\"}\" --transpile-only --require tsconfig-paths/register"
+  },
+  "preset": "presetter-preset",
+  "devDependencies": {
+    "@types/fs-extra": "^9.x",
+    "presetter-preset": "^1.x",
+    "ts-node": "^8.x",
+    "tsconfig-paths": "^3.x",
+    "typescript": "^3.x"
+  },
   "dependencies": {
     "execa": "^4.x",
+    "fs-extra": "^9.x",
     "read-pkg-up": "^7.x",
+    "resolve-pkg": "^2.x",
     "write-pkg": "^4.x"
   }
 }
