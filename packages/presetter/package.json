@@ -23,6 +23,8 @@
   "preset": "presetter-preset",
   "devDependencies": {
     "@types/fs-extra": "^9.x",
+    "@types/lodash": "^4.x",
+    "@types/yargs": "^15.x",
     "presetter-preset": "^1.x",
     "ts-node": "^8.x",
     "tsconfig-paths": "^3.x",
@@ -31,8 +33,11 @@
   "dependencies": {
     "execa": "^4.x",
     "fs-extra": "^9.x",
+    "lodash": "^4.x",
+    "mvdan-sh": "^0.5.x",
     "read-pkg-up": "^7.x",
     "resolve-pkg": "^2.x",
-    "write-pkg": "^4.x"
+    "write-pkg": "^4.x",
+    "yargs": "^15.x"
   }
 }
