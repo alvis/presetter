@@ -12,6 +12,10 @@
   },
   "license": "MIT",
   "author": "Alvis HT Tang <alvis@hilbert.space>",
+  "bin": {
+    "presetter": "./bin/cli",
+    "run": "./bin/run"
+  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/alvis/presetter.git"
@@ -31,12 +35,15 @@
     "typescript": "^3.x"
   },
   "dependencies": {
+    "callsite-record": "^4.x",
+    "chalk": "^4.x",
     "execa": "^4.x",
     "fs-extra": "^9.x",
     "lodash": "^4.x",
     "mvdan-sh": "^0.5.x",
     "read-pkg-up": "^7.x",
     "resolve-pkg": "^2.x",
+    "source-map-support": "^0.5.x",
     "write-pkg": "^4.x",
     "yargs": "^15.x"
   }

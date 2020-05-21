@@ -1,0 +1,4 @@
+#!/usr/bin/env node --async-stack-traces
+require('source-map-support').install();
+process.argv = [...process.argv.slice(0, 2), 'run', ...process.argv.slice(2)];
+require('../lib/executable');
