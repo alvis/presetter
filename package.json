@@ -12,6 +12,10 @@
   },
   "license": "MIT",
   "author": "Alvis HT Tang <alvis@hilbert.space>",
+  "bin": {
+    "presetter": "./packages/presetter/bin/cli",
+    "preset": "./packages/presetter/bin/run"
+  },
   "publishConfig": {
     "registry": "https://npm.pkg.github.com",
     "access": "public"
