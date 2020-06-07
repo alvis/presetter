@@ -27,6 +27,7 @@
   "scripts": {
     "postinstall": "lerna bootstrap",
     "build": "lerna run build",
+    "coverage": "lerna run coverage",
     "lint": "lerna run lint",
     "test": "lerna run test",
     "version": "lerna version --conventional-commits",

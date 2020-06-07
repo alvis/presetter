@@ -19,3 +19,5 @@ lint:eslint: eslint --fix --format codeframe --max-warnings 0  --no-error-on-unm
 prepare: run-s test lint build
 release: standard-version
 test: jest --config "$(cat .jestrc)" --no-cache --passWithNoTests --verbose
+coverage: npm run test -- --coverage
+watch: npm run test -- --watch
