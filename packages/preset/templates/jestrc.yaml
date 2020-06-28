@@ -1,11 +1,11 @@
 bail: true
 collectCoverage: false
 collectCoverageFrom:
-  - source/**/*.ts
+  - '{source}/**/*.ts'
 coverageReporters:
   - text
   - - lcov
-    - projectRoot: ../..
+    - projectRoot: '{root}'
 coverageThreshold:
   global:
     branches: 95
@@ -19,7 +19,7 @@ globals:
     tsConfig:
       allowJs: true
 moduleNameMapper:
-  '#(.*)': '<rootDir>/source/$1'
+  '#(.*)': '<rootDir>/{source}/$1'
 preset: ts-jest
 resetModules: false
 testEnvironment: node
@@ -27,4 +27,4 @@ testMatch:
   - '**/?(*.)+(spec).[jt]s'
 testPathIgnorePatterns:
   - /node_modules/
-  - <rootDir>/lib/
+  - <rootDir>/{output}/

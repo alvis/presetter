@@ -30,11 +30,11 @@
     "setup": "run-p setup:**",
     "setup:peer": "npx npm-install-peers",
     "setup:babel": "js-yaml templates/babelrc.yaml > .babelrc",
-    "setup:eslint": "js-yaml templates/eslintrc.yaml > .eslintrc",
-    "setup:jest": "js-yaml templates/jestrc.yaml > .jestrc",
+    "setup:eslint": "js-yaml templates/eslintrc.yaml | pupa --test=spec --output=lib > .eslintrc",
+    "setup:jest": "js-yaml templates/jestrc.yaml | pupa --root=../.. --source=source --output=lib > .jestrc",
     "setup:prettier": "js-yaml templates/prettierrc.yaml > .prettierrc",
-    "setup:tsconfig:base": "js-yaml templates/tsconfig.yaml > tsconfig.json",
-    "setup:tsconfig:build": "js-yaml templates/tsconfig.build.yaml > tsconfig.build.json",
+    "setup:tsconfig:base": "js-yaml templates/tsconfig.yaml | pupa --source=source --types=types --output=lib > tsconfig.json",
+    "setup:tsconfig:build": "js-yaml templates/tsconfig.build.yaml | pupa --source=source > tsconfig.build.json",
     "release": "standard-version",
     "test": "jest --config \"$(cat .jestrc)\" --no-cache --passWithNoTests --verbose"
   },
@@ -80,11 +80,13 @@
     "install-peers": "^1.x",
     "npm-run-all": "^4.x",
     "prettier": "^2.x",
+    "pupa-cli": "^1.x",
     "shx": "^0.3.2",
     "typescript": "^3.8.x"
   },
   "dependencies": {
     "fs-extra": "^9.x",
-    "js-yaml": "^3.x"
+    "js-yaml": "^3.x",
+    "pupa": "^2.x"
   }
 }

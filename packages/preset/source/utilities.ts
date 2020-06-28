@@ -16,6 +16,7 @@
 import { ensureFile, readFile, writeFile } from 'fs-extra';
 import { resolve } from 'path';
 import { safeLoad } from 'js-yaml';
+import pupa from 'pupa';
 
 // paths to directories
 const ROOT = resolve(__dirname, '..');
@@ -28,14 +29,24 @@ const INDENT = 2;
 /**
  * compile a JSON config template
  * @param template template name excluding the yaml extension
- * @param extra additional config to be merged with the template
+ * @param options additional information for config generation
+ * @param options.extra additional config to be merged with the template
+ * @param options.parameter variables to be substituted in the template
  * @returns path to the compiled template
  */
 export async function buildJSONConfig(
   template: string,
-  extra: Record<string, unknown> = {},
+  options: {
+    extra?: Record<string, unknown>;
+    parameter: Partial<Record<string, string>>;
+  },
 ): Promise<string> {
-  const source = await loadYAMLTemplate(template);
+  const { extra, parameter } = {
+    extra: {},
+    ...options,
+  };
+
+  const source = await loadYAMLTemplate(template, parameter);
   const merged = merge(source, extra);
 
   const path = resolve(DISTRIBUTION, `${template}.json`);
@@ -48,14 +59,24 @@ export async function buildJSONConfig(
 /**
  * compile a list-based config template
  * @param template template name
- * @param extra list of items to be attached at the end of the template
+ * @param options additional information for config generation
+ * @param options.extra additional config to be merged with the template
+ * @param options.parameter variables to be substituted in the template
  * @returns path to the compiled template
  */
 export async function buildListConfig(
   template: string,
-  extra: string[] = [],
+  options: {
+    extra?: string[];
+    parameter: Partial<Record<string, string>>;
+  },
 ): Promise<string> {
-  const source = await loadTextTemplate(template);
+  const { extra, parameter } = {
+    extra: [],
+    ...options,
+  };
+
+  const source = await loadTextTemplate(template, parameter);
   const ignores = source.split('\n');
   const merged: string[] = [...ignores, ...extra];
 
@@ -69,25 +90,31 @@ export async function buildListConfig(
 /**
  * load config from a yaml template
  * @param template name of the template
+ * @param parameter variables to be substituted in the template
  * @returns template content
  */
 export async function loadYAMLTemplate<T = unknown>(
   template: string,
+  parameter: Partial<Record<string, string>> = {},
 ): Promise<Record<string, T>> {
   const content = await readFile(resolve(TEMPLATES, `${template}.yaml`));
 
-  return safeLoad(content.toString()) as Record<string, T>;
+  return safeLoad(pupa(content.toString(), parameter)) as Record<string, T>;
 }
 
 /**
  * load config from a text template
  * @param template name of the template
+ * @param parameter variables to be substituted in the template
  * @returns template content
  */
-export async function loadTextTemplate(template: string): Promise<string> {
+export async function loadTextTemplate(
+  template: string,
+  parameter: Partial<Record<string, string>> = {},
+): Promise<string> {
   const content = await readFile(resolve(TEMPLATES, template));
 
-  return content.toString();
+  return pupa(content.toString(), parameter);
 }
 
 /**

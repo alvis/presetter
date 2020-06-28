@@ -23,8 +23,8 @@ settings:
   jsdoc:
     mode: typescript
 ignorePatterns:
-  - lib
-  - specs
+  - '{output}'
+  - '{test}'
   - types
   - '**/*.js'
 rules:

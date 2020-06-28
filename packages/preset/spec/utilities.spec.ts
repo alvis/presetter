@@ -54,14 +54,20 @@ describe('fn:buildListConfig', () => {
   beforeEach(jest.clearAllMocks);
 
   it('output the default template', async () => {
-    expect(await buildListConfig('list')).toEqual('dist/list');
-    expect(await buildListConfig('list', undefined)).toEqual('dist/list');
+    expect(await buildListConfig('list', { parameter: {} })).toEqual(
+      'dist/list',
+    );
+    expect(await buildListConfig('list', { parameter: {} })).toEqual(
+      'dist/list',
+    );
     expect(readFile).toBeCalledWith('templates/list');
     expect(writeFile).toBeCalledWith('dist/list', 'line1');
   });
 
   it('compile and write to the output folder', async () => {
-    expect(await buildListConfig('list', ['more'])).toEqual('dist/list');
+    expect(
+      await buildListConfig('list', { extra: ['more'], parameter: {} }),
+    ).toEqual('dist/list');
     expect(readFile).toBeCalledWith('templates/list');
     expect(writeFile).toBeCalledWith('dist/list', 'line1\nmore');
   });
@@ -71,14 +77,20 @@ describe('fn:buildJSONConfig', () => {
   beforeEach(jest.clearAllMocks);
 
   it('output the default template', async () => {
-    expect(await buildJSONConfig('json')).toEqual('dist/json.json');
-    expect(await buildJSONConfig('json', undefined)).toEqual('dist/json.json');
+    expect(await buildJSONConfig('json', { parameter: {} })).toEqual(
+      'dist/json.json',
+    );
+    expect(await buildJSONConfig('json', { parameter: {} })).toEqual(
+      'dist/json.json',
+    );
     expect(readFile).toBeCalledWith('templates/json.yaml');
     expect(writeFile).toBeCalledWith('dist/json.json', '{\n  "a": 1\n}');
   });
 
   it('compile and write to the output folder', async () => {
-    expect(await buildJSONConfig('json', { b: 2 })).toEqual('dist/json.json');
+    expect(
+      await buildJSONConfig('json', { extra: { b: 2 }, parameter: {} }),
+    ).toEqual('dist/json.json');
     expect(readFile).toBeCalledWith('templates/json.yaml');
     expect(writeFile).toBeCalledWith(
       'dist/json.json',

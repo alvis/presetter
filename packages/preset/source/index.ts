@@ -35,6 +35,19 @@ interface PresetConfig {
   prettier?: Record<string, unknown>;
   /** configuration to be merged with tsconfig.json */
   tsconfig?: Record<string, unknown>;
+  /** relative path to root directories for different file types */
+  directory?: {
+    /** the directory containing the whole repository (default: .) */
+    root?: string;
+    /** the directory containing all source code (default: source) */
+    source?: string;
+    /** the directory containing all typing files (default: types) */
+    types?: string;
+    /** the directory containing all output tile (default: source) */
+    output?: string;
+    /** the directory containing all test files (default: spec) */
+    test?: string;
+  };
 }
 
 /** detail of linked configuration files and script templates  */
@@ -52,17 +65,34 @@ interface Preset {
  * @returns preset list
  */
 export default async function (config?: PresetConfig): Promise<Preset> {
+  const parameter = {
+    root: '.',
+    source: 'source',
+    types: 'types',
+    output: 'lib',
+    test: 'spec',
+    ...config?.directory,
+  };
+
+  const json = async (
+    name: string,
+    extra: Record<string, unknown> = {},
+  ): Promise<string> => buildJSONConfig(name, { extra, parameter });
+
+  const list = async (name: string, extra: string[] = []): Promise<string> =>
+    buildListConfig(name, { extra, parameter });
+
   return {
     links: {
-      '.babelrc': await buildJSONConfig('babelrc', config?.babel),
-      '.eslintrc': await buildJSONConfig('eslintrc', config?.eslint),
-      '.jestrc': await buildJSONConfig('jestrc', config?.jest),
-      '.gitignore': await buildListConfig('gitignore', config?.gitignore),
-      '.npmignore': await buildListConfig('npmignore', config?.npmignore),
-      '.prettierrc': await buildJSONConfig('prettierrc', config?.prettier),
-      'tsconfig.json': await buildJSONConfig('tsconfig', config?.tsconfig),
-      'tsconfig.build.json': await buildJSONConfig('tsconfig.build'),
+      '.babelrc': await json('babelrc', config?.babel),
+      '.eslintrc': await json('eslintrc', config?.eslint),
+      '.jestrc': await json('jestrc', config?.jest),
+      '.gitignore': await list('gitignore', config?.gitignore),
+      '.npmignore': await list('npmignore', config?.npmignore),
+      '.prettierrc': await json('prettierrc', config?.prettier),
+      'tsconfig.json': await json('tsconfig', config?.tsconfig),
+      'tsconfig.build.json': await json('tsconfig.build'),
     },
-    scripts: await loadYAMLTemplate<string>('scripts'),
+    scripts: await loadYAMLTemplate<string>('scripts', parameter),
   };
 }

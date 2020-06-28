@@ -1,6 +1,6 @@
 coverage
 dist
-lib
+{output}
 node_modules
 .babelrc
 .eslintrc

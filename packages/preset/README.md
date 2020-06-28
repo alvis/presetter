@@ -57,3 +57,49 @@ Implement your business logic under `source` and prepare tests under `spec`.
  ├─ tsconfig.json
  └─ tsconfig.build.json
 ```
+
+## Customisation
+
+By default, this preset exports a handy configuration set for a nodejs project.
+But you can further customise (either extending or replacing) the configuration by specifying the change in the project's `.presetterrc`.
+
+These settings are available in the `config` field in `.presetterrc`. For directories, the setting is specified in the `directory` field, while configuration for other tools like babel and eslint are available in corresponding fields.
+
+The structure of `.presetterrc` must be the following:
+
+```ts
+interface PresetterRC {
+  /** name of the preset e.g. presetter-preset */
+  name: string;
+  /** additional configuration passed to the preset for generating the configuration files */
+  config?: {
+    /** configuration to be merged with .babelrc */
+    babel?: Record<string, unknown>;
+    /** configuration to be merged with .eslintrc */
+    eslint?: Record<string, unknown>;
+    /** configuration to be merged with .jestrc */
+    jest?: Record<string, unknown>;
+    /** patterns to be added to .gitignore */
+    gitignore?: string[];
+    /** patterns to be added to .npmignore */
+    npmignore?: string[];
+    /** configuration to be merged with .presetterrc */
+    prettier?: Record<string, unknown>;
+    /** configuration to be merged with tsconfig.json */
+    tsconfig?: Record<string, unknown>;
+    /** relative path to root directories for different file types */
+    directory?: {
+      /** the directory containing the whole repository (default: .) */
+      root?: string;
+      /** the directory containing all source code (default: source) */
+      source?: string;
+      /** the directory containing all typing files (default: types) */
+      types?: string;
+      /** the directory containing all output tile (default: source) */
+      output?: string;
+      /** the directory containing all test files (default: spec) */
+      test?: string;
+    };
+  };
+}
+```
