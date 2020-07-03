@@ -84,12 +84,12 @@ export default async function (config?: PresetConfig): Promise<Preset> {
 
   return {
     links: {
-      '.babelrc': await json('babelrc', config?.babel),
-      '.eslintrc': await json('eslintrc', config?.eslint),
-      '.jestrc': await json('jestrc', config?.jest),
+      '.babelrc.json': await json('babelrc', config?.babel),
+      '.eslintrc.json': await json('eslintrc', config?.eslint),
+      '.jestrc.json': await json('jestrc', config?.jest),
       '.gitignore': await list('gitignore', config?.gitignore),
       '.npmignore': await list('npmignore', config?.npmignore),
-      '.prettierrc': await json('prettierrc', config?.prettier),
+      '.prettierrc.json': await json('prettierrc', config?.prettier),
       'tsconfig.json': await json('tsconfig', config?.tsconfig),
       'tsconfig.build.json': await json('tsconfig.build'),
     },

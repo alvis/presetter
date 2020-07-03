@@ -2,5 +2,5 @@ coverage
 dist
 lib
 node_modules
-.*rc
+.*rc.json
 tsconfig.*

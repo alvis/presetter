@@ -2,10 +2,10 @@ coverage
 dist
 {output}
 node_modules
-.babelrc
-.eslintrc
-.jestrc
+.babelrc.json
+.eslintrc.json
+.jestrc.json
 .gitignore
 .npmignore
-.prettierrc
+.prettierrc.json
 tsconfig.*

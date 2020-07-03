@@ -19,6 +19,6 @@ lint:eslint: eslint --fix --format codeframe --max-warnings 0  --no-error-on-unm
 prepare: run-s coverage lint build
 prerelease: npm run release -- --prerelease next
 release: standard-version --preset angular-emoji
-test: jest --config "$(cat .jestrc)" --no-cache --passWithNoTests --verbose
+test: jest --config .jestrc.json --no-cache --passWithNoTests --verbose
 coverage: npm run test -- --coverage
 watch: npm run test -- --watch

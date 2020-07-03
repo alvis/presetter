@@ -26,12 +26,12 @@ describe('fn:configure', () => {
   it('export preset configuration', async () => {
     const expected = {
       links: {
-        '.babelrc': 'babelrc',
-        '.eslintrc': 'eslintrc',
+        '.babelrc.json': 'babelrc',
+        '.eslintrc.json': 'eslintrc',
         '.gitignore': 'gitignore',
-        '.jestrc': 'jestrc',
+        '.jestrc.json': 'jestrc',
         '.npmignore': 'npmignore',
-        '.prettierrc': 'prettierrc',
+        '.prettierrc.json': 'prettierrc',
         'tsconfig.build.json': 'tsconfig.build',
         'tsconfig.json': 'tsconfig',
       },

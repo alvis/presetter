@@ -19,7 +19,7 @@
     "build:typescript": "babel --extensions .ts,.tsx,.d.ts --source-maps --copy-files --out-dir lib ./source",
     "clean": "run-p clean:**",
     "clean:lib": "shx rm -rf lib",
-    "clean:rc": "shx rm -f .*rc",
+    "clean:rc": "shx rm -f .*rc.json",
     "clean:ts": "shx rm -f tsconfig.*",
     "coverage": "npm run test -- --coverage",
     "lint": "run-s lint:*",
@@ -29,14 +29,14 @@
     "prepare": "run-s --npm-path npm setup test lint build",
     "setup": "run-p setup:**",
     "setup:peer": "npx npm-install-peers",
-    "setup:babel": "js-yaml templates/babelrc.yaml > .babelrc",
-    "setup:eslint": "js-yaml templates/eslintrc.yaml | pupa --test=spec --output=lib > .eslintrc",
-    "setup:jest": "js-yaml templates/jestrc.yaml | pupa --root=../.. --source=source --output=lib > .jestrc",
-    "setup:prettier": "js-yaml templates/prettierrc.yaml > .prettierrc",
+    "setup:babel": "js-yaml templates/babelrc.yaml > .babelrc.json",
+    "setup:eslint": "js-yaml templates/eslintrc.yaml | pupa --test=spec --output=lib > .eslintrc.json",
+    "setup:jest": "js-yaml templates/jestrc.yaml | pupa --root=../.. --source=source --output=lib > .jestrc.json",
+    "setup:prettier": "js-yaml templates/prettierrc.yaml > .prettierrc.json",
     "setup:tsconfig:base": "js-yaml templates/tsconfig.yaml | pupa --source=source --types=types --output=lib > tsconfig.json",
     "setup:tsconfig:build": "js-yaml templates/tsconfig.build.yaml | pupa --source=source > tsconfig.build.json",
     "release": "standard-version",
-    "test": "jest --config \"$(cat .jestrc)\" --no-cache --passWithNoTests --verbose"
+    "test": "jest --config .jestrc.json --no-cache --passWithNoTests --verbose"
   },
   "peerDependencies": {
     "@babel/cli": "^7.x",
