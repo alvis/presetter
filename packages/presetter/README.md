@@ -137,7 +137,9 @@ e.g. For [presetter-preset](../preset), you can adding an expression to `.gitign
 ```json
 {
   "preset": "presetter-preset",
-  "gitignore": ["<pattern to ignore>"]
+  "config": {
+    "gitignore": ["<pattern to ignore>"]
+  }
 }
 ```
 
