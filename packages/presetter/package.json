@@ -1,6 +1,6 @@
 {
   "name": "presetter",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "engines": {
     "node": ">=10.18.0 <15.0.0"
   },
