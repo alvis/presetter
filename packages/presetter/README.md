@@ -132,7 +132,7 @@ Presetter support customisation in two ways.
 #### Preset Customisation
 
 If your preset support customisation, you can supply the customisation parameter via the `config` field in `.presetterrc`.
-e.g. For [presetter-preset](../preset), you can adding an expression to `.gitignore` with the following in `.presetterrc`:
+e.g. For [presetter-preset](https://github.com/alvis/presetter/tree/master/packages/preset), you can adding an expression to `.gitignore` with the following in `.presetterrc`:
 
 ```json
 {
