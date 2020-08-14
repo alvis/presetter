@@ -3,6 +3,25 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+<a name="1.0.2"></a>
+## [1.0.2](https://github.com/alvis/presetter/compare/v1.0.1...v1.0.2) (2020-08-14)
+
+
+### :bug: Bug Fixes
+
+* **presetter:** preserve client's package.json order upon initialisation ([7ca037b](https://github.com/alvis/presetter/commit/7ca037b))
+* suggest to use prepublish instead of postinstall ([80740d5](https://github.com/alvis/presetter/commit/80740d5))
+
+
+### :package: Code Refactoring
+
+* **presetter:** remove an unused field ([002c070](https://github.com/alvis/presetter/commit/002c070))
+* **presetter:** remove unused imports ([303842c](https://github.com/alvis/presetter/commit/303842c))
+
+
+
+
+
 <a name="1.0.1"></a>
 ## [1.0.1](https://github.com/alvis/presetter/compare/v1.0.0...v1.0.1) (2020-07-16)
 
