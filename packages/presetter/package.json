@@ -32,7 +32,6 @@
     "test": "npm run script -- test --",
     "watch": "npm run script -- watch --"
   },
-  "preset": "presetter-preset",
   "devDependencies": {
     "@types/fs-extra": "^9.x",
     "@types/lodash": "^4.x",
