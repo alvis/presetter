@@ -15,6 +15,7 @@
 
 import { info } from 'console';
 import execa from 'execa';
+import { defaultsDeep } from 'lodash';
 import readPackageDetail from 'read-pkg-up';
 
 import type { NormalizedPackageJson } from 'read-pkg-up';
@@ -41,7 +42,12 @@ export async function getPackage(root?: string): Promise<Package> {
     throw new Error("failed to find target's package.json");
   }
 
-  return { path: detail.path, json: { scripts: {}, ...detail.packageJson } };
+  const path = detail.path;
+  const json = defaultsDeep(detail.packageJson, {
+    scripts: {},
+  }) as Package['json'];
+
+  return { path, json };
 }
 
 /**

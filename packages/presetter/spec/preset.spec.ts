@@ -127,9 +127,11 @@ jest.mock('#package', () => ({
         return {
           path: './package.json',
           json: {
+            name: 'client',
             scripts: {
               test: 'test',
             },
+            dependencies: {},
           },
         };
     }
@@ -181,10 +183,12 @@ describe('fn:setupPreset', () => {
 
   it('write to package.json', async () => {
     expect(writePackage).toBeCalledWith('.', {
+      name: 'client',
       scripts: {
         prepublish: 'presetter bootstrap',
         test: 'test',
       },
+      dependencies: {},
     });
   });
 });
