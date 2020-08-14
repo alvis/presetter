@@ -183,7 +183,7 @@ describe('fn:setupPreset', () => {
   it('write to package.json', async () => {
     expect(writePackage).toBeCalledWith('.', {
       scripts: {
-        postinstall: 'presetter bootstrap',
+        prepublish: 'presetter bootstrap',
         test: 'test',
       },
     });

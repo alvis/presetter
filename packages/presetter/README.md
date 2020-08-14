@@ -73,7 +73,8 @@ To adopt a preset to an empty project, simple run `presetter use <preset>` on yo
 By running this command, it will
 
 - create a `.presetterrc` file under the root, detailing the preset setting,
-- add a `presetter bootstrap` command to the postinstall life cycle script in your `package.json`, and
+
+- add a `presetter bootstrap` command to the prepublish life cycle script in your `package.json`, and
 - bootstrap the preset at the end of the process.
 
 #### To an Existing Project
@@ -93,7 +94,7 @@ they have to be installed to the adopting project and it's what `presetter boots
 
 You would have to run `presetter bootstrap` manually
 
-- after running `npm install` and `presetter bootstrap` isn't set up in the postinstall life cycle, or
+- after running `npm install` and `presetter bootstrap` isn't set up in the prepublish life cycle, or
 - [you installed a new packages via npm](https://github.com/alvis/presetter/blob/master/README.md#missing-dependent-development-packages-after-npm-install-package).
 
 ### Running a Life Cycle Script
@@ -110,7 +111,7 @@ you can set life cycle scripts in `package.json` to something like
     "build": "run build",
     "clean": "run clean",
     "lint": "run lint",
-    "postinstall": "presetter bootstrap",
+    "prepublish": "presetter bootstrap",
     "prepare": "run prepare",
     "release": "run release",
     "test": "run test"
