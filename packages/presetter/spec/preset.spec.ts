@@ -15,7 +15,6 @@
 
 import { info } from 'console';
 import { symlink, unlink, writeJSON } from 'fs-extra';
-import { resolve } from 'path';
 import writePackage from 'write-pkg';
 
 import { installPackages } from '#package';
