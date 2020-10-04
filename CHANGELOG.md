@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+<a name="1.0.4"></a>
+## [1.0.4](https://github.com/alvis/presetter/compare/v1.0.3...v1.0.4) (2020-10-04)
+
+
+### :sparkles: Features
+
+* **preset/babel:** enable babel to emit decorator metadata like tsc ([8f8f3e5](https://github.com/alvis/presetter/commit/8f8f3e5))
+
+
+
+
+
 <a name="1.0.3"></a>
 ## [1.0.3](https://github.com/alvis/presetter/compare/v1.0.2...v1.0.3) (2020-09-30)
 
