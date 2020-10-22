@@ -3,6 +3,29 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+<a name="1.0.5"></a>
+## [1.0.5](https://github.com/alvis/presetter/compare/v1.0.4...v1.0.5) (2020-10-22)
+
+
+### :bug: Bug Fixes
+
+* **preset/script:** allow prettier to pass when there is no match ([efa76a6](https://github.com/alvis/presetter/commit/efa76a6))
+* **preset/script:** make release and publish using the right scripts ([93d7995](https://github.com/alvis/presetter/commit/93d7995))
+
+
+### :package: Code Refactoring
+
+* **preset/script:** remove an extra space ([025835a](https://github.com/alvis/presetter/commit/025835a))
+
+
+### :sparkles: Features
+
+* **preset/lint:** drop the doc requirement on the obvious ([df74c0f](https://github.com/alvis/presetter/commit/df74c0f))
+
+
+
+
+
 <a name="1.0.4"></a>
 ## [1.0.4](https://github.com/alvis/presetter/compare/v1.0.3...v1.0.4) (2020-10-04)
 
