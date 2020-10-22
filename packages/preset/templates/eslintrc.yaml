@@ -32,7 +32,11 @@ rules:
   jsdoc/newline-after-description: # doesn't need a new line after description
     - error
     - never
-  jsdoc/require-description: warn # a description is a must
+  jsdoc/require-description: # a description is a must
+    - warn
+    - checkConstructors: false
+      checkGetters: false
+      checkSetters: false
   jsdoc/require-jsdoc: # all functions must be documented
     - warn
     - require:
