@@ -103,3 +103,14 @@ interface PresetterRC {
   };
 }
 ```
+
+## Script Template Summary
+
+- **`run build`**: Transpile source code from typescript and replace any mapped paths
+- **`run clean`**: Clean up any previously transpiled code
+- **`run develop -- <file path>`**: Create a service that run the specified file whenever the source has changed
+- **`run test`**: Run all tests
+- **`run watch`**: Rerun all tests whenever the source has change
+- **`run coverage`**: Run all test with coverage report
+- **`run release`**: Bump the version and automatically generate a change log
+- **`run release -- --prerelease <tag>`**: Release with a prerelease tag
