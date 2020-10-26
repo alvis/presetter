@@ -18,7 +18,7 @@ import { move, unlink, writeFile } from 'fs-extra';
 
 import { run } from '#run';
 
-let mockTemporaryPackageJSONExists;
+let mockTemporaryPackageJSONExists: boolean;
 
 jest.spyOn(process, 'exit').mockImplementation((() => {}) as any);
 

@@ -87,7 +87,7 @@ const unsetCommand: CommandModule = {
  * @returns the command entered together with its options
  */
 export async function entry(): Promise<void> {
-  const [_node, _executable, ...args] = process.argv;
+  const [, , ...args] = process.argv;
 
   await yargs
     .usage('⚙ presetter: your preset configurator')

@@ -51,9 +51,6 @@ class TemporaryPackageJSONManager {
    * @param task name of the task to be replaced by the template
    */
   public async replace(task: string): Promise<void> {
-    // get the path for saving the original package.json
-    // const temporaryPath = getTemporaryPackagePath(packageDetail.path);
-
     // delete the current task to avoid duplicated task running
     delete this.package.json.scripts[task];
 
@@ -65,9 +62,6 @@ class TemporaryPackageJSONManager {
         ...this.package.json.scripts,
       },
     });
-
-    // store the current state
-    // this.shouldRestore = !(await pathExists(this.path));
 
     // move the existing package.json to a safe place
     if (this.shouldRestore) {
@@ -145,12 +139,3 @@ export async function run(task: string, argv: string[] = []): Promise<void> {
     process.exit(exitCode);
   }
 }
-
-/**
- * get the path for storing the original package.json temporarily
- * @param packagePath path to the target project's package.json
- * @returns a path storing the original package.json
- */
-// function getTemporaryPackagePath(packagePath: string): string {
-//   return resolve(dirname(packagePath), '~' + basename(packagePath));
-// }
