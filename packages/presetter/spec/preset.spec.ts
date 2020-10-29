@@ -64,9 +64,9 @@ jest.mock(
       async (path: string): Promise<string> => {
         switch (path) {
           case 'link-pointed-to-preset':
-            return 'path/to/preset';
+            return 'path-to-preset';
           case 'link-pointed-to-other':
-            return 'path/to/other';
+            return 'path-to-other';
           default:
             throw new Error();
         }
@@ -91,9 +91,9 @@ jest.mock(
     __esModule: true,
     default: async () => ({
       links: {
-        'link-pointed-to-preset': 'path/to/preset',
-        'link-pointed-to-other': 'path/to/preset',
-        'link-rewritten-by-project': 'path/to/preset',
+        'link-pointed-to-preset': 'path-to-preset',
+        'link-pointed-to-other': 'path-to-preset',
+        'link-rewritten-by-project': 'path-to-preset',
       },
       scripts: { task: 'command' },
     }),
@@ -198,9 +198,9 @@ describe('fn:getPreset', () => {
     expect(await getPreset()).toEqual({
       name: 'preset',
       links: {
-        'link-pointed-to-preset': 'path/to/preset',
-        'link-pointed-to-other': 'path/to/preset',
-        'link-rewritten-by-project': 'path/to/preset',
+        'link-pointed-to-preset': 'path-to-preset',
+        'link-pointed-to-other': 'path-to-preset',
+        'link-rewritten-by-project': 'path-to-preset',
       },
       scripts: { task: 'command' },
     });
@@ -214,7 +214,7 @@ describe('fn:bootstrapPreset', () => {
   it('link up artifacts provided by the preset', async () => {
     expect(symlink).toHaveBeenCalledTimes(1);
     expect(symlink).toHaveBeenCalledWith(
-      'path/to/preset',
+      'path-to-preset',
       'link-pointed-to-preset',
     );
   });

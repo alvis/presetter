@@ -15,10 +15,14 @@
 
 import execa from 'execa';
 import { move, unlink, writeFile } from 'fs-extra';
+import { resolve } from 'path';
 
 import { run } from '#run';
 
 let mockTemporaryPackageJSONExists: boolean;
+
+const MOCK_PACKAGE_PATH = resolve('tmp', 'package.json');
+const MOCK_TEMPORARY_PACKAGE_PATH = resolve('tmp', '~package.json');
 
 jest.spyOn(process, 'exit').mockImplementation((() => {}) as any);
 
@@ -76,7 +80,7 @@ jest.mock('yargs', () => ({
 jest.mock('#package', () => ({
   esModule: true,
   getPackage: jest.fn(async () => ({
-    path: '/tmp/package.json',
+    path: MOCK_PACKAGE_PATH,
     json: {
       scripts: {
         task: 'run task --arg-package',
@@ -104,15 +108,15 @@ function expectCompleteSetupAndTeardown() {
   } else {
     expect(move).toHaveBeenCalledTimes(2);
     expect(move).toHaveBeenCalledWith(
-      '/tmp/package.json',
-      '/tmp/~package.json',
+      MOCK_PACKAGE_PATH,
+      MOCK_TEMPORARY_PACKAGE_PATH,
     );
     expect(move).toHaveBeenCalledWith(
-      '/tmp/~package.json',
-      '/tmp/package.json',
+      MOCK_TEMPORARY_PACKAGE_PATH,
+      MOCK_PACKAGE_PATH,
     );
     expect(unlink).toHaveBeenCalledTimes(1);
-    expect(unlink).toHaveBeenCalledWith('/tmp/package.json');
+    expect(unlink).toHaveBeenCalledWith(MOCK_PACKAGE_PATH);
   }
 }
 
@@ -132,14 +136,14 @@ describe('fn:run', () => {
           'npm',
           ['run', 'task', '--', '--arg-extra'],
           {
-            cwd: '/tmp',
+            cwd: resolve('tmp'),
             reject: false,
             shell: true,
             stdio: 'inherit',
           },
         );
         expect(writeFile).toHaveBeenCalledWith(
-          '/tmp/package.json',
+          MOCK_PACKAGE_PATH,
           JSON.stringify(
             {
               scripts: {
