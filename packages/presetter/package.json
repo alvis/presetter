@@ -33,25 +33,25 @@
     "watch": "npm run script -- watch --"
   },
   "devDependencies": {
-    "@types/fs-extra": "^9.x",
-    "@types/lodash": "^4.x",
-    "@types/yargs": "^15.x",
-    "presetter-preset": "^1.0.5",
-    "ts-node": "^8.x",
-    "tsconfig-paths": "^3.x",
-    "typescript": "^3.x"
+    "@types/fs-extra": "9.x",
+    "@types/lodash": "4.x",
+    "@types/yargs": "15.x",
+    "presetter-preset": "1.0.5",
+    "ts-node": "8.x",
+    "tsconfig-paths": "3.x",
+    "typescript": "3.x"
   },
   "dependencies": {
-    "callsite-record": "^4.x",
-    "chalk": "^4.x",
-    "execa": "^4.x",
-    "fs-extra": "^9.x",
-    "lodash": "^4.x",
-    "mvdan-sh": "^0.5.x",
-    "read-pkg-up": "^7.x",
-    "resolve-pkg": "^2.x",
-    "source-map-support": "^0.5.x",
-    "write-pkg": "^4.x",
-    "yargs": "^15.x"
+    "callsite-record": "4.x",
+    "chalk": "4.x",
+    "execa": "4.x",
+    "fs-extra": "9.x",
+    "lodash": "4.x",
+    "mvdan-sh": "0.5.x",
+    "read-pkg-up": "7.x",
+    "resolve-pkg": "2.x",
+    "source-map-support": "0.5.x",
+    "write-pkg": "4.x",
+    "yargs": "15.x"
   }
 }

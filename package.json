@@ -35,7 +35,7 @@
     "release": "npm run version -- --no-push --conventional-graduate"
   },
   "devDependencies": {
-    "conventional-changelog-angular-emoji": "^0.2.2",
-    "lerna": "^3.x"
+    "conventional-changelog-angular-emoji": "0.2.2",
+    "lerna": "3.x"
   }
 }
