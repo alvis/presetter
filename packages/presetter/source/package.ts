@@ -63,11 +63,7 @@ export async function installPackages(args: {
   save?: 'development' | 'peer' | 'production' | 'none';
   lock?: boolean;
 }): Promise<Array<{ name: string; version: string }>> {
-  const { packages, save, lock } = {
-    save: 'none',
-    lock: false,
-    ...args,
-  };
+  const { packages, save = 'none', lock = false } = { ...args };
 
   if (!packages.length) {
     return [];
