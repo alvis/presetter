@@ -86,7 +86,7 @@ export async function installPackages(args: {
       }[save],
       lock ? undefined : '--no-package-lock',
       ...packages,
-    ].filter((arg) => !!arg),
+    ].filter((arg): arg is string => !!arg),
   );
 
   return extractPackagesFromNPMOutput(stdout);

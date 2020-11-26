@@ -46,7 +46,8 @@ jest.mock('#run', () => ({
     // ensure that nothing is running in parallel
     expect(this.running).toEqual(false);
     this.running = true;
-    return new Promise((resolve) =>
+
+    return new Promise<void>((resolve) =>
       setImmediate(() => {
         this.running = false;
         resolve();
