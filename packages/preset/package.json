@@ -68,7 +68,7 @@
     "shx": "0.3",
     "standard-version": "7.x",
     "ts-jest": "26.x",
-    "ts-node": "8.x",
+    "ts-node": "9.x",
     "ts-node-dev": "1.0.0-pre.44",
     "tsconfig-paths": "3.x",
     "tscpaths": "0.0.9",
