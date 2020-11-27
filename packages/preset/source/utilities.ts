@@ -41,10 +41,7 @@ export async function buildJSONConfig(
     parameter: Partial<Record<string, string>>;
   },
 ): Promise<string> {
-  const { extra, parameter } = {
-    extra: {},
-    ...options,
-  };
+  const { extra = {}, parameter } = { ...options };
 
   const source = await loadYAMLTemplate(template, parameter);
   const merged = merge(source, extra);
@@ -71,10 +68,7 @@ export async function buildListConfig(
     parameter: Partial<Record<string, string>>;
   },
 ): Promise<string> {
-  const { extra, parameter } = {
-    extra: [],
-    ...options,
-  };
+  const { extra = [], parameter } = { ...options };
 
   const source = await loadTextTemplate(template, parameter);
   const ignores = source.split('\n');
