@@ -16,7 +16,7 @@ globals:
   ignoreCoverageForAllDecorators: true
   ts-jest:
     babelConfig: true
-    tsConfig:
+    tsconfig:
       allowJs: true
 moduleNameMapper:
   '#(.*)': '<rootDir>/{source}/$1'
