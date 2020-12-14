@@ -24,7 +24,7 @@ import {
   writeJSON,
 } from 'fs-extra';
 import { defaultsDeep } from 'lodash';
-import { dirname, relative, resolve } from 'path';
+import { dirname, extname, relative, resolve } from 'path';
 import resolvePackage from 'resolve-pkg';
 import writePackage from 'write-pkg';
 
@@ -56,19 +56,56 @@ const PRESETTERRC = '.presetterrc';
 const JSON_INDENT = 2;
 
 /**
+ * get the configuration file content
+ * @param base the base directory in which a configuration file should be located
+ * @returns content of the configuration file
+ */
+export async function getConfiguration(
+  base: string,
+): Promise<PresetterConfiguration> {
+  const potentialConfigFiles = ['', '.json'].map((ext) =>
+    resolve(base, `${PRESETTERRC}${ext}`),
+  );
+
+  for (const path of potentialConfigFiles) {
+    if (await pathExists(path)) {
+      return readConfiguration(path);
+    }
+  }
+
+  throw new Error(`Cannot find a presetter configuration file under ${base}`);
+}
+
+/**
+ * convert the configuration file content based on the extension
+ * @param path file path
+ * @returns content of the configuration file
+ */
+async function readConfiguration(
+  path: string,
+): Promise<PresetterConfiguration> {
+  const content = (await readFile(path)).toString();
+
+  switch (extname(path)) {
+    case '.json':
+    default:
+      return JSON.parse(content) as PresetterConfiguration;
+  }
+}
+
+/**
  * get the preset package name from package.json
  * @returns name of the preset package
  */
 export async function getPreset(): Promise<Preset> {
   const { path } = await getPackage();
+  const base = dirname(path);
 
   // get the preset name
-  const { preset, config } = JSON.parse(
-    (await readFile(resolve(dirname(path), PRESETTERRC))).toString(),
-  ) as PresetterConfiguration;
+  const { preset, config } = await getConfiguration(base);
 
   // get the preset
-  const module = resolvePackage(preset, { cwd: dirname(path) });
+  const module = resolvePackage(preset, { cwd: base });
 
   const { default: configurator } = (await import(module!)) as {
     default: (
@@ -137,11 +174,9 @@ export async function bootstrapPreset(): Promise<void> {
  * uninstall the preset from the current project root
  */
 export async function unsetPreset(): Promise<void> {
-  const { path } = await getPackage();
   const preset = await getPreset();
 
   await Promise.all([unlinkConfigurations(preset)]);
-  await unlink(resolve(dirname(path), PRESETTERRC));
 }
 
 /**

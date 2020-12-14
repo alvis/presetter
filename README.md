@@ -121,8 +121,8 @@ For 2 & 3, the configuration is exported via the default function in the preset 
 
 #### Config Extension
 
-To allow a preset to export variants (e.g. add a rule to the eslint config file template),
-there is a `config` parameter in `.presetterrc` for this purpose.
+To overwrite part of the preset configuration (e.g. add a rule to the eslint config file template),
+you can specify the new configuration under the `config` parameter in the configuration file (`.presetterrc` or `.presetterrc.json`).
 
 During installation and life cycle script execution,
 the content of this parameter will be passed to the configurator function provided by the preset package.

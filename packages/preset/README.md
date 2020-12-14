@@ -61,9 +61,9 @@ Implement your business logic under `source` and prepare tests under `spec`.
 ## Customisation
 
 By default, this preset exports a handy configuration set for a nodejs project.
-But you can further customise (either extending or replacing) the configuration by specifying the change in the project's `.presetterrc`.
+But you can further customise (either extending or replacing) the configuration by specifying the change in the config file (`.presetterrc` or `.presetterrc.json`).
 
-These settings are available in the `config` field in `.presetterrc`. For directories, the setting is specified in the `directory` field, while configuration for other tools like babel and eslint are available in corresponding fields.
+These settings are available in the `config` field in the config file. For directories, the setting is specified in the `directory` field, while configuration for other tools like babel and eslint are available in corresponding fields.
 
 The structure of `.presetterrc` must be the following:
 

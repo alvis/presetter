@@ -18,13 +18,21 @@ import { symlink, unlink, writeJSON } from 'fs-extra';
 import writePackage from 'write-pkg';
 
 import { installPackages } from '#package';
-import { unsetPreset, getPreset, bootstrapPreset, setupPreset } from '#preset';
+import {
+  bootstrapPreset,
+  getConfiguration,
+  getPreset,
+  setupPreset,
+  unsetPreset,
+} from '#preset';
 
 jest.mock('console', () => ({
   __esModule: true,
   info: jest.fn(),
 }));
 
+// file name of the configuration file, null for missing file
+let mockPresetterRC: string | null = '.presetterrc';
 jest.mock(
   'fs-extra',
   () => ({
@@ -42,6 +50,7 @@ jest.mock(
     pathExists: jest.fn(
       async (path: string): Promise<boolean> => {
         switch (path) {
+          case mockPresetterRC:
           case 'link-rewritten-by-project':
             return true;
           default:
@@ -53,7 +62,7 @@ jest.mock(
       async (path: string): Promise<Buffer> => {
         const filename = jest.requireActual('path').basename(path);
         switch (filename) {
-          case '.presetterrc':
+          case mockPresetterRC:
             return Buffer.from(JSON.stringify({ preset: 'preset' }));
           default:
             throw new Error();
@@ -148,9 +157,8 @@ describe('fn:cleanupPreset', () => {
     expect(info).toHaveBeenCalledTimes(2);
     expect(info).toHaveBeenCalledWith('removing link-pointed-to-preset');
     expect(info).toHaveBeenCalledWith('skipping link-rewritten-by-project');
-    expect(unlink).toHaveBeenCalledTimes(2);
+    expect(unlink).toHaveBeenCalledTimes(1);
     expect(unlink).toHaveBeenCalledWith('link-pointed-to-preset');
-    expect(unlink).toHaveBeenCalledWith('.presetterrc');
   });
 });
 
@@ -190,6 +198,20 @@ describe('fn:setupPreset', () => {
       },
       dependencies: {},
     });
+  });
+});
+
+describe('fn:getConfiguration', () => {
+  afterEach(() => (mockPresetterRC = '.presetterrc'));
+
+  it('look for an alternative file extension', async () => {
+    mockPresetterRC = '.presetterrc.json';
+    expect(await getConfiguration('.')).toEqual({ preset: 'preset' });
+  });
+
+  it('throw an error when no configuration file is found', async () => {
+    mockPresetterRC = null;
+    await expect(getConfiguration('.')).rejects.toThrow();
   });
 });
 
