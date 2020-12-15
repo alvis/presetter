@@ -150,7 +150,7 @@ jest.mock('#package', () => ({
   ),
 }));
 
-describe('fn:cleanupPreset', () => {
+describe('fn:unsetPreset', () => {
   beforeAll(unsetPreset);
 
   it('clean up any artifacts installed on the project root', async () => {
