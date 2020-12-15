@@ -209,9 +209,9 @@ describe('fn:getConfiguration', () => {
     expect(await getConfiguration('.')).toEqual({ preset: 'preset' });
   });
 
-  it('throw an error when no configuration file is found', async () => {
+  it('use the default preset when no configuration file is found', async () => {
     mockPresetterRC = null;
-    await expect(getConfiguration('.')).rejects.toThrow();
+    expect(await getConfiguration('.')).toEqual({ preset: 'presetter-preset' });
   });
 });
 

@@ -73,7 +73,8 @@ export async function getConfiguration(
     }
   }
 
-  throw new Error(`Cannot find a presetter configuration file under ${base}`);
+  // the default preset
+  return { preset: 'presetter-preset' };
 }
 
 /**
