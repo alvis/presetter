@@ -30,12 +30,12 @@
     "coverage": "lerna run coverage",
     "lint": "lerna run lint",
     "test": "lerna run test",
-    "version": "lerna version --changelog-preset angular-emoji --conventional-commits",
+    "version": "lerna version --changelog-preset metahub --conventional-commits",
     "prerelease": "npm run version -- --no-push --conventional-prerelease --preid next",
     "release": "npm run version -- --no-push --conventional-graduate"
   },
   "devDependencies": {
-    "conventional-changelog-angular-emoji": "0.2.2",
+    "conventional-changelog-metahub": "4.x",
     "lerna": "3.x"
   }
 }
