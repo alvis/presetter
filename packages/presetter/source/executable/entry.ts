@@ -69,7 +69,7 @@ const runCommand: CommandModule = {
   handler: async (argv) => {
     argv._promise = (async () => {
       // get the options
-      const [, task, ...args] = argv._;
+      const [, task, ...args] = argv._.map((arg) => arg.toString());
 
       await run(task, args);
     })();
