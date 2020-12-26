@@ -1,14 +1,26 @@
 {
   "version": "1.0.5",
   "packages": [
+    ".",
     "packages/*"
   ],
   "command": {
+    "bootstrap": {
+      "ignore": "presetter-monorepo"
+    },
+    "version": {
+      "changelogPreset": "metahub",
+      "conventionalCommits": true,
+      "push": false
+    },
     "publish": {
       "ignoreChanges": [
         "*.md"
       ],
       "message": "chore(release): publish %s"
+    },
+    "run": {
+      "ignore": "presetter-monorepo"
     }
   }
 }

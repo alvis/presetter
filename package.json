@@ -1,5 +1,6 @@
 {
-  "name": "presetter",
+  "name": "presetter-monorepo",
+  "private": true,
   "version": "1.0.5",
   "engines": {
     "node": ">=10.0.0"
@@ -25,14 +26,13 @@
     "url": "git+https://github.com/alvis/presetter.git"
   },
   "scripts": {
-    "postinstall": "lerna bootstrap",
+    "postinstall": "lerna bootstrap --ignore presetter-monorepo",
     "build": "lerna run build",
     "coverage": "lerna run coverage",
     "lint": "lerna run lint",
     "test": "lerna run test",
-    "version": "lerna version --changelog-preset metahub --conventional-commits",
-    "prerelease": "npm run version -- --no-push --conventional-prerelease --preid next",
-    "release": "npm run version -- --no-push --conventional-graduate"
+    "next": "lerna version --conventional-prerelease --preid next",
+    "release": "lerna version --conventional-graduate"
   },
   "devDependencies": {
     "conventional-changelog-metahub": "4.x",
