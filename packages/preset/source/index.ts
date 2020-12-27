@@ -74,13 +74,7 @@ export default async function (config?: PresetConfig): Promise<Preset> {
     ...config?.directory,
   };
 
-  const json = async (
-    name: string,
-    extra: Record<string, unknown> = {},
-  ): Promise<string> => buildJSONConfig(name, { extra, parameter });
-
-  const list = async (name: string, extra: string[] = []): Promise<string> =>
-    buildListConfig(name, { extra, parameter });
+  const { json, list } = createLinker(parameter);
 
   return {
     links: {
@@ -95,4 +89,26 @@ export default async function (config?: PresetConfig): Promise<Preset> {
     },
     scripts: await loadYAMLTemplate<string>('scripts', parameter),
   };
+}
+
+/**
+ * create configuration files generators
+ * @param parameter variables to be substituted in the template
+ * @returns generators that return the location of the generated configuration file
+ */
+function createLinker(
+  parameter: Required<NonNullable<PresetConfig['directory']>>,
+): {
+  json: (name: string, extra?: Record<string, unknown>) => Promise<string>;
+  list: (name: string, extra?: string[]) => Promise<string>;
+} {
+  const json = async (
+    name: string,
+    extra: Record<string, unknown> = {},
+  ): Promise<string> => buildJSONConfig(name, { extra, parameter });
+
+  const list = async (name: string, extra: string[] = []): Promise<string> =>
+    buildListConfig(name, { extra, parameter });
+
+  return { json, list };
 }
