@@ -2,7 +2,10 @@
   "name": "presetter-preset",
   "version": "1.0.5",
   "description": "A collection of opinionated preset configurations for typescript projects",
-  "keywords": [],
+  "keywords": [
+    "presetter",
+    "preset"
+  ],
   "homepage": "https://github.com/alvis/presetter#readme",
   "bugs": {
     "url": "https://github.com/alvis/presetter/issues"
