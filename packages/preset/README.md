@@ -40,12 +40,13 @@ Implement your business logic under `source` and prepare tests under `spec`.
 ```
 (root)
  ├─ .babelrc
- ├─ .eslintrc.yaml
+ ├─ .eslintrc.json
  ├─ .git
  ├─ .gitignore
- ├─ .jestrc
+ ├─ .jestrc.json
  ├─ .npmignore
- ├─ .prettierrc
+ ├─ .prettierrc.json
+ ├─ .preseterrc.json
  ├─ node_modules
  ├─ source
  │   ├─ <folders>
