@@ -73,7 +73,6 @@ To adopt a preset to an empty project, simple run `presetter use <preset>` on yo
 By running this command, it will
 
 - create a `.presetterrc` file under the root, detailing the preset setting,
-
 - add a `presetter bootstrap` command to the prepublish life cycle script in your `package.json`, and
 - bootstrap the preset at the end of the process.
 
@@ -109,12 +108,13 @@ you can set life cycle scripts in `package.json` to something like
 {
   "scripts": {
     "build": "run build",
-    "clean": "run clean",
+    "coverage": "run coverage",
     "lint": "run lint",
-    "prepublish": "presetter bootstrap",
-    "prepare": "run prepare",
-    "release": "run release",
-    "test": "run test"
+    "prepare": "presetter bootstrap && run prepare",
+    "prepublishOnly": "run prepublishOnly",
+    "release": "run release --",
+    "test": "run test --",
+    "watch": "run watch"
   }
 }
 ```
