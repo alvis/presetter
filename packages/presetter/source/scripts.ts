@@ -75,7 +75,7 @@ export function composeScripts(args: {
 
       // remove any unnecessary subshell
       const [statement] = ast.Stmts;
-      if (isSubshell(statement.Cmd)) {
+      if (isNodeType(statement.Cmd, 'Subshell')) {
         statement.Cmd = statement.Cmd.Stmts[0].Cmd;
       }
 
@@ -86,30 +86,16 @@ export function composeScripts(args: {
 }
 
 /**
- * typeguard helper for CallExpr
+ * typeguard helper for different node type
  * @param node a node to be tested
- * @returns true if the node is a CallExpr
+ * @param type node type
+ * @returns true if the node is the specified type
  */
-function isCallExpr(node: Node): node is CallExpr {
-  return syntax.NodeType(node) === 'CallExpr';
-}
-
-/**
- * typeguard helper for Stmt
- * @param node a node to be tested
- * @returns true if the node is a Stmt
- */
-function isStmt(node: Node): node is Stmt {
-  return syntax.NodeType(node) === 'Stmt';
-}
-
-/**
- * typeguard helper for Subshell
- * @param node a node to be tested
- * @returns true if the node is a Subshell
- */
-function isSubshell(node: Node): node is Subshell {
-  return syntax.NodeType(node) === 'Subshell';
+function isNodeType(node: Node, type: 'CallExpr'): node is CallExpr;
+function isNodeType(node: Node, type: 'Stmt'): node is Stmt;
+function isNodeType(node: Node, type: 'Subshell'): node is Subshell;
+function isNodeType(node: Node, type: string): boolean {
+  return syntax.NodeType(node) === type;
 }
 
 /**
@@ -153,7 +139,7 @@ function resolveRunner(command: string, context: ScriptContext): string {
  */
 function replaceRunnerNode(node: Node, context: ScriptContext): boolean {
   // replace only it's a runner call, not anything else
-  if (isStmt(node) && isCallExpr(node.Cmd)) {
+  if (isNodeType(node, 'Stmt') && isNodeType(node.Cmd, 'CallExpr')) {
     // parse assigned arguments e.g. task1 args --help
     const parts: string[] = node.Cmd.Args.map((part) => part.Parts[0].Value);
 
