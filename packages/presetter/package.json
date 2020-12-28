@@ -45,14 +45,14 @@
     "@types/lodash": "4.x",
     "@types/yargs": "15.x",
     "presetter-preset": "1.0.5",
-    "ts-node": "8.x",
+    "ts-node": "9.x",
     "tsconfig-paths": "3.x",
-    "typescript": "3.x"
+    "typescript": "4.x"
   },
   "dependencies": {
     "callsite-record": "4.x",
     "chalk": "4.x",
-    "execa": "4.x",
+    "execa": "5.x",
     "fs-extra": "9.x",
     "lodash": "4.x",
     "mvdan-sh": "0.5.x",
@@ -60,6 +60,6 @@
     "resolve-pkg": "2.x",
     "source-map-support": "0.5.x",
     "write-pkg": "4.x",
-    "yargs": "15.x"
+    "yargs": "16.x"
   }
 }
