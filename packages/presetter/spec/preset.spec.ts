@@ -120,8 +120,10 @@ jest.mock('write-pkg', () => ({
   default: jest.fn(),
 }));
 
+let mockArePeerPackagesAutoInstalled = false;
 jest.mock('#package', () => ({
   __esModule: true,
+  arePeerPackagesAutoInstalled: () => mockArePeerPackagesAutoInstalled,
   getPackage: jest.fn(async (root) => {
     switch (root) {
       case 'preset':
@@ -230,20 +232,53 @@ describe('fn:getPreset', () => {
 });
 
 describe('fn:bootstrapPreset', () => {
-  beforeAll(jest.clearAllMocks);
-  beforeAll(bootstrapPreset);
+  describe('peer packages auto installed disabled', () => {
+    beforeAll(async () => {
+      jest.clearAllMocks();
 
-  it('link up artifacts provided by the preset', async () => {
-    expect(symlink).toHaveBeenCalledTimes(1);
-    expect(symlink).toHaveBeenCalledWith(
-      'path-to-preset',
-      'link-pointed-to-preset',
-    );
+      mockArePeerPackagesAutoInstalled = false;
+      await bootstrapPreset();
+    });
+
+    it('link up artifacts provided by the preset', async () => {
+      expect(symlink).toHaveBeenCalledTimes(1);
+      expect(symlink).toHaveBeenCalledWith(
+        'path-to-preset',
+        'link-pointed-to-preset',
+      );
+    });
+
+    it('install packages specified by the preset', async () => {
+      expect(installPackages).toHaveBeenCalledWith({
+        packages: ['package@version'],
+      });
+    });
   });
 
-  it('install packages specified by the preset', async () => {
-    expect(installPackages).toHaveBeenCalledWith({
-      packages: ['package@version'],
+  describe('peer packages auto installed enabled', () => {
+    beforeEach(() => {
+      jest.clearAllMocks();
+
+      mockArePeerPackagesAutoInstalled = true;
+    });
+
+    afterAll(() => {
+      mockArePeerPackagesAutoInstalled = false;
+    });
+
+    it('install packages regardless', async () => {
+      await bootstrapPreset({ force: true });
+
+      expect(installPackages).toHaveBeenCalledWith({
+        packages: ['package@version'],
+      });
+    });
+
+    it('ignore package install if supported', async () => {
+      mockArePeerPackagesAutoInstalled = true;
+      await bootstrapPreset();
+
+      expect(installPackages).not.toHaveBeenCalled();
     });
   });
 });

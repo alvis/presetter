@@ -145,8 +145,8 @@ Currently, there are two solutions
    This will make sure any missing dependencies will be installed again.
 2. Use `yarn` to install additional packages as it won't remove any packages during the process.
 
-This problem, fortunately, should soon become history when [npm v7](https://blog.npmjs.org/post/186983646370/npm-cli-roadmap-summer-2019) is released.
-We anticipate the upcoming [auto peer dependencies installation](https://github.com/npm/rfcs/blob/latest/accepted/0025-install-peer-deps.md) will resolve this issue for good.
+This problem, fortunately, ~~should soon~~ has now become a history when [npm v7](https://blog.npmjs.org/post/186983646370/npm-cli-roadmap-summer-2019) was released.
+The [auto peer dependencies installation](https://github.blog/2020-10-13-presenting-v7-0-0-of-the-npm-cli/) feature will now resolve this issue for good.
 
 ## FAQ
 
@@ -179,7 +179,7 @@ Every time when I setup a new project, I have to copy and setup the following **
 17. eslint-plugin-header
 18. eslint-plugin-jsdoc
 19. eslint-plugin-no-secrets
-20. eslint-plugin-sonarjs
+20. ~~eslint-plugin-sonarjs~~ ([disabled due to its incompatibility with eslint v7](https://github.com/SonarSource/eslint-plugin-sonarjs/issues/162))
 21. jest
 22. leasot
 23. npm-run-all

@@ -28,7 +28,11 @@ import { dirname, extname, relative, resolve } from 'path';
 import resolvePackage from 'resolve-pkg';
 import writePackage from 'write-pkg';
 
-import { installPackages, getPackage } from './package';
+import {
+  arePeerPackagesAutoInstalled,
+  installPackages,
+  getPackage,
+} from './package';
 
 /**
  * expected return from the configuration function from the preset
@@ -161,12 +165,20 @@ export async function setupPreset(uri: string): Promise<void> {
 
 /**
  * bootstrap the preset to the current project root
+ * @param options options on how to bootstrap the preset
+ * @param options.force do all steps despite potential step saving
  */
-export async function bootstrapPreset(): Promise<void> {
+export async function bootstrapPreset(options?: {
+  force?: boolean;
+}): Promise<void> {
+  const { force = false } = { ...options };
+
   const preset = await getPreset();
 
   await Promise.all([
-    installPresetPeerDependencies(preset),
+    force || !arePeerPackagesAutoInstalled()
+      ? installPresetPeerDependencies(preset)
+      : null,
     linkConfigurations(preset),
   ]);
 }

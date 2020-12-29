@@ -20,6 +20,8 @@ import readPackageDetail from 'read-pkg-up';
 
 import type { NormalizedPackageJson } from 'read-pkg-up';
 
+const NPM_VERSION_FOR_PEER_INSTALLATION = 7;
+
 /** package detail */
 export type Package = {
   /** path to the package.json */
@@ -27,6 +29,30 @@ export type Package = {
   /** content of package.json */
   json: NormalizedPackageJson & { scripts: Record<string, string> };
 };
+
+/**
+ * indicate whether peer packages would be installed automatically
+ * @returns true for npm v7+
+ */
+export function arePeerPackagesAutoInstalled(): boolean {
+  // NOTE npm_config_user_agent should be in the form of 'npm/7.3.0 node/v15.5.0 darwin x64'
+
+  /* istanbul ignore next */
+  const [clientID] =
+    process.env['npm_config_user_agent']?.split(' ') ?? ([] as undefined[]);
+
+  /* istanbul ignore next */
+  const [name, version] = clientID?.split('/') ?? ([] as undefined[]);
+
+  /* istanbul ignore next */
+  const [major] = version?.split('.') ?? ([] as undefined[]);
+
+  return (
+    name === 'npm' &&
+    major !== undefined &&
+    parseInt(major) >= NPM_VERSION_FOR_PEER_INSTALLATION
+  );
+}
 
 /**
  * get scripts from the targeted project's package.json
@@ -74,6 +100,8 @@ export async function installPackages(args: {
     'npm',
     [
       'install',
+      '--no-audit', // avoid unexpected exit due to audit warnings
+      '--legacy-peer-deps', // ignore peer dependency warnings
       {
         development: '--save-dev',
         peer: '--save-peer',

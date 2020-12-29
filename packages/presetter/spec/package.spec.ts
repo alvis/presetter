@@ -13,7 +13,11 @@
  * -------------------------------------------------------------------------
  */
 
-import { installPackages, getPackage } from '#package';
+import {
+  arePeerPackagesAutoInstalled,
+  installPackages,
+  getPackage,
+} from '#package';
 import execa from 'execa';
 
 jest.mock('console', () => ({
@@ -39,6 +43,32 @@ jest.mock('read-pkg-up', () => ({
     .mockResolvedValueOnce(undefined),
 }));
 
+describe('fn:arePeerPackagesAutoInstalled', () => {
+  it('return false for unknown npm agent', () => {
+    process.env['npm_config_user_agent'] = undefined;
+
+    expect(arePeerPackagesAutoInstalled()).toEqual(false);
+  });
+
+  it('return false for npm before v7', () => {
+    process.env['npm_config_user_agent'] = 'npm/6.0.0 node/v15.0.0 darwin x64';
+
+    expect(arePeerPackagesAutoInstalled()).toEqual(false);
+  });
+
+  it('return true for npm v7', () => {
+    process.env['npm_config_user_agent'] = 'npm/7.0.0 node/v15.0.0 darwin x64';
+
+    expect(arePeerPackagesAutoInstalled()).toEqual(true);
+  });
+
+  it('return true for npm v7+', () => {
+    process.env['npm_config_user_agent'] = 'npm/10.0.0 node/v15.0.0 darwin x64';
+
+    expect(arePeerPackagesAutoInstalled()).toEqual(true);
+  });
+});
+
 describe('fn:installPackages', () => {
   beforeEach(jest.clearAllMocks);
 
@@ -49,6 +79,8 @@ describe('fn:installPackages', () => {
 
     expect(execa).toHaveBeenCalledWith('npm', [
       'install',
+      '--no-audit',
+      '--legacy-peer-deps',
       '--no-save',
       '--no-package-lock',
       'package1@alpha',
@@ -68,6 +100,8 @@ describe('fn:installPackages', () => {
 
     expect(execa).toHaveBeenCalledWith('npm', [
       'install',
+      '--no-audit',
+      '--legacy-peer-deps',
       '--no-save',
       'package1@alpha',
       'package2@beta',
@@ -78,7 +112,7 @@ describe('fn:installPackages', () => {
     ]);
   });
 
-  it('not install packages if none is supplied', async () => {
+  it('does not install anything if none is supplied', async () => {
     await installPackages({ packages: [] });
 
     expect(execa).not.toHaveBeenCalled();
@@ -86,7 +120,7 @@ describe('fn:installPackages', () => {
 });
 
 describe('fn:getPackage', () => {
-  it('resolve configuration', async () => {
+  it('resolve the content in package.json', async () => {
     expect(await getPackage()).toEqual({
       path: 'path',
       json: {
