@@ -20,7 +20,7 @@ prepare: run-s build
 prepublishOnly: run-s coverage lint
 publish: npm publish
 prerelease: shx mv package.json ~~package.json && shx mv ~package.json package.json
-release: standard-version --preset angular-emoji
+release: standard-version --preset metahub
 postrelease: shx mv package.json ~package.json && shx mv ~~package.json package.json
 test: jest --config .jestrc.json --no-cache --passWithNoTests --verbose --logHeapUsage
 coverage: npm run test -- --coverage

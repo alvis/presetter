@@ -57,7 +57,7 @@
     "@typescript-eslint/eslint-plugin": "4.x",
     "@typescript-eslint/parser": "4.x",
     "babel-plugin-transform-typescript-metadata": "0.3",
-    "conventional-changelog-angular-emoji": "0.2.2",
+    "conventional-changelog-metahub": "4.x",
     "eslint": "7.x",
     "eslint-config-prettier": "6.x",
     "eslint-plugin-eslint-comments": "3.x",
