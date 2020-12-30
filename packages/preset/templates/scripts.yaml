@@ -18,7 +18,6 @@ lint:fixme: leasot --skip-unsupported --exit-nicely package.json {source} {test}
 lint:eslint: eslint --fix --format codeframe --max-warnings 0 --no-error-on-unmatched-pattern {source}
 prepare: run-s build
 prepublishOnly: run-s coverage lint
-publish: npm publish
 prerelease: shx mv package.json ~~package.json && shx mv ~package.json package.json
 release: standard-version --preset metahub
 postrelease: shx mv package.json ~package.json && shx mv ~~package.json package.json

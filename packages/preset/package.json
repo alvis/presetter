@@ -39,7 +39,6 @@
     "setup:prettier": "js-yaml templates/prettierrc.yaml > .prettierrc.json",
     "setup:tsconfig:base": "js-yaml templates/tsconfig.yaml | pupa --source=source --types=types --output=lib > tsconfig.json",
     "setup:tsconfig:build": "js-yaml templates/tsconfig.build.yaml | pupa --source=source > tsconfig.build.json",
-    "release": "standard-version",
     "test": "jest --config .jestrc.json --no-cache --passWithNoTests --verbose"
   },
   "peerDependencies": {
