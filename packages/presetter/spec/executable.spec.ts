@@ -56,52 +56,60 @@ jest.mock('#run', () => ({
   }),
 }));
 
-describe('fn:executable/entry', () => {
+describe('fn:entry', () => {
   beforeEach(jest.clearAllMocks);
 
-  it('use preset', async () => {
-    process.argv = ['node', 'cli', 'use', 'preset'];
-    await entry();
+  describe('use', () => {
+    it('use preset', async () => {
+      process.argv = ['node', 'cli', 'use', 'preset'];
+      await entry();
 
-    expect(setupPreset).toBeCalledWith('preset');
+      expect(setupPreset).toBeCalledWith('preset');
+    });
   });
 
-  it('bootstrap by default', async () => {
-    process.argv = ['node', 'cli', 'bootstrap'];
-    await entry();
+  describe('bootstrap', () => {
+    it('bootstrap by default', async () => {
+      process.argv = ['node', 'cli', 'bootstrap'];
+      await entry();
 
-    expect(bootstrapPreset).toBeCalledWith();
+      expect(bootstrapPreset).toBeCalledWith();
+    });
+
+    it('bootstrap if the specified file exists', async () => {
+      process.argv = ['node', 'cli', 'bootstrap', '--only', 'exist'];
+      await entry();
+
+      expect(bootstrapPreset).toBeCalledWith();
+    });
+
+    it('skip bootstrap if the specified file is missing', async () => {
+      process.argv = ['node', 'cli', 'bootstrap', '--only', 'no-such-file'];
+      await entry();
+
+      expect(bootstrapPreset).not.toBeCalled();
+    });
   });
 
-  it('bootstrap if the specified file exists', async () => {
-    process.argv = ['node', 'cli', 'bootstrap', '--only', 'exist'];
-    await entry();
+  describe('run', () => {
+    it('run', async () => {
+      process.argv = ['node', 'cli', 'run', 'task', '--', 'arg-1', '--arg-2'];
+      await entry();
 
-    expect(bootstrapPreset).toBeCalledWith();
+      expect(run).toBeCalledWith('task', ['arg-1', '--arg-2']);
+    });
   });
 
-  it('skip bootstrap if the specified file is missing', async () => {
-    process.argv = ['node', 'cli', 'bootstrap', '--only', 'no-such-file'];
-    await entry();
+  describe('unset', () => {
+    it('unset', async () => {
+      process.argv = ['node', 'cli', 'unset'];
+      await entry();
 
-    expect(bootstrapPreset).not.toBeCalled();
+      expect(unsetPreset).toBeCalledWith();
+    });
   });
 
-  it('run', async () => {
-    process.argv = ['node', 'cli', 'run', 'task', '--', 'arg-1', '--arg-2'];
-    await entry();
-
-    expect(run).toBeCalledWith('task', ['arg-1', '--arg-2']);
-  });
-
-  it('unset', async () => {
-    process.argv = ['node', 'cli', 'unset'];
-    await entry();
-
-    expect(unsetPreset).toBeCalledWith();
-  });
-
-  it('not run anything when the command cannot be recognised', async () => {
+  it('does not do anything if the command cannot be recognised', async () => {
     process.argv = ['node', 'cli', 'unknown', '--arg-1'];
     await entry();
 

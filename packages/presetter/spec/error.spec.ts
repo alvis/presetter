@@ -16,12 +16,12 @@
 import { wrap } from '#error';
 
 describe('fn:wrap', () => {
-  it('resovle a promise', async () => {
+  it('return what a promise resolves', async () => {
     const fn = jest.fn(async () => true);
     expect(await wrap(fn(), 'message')).toEqual(true);
   });
 
-  it('wrap an error with a message', async () => {
+  it('prefix an additional message to a promise rejection', async () => {
     const fn = jest.fn(async () => {
       throw new Error('error');
     });
@@ -30,7 +30,7 @@ describe('fn:wrap', () => {
     );
   });
 
-  it('pass on a non-erroneous object', async () => {
+  it('does not change anything if a promise rejection is not an error', async () => {
     const fn = jest.fn(async () => {
       throw 'message';
     });

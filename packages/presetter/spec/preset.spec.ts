@@ -191,7 +191,7 @@ describe('fn:setupPreset', () => {
     });
   });
 
-  it('write to package.json', async () => {
+  it('merge the bootstrapping script to package.json', async () => {
     expect(writePackage).toBeCalledWith('.', {
       name: 'client',
       scripts: {
@@ -206,7 +206,7 @@ describe('fn:setupPreset', () => {
 describe('fn:getConfiguration', () => {
   afterEach(() => (mockPresetterRC = '.presetterrc'));
 
-  it('look for an alternative file extension', async () => {
+  it('accept an alternative file extension', async () => {
     mockPresetterRC = '.presetterrc.json';
     expect(await getConfiguration('.')).toEqual({ preset: 'preset' });
   });
@@ -218,7 +218,7 @@ describe('fn:getConfiguration', () => {
 });
 
 describe('fn:getPreset', () => {
-  it('resolve package configuration', async () => {
+  it('compute the preset configuration', async () => {
     expect(await getPreset()).toEqual({
       name: 'preset',
       links: {
@@ -274,7 +274,7 @@ describe('fn:bootstrapPreset', () => {
       });
     });
 
-    it('ignore package install if supported', async () => {
+    it('skip installing peer packages manually if it is supported by package manager', async () => {
       mockArePeerPackagesAutoInstalled = true;
       await bootstrapPreset();
 
