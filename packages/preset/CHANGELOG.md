@@ -3,6 +3,55 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.1.0](https://github.com/alvis/presetter/compare/v1.0.5...v1.1.0) (2020-12-31)
+
+
+### ✨ Features
+
+* **preset/script:** update changelog preset from angular to metahub ([08aa456](https://github.com/alvis/presetter/commit/08aa4560169a31052f0ecae160d05e8d2f3fcc81))
+* **preset/test:** make jest to display heap usage after each test ([b884914](https://github.com/alvis/presetter/commit/b884914548dbf64232a9c5e12cd4c15d91737f8e))
+* **preset/test:** update ts-jest to v27 ([66954a9](https://github.com/alvis/presetter/commit/66954a9cb3a573943c08363804dc22e0c93cb8e0))
+* **preset/ts:** update ts-node to v9.x ([b449432](https://github.com/alvis/presetter/commit/b449432f62301f5db8cdf4ecf8ef90eb099a2272))
+* **preset/ts:** update typescript to v4.1 ([ad2ae23](https://github.com/alvis/presetter/commit/ad2ae23bb31d5f9d02557dfff1669099dbc3513a))
+* **presetter/preset:** support json configuration file extension ([f93f593](https://github.com/alvis/presetter/commit/f93f5937dffe16eaadf63d29379dac71471f76a5))
+
+
+### 🐛 Bug Fixes
+
+* **preset:** disable sonar temporarily for npm v7 support ([933102b](https://github.com/alvis/presetter/commit/933102b8df6b31ab9652dfc924c80a046c93d9aa))
+* **preset/script:** make sure prettier only takes those supported ([c516a29](https://github.com/alvis/presetter/commit/c516a29f3f3ce85515327e30fc3e2fc81ad23d20))
+
+
+### 🛠 Builds
+
+* **preset:** skip test on install ([1f2b12b](https://github.com/alvis/presetter/commit/1f2b12b62fc051ad85a5a8ebefca92dbad92b239))
+
+
+### 📦 Code Refactoring
+
+* **preset:** reduce the complexity of the preset configurator ([1b19fa4](https://github.com/alvis/presetter/commit/1b19fa40c3c38beb646532dedcaa0424927c19c0))
+* **preset:** simplify default options ([5500585](https://github.com/alvis/presetter/commit/5500585cd2a85d4010b43e12221c2aa0e3fb783f))
+
+
+### 📚 Documentation
+
+* **preset:** update the file structure ([5b6a7d8](https://github.com/alvis/presetter/commit/5b6a7d8dfae0be572dca7def89ebdd39344024b9))
+
+
+### ♻️ Chores
+
+* **preset:** add keywords to package.json ([408a9bc](https://github.com/alvis/presetter/commit/408a9bcd23a511753c20e8ad3088bd04b7f4200c))
+* clear up package dependency declaration ([df01ab5](https://github.com/alvis/presetter/commit/df01ab5a3b0934a2db4eed669e1f87a667384b3e))
+
+
+### 💎 Styles
+
+* **preset/script:** remove unused scripts ([71c533d](https://github.com/alvis/presetter/commit/71c533d6962c4802d83b92534e33d07f9a36f26d))
+
+
+
+
+
 <a name="1.0.5"></a>
 ## [1.0.5](https://github.com/alvis/presetter/compare/v1.0.4...v1.0.5) (2020-10-22)
 
