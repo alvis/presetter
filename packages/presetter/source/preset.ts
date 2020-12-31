@@ -157,7 +157,7 @@ export async function setupPreset(uri: string): Promise<void> {
     dirname(path),
     defaultsDeep(json, {
       scripts: {
-        prepublish: 'presetter bootstrap',
+        prepare: 'presetter bootstrap',
       },
     }),
   );

@@ -195,7 +195,7 @@ describe('fn:setupPreset', () => {
     expect(writePackage).toBeCalledWith('.', {
       name: 'client',
       scripts: {
-        prepublish: 'presetter bootstrap',
+        prepare: 'presetter bootstrap',
         test: 'test',
       },
       dependencies: {},
