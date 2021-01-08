@@ -5,7 +5,7 @@ on:
     branches:
       - '**'
 jobs:
-  coverage:
+  style:
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
