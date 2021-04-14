@@ -36,6 +36,6 @@
   },
   "devDependencies": {
     "conventional-changelog-metahub": "4.x",
-    "lerna": "3.x"
+    "lerna": "4.x"
   }
 }
