@@ -33,4 +33,4 @@ jobs:
         env:
           NPM_AUTH_TOKEN: ${{ secrets.NPM_AUTH_TOKEN }}
       - name: publish the package
-        run: npx lerna publish from-package --pre-dist-tag next --yes
+        run: npx lerna publish --no-verify-access from-package --pre-dist-tag next --yes
