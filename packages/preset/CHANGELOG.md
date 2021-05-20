@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.3.0](https://github.com/alvis/presetter/compare/v1.2.0...v1.3.0) (2021-05-20)
+
+
+### ✨ Features
+
+* **preset:** always use the latest version of typescript ([96d9bc2](https://github.com/alvis/presetter/commit/96d9bc2e97bfafb9f4404dea2c2a8133cf8983f4))
+* **preset:** upgrade ts-node-dev to v1 ([66eb2a0](https://github.com/alvis/presetter/commit/66eb2a05104c46de7b23a51d948dcaf25d776dae))
+
+
+
+
+
 # [1.2.0](https://github.com/alvis/presetter/compare/v1.1.0...v1.2.0) (2021-05-11)
 
 
