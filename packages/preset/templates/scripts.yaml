@@ -4,7 +4,7 @@ build:typescript:
   {output} ./{source}
 build:types: run-s build:types:*
 build:types:declarations: tsc -p tsconfig.build.json --emitDeclarationOnly
-build:types:path: tscpaths -p tsconfig.json -s {source} -o {output}
+build:types:path: tsc-alias
 clean: run-p clean:**
 clean:lib: shx rm -rf {output}
 clean:coverage: shx rm -rf coverage

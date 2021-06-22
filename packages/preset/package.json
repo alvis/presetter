@@ -73,8 +73,8 @@
     "ts-jest": "26.x",
     "ts-node": "9.x",
     "ts-node-dev": "1.x",
+    "tsc-alias": "1.x",
     "tsconfig-paths": "3.x",
-    "tscpaths": "0.0.9",
     "typescript": "*"
   },
   "devDependencies": {
