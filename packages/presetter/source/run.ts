@@ -107,20 +107,18 @@ export async function run(task: string, argv: string[] = []): Promise<void> {
 
   // setup
   await manager.replace(task);
-  const restore = once(
-    async (isInterrupted: boolean): Promise<void> => {
-      // stop listening to SIGINT in order to avoid double handling during the restoration process
-      process.removeListener('SIGINT', restore);
+  const restore = once(async (isInterrupted: boolean): Promise<void> => {
+    // stop listening to SIGINT in order to avoid double handling during the restoration process
+    process.removeListener('SIGINT', restore);
 
-      // restore package.json
-      await manager.restore();
+    // restore package.json
+    await manager.restore();
 
-      if (isInterrupted) {
-        const SIGINT = 130;
-        process.exit(SIGINT);
-      }
-    },
-  );
+    if (isInterrupted) {
+      const SIGINT = 130;
+      process.exit(SIGINT);
+    }
+  });
   process.on('SIGINT', restore.bind(run, true));
 
   // run the task

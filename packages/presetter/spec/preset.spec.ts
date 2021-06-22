@@ -37,50 +37,42 @@ jest.mock(
   'fs-extra',
   () => ({
     __esModule: true,
-    lstat: jest.fn(
-      async (path: string): Promise<{}> => {
-        switch (path) {
-          case 'link-pointed-to-other':
-            return {};
-          default:
-            throw new Error();
-        }
-      },
-    ),
-    pathExists: jest.fn(
-      async (path: string): Promise<boolean> => {
-        switch (path) {
-          case mockPresetterRC:
-          case 'link-rewritten-by-project':
-            return true;
-          default:
-            return false;
-        }
-      },
-    ),
-    readFile: jest.fn(
-      async (path: string): Promise<Buffer> => {
-        const filename = jest.requireActual('path').basename(path);
-        switch (filename) {
-          case mockPresetterRC:
-            return Buffer.from(JSON.stringify({ preset: 'preset' }));
-          default:
-            throw new Error();
-        }
-      },
-    ),
-    readlink: jest.fn(
-      async (path: string): Promise<string> => {
-        switch (path) {
-          case 'link-pointed-to-preset':
-            return 'path-to-preset';
-          case 'link-pointed-to-other':
-            return 'path-to-other';
-          default:
-            throw new Error();
-        }
-      },
-    ),
+    lstat: jest.fn(async (path: string): Promise<{}> => {
+      switch (path) {
+        case 'link-pointed-to-other':
+          return {};
+        default:
+          throw new Error();
+      }
+    }),
+    pathExists: jest.fn(async (path: string): Promise<boolean> => {
+      switch (path) {
+        case mockPresetterRC:
+        case 'link-rewritten-by-project':
+          return true;
+        default:
+          return false;
+      }
+    }),
+    readFile: jest.fn(async (path: string): Promise<Buffer> => {
+      const filename = jest.requireActual('path').basename(path);
+      switch (filename) {
+        case mockPresetterRC:
+          return Buffer.from(JSON.stringify({ preset: 'preset' }));
+        default:
+          throw new Error();
+      }
+    }),
+    readlink: jest.fn(async (path: string): Promise<string> => {
+      switch (path) {
+        case 'link-pointed-to-preset':
+          return 'path-to-preset';
+        case 'link-pointed-to-other':
+          return 'path-to-other';
+        default:
+          throw new Error();
+      }
+    }),
     symlink: jest.fn(),
     unlink: jest.fn(),
     writeJSON: jest.fn(),
