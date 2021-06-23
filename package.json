@@ -25,8 +25,12 @@
     "type": "git",
     "url": "git+https://github.com/alvis/presetter.git"
   },
+  "workspaces": [
+    "packages/*"
+  ],
   "scripts": {
     "postinstall": "lerna bootstrap --ignore presetter-monorepo",
+    "update": "lerna exec --parallel -- npm install --ignore-script --package-lock-only",
     "build": "lerna run build",
     "coverage": "lerna run coverage",
     "lint": "lerna run lint",
