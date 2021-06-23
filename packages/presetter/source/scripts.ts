@@ -36,7 +36,7 @@ const parser = syntax.NewParser();
 const printer = syntax.NewPrinter();
 
 // the name of the binary calling this script
-const runner = basename(yargs.parse().$0);
+const runner = basename(yargs.parse()['$0']);
 
 /** resource context to be passed for processing */
 interface ScriptContext {

@@ -32,9 +32,7 @@ const useCommand: CommandModule<Record<string, unknown>, { preset: string }> = {
         description: 'proceed only if the specified file exists',
       })
       .help(),
-  handler: (argv) => {
-    argv._promise = setupPreset(argv.preset);
-  },
+  handler: async (argv) => setupPreset(argv.preset),
 };
 
 const bootstrapCommand: CommandModule<
@@ -50,15 +48,13 @@ const bootstrapCommand: CommandModule<
         description: 'proceed only if the specified file exists',
       })
       .help(),
-  handler: (argv) => {
-    argv._promise = (async () => {
-      const { only } = argv;
+  handler: async (argv) => {
+    const { only } = argv;
 
-      // only proceed if the specified file exists
-      if (!only || (await pathExists(only))) {
-        await bootstrapPreset();
-      }
-    })();
+    // only proceed if the specified file exists
+    if (!only || (await pathExists(only))) {
+      await bootstrapPreset();
+    }
   },
 };
 
@@ -67,12 +63,10 @@ const runCommand: CommandModule = {
   describe: 'run a template script',
   builder: (yargs) => yargs.usage('run <task>').demandCommand(),
   handler: async (argv) => {
-    argv._promise = (async () => {
-      // get the options
-      const [, task, ...args] = argv._.map((arg) => arg.toString());
+    // get the options
+    const [, task, ...args] = argv._.map((arg) => arg.toString());
 
-      await run(task, args);
-    })();
+    await run(task, args);
   },
 };
 
@@ -97,5 +91,5 @@ export async function entry(): Promise<void> {
     .command(runCommand)
     .command(unsetCommand)
     .demandCommand()
-    .parse(args)._promise;
+    .parse(args);
 }
