@@ -3,7 +3,7 @@
 > Setup build settings from a template, quick and right!
 
 [![npm](https://img.shields.io/npm/v/presetter?style=flat-square)](https://github.com/alvis/presetter/releases)
-[![build](https://img.shields.io/github/workflow/status/alvis/presetter/continuous%20integration?style=flat-square)](https://github.com/alvis/presetter/actions)
+[![build](https://img.shields.io/github/workflow/status/alvis/presetter/code%20test?style=flat-square)](https://github.com/alvis/presetter/actions)
 [![maintainability](https://img.shields.io/codeclimate/maintainability/alvis/presetter?style=flat-square)](https://codeclimate.com/github/alvis/presetter/maintainability)
 [![coverage](https://img.shields.io/codeclimate/coverage/alvis/presetter?style=flat-square)](https://codeclimate.com/github/alvis/presetter/test_coverage)
 [![security](https://img.shields.io/snyk/vulnerabilities/github/alvis/presetter/packages/presetter/package.json.svg?style=flat-square)](https://snyk.io/test/github/alvis/presetter?targetFile=packages/presetter/package.json&style=flat-square)
