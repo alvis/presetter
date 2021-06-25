@@ -40,43 +40,6 @@ See [Conventional Commits](https://conventionalcommits.org) for commit guideline
 
 
 
-# [2.0.0](https://github.com/alvis/presetter/compare/v1.3.0...v2.0.0) (2021-06-23)
-
-
-### 🐛 Bug Fixes
-
-* make git ignore artifacts again for git>=2.32 ([9f14500](https://github.com/alvis/presetter/commit/9f14500d2d913a40069a714ceb3bc172fc2d980a))
-
-
-### 📦 Code Refactoring
-
-* **presetter:** update yargs to v17 ([5e65a8c](https://github.com/alvis/presetter/commit/5e65a8ca4d84f302e1b3a067be46f8b49925e3f2))
-
-
-### ⚙️ Continuous Integrations
-
-* extends tests to node 15 & 16 ([0942ae7](https://github.com/alvis/presetter/commit/0942ae7a14be734655cf5b84818eb6671fa0bfb0))
-* rename workflows for better clarity ([9f66fed](https://github.com/alvis/presetter/commit/9f66fed5a32ed85d22a6ea7392bea274ae349111))
-
-
-### ♻️ Chores
-
-* use npm workspace for development ([c5e2547](https://github.com/alvis/presetter/commit/c5e25470c69c72ebbc769cfdf79ab5411bad23bc))
-
-
-### 💎 Styles
-
-* **presetter:** reformat the code by prettier ([3ae4e23](https://github.com/alvis/presetter/commit/3ae4e239d094e2791eb1be4ee51849a84d296e27))
-
-
-### Breaking changes
-
-* **presetter:** drop support on node 10 due to yargs 17
-
-
-
-
-
 # [1.3.0](https://github.com/alvis/presetter/compare/v1.2.0...v1.3.0) (2021-05-20)
 
 
@@ -89,50 +52,6 @@ See [Conventional Commits](https://conventionalcommits.org) for commit guideline
 ### 🐛 Bug Fixes
 
 * release via a NPM automation token ([55f8887](https://github.com/alvis/presetter/commit/55f888791dcd1835446316541dbc90e62cabee84))
-
-
-
-
-
-# [1.3.0](https://github.com/alvis/presetter/compare/v1.2.0...v1.3.0) (2021-05-20)
-
-
-### ✨ Features
-
-* **preset:** always use the latest version of typescript ([96d9bc2](https://github.com/alvis/presetter/commit/96d9bc2e97bfafb9f4404dea2c2a8133cf8983f4))
-* **preset:** upgrade ts-node-dev to v1 ([66eb2a0](https://github.com/alvis/presetter/commit/66eb2a05104c46de7b23a51d948dcaf25d776dae))
-
-
-### 🐛 Bug Fixes
-
-* release via a NPM automation token ([55f8887](https://github.com/alvis/presetter/commit/55f888791dcd1835446316541dbc90e62cabee84))
-
-
-
-
-
-# [1.2.0](https://github.com/alvis/presetter/compare/v1.1.0...v1.2.0) (2021-05-11)
-
-
-### ✨ Features
-
-* **preset/lint:** re-enable sonar with npm v7 support ([5e8a448](https://github.com/alvis/presetter/commit/5e8a4481a995ba2d8f181678d4058f449f92e912))
-* **preset/release:** update standard-version to v9 ([093bade](https://github.com/alvis/presetter/commit/093bade545e300cf9e95c9d94ca8f17cebd784a5))
-* **preset/ts:** upgrade typescript to 4.x ([b7a5fac](https://github.com/alvis/presetter/commit/b7a5facb90e3657d7ec1edcba329c55e011c7420))
-
-
-### ⚙️ Continuous Integrations
-
-* correct the job name for code test ([8ea5115](https://github.com/alvis/presetter/commit/8ea5115528600096bae99911288c34d8680da012))
-
-
-### ♻️ Chores
-
-* update dependencies ([2c08593](https://github.com/alvis/presetter/commit/2c08593b36c1827047054bf552034c54ec785e81))
-* update lerna to v4 ([fdbc03a](https://github.com/alvis/presetter/commit/fdbc03a54d75bec27f6df9ba56b4b5dc0fc77771))
-* **preset:** update dependencies ([b05c3ee](https://github.com/alvis/presetter/commit/b05c3eebfec0983b5c76690df09bcf7ceb5e38de))
-* **preset:** update package-lock.json to v2 ([777a83a](https://github.com/alvis/presetter/commit/777a83a548b9c9bbfb735a6da7111d353ab1b2a5))
-* **presetter:** update dependencies ([04c115a](https://github.com/alvis/presetter/commit/04c115a9560b4ec44f19fd986f9e55e8245d0d47))
 
 
 
