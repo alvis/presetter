@@ -15,7 +15,7 @@
 
 import { ensureFile, readFile, writeFile } from 'fs-extra';
 import { resolve } from 'path';
-import { safeLoad } from 'js-yaml';
+import { load } from 'js-yaml';
 import pupa from 'pupa';
 
 // paths to directories
@@ -93,7 +93,7 @@ export async function loadYAMLTemplate<T = unknown>(
 ): Promise<Record<string, T>> {
   const content = await readFile(resolve(TEMPLATES, `${template}.yaml`));
 
-  return safeLoad(pupa(content.toString(), parameter)) as Record<string, T>;
+  return load(pupa(content.toString(), parameter)) as Record<string, T>;
 }
 
 /**
