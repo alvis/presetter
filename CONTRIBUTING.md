@@ -83,7 +83,10 @@ List of types:
 - refactor: A code change that neither fixes a bug nor adds a feature
 - perf: A code change that improves performance
 - test: Adding missing or correcting existing tests
+- build: Changes that affect the build system or external dependencies
+- ci: Changes to our CI configuration files
 - chore: Changes to the build process or auxiliary tools and libraries such as documentation generation
+- revert: Reverts a previous commit
 
 ---
 
