@@ -89,7 +89,7 @@
     "typescript": "^4.3.0"
   },
   "dependencies": {
-    "fs-extra": "^9.0.0",
+    "fs-extra": "^10.0.0",
     "js-yaml": "^4.0.0",
     "pupa": "^2.0.0"
   }
