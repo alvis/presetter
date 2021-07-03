@@ -41,25 +41,25 @@
     "watch": "npm run script -- watch --"
   },
   "devDependencies": {
-    "@types/fs-extra": "9.x",
-    "@types/lodash": "4.x",
-    "@types/yargs": "17.x",
+    "@types/fs-extra": "^9.0.0",
+    "@types/lodash": "^4.0.0",
+    "@types/yargs": "^17.0.0",
     "presetter-preset": "^2.0.0",
-    "ts-node": "9.x",
-    "tsconfig-paths": "3.x",
-    "typescript": "4.x"
+    "ts-node": "^9.0.0",
+    "tsconfig-paths": "^3.0.0",
+    "typescript": "^4.0.0"
   },
   "dependencies": {
-    "callsite-record": "4.x",
-    "chalk": "4.x",
-    "execa": "5.x",
-    "fs-extra": "9.x",
-    "lodash": "4.x",
-    "mvdan-sh": "0.5.x",
-    "read-pkg-up": "7.x",
-    "resolve-pkg": "2.x",
-    "source-map-support": "0.5.x",
-    "write-pkg": "4.x",
-    "yargs": "17.x"
+    "callsite-record": "^4.0.0",
+    "chalk": "^4.0.0",
+    "execa": "^5.0.0",
+    "fs-extra": "^9.0.0",
+    "lodash": "^4.0.0",
+    "mvdan-sh": "^0.5.0",
+    "read-pkg-up": "^7.0.0",
+    "resolve-pkg": "^2.0.0",
+    "source-map-support": "^0.5.0",
+    "write-pkg": "^4.0.0",
+    "yargs": "^17.0.0"
   }
 }
