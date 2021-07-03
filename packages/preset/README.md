@@ -1,6 +1,10 @@
-# presetter-preset
+<div align="center">
 
-> 🏄🏻 A collection of opinionated configurations for a nodejs project in typescript via presetter
+![Logo](https://github.com/alvis/presetter/raw/master/logo.svg)
+
+🏄🏻 _A collection of opinionated configurations for a nodejs project in typescript for presetter_
+
+•   [Quick Start](#quick-start)   •   [Project Structure](#project-structure)   •   [Customisation](#customisation)   •   [Scripts](#script-template-summary)   •
 
 [![npm](https://img.shields.io/npm/v/presetter-preset?style=flat-square)](https://github.com/alvis/presetter/releases)
 [![build](https://img.shields.io/github/workflow/status/alvis/presetter/code%20test?style=flat-square)](https://github.com/alvis/presetter/actions)
@@ -9,6 +13,8 @@
 [![security](https://img.shields.io/snyk/vulnerabilities/github/alvis/presetter/packages/preset/package.json.svg?style=flat-square)](https://snyk.io/test/github/alvis/presetter?targetFile=packages/preset/package.json&style=flat-square)
 [![dependencies](https://img.shields.io/david/alvis/presetter?path=packages/preset&style=flat-square)](https://david-dm.org/alvis/presetter?path=packages/preset)
 [![license](https://img.shields.io/github/license/alvis/presetter.svg?style=flat-square)](https://github.com/alvis/presetter/blob/master/LICENSE)
+
+</div>
 
 In addition to a set of opinionated configuration files, it also provides a number of essential lifecycle and helper commands.
 

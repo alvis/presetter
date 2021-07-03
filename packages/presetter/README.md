@@ -1,6 +1,10 @@
-# :gear: Presetter
+<div align="center">
 
-> Setup build settings from a template, quick and right!
+![Logo](https://github.com/alvis/presetter/raw/master/logo.svg)
+
+🏄🏻 _Setup build settings from a template, quick and right!_
+
+•   [Quick Start](#quick-start)   •   [Usage](#usage)   •   [Customisation](#customisation)   •
 
 [![npm](https://img.shields.io/npm/v/presetter?style=flat-square)](https://github.com/alvis/presetter/releases)
 [![build](https://img.shields.io/github/workflow/status/alvis/presetter/code%20test?style=flat-square)](https://github.com/alvis/presetter/actions)
@@ -10,16 +14,14 @@
 [![dependencies](https://img.shields.io/david/alvis/presetter?path=packages/presetter&style=flat-square)](https://david-dm.org/alvis/presetter?path=packages/presetter)
 [![license](https://img.shields.io/github/license/alvis/presetter.svg?style=flat-square)](https://github.com/alvis/presetter/blob/master/LICENSE)
 
+</div>
+
 Sharing configurations for building tools across projects is painful. How many time you've copied configs for `babel`, `eslint`, `jest`, `typescript` or the life cycle scripts in `package.json`?
 How many dev dependencies you have to install before you can kick start a project?
 
 What's more, what if you want to update configs for all projects? :man_facepalming:
 
 **Presetter is a utility for setting up building tools for your project from a template.** This means with just only two dev packages, namely this package and your favourite template preset, all essential development packages, such as typescript, eslint and jest, together with their configuration files provided by the preset, are automatically setup for you upon the project's initialisation.
-
-- [Quick Start](#quick-start)
-- [Usage](#usage)
-- [Customisation](#customisation)
 
 ---
 
