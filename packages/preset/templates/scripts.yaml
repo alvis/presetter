@@ -21,6 +21,7 @@ prepublishOnly: run-s coverage lint
 prerelease: shx mv package.json ~~package.json && shx mv ~package.json package.json
 release: standard-version --preset metahub
 postrelease: shx mv package.json ~package.json && shx mv ~~package.json package.json
+start: run-p "build:typescript -- -w" "build:types:* -- -w"
 test: jest --config .jestrc.json --no-cache --passWithNoTests --verbose --logHeapUsage
 coverage: npm run test -- --coverage
 watch: npm run test -- --watch
