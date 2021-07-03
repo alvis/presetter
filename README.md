@@ -20,7 +20,7 @@ What's more, what if you want to update configs for all projects? :man_facepalmi
 1. Bootstrap your project with a preset (e.g. presetter-preset)
 
 ```shell
-$ npx presetter use <preset package name>
+npx presetter use <preset package name>
 ```
 
 That's. One command and you're set.
