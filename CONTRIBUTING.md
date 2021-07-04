@@ -43,6 +43,12 @@ We write code in [test-driven development (TDD)](https://en.wikipedia.org/wiki/t
 All tests are hosted under the `spec` folder, with the same structure as the `source` folder so that tests are easy to be located.
 In general, each source file should have its own test file.
 
+### Requirement
+
+Since presetter 2.0, we have migrated to npm workspace.
+This implies that you would need npm 7+ to start development.
+If your system doesn't have npm 7+, you can achieve it by using [nvm](https://github.com/nvm-sh/nvm) with node 15+.
+
 ### Code Standard
 
 This project employs code standard rules exported from [presetter-preset](packages/preset/templates/eslintrc.yaml),
