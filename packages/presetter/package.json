@@ -36,7 +36,7 @@
     "prepare": "npm run setup && npm run script -- prepare",
     "script": "npm run ts-node -- --eval \"process.argv = [...process.argv.slice(0, 2), 'run', ...process.argv.slice(2)]; require('./source/executable');\" -- run ",
     "setup": "npm run ts-node -- --eval \"require('./source/preset.ts').bootstrapPreset({ force: true })\"",
-    "ts-node": "ts-node --compiler-options=\"{\\\"esModuleInterop\\\":true,\\\"target\\\":\\\"es6\\\"}\" --transpile-only --require tsconfig-paths/register",
+    "ts-node": "ts-node --cwd-mode --compiler-options=\"{\\\"esModuleInterop\\\":true,\\\"target\\\":\\\"es6\\\"}\" --transpile-only --require tsconfig-paths/register",
     "test": "npm run script -- test --",
     "watch": "npm run script -- watch --"
   },
@@ -45,7 +45,7 @@
     "@types/lodash": "^4.0.0",
     "@types/yargs": "^17.0.0",
     "presetter-preset": "^2.0.0",
-    "ts-node": "^9.0.0",
+    "ts-node": "^10.0.0",
     "tsconfig-paths": "^3.0.0",
     "typescript": "^4.0.0"
   },
