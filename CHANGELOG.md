@@ -3,6 +3,49 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.1.0](https://github.com/alvis/presetter/compare/v2.0.0...v2.1.0) (2021-07-04)
+
+
+### ✨ Features
+
+* **preset/script:** add a script for continuous build ([986556b](https://github.com/alvis/presetter/commit/986556b6d112fd02e52c03e5e3f35b4b451a765a))
+* **preset:** always use the latest version of [@types](https://github.com/types)/node ([eb3bd19](https://github.com/alvis/presetter/commit/eb3bd199e66077ac9024782cf36145af41810b80))
+* **preset:** update linting related packages ([14f5c38](https://github.com/alvis/presetter/commit/14f5c388f506c1ed0188313dd203f67b5608d216))
+* **preset:** update ts-node to v10 ([3d67fac](https://github.com/alvis/presetter/commit/3d67faceac445c3d36505fc7a72522ee265dbbbd))
+
+
+### 🐛 Bug Fixes
+
+* **preset/build:** explicitly declare loose mode to ignore warnings ([e56308f](https://github.com/alvis/presetter/commit/e56308fd0c93fa03a67d2d9ac6547e48a6b9ccea))
+* **presetter:** update fs-extra to v10 ([b5cacf4](https://github.com/alvis/presetter/commit/b5cacf4ef06eee96d31c27dea133a4fbf5b62659))
+* **preset:** update fs-extra to v10 ([33ab272](https://github.com/alvis/presetter/commit/33ab27261f66e2239ae307e234c87165b423ef8b))
+* **preset:** update js-yaml to v4 ([3ea456a](https://github.com/alvis/presetter/commit/3ea456a581438945d77eacb14aa19306bde2b11f))
+* upgrade tsc-alias and others to fix the corrupted build ([ace317c](https://github.com/alvis/presetter/commit/ace317cbee6ada92d8ec466906ab72dd7ca20838))
+
+
+### 🛠 Builds
+
+* restrict update to package-lock on the root only ([c425f96](https://github.com/alvis/presetter/commit/c425f965cc5c11be9c5f31c1393a67755458c061))
+
+
+### 📚 Documentation
+
+* add back the missing commit types ([fa6643d](https://github.com/alvis/presetter/commit/fa6643d4e079c4912dc02b9368ac44d985087aa1))
+* give a facelift to the packages' READMEs ([4d4de5f](https://github.com/alvis/presetter/commit/4d4de5ffce8e6bc83d9d5d0cee05ec49a200124a))
+* remove $ from the install examples for easier copy ([884a084](https://github.com/alvis/presetter/commit/884a084a972d7d64bcaafade624df7ac5c6efc17))
+* remove duplicated log entries ([b137e22](https://github.com/alvis/presetter/commit/b137e223e8f689be4116f2e763a8719434adde5c))
+* update the development environment requirement ([a2b8c38](https://github.com/alvis/presetter/commit/a2b8c383578ff21ffccfdbf6050546758441f82b))
+
+
+### ♻️ Chores
+
+* update dependencies' version specifiers ([8c018f1](https://github.com/alvis/presetter/commit/8c018f14ce64b6291d00ba19a4cb9b7d1d740f70))
+* update the minimum node requirement ([fe7ac60](https://github.com/alvis/presetter/commit/fe7ac60a1895574d3128a3aed8d93962d76e9be0))
+
+
+
+
+
 # [2.0.0](https://github.com/alvis/presetter/compare/v1.3.0...v2.0.0) (2021-06-23)
 
 
