@@ -91,6 +91,8 @@ interface PresetterRC {
     prettier?: Record<string, unknown>;
     /** configuration to be merged with tsconfig.json */
     tsconfig?: Record<string, unknown>;
+    /** a list of files not to be linked */
+    ignores?: string[];
     /** relative path to root directories for different file types */
     directory?: {
       /** the directory containing the whole repository (default: .) */
