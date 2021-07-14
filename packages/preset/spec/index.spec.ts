@@ -28,7 +28,6 @@ describe('fn:configure', () => {
       links: {
         '.babelrc.json': 'babelrc',
         '.eslintrc.json': 'eslintrc',
-        '.gitignore': 'gitignore',
         '.jestrc.json': 'jestrc',
         '.npmignore': 'npmignore',
         '.prettierrc.json': 'prettierrc',
