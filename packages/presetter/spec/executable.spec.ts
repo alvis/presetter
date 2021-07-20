@@ -41,19 +41,7 @@ jest.mock('#preset', () => ({
 
 jest.mock('#run', () => ({
   __esModule: true,
-  running: false,
-  run: jest.fn(async function () {
-    // ensure that nothing is running in parallel
-    expect(this.running).toEqual(false);
-    this.running = true;
-
-    return new Promise<void>((resolve) =>
-      setImmediate(() => {
-        this.running = false;
-        resolve();
-      }),
-    );
-  }),
+  run: jest.fn(),
 }));
 
 describe('fn:entry', () => {

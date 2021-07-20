@@ -29,13 +29,13 @@
     "url": "git+https://github.com/alvis/presetter.git"
   },
   "scripts": {
+    "bootstrap": "npm run ts-node -- --eval \"require('./source/preset.ts').bootstrapPreset({ force: true })\" && npm run script -- prepare",
     "build": "npm run script -- build",
     "clean": "npm run script -- clean",
     "coverage": "npm run script -- coverage",
     "lint": "npm run script -- lint",
-    "prepare": "npm run setup && npm run script -- prepare",
+    "prepublishOnly": "npm run bootstrap && npm run script -- prepublishOnly",
     "script": "npm run ts-node -- --eval \"process.argv = [...process.argv.slice(0, 2), 'run', ...process.argv.slice(2)]; require('./source/executable');\" -- run ",
-    "setup": "npm run ts-node -- --eval \"require('./source/preset.ts').bootstrapPreset({ force: true })\"",
     "ts-node": "ts-node --cwd-mode --compiler-options=\"{\\\"esModuleInterop\\\":true,\\\"target\\\":\\\"es6\\\"}\" --transpile-only --require tsconfig-paths/register",
     "test": "npm run script -- test --",
     "watch": "npm run script -- watch --"
@@ -44,7 +44,7 @@
     "@types/fs-extra": "^9.0.0",
     "@types/lodash": "^4.0.0",
     "@types/yargs": "^17.0.0",
-    "presetter-preset": "^2.1.0",
+    "presetter-preset": "file:../preset",
     "ts-node": "^10.0.0",
     "tsconfig-paths": "^3.0.0",
     "typescript": "^4.0.0"

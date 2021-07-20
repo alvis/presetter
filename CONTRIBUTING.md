@@ -46,8 +46,8 @@ In general, each source file should have its own test file.
 ### Requirement
 
 Since presetter 2.0, we have migrated to npm workspace.
-This implies that you would need npm 7+ to start development.
-If your system doesn't have npm 7+, you can achieve it by using [nvm](https://github.com/nvm-sh/nvm) with node 15+.
+This implies that you would need npm 7.20+ to start development.
+If your system doesn't have npm 7.20+, you can achieve it by using [nvm](https://github.com/nvm-sh/nvm) with node 16.6+.
 
 ### Code Standard
 
@@ -187,7 +187,7 @@ We follow semantic versioning and a release can be triggered by running either t
 
 ```shell
 # bump the version and release as canary
-$ npm run prerelease
+$ npm run next
 
 # release as a stable version
 $ npm run release
