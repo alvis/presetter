@@ -27,8 +27,6 @@ interface PresetConfig {
   eslint?: Record<string, unknown>;
   /** configuration to be merged with .jestrc */
   jest?: Record<string, unknown>;
-  /** patterns to be added to .gitignore */
-  gitignore?: string[];
   /** patterns to be added to .npmignore */
   npmignore?: string[];
   /** configuration to be merged with .presetterrc */
@@ -81,7 +79,6 @@ export default async function (config?: PresetConfig): Promise<Preset> {
       '.babelrc.json': await json('babelrc', config?.babel),
       '.eslintrc.json': await json('eslintrc', config?.eslint),
       '.jestrc.json': await json('jestrc', config?.jest),
-      '.gitignore': await list('gitignore', config?.gitignore),
       '.npmignore': await list('npmignore', config?.npmignore),
       '.prettierrc.json': await json('prettierrc', config?.prettier),
       'tsconfig.json': await json('tsconfig', config?.tsconfig),

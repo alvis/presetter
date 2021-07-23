@@ -48,7 +48,6 @@ Implement your business logic under `source` and prepare tests under `spec`.
  ├─ .babelrc
  ├─ .eslintrc.json
  ├─ .git
- ├─ .gitignore
  ├─ .jestrc.json
  ├─ .npmignore
  ├─ .prettierrc.json
@@ -86,8 +85,6 @@ interface PresetterRC {
     eslint?: Record<string, unknown>;
     /** configuration to be merged with .jestrc */
     jest?: Record<string, unknown>;
-    /** patterns to be added to .gitignore */
-    gitignore?: string[];
     /** patterns to be added to .npmignore */
     npmignore?: string[];
     /** configuration to be merged with .presetterrc */
@@ -123,4 +120,5 @@ interface PresetterRC {
 - **`run release -- --prerelease <tag>`**: Release with a prerelease tag
 
 ## Notes
+
 - Since git 2.32 ([released on 2020-06-06](https://lore.kernel.org/lkml/xmqqa6o3xj2e.fsf@gitster.g/T/#u)), git no longer follows `.gitignore` as a symlink. Therefore, the packaged `.gitignore` will be ignored. To make it work again, overwrite the `.gitignore` with a file list the standard way. You may want to copy [our template here](https://raw.githubusercontent.com/alvis/presetter/master/packages/preset/templates/gitignore).

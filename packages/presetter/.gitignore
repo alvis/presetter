@@ -1,10 +1,7 @@
 coverage
-dist
 lib
 node_modules
-.babelrc.json
-.eslintrc.json
-.jestrc.json
-.npmignore
-.prettierrc.json
 tsconfig.*
+!.presetterrc*
+.*rc.json
+.npmignore
