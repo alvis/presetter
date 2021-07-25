@@ -33,6 +33,8 @@ interface PresetConfig {
   prettier?: Record<string, unknown>;
   /** configuration to be merged with tsconfig.json */
   tsconfig?: Record<string, unknown>;
+  /** a list of files not to be linked */
+  ignores?: string[];
   /** relative path to root directories for different file types */
   directory?: {
     /** the directory containing the whole repository (default: .) */
@@ -75,15 +77,17 @@ export default async function (config?: PresetConfig): Promise<Preset> {
   const { json, list } = createLinker(parameter);
 
   return {
-    links: {
-      '.babelrc.json': await json('babelrc', config?.babel),
-      '.eslintrc.json': await json('eslintrc', config?.eslint),
-      '.jestrc.json': await json('jestrc', config?.jest),
-      '.npmignore': await list('npmignore', config?.npmignore),
-      '.prettierrc.json': await json('prettierrc', config?.prettier),
-      'tsconfig.json': await json('tsconfig', config?.tsconfig),
-      'tsconfig.build.json': await json('tsconfig.build'),
-    },
+    links: Object.fromEntries(
+      Object.entries({
+        '.babelrc.json': await json('babelrc', config?.babel),
+        '.eslintrc.json': await json('eslintrc', config?.eslint),
+        '.jestrc.json': await json('jestrc', config?.jest),
+        '.npmignore': await list('npmignore', config?.npmignore),
+        '.prettierrc.json': await json('prettierrc', config?.prettier),
+        'tsconfig.json': await json('tsconfig', config?.tsconfig),
+        'tsconfig.build.json': await json('tsconfig.build'),
+      }).filter(([file]) => !config?.ignores?.includes(file)),
+    ),
     scripts: await loadYAMLTemplate<string>('scripts', parameter),
   };
 }

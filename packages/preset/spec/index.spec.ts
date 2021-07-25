@@ -42,4 +42,22 @@ describe('fn:configure', () => {
     expect(await configure()).toEqual(expected);
     expect(await configure({})).toEqual(expected);
   });
+
+  it('ignore specified files', async () => {
+    expect(
+      await configure({
+        ignores: [
+          '.babelrc.json',
+          '.eslintrc.json',
+          '.jestrc.json',
+          '.npmignore',
+          '.prettierrc.json',
+          'tsconfig.build.json',
+        ],
+      }),
+    ).toEqual({
+      links: { 'tsconfig.json': 'tsconfig' },
+      scripts: { test: true },
+    });
+  });
 });
