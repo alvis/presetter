@@ -16,7 +16,6 @@
 import { mapValues } from 'lodash';
 import { syntax } from 'mvdan-sh';
 import { basename } from 'path';
-import yargs from 'yargs';
 
 import type { CallExpr, Node, Stmt, Subshell } from 'mvdan-sh';
 
@@ -34,9 +33,6 @@ const parser = syntax.NewParser();
 
 // shell command generator
 const printer = syntax.NewPrinter();
-
-// the name of the binary calling this script
-const runner = basename(yargs.parse()['$0']);
 
 /** resource context to be passed for processing */
 interface ScriptContext {
@@ -143,7 +139,8 @@ function replaceRunnerNode(node: Node, context: ScriptContext): boolean {
     // parse assigned arguments e.g. task1 args --help
     const parts: string[] = node.Cmd.Args.map((part) => part.Parts[0].Value);
 
-    if (basename(parts[0]) === runner) {
+    // only resolve if the `run` cli shipped in this package is invoke
+    if (basename(parts[0]) === 'run') {
       // resolve tasks into its full form e.g. task1 task2
       const resolvedCommand = resolveRunner(parts.join(' '), context);
 
