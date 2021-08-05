@@ -61,7 +61,6 @@ interface Preset {
 /**
  * get a list of presets
  * @param config options for the configurator
- * @param config.mode export mode
  * @returns preset list
  */
 export default async function (config?: PresetConfig): Promise<Preset> {
