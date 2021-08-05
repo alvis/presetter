@@ -4,6 +4,7 @@ extends:
   - plugin:@typescript-eslint/recommended-requiring-type-checking
   - plugin:eslint-comments/recommended # ESLint rules for ESLint directive comments
   - plugin:jsdoc/recommended # documentation
+  - plugin:import/typescript # support linting import/export statements in typescript
   - plugin:sonarjs/recommended # code quality
   - prettier # ignore formatting issue
 env:
@@ -17,6 +18,7 @@ parserOptions:
 plugins:
   - '@typescript-eslint' # typescript support
   - header # enforce a header in each source file
+  - import # enforce best practices on import/export statements
   - jsdoc # enforce documentation
   - no-secrets # check if there's any secret left in the code
 settings:
@@ -123,6 +125,26 @@ rules:
   '@typescript-eslint/promise-function-async': warn # ensure any function that returns a promise to be marked async for better readability
   '@typescript-eslint/require-await': off # sometimes you need an async function to fulfil the signature inherited from an abstract class
   '@typescript-eslint/return-await': error # return an awaited promised in the try catch block for better stack trace
+  import/first: warn # ensure that all import statements are on the top of a file
+  import/no-deprecated: warn # use no deprecated method
+  import/no-duplicates: warn # merge multiple imports into one
+  import/newline-after-import: warn # leave a line after all imports
+  import/order: # order and group import statements
+    - warn
+    - alphabetize: # sort imports
+        order: asc
+        caseInsensitive: true
+      groups: # group imports
+        - - builtin
+          - external
+        - - index
+          - internal
+          - parent
+          - sibling
+        - object
+        - unknown
+        - type
+      newlines-between: always-and-inside-groups # enable a space line between import type statements for different module types
   curly: error # all control statement must be enclosed by a curly bracket
   default-case: error # ensure a default case in any switch
   eqeqeq: error # enforce type-safe equality operators
@@ -138,6 +160,14 @@ rules:
       prev: '*'
       next: return
   prefer-object-spread: warn # use {...obj} for cloning instead of Object.assign({}, obj)
+  sort-imports: # sort members within each import statement
+    - warn
+    - ignoreDeclarationSort: true # use import/order for sorting import statements instead
+      memberSyntaxSortOrder:
+        - multiple
+        - single
+        - all
+        - none
 
   # Code Quality
   '@typescript-eslint/no-explicit-any': off # allow any type
