@@ -3,8 +3,8 @@ extends:
   - plugin:@typescript-eslint/recommended # typescript specific rules
   - plugin:@typescript-eslint/recommended-requiring-type-checking
   - plugin:eslint-comments/recommended # ESLint rules for ESLint directive comments
-  - plugin:sonarjs/recommended # code quality
   - plugin:jsdoc/recommended # documentation
+  - plugin:sonarjs/recommended # code quality
   - prettier # ignore formatting issue
 env:
   es6: true
@@ -66,6 +66,9 @@ rules:
   jsdoc/require-returns-type: off # don't need type information as we use typescript
 
   # ECMAScript
+  '@typescript-eslint/prefer-for-of': warn # use for of if possible
+  '@typescript-eslint/prefer-nullish-coalescing': warn # simplify a logic by using the nullish coalescing operator
+  '@typescript-eslint/prefer-optional-chain': warn # simplify a logic by using the optional chain operator
   object-shorthand: warn # reduce {x:x} to {x}
   prefer-const: # if a variable is never reassigned, using the const declaration is better
     - warn
@@ -74,24 +77,21 @@ rules:
     - warn
     - AssignmentExpression:
         array: false # allow const foo = array[100];
-  '@typescript-eslint/prefer-for-of': warn # use for of if possible
-  '@typescript-eslint/prefer-nullish-coalescing': warn # simplify a logic by using the nullish coalescing operator
-  '@typescript-eslint/prefer-optional-chain': warn # simplify a logic by using the optional chain operator
   prefer-rest-params: error # use a rested variable instead of arguments
   prefer-spread: error # instead of using fn.apply(this, args), simply use fn(...args)
   symbol-description: error # describe a symbol
 
   # Stylistic Issues
-  capitalized-comments: # use lower case in comments
-    - warn
-    - never
-    - ignorePattern: '\*|\/|/|\s'
+  '@typescript-eslint/member-ordering': error # member group in a class should be in order
+  '@typescript-eslint/naming-convention': error # use JS/TS naming convention
   header/header: # need a file header
     - error
     - block
     - - pattern: Copyright
-  '@typescript-eslint/member-ordering': error # member group in a class should be in order
-  '@typescript-eslint/naming-convention': error # use JS/TS naming convention
+  capitalized-comments: # use lower case in comments
+    - warn
+    - never
+    - ignorePattern: '\*|\/|/|\s'
   one-var: # require variable to be declared only one per line
     - warn
     - never
@@ -108,13 +108,7 @@ rules:
     - error
     - overrides:
         constructors: 'no-public'
-  curly: error # all control statement must be enclosed by a curly bracket
-  default-case: error # ensure a default case in any switch
-  eqeqeq: error # enforce type-safe equality operators
-  max-classes-per-file: error # only one class max for a file
-  no-async-promise-executor: off # turn off in order to use await in the executor function
   '@typescript-eslint/no-base-to-string': error # disallow Object.toString() which returns the meaningless [object Object]
-  no-magic-numbers: off # use @typescript-eslint/no-magic-numbers instead
   '@typescript-eslint/no-magic-numbers': # only allow obvious cases
     - warn
     - ignore:
@@ -126,8 +120,16 @@ rules:
       ignoreReadonlyClassProperties: true
       ignoreEnums: true
   '@typescript-eslint/no-parameter-properties': warn # no private, readonly etc in functional arguments
-  no-return-await: off # use @typescript-eslint/return-await instead
+  '@typescript-eslint/promise-function-async': warn # ensure any function that returns a promise to be marked async for better readability
+  '@typescript-eslint/require-await': off # sometimes you need an async function to fulfil the signature inherited from an abstract class
   '@typescript-eslint/return-await': error # return an awaited promised in the try catch block for better stack trace
+  curly: error # all control statement must be enclosed by a curly bracket
+  default-case: error # ensure a default case in any switch
+  eqeqeq: error # enforce type-safe equality operators
+  max-classes-per-file: error # only one class max for a file
+  no-async-promise-executor: off # turn off in order to use await in the executor function
+  no-magic-numbers: off # use @typescript-eslint/no-magic-numbers instead
+  no-return-await: off # use @typescript-eslint/return-await instead
   no-throw-literal: warn # only an error instance should be thrown
   no-var: error # use let or const instead
   padding-line-between-statements: # always have a blank line before return for better readability
@@ -136,13 +138,22 @@ rules:
       prev: '*'
       next: return
   prefer-object-spread: warn # use {...obj} for cloning instead of Object.assign({}, obj)
-  '@typescript-eslint/promise-function-async': warn # ensure any function that returns a promise to be marked async for better readability
-  '@typescript-eslint/require-await': off # sometimes you need an async function to fulfil the signature inherited from an abstract class
 
   # Code Quality
-  sonarjs/cognitive-complexity: # ensure a function is intuitively understandable		
-    - warn		
+  '@typescript-eslint/no-explicit-any': off # allow any type
+  '@typescript-eslint/no-unnecessary-condition': error # reduce the complexity of a piece of code by removing redundant logic
+  '@typescript-eslint/no-unused-expressions': error # unused expressions must be at least commented
+  '@typescript-eslint/no-unused-vars': # use a name starting with _ as a placeholder instead
+    - error
+    - varsIgnorePattern: ^_
+      argsIgnorePattern: ^_
+  '@typescript-eslint/prefer-function-type': warn # make a function a function instead of an interface
+  '@typescript-eslint/unified-signatures': warn # simplify an overloading signature
+  no-secrets/no-secrets: error # no sensitive information
+  sonarjs/cognitive-complexity: # ensure a function is intuitively understandable
+    - warn
     - 5
+  sonarjs/no-small-switch: off # sometimes you prefer switch than if for extension and better readability
   complexity: warn # limit cyclomatic complexity in a function
   max-lines: # it's hard to follow a large file
     - warn
@@ -155,29 +166,18 @@ rules:
       skipBlankLines: true
       skipComments: true
       IIFEs: true
-  '@typescript-eslint/prefer-function-type': warn # make a function a function instead of an interface
   no-console: warn # console is often used for debug, but it can leak sensitive information
   no-eval: error # eval is evil
-  '@typescript-eslint/no-explicit-any': off # allow any type
-  no-secrets/no-secrets: error # no sensitive information
-  sonarjs/no-small-switch: off # sometimes you prefer switch than if for extension and better readability
-  '@typescript-eslint/unified-signatures': warn # simplify an overloading signature
-  '@typescript-eslint/no-unnecessary-condition': error # reduce the complexity of a piece of code by removing redundant logic
-  '@typescript-eslint/no-unused-expressions': error # unused expressions must be at least commented
-  '@typescript-eslint/no-unused-vars': # use a name starting with _ as a placeholder instead
-    - error
-    - varsIgnorePattern: ^_
-      argsIgnorePattern: ^_
 
   # Error Prevention
-  block-scoped-var: error # disallow usage of a scoped variable outside of its scope
   '@typescript-eslint/no-misused-promises': # ensure that there's an await before a promise
     - warn
     - checksVoidReturn: false
   '@typescript-eslint/no-non-null-assertion': off # sometimes typescript fails to detect that a variable is non-null
-  no-param-reassign: error # it may be useful only when you're testing, not something finished
   '@typescript-eslint/no-use-before-define': # things should be used only after they're declared
     - warn
     - functions: false
+  block-scoped-var: error # disallow usage of a scoped variable outside of its scope
+  no-param-reassign: error # it may be useful only when you're testing, not something finished
   no-sparse-arrays: warn # very unlikely you want an undefined in something like [va1, , var2]
   no-template-curly-in-string: warn # unlikely you have any use case with the ${} syntax in a string
