@@ -30,25 +30,28 @@ const INDENT = 2;
  * compile a JSON config template
  * @param template template name excluding the yaml extension
  * @param options additional information for config generation
+ * @param options.base root directory of the template directory
  * @param options.extra additional config to be merged with the template
  * @param options.parameter variables to be substituted in the template
  * @returns path to the compiled template
  */
 export async function buildJSONConfig(
   template: string,
-  options: {
+  options?: {
+    base?: string;
     extra?: Record<string, unknown>;
-    parameter: Partial<Record<string, string>>;
+    parameter?: Partial<Record<string, string>>;
   },
 ): Promise<string> {
-  const { extra = {}, parameter } = { ...options };
+  const { base = TEMPLATES, extra = {}, parameter = {} } = { ...options };
 
-  const source = await loadYAMLTemplate(template, parameter);
+  const source = await loadYAMLTemplate(template, base);
   const merged = merge(source, extra);
+  const normalised = pupa(JSON.stringify(merged, null, INDENT), parameter);
 
   const path = resolve(DISTRIBUTION, `${template}.json`);
   await ensureFile(path);
-  await writeFile(path, JSON.stringify(merged, null, INDENT));
+  await writeFile(path, normalised);
 
   return path;
 }
@@ -57,6 +60,7 @@ export async function buildJSONConfig(
  * compile a list-based config template
  * @param template template name
  * @param options additional information for config generation
+ * @param options.base root directory of the template directory
  * @param options.extra additional config to be merged with the template
  * @param options.parameter variables to be substituted in the template
  * @returns path to the compiled template
@@ -64,19 +68,21 @@ export async function buildJSONConfig(
 export async function buildListConfig(
   template: string,
   options: {
+    base?: string;
     extra?: string[];
-    parameter: Partial<Record<string, string>>;
+    parameter?: Partial<Record<string, string>>;
   },
 ): Promise<string> {
-  const { extra = [], parameter } = { ...options };
+  const { base = TEMPLATES, extra = [], parameter = {} } = { ...options };
 
-  const source = await loadTextTemplate(template, parameter);
+  const source = await loadTextTemplate(template, base);
   const ignores = source.split('\n');
   const merged: string[] = [...ignores, ...extra];
+  const normalised = merged.map((line) => pupa(line, parameter)).join('\n');
 
   const path = resolve(DISTRIBUTION, template);
   await ensureFile(path);
-  await writeFile(path, merged.join('\n'));
+  await writeFile(path, normalised);
 
   return path;
 }
@@ -84,31 +90,31 @@ export async function buildListConfig(
 /**
  * load config from a yaml template
  * @param template name of the template
- * @param parameter variables to be substituted in the template
+ * @param base root directory of the template directory
  * @returns template content
  */
 export async function loadYAMLTemplate<T = unknown>(
   template: string,
-  parameter: Partial<Record<string, string>> = {},
+  base: string = TEMPLATES,
 ): Promise<Record<string, T>> {
-  const content = await readFile(resolve(TEMPLATES, `${template}.yaml`));
+  const content = await readFile(resolve(base, `${template}.yaml`));
 
-  return load(pupa(content.toString(), parameter)) as Record<string, T>;
+  return load(content.toString()) as Record<string, T>;
 }
 
 /**
  * load config from a text template
  * @param template name of the template
- * @param parameter variables to be substituted in the template
+ * @param base root directory of the template directory
  * @returns template content
  */
 export async function loadTextTemplate(
   template: string,
-  parameter: Partial<Record<string, string>> = {},
+  base: string = TEMPLATES,
 ): Promise<string> {
-  const content = await readFile(resolve(TEMPLATES, template));
+  const content = await readFile(resolve(base, template));
 
-  return pupa(content.toString(), parameter);
+  return content.toString();
 }
 
 /**

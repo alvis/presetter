@@ -13,6 +13,8 @@
  * -------------------------------------------------------------------------
  */
 
+import pupa from 'pupa';
+
 import {
   buildJSONConfig,
   buildListConfig,
@@ -74,6 +76,10 @@ export default async function (config?: PresetConfig): Promise<Preset> {
   };
 
   const { json, list } = createLinker(parameter);
+  const defaultScripts = await loadYAMLTemplate<string>('scripts');
+  const scripts = JSON.parse(
+    pupa(JSON.stringify(defaultScripts), parameter),
+  ) as Record<string, string>;
 
   return {
     links: Object.fromEntries(
@@ -87,7 +93,7 @@ export default async function (config?: PresetConfig): Promise<Preset> {
         'tsconfig.build.json': await json('tsconfig.build'),
       }).filter(([file]) => !config?.ignores?.includes(file)),
     ),
-    scripts: await loadYAMLTemplate<string>('scripts', parameter),
+    scripts,
   };
 }
 
