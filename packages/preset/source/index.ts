@@ -60,20 +60,21 @@ interface Preset {
   scripts: Record<string, string>;
 }
 
+const DEFAULT_DIRECTORY = {
+  root: '.',
+  source: 'source',
+  types: 'types',
+  output: 'lib',
+  test: 'spec',
+};
+
 /**
  * get a list of presets
  * @param config options for the configurator
  * @returns preset list
  */
 export default async function (config?: PresetConfig): Promise<Preset> {
-  const parameter = {
-    root: '.',
-    source: 'source',
-    types: 'types',
-    output: 'lib',
-    test: 'spec',
-    ...config?.directory,
-  };
+  const parameter = { ...DEFAULT_DIRECTORY, ...config?.directory };
 
   const { json, list } = createLinker(parameter);
   const defaultScripts = await loadYAMLTemplate<string>('scripts');
