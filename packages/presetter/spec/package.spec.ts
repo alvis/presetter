@@ -15,8 +15,8 @@
 
 import {
   arePeerPackagesAutoInstalled,
-  installPackages,
   getPackage,
+  installPackages,
 } from '#package';
 import execa from 'execa';
 
@@ -69,6 +69,22 @@ describe('fn:arePeerPackagesAutoInstalled', () => {
   });
 });
 
+describe('fn:getPackage', () => {
+  it('resolve the content in package.json', async () => {
+    expect(await getPackage()).toEqual({
+      path: 'path',
+      json: {
+        name: 'name',
+        scripts: {},
+      },
+    });
+  });
+
+  it('throw an error when no package.json is found', async () => {
+    await expect(getPackage()).rejects.toThrow();
+  });
+});
+
 describe('fn:installPackages', () => {
   beforeEach(jest.clearAllMocks);
 
@@ -116,21 +132,5 @@ describe('fn:installPackages', () => {
     await installPackages({ packages: [] });
 
     expect(execa).not.toHaveBeenCalled();
-  });
-});
-
-describe('fn:getPackage', () => {
-  it('resolve the content in package.json', async () => {
-    expect(await getPackage()).toEqual({
-      path: 'path',
-      json: {
-        name: 'name',
-        scripts: {},
-      },
-    });
-  });
-
-  it('throw an error when no package.json is found', async () => {
-    await expect(getPackage()).rejects.toThrow();
   });
 });

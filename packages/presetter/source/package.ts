@@ -95,7 +95,7 @@ export async function installPackages(args: {
     return [];
   }
 
-  info(`installing packages:${packages.map((name) => `\n+ ${name}`).join('')}`);
+  info(`installing packages:${packages.map((name) => '\n+ ' + name).join('')}`);
   const { stdout } = await execa(
     'npm',
     [

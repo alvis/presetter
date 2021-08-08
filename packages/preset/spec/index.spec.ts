@@ -19,7 +19,7 @@ jest.mock('#utilities', () => ({
   _esModule: true,
   buildJSONConfig: jest.fn(async (template: string) => template),
   buildListConfig: jest.fn(async (template: string) => template),
-  loadYAMLTemplate: jest.fn(async () => ({ test: true })),
+  loadYAML: jest.fn(async () => ({ test: true })),
 }));
 
 describe('fn:configure', () => {

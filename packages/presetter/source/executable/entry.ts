@@ -16,7 +16,7 @@
 import { pathExists } from 'fs-extra';
 import yargs from 'yargs';
 
-import { bootstrapPreset, unsetPreset, setupPreset } from '#preset';
+import { bootstrapPreset, setupPreset, unsetPreset } from '#preset';
 import { run } from '#run';
 
 import type { CommandModule } from 'yargs';

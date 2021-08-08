@@ -20,7 +20,7 @@ import { basename, dirname, resolve } from 'path';
 
 import { wrap } from './error';
 import { getPackage } from './package';
-import { getPreset } from './preset';
+import { getPresetAsset } from './preset';
 import { composeScripts } from './scripts';
 
 import type { Package } from './package';
@@ -55,7 +55,7 @@ class TemporaryPackageJSONManager {
     delete this.package.json.scripts[task];
 
     // get the merged script definitions
-    const preset = await getPreset();
+    const preset = await getPresetAsset();
     this.package.json.scripts = composeScripts({
       template: preset.scripts,
       target: {

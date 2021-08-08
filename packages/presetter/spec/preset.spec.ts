@@ -21,7 +21,7 @@ import { installPackages } from '#package';
 import {
   bootstrapPreset,
   getConfiguration,
-  getPreset,
+  getPresetAsset,
   setupPreset,
   unsetPreset,
 } from '#preset';
@@ -211,8 +211,7 @@ describe('fn:getConfiguration', () => {
 
 describe('fn:getPreset', () => {
   it('compute the preset configuration', async () => {
-    expect(await getPreset()).toEqual({
-      name: 'preset',
+    expect(await getPresetAsset()).toEqual({
       links: {
         'link-pointed-to-preset': 'path-to-preset',
         'link-pointed-to-other': 'path-to-preset',

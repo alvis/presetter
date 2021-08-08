@@ -30,24 +30,20 @@ import writePackage from 'write-pkg';
 
 import {
   arePeerPackagesAutoInstalled,
-  installPackages,
   getPackage,
+  installPackages,
 } from './package';
 
-/**
- * expected return from the configuration function from the preset
- */
-export interface Preset {
-  /** name of the preset */
-  name: string;
+/** expected return from the configuration function from the preset */
+export interface PresetAsset {
   /** mapping of symlinks to configuration files provided by the preset */
   links: Record<string, string>;
-  /** path to a JSON containing common scripts */
+  /** map of common scripts */
   scripts: Record<string, string>;
 }
 
 /** data structure for .presetterrc */
-export interface PresetterConfiguration {
+export interface PresetterConfig {
   /** preset name */
   preset: string;
   /** configuration for customisation to be passed to the preset */
@@ -64,9 +60,7 @@ const JSON_INDENT = 2;
  * @param base the base directory in which a configuration file should be located
  * @returns content of the configuration file
  */
-export async function getConfiguration(
-  base: string,
-): Promise<PresetterConfiguration> {
+export async function getConfiguration(base: string): Promise<PresetterConfig> {
   const potentialConfigFiles = ['', '.json'].map((ext) =>
     resolve(base, `${PRESETTERRC}${ext}`),
   );
@@ -86,15 +80,13 @@ export async function getConfiguration(
  * @param path file path
  * @returns content of the configuration file
  */
-async function readConfiguration(
-  path: string,
-): Promise<PresetterConfiguration> {
+async function readConfiguration(path: string): Promise<PresetterConfig> {
   const content = (await readFile(path)).toString();
 
   switch (extname(path)) {
     case '.json':
     default:
-      return JSON.parse(content) as PresetterConfiguration;
+      return JSON.parse(content) as PresetterConfig;
   }
 }
 
@@ -102,7 +94,7 @@ async function readConfiguration(
  * get the preset package name from package.json
  * @returns name of the preset package
  */
-export async function getPreset(): Promise<Preset> {
+export async function getPresetAsset(): Promise<PresetAsset> {
   const { path } = await getPackage();
   const base = dirname(path);
 
@@ -113,12 +105,10 @@ export async function getPreset(): Promise<Preset> {
   const module = resolvePackage(preset, { cwd: base });
 
   const { default: configurator } = (await import(module!)) as {
-    default: (
-      config: PresetterConfiguration['config'],
-    ) => Promise<Omit<Preset, 'name'>>;
+    default: (args: PresetterConfig['config']) => Promise<PresetAsset>;
   };
 
-  return { name: preset, ...(await configurator(config)) };
+  return configurator(config);
 }
 
 /**
@@ -173,32 +163,33 @@ export async function bootstrapPreset(options?: {
 }): Promise<void> {
   const { force = false } = { ...options };
 
-  const preset = await getPreset();
+  const asset = await getPresetAsset();
+  await linkConfigurations(asset.links);
 
-  await Promise.all([
-    force || !arePeerPackagesAutoInstalled()
-      ? installPresetPeerDependencies(preset)
-      : null,
-    linkConfigurations(preset),
-  ]);
+  if (force || !arePeerPackagesAutoInstalled()) {
+    const { path } = await getPackage();
+    await installPresetPeerDependencies(dirname(path));
+  }
 }
 
 /**
  * uninstall the preset from the current project root
  */
 export async function unsetPreset(): Promise<void> {
-  const preset = await getPreset();
+  const preset = await getPresetAsset();
 
   await Promise.all([unlinkConfigurations(preset)]);
 }
 
 /**
  * install peer packages according to the preset
- * @param preset package name of the preset
+ * @param base directory of the end project package.json
  */
-async function installPresetPeerDependencies(preset: Preset): Promise<void> {
+async function installPresetPeerDependencies(base: string): Promise<void> {
+  const { preset } = await getConfiguration(base);
+
   // get the path of the preset package
-  const path = resolvePackage(preset.name);
+  const path = resolvePackage(preset);
 
   // get packages to be installed from the preset's package.json
   const {
@@ -215,13 +206,13 @@ async function installPresetPeerDependencies(preset: Preset): Promise<void> {
 
 /**
  * link configuration files from the preset module to the project root
- * @param preset package name of the preset
+ * @param links list of symlinks to configuration files provided by the preset
  */
-async function linkConfigurations(preset: Preset): Promise<void> {
+async function linkConfigurations(links: PresetAsset['links']): Promise<void> {
   const { path } = await getPackage();
   const root = dirname(path);
 
-  for (const [file, destination] of Object.entries(preset.links)) {
+  for (const [file, destination] of Object.entries(links)) {
     // create links only if the path really doesn't exist
     if (!(await linkExists(file)) && !(await pathExists(file))) {
       const link = resolve(root, file);
@@ -252,7 +243,7 @@ async function linkExists(path: string): Promise<boolean> {
  * unlink configuration files from the preset module from the project root
  * @param preset package name of the preset
  */
-async function unlinkConfigurations(preset: Preset): Promise<void> {
+async function unlinkConfigurations(preset: PresetAsset): Promise<void> {
   const { path } = await getPackage();
   const root = dirname(path);
 

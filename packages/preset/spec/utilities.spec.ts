@@ -18,8 +18,8 @@ import { readFile, writeFile } from 'fs-extra';
 import {
   buildJSONConfig,
   buildListConfig,
-  loadTextTemplate,
-  loadYAMLTemplate,
+  loadText,
+  loadYAML,
   merge,
 } from '#utilities';
 
@@ -95,19 +95,19 @@ describe('fn:buildJSONConfig', () => {
   });
 });
 
-describe('fn:loadTextTemplate', () => {
+describe('fn:loadText', () => {
   beforeEach(jest.clearAllMocks);
 
   it('read a text-based template', async () => {
-    expect(await loadTextTemplate('list')).toEqual('line1');
+    expect(await loadText('list')).toEqual('line1');
   });
 });
 
-describe('fn:loadYAMLTemplate', () => {
+describe('fn:loadYAML', () => {
   beforeEach(jest.clearAllMocks);
 
   it('read a yaml template', async () => {
-    expect(await loadYAMLTemplate('json')).toEqual({ a: 1 });
+    expect(await loadYAML('json')).toEqual({ a: 1 });
   });
 });
 

@@ -14,8 +14,8 @@
  */
 
 import { ensureFile, readFile, writeFile } from 'fs-extra';
-import { resolve } from 'path';
 import { load } from 'js-yaml';
+import { resolve } from 'path';
 import pupa from 'pupa';
 
 // paths to directories
@@ -28,7 +28,7 @@ const INDENT = 2;
 
 /**
  * compile a JSON config template
- * @param template template name excluding the yaml extension
+ * @param name template name excluding the yaml extension
  * @param options additional information for config generation
  * @param options.base root directory of the template directory
  * @param options.extra additional config to be merged with the template
@@ -36,20 +36,20 @@ const INDENT = 2;
  * @returns path to the compiled template
  */
 export async function buildJSONConfig(
-  template: string,
+  name: string,
   options?: {
     base?: string;
-    extra?: Record<string, unknown>;
-    parameter?: Partial<Record<string, string>>;
+    extra?: Record<string, any>;
+    parameter?: Record<string, string>;
   },
 ): Promise<string> {
   const { base = TEMPLATES, extra = {}, parameter = {} } = { ...options };
 
-  const source = await loadYAMLTemplate(template, base);
+  const source = await loadYAML(name, base);
   const merged = merge(source, extra);
   const normalised = pupa(JSON.stringify(merged, null, INDENT), parameter);
 
-  const path = resolve(DISTRIBUTION, `${template}.json`);
+  const path = resolve(DISTRIBUTION, `${name}.json`);
   await ensureFile(path);
   await writeFile(path, normalised);
 
@@ -58,7 +58,7 @@ export async function buildJSONConfig(
 
 /**
  * compile a list-based config template
- * @param template template name
+ * @param name template name
  * @param options additional information for config generation
  * @param options.base root directory of the template directory
  * @param options.extra additional config to be merged with the template
@@ -66,21 +66,21 @@ export async function buildJSONConfig(
  * @returns path to the compiled template
  */
 export async function buildListConfig(
-  template: string,
+  name: string,
   options: {
     base?: string;
     extra?: string[];
-    parameter?: Partial<Record<string, string>>;
+    parameter?: Record<string, string>;
   },
 ): Promise<string> {
   const { base = TEMPLATES, extra = [], parameter = {} } = { ...options };
 
-  const source = await loadTextTemplate(template, base);
+  const source = await loadText(name, base);
   const ignores = source.split('\n');
   const merged: string[] = [...ignores, ...extra];
   const normalised = merged.map((line) => pupa(line, parameter)).join('\n');
 
-  const path = resolve(DISTRIBUTION, template);
+  const path = resolve(DISTRIBUTION, name);
   await ensureFile(path);
   await writeFile(path, normalised);
 
@@ -93,7 +93,7 @@ export async function buildListConfig(
  * @param base root directory of the template directory
  * @returns template content
  */
-export async function loadYAMLTemplate<T = unknown>(
+export async function loadYAML<T = unknown>(
   template: string,
   base: string = TEMPLATES,
 ): Promise<Record<string, T>> {
@@ -108,7 +108,7 @@ export async function loadYAMLTemplate<T = unknown>(
  * @param base root directory of the template directory
  * @returns template content
  */
-export async function loadTextTemplate(
+export async function loadText(
   template: string,
   base: string = TEMPLATES,
 ): Promise<string> {
@@ -138,15 +138,15 @@ function isJSON(subject: unknown): subject is Record<string, any> {
  * @param replacement properties to be merged with the default
  * @returns merged object
  */
-export function merge(
-  source: Record<string, any>,
-  replacement: Record<string, any>,
-): Record<string, any> {
-  const keys = [...Object.keys(source), ...Object.keys(replacement)];
+export function merge<Source extends Record<string, any>>(
+  source: Source,
+  replacement?: Record<string, any>,
+): Source {
+  const keys = [...Object.keys(source), ...Object.keys(replacement ?? {})];
 
   const entries: Array<[string, any]> = keys.map((key) => [
     key,
-    replace(source[key], replacement[key]),
+    replace(source[key], replacement?.[key]),
   ]);
 
   return Object.assign(

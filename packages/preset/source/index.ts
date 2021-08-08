@@ -15,11 +15,7 @@
 
 import pupa from 'pupa';
 
-import {
-  buildJSONConfig,
-  buildListConfig,
-  loadYAMLTemplate,
-} from './utilities';
+import { buildJSONConfig, buildListConfig, loadYAML } from './utilities';
 
 /** config for this preset */
 interface PresetConfig {
@@ -43,9 +39,9 @@ interface PresetConfig {
     root?: string;
     /** the directory containing all source code (default: source) */
     source?: string;
-    /** the directory containing all typing files (default: types) */
+    /** the directory containing all extra typing files (default: types) */
     types?: string;
-    /** the directory containing all output tile (default: source) */
+    /** the directory containing all the compiled files (default: lib) */
     output?: string;
     /** the directory containing all test files (default: spec) */
     test?: string;
@@ -53,10 +49,10 @@ interface PresetConfig {
 }
 
 /** detail of linked configuration files and script templates  */
-interface Preset {
-  /** paths to the generated configuration files */
+export interface PresetAsset {
+  /** mapping of symlinks to configuration files provided by the preset */
   links: Record<string, string>;
-  /** npm script template */
+  /** map of common scripts */
   scripts: Record<string, string>;
 }
 
@@ -73,11 +69,11 @@ const DEFAULT_DIRECTORY = {
  * @param config options for the configurator
  * @returns preset list
  */
-export default async function (config?: PresetConfig): Promise<Preset> {
+export default async function (config?: PresetConfig): Promise<PresetAsset> {
   const parameter = { ...DEFAULT_DIRECTORY, ...config?.directory };
 
   const { json, list } = createLinker(parameter);
-  const defaultScripts = await loadYAMLTemplate<string>('scripts');
+  const defaultScripts = await loadYAML<string>('scripts');
   const scripts = JSON.parse(
     pupa(JSON.stringify(defaultScripts), parameter),
   ) as Record<string, string>;
