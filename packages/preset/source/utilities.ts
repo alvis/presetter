@@ -31,6 +31,7 @@ const INDENT = 2;
  * @param name template name excluding the yaml extension
  * @param options additional information for config generation
  * @param options.base root directory of the template directory
+ * @param options.outDir output directory for the asset created
  * @param options.extra additional config to be merged with the template
  * @param options.parameter variables to be substituted in the template
  * @returns path to the compiled template
@@ -39,17 +40,23 @@ export async function buildJSONConfig(
   name: string,
   options?: {
     base?: string;
+    outDir?: string;
     extra?: Record<string, any>;
     parameter?: Record<string, string>;
   },
 ): Promise<string> {
-  const { base = TEMPLATES, extra = {}, parameter = {} } = { ...options };
+  const {
+    base = TEMPLATES,
+    outDir = '',
+    extra = {},
+    parameter = {},
+  } = { ...options };
 
   const source = await loadYAML(name, base);
   const merged = merge(source, extra);
   const normalised = pupa(JSON.stringify(merged, null, INDENT), parameter);
 
-  const path = resolve(DISTRIBUTION, `${name}.json`);
+  const path = resolve(DISTRIBUTION, outDir, `${name}.json`);
   await ensureFile(path);
   await writeFile(path, normalised);
 
@@ -61,6 +68,7 @@ export async function buildJSONConfig(
  * @param name template name
  * @param options additional information for config generation
  * @param options.base root directory of the template directory
+ * @param options.outDir output directory for the assets created
  * @param options.extra additional config to be merged with the template
  * @param options.parameter variables to be substituted in the template
  * @returns path to the compiled template
@@ -69,18 +77,24 @@ export async function buildListConfig(
   name: string,
   options: {
     base?: string;
+    outDir?: string;
     extra?: string[];
     parameter?: Record<string, string>;
   },
 ): Promise<string> {
-  const { base = TEMPLATES, extra = [], parameter = {} } = { ...options };
+  const {
+    base = TEMPLATES,
+    outDir = '',
+    extra = [],
+    parameter = {},
+  } = { ...options };
 
   const source = await loadText(name, base);
   const ignores = source.split('\n');
   const merged: string[] = [...ignores, ...extra];
   const normalised = merged.map((line) => pupa(line, parameter)).join('\n');
 
-  const path = resolve(DISTRIBUTION, name);
+  const path = resolve(DISTRIBUTION, outDir, name);
   await ensureFile(path);
   await writeFile(path, normalised);
 

@@ -83,10 +83,10 @@ const DEFAULT_DIRECTORY = {
  * @returns preset list
  */
 export default async function (args: PresetArgs): Promise<PresetAsset> {
-  const { config } = args;
+  const { config, target } = args;
   const parameter = { ...DEFAULT_DIRECTORY, ...config?.directory };
 
-  const { json, list } = createLinker(parameter);
+  const { json, list } = createLinker(parameter, target.name);
   const defaultScripts = await loadYAML<string>('scripts');
   const scripts = JSON.parse(
     pupa(JSON.stringify(defaultScripts), parameter),
@@ -111,10 +111,12 @@ export default async function (args: PresetArgs): Promise<PresetAsset> {
 /**
  * create configuration files generators
  * @param parameter variables to be substituted in the template
+ * @param outDir output directory for the assets created
  * @returns generators that return the location of the generated configuration file
  */
 function createLinker(
   parameter: Required<NonNullable<PresetConfig['directory']>>,
+  outDir: string,
 ): {
   json: (name: string, extra?: Record<string, unknown>) => Promise<string>;
   list: (name: string, extra?: string[]) => Promise<string>;
@@ -122,10 +124,10 @@ function createLinker(
   const json = async (
     name: string,
     extra: Record<string, unknown> = {},
-  ): Promise<string> => buildJSONConfig(name, { extra, parameter });
+  ): Promise<string> => buildJSONConfig(name, { outDir, extra, parameter });
 
   const list = async (name: string, extra: string[] = []): Promise<string> =>
-    buildListConfig(name, { extra, parameter });
+    buildListConfig(name, { outDir, extra, parameter });
 
   return { json, list };
 }
