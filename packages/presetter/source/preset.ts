@@ -34,6 +34,22 @@ import {
   installPackages,
 } from './package';
 
+/** input for a preset configurator */
+
+export interface PresetArgs<
+  Config extends Record<string, unknown> = Record<string, unknown>,
+> {
+  /** information about the targeted project */
+  target: {
+    /** the package name defined in the targeted project's package.json */
+    name: string;
+    /** the root folder containing the targeted project's .presetterrc.json */
+    root: string;
+  };
+  /** the config field in .presetterrc.json */
+  config?: Config;
+}
+
 /** expected return from the configuration function from the preset */
 export interface PresetAsset {
   /** mapping of symlinks to configuration files provided by the preset */
@@ -95,20 +111,23 @@ async function readConfiguration(path: string): Promise<PresetterConfig> {
  * @returns name of the preset package
  */
 export async function getPresetAsset(): Promise<PresetAsset> {
-  const { path } = await getPackage();
-  const base = dirname(path);
+  const {
+    json: { name },
+    path,
+  } = await getPackage();
+  const root = dirname(path);
 
   // get the preset name
-  const { preset, config } = await getConfiguration(base);
+  const { preset, config } = await getConfiguration(root);
 
   // get the preset
-  const module = resolvePackage(preset, { cwd: base });
+  const module = resolvePackage(preset, { cwd: root });
 
   const { default: configurator } = (await import(module!)) as {
-    default: (args: PresetterConfig['config']) => Promise<PresetAsset>;
+    default: (args: PresetArgs) => Promise<PresetAsset>;
   };
 
-  return configurator(config);
+  return configurator({ target: { name, root }, config });
 }
 
 /**

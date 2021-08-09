@@ -23,6 +23,8 @@ jest.mock('#utilities', () => ({
 }));
 
 describe('fn:configure', () => {
+  const target = { name: 'project', root: '/path/to/project' };
+
   it('export preset configuration', async () => {
     const expected = {
       links: {
@@ -39,21 +41,23 @@ describe('fn:configure', () => {
       },
     };
 
-    expect(await configure()).toEqual(expected);
-    expect(await configure({})).toEqual(expected);
+    expect(await configure({ target })).toEqual(expected);
   });
 
   it('ignore specified files', async () => {
     expect(
       await configure({
-        ignores: [
-          '.babelrc.json',
-          '.eslintrc.json',
-          '.jestrc.json',
-          '.npmignore',
-          '.prettierrc.json',
-          'tsconfig.build.json',
-        ],
+        config: {
+          ignores: [
+            '.babelrc.json',
+            '.eslintrc.json',
+            '.jestrc.json',
+            '.npmignore',
+            '.prettierrc.json',
+            'tsconfig.build.json',
+          ],
+        },
+        target,
       }),
     ).toEqual({
       links: { 'tsconfig.json': 'tsconfig' },

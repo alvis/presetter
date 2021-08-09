@@ -48,6 +48,19 @@ interface PresetConfig {
   };
 }
 
+/** input for a preset configurator */
+export interface PresetArgs<Config extends PresetConfig = PresetConfig> {
+  /** information about the targeted project */
+  target: {
+    /** the package name defined in the targeted project's package.json */
+    name: string;
+    /** the root folder containing the targeted project's .presetterrc.json */
+    root: string;
+  };
+  /** the config field in .presetterrc.json */
+  config?: Config;
+}
+
 /** detail of linked configuration files and script templates  */
 export interface PresetAsset {
   /** mapping of symlinks to configuration files provided by the preset */
@@ -66,10 +79,11 @@ const DEFAULT_DIRECTORY = {
 
 /**
  * get a list of presets
- * @param config options for the configurator
+ * @param args options for the configurator
  * @returns preset list
  */
-export default async function (config?: PresetConfig): Promise<PresetAsset> {
+export default async function (args: PresetArgs): Promise<PresetAsset> {
+  const { config } = args;
   const parameter = { ...DEFAULT_DIRECTORY, ...config?.directory };
 
   const { json, list } = createLinker(parameter);
