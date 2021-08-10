@@ -24,6 +24,8 @@
     "presetter": "./bin/cli",
     "run": "./bin/run"
   },
+  "main": "lib/index.js",
+  "types": "lib/index.d.ts",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/alvis/presetter.git"
