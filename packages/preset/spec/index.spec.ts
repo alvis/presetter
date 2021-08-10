@@ -17,6 +17,7 @@ import configure from '#index';
 
 jest.mock('#utilities', () => ({
   _esModule: true,
+  ...jest.requireActual('#utilities'),
   buildJSONConfig: jest.fn(async (template: string) => template),
   buildListConfig: jest.fn(async (template: string) => template),
   loadYAML: jest.fn(async () => ({ test: true })),

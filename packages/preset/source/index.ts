@@ -13,9 +13,13 @@
  * -------------------------------------------------------------------------
  */
 
-import pupa from 'pupa';
-
-import { buildJSONConfig, buildListConfig, loadYAML } from './utilities';
+import {
+  buildJSONConfig,
+  buildListConfig,
+  loadYAML,
+  merge,
+  template,
+} from './utilities';
 
 /** config for this preset */
 interface PresetConfig {
@@ -33,6 +37,8 @@ interface PresetConfig {
   tsconfig?: Record<string, unknown>;
   /** a list of files not to be linked */
   ignores?: string[];
+  /** extra scripts available */
+  scripts?: Record<string, string>;
   /** relative path to root directories for different file types */
   directory?: {
     /** the directory containing the whole repository (default: .) */
@@ -88,9 +94,7 @@ export default async function (args: PresetArgs): Promise<PresetAsset> {
 
   const { json, list } = createLinker(parameter, target.name);
   const defaultScripts = await loadYAML<string>('scripts');
-  const scripts = JSON.parse(
-    pupa(JSON.stringify(defaultScripts), parameter),
-  ) as Record<string, string>;
+  const scripts = template(merge(defaultScripts, config?.scripts), parameter);
 
   return {
     links: Object.fromEntries(
