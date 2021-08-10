@@ -21,6 +21,7 @@ import {
   loadText,
   loadYAML,
   merge,
+  template,
 } from '#utilities';
 
 jest.mock('path', () => ({
@@ -161,5 +162,17 @@ describe('fn:merge', () => {
     expect(merge({ a: { b: [0] } }, { a: { b: 1 } })).toEqual({
       a: { b: 1 },
     });
+  });
+});
+
+describe('fn:template', () => {
+  it('replace a simple string', () => {
+    expect(template('{value}', { value: 'value' })).toEqual('value');
+  });
+
+  it('replace content in an object', () => {
+    expect(
+      template({ '{key}': '{value}' }, { key: 'key', value: 'value' }),
+    ).toEqual({ key: 'value' });
   });
 });

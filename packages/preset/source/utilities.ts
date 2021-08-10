@@ -54,7 +54,7 @@ export async function buildJSONConfig(
 
   const source = await loadYAML(name, base);
   const merged = merge(source, extra);
-  const normalised = pupa(JSON.stringify(merged, null, INDENT), parameter);
+  const normalised = JSON.stringify(template(merged, parameter), null, INDENT);
 
   const path = resolve(DISTRIBUTION, outDir, `${name}.json`);
   await ensureFile(path);
@@ -92,7 +92,7 @@ export async function buildListConfig(
   const source = await loadText(name, base);
   const ignores = source.split('\n');
   const merged: string[] = [...ignores, ...extra];
-  const normalised = merged.map((line) => pupa(line, parameter)).join('\n');
+  const normalised = template(merged.join('\n'), parameter);
 
   const path = resolve(DISTRIBUTION, outDir, name);
   await ensureFile(path);
@@ -211,6 +211,38 @@ function replaceArray(source: unknown[], replacement: unknown): any {
   } else {
     // primitive values
     return replacement ?? source;
+  }
+}
+
+/**
+ * replace parameters in the template
+ * @param content template content
+ * @param parameter variables to be substituted in the template
+ */
+export function template(
+  content: string,
+  parameter: Record<string, string>,
+): string;
+export function template<Content extends Record<string, any> | any[]>(
+  content: Content,
+  parameter: Record<string, string>,
+): Content;
+export function template(
+  content: string | Record<string, any> | any[],
+  parameter: Record<string, string>,
+): string | Record<string, any> | any[] {
+  if (typeof content === 'string') {
+    return pupa(content, parameter);
+  } else if (Array.isArray(content)) {
+    return content.map((value) => template(value, parameter));
+  } else if (isJSON(content)) {
+    return Object.fromEntries(
+      Object.entries(content).map(([key, value]) => {
+        return [template(key, parameter), template(value, parameter)];
+      }),
+    );
+  } else {
+    return content;
   }
 }
 
