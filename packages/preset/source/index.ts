@@ -21,8 +21,10 @@ import {
   template,
 } from './utilities';
 
+export * from './utilities';
+
 /** config for this preset */
-interface PresetConfig {
+export interface PresetConfig {
   /** configuration to be merged with .babelrc */
   babel?: Record<string, unknown>;
   /** configuration to be merged with .eslintrc */
@@ -75,7 +77,7 @@ export interface PresetAsset {
   scripts: Record<string, string>;
 }
 
-const DEFAULT_DIRECTORY = {
+export const DEFAULT_DIRECTORY = {
   root: '.',
   source: 'source',
   types: 'types',

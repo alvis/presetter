@@ -136,7 +136,7 @@ export async function loadText(
  * @param subject the subject to be tested
  * @returns true if the subject is a JSON object
  */
-function isJSON(subject: unknown): subject is Record<string, any> {
+export function isJSON(subject: unknown): subject is Record<string, any> {
   return [
     typeof subject === 'object',
     !Array.isArray(subject),

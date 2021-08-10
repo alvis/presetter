@@ -13,6 +13,7 @@
   "license": "MIT",
   "author": "Alvis HT Tang <alvis@hilbert.space>",
   "main": "lib/index.js",
+  "types": "lib/index.d.ts",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/alvis/presetter.git"
@@ -21,6 +22,7 @@
     "bootstrap": "run-s build",
     "build": "run-s clean setup build:*",
     "build:typescript": "babel --extensions .ts,.tsx,.d.ts --source-maps --copy-files --out-dir lib ./source",
+    "build:types": "tsc -p tsconfig.build.json --emitDeclarationOnly",
     "clean": "run-p clean:**",
     "clean:lib": "shx rm -rf lib",
     "clean:rc": "shx rm -f .*rc.json",
