@@ -31,6 +31,8 @@ export interface PresetConfig {
   eslint?: Record<string, unknown>;
   /** configuration to be merged with .jestrc */
   jest?: Record<string, unknown>;
+  /** configuration to be merged with .lintstagedrc */
+  lintstaged?: Record<string, unknown>;
   /** patterns to be added to .npmignore */
   npmignore?: string[];
   /** configuration to be merged with .presetterrc */
@@ -104,6 +106,7 @@ export default async function (args: PresetArgs): Promise<PresetAsset> {
         '.babelrc.json': await json('babelrc', config?.babel),
         '.eslintrc.json': await json('eslintrc', config?.eslint),
         '.jestrc.json': await json('jestrc', config?.jest),
+        '.lintstagedrc.json': await json('lintstagedrc', config?.lintstaged),
         '.npmignore': await list('npmignore', config?.npmignore),
         '.prettierrc.json': await json('prettierrc', config?.prettier),
         'tsconfig.json': await json('tsconfig', config?.tsconfig),

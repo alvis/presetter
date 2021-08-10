@@ -29,7 +29,8 @@
     "packages/*"
   ],
   "scripts": {
-    "prepare": "run-s prepare:preset prepare:presetter",
+    "prepare": "run-s prepare:husky prepare:preset prepare:presetter",
+    "prepare:husky": "husky install && husky set .husky/pre-push \"npm run stage\"",
     "prepare:preset": "npm run bootstrap --workspace=presetter-preset",
     "prepare:presetter": "npm run bootstrap --workspace=presetter",
     "update": "npm install --ignore-script --package-lock-only",
@@ -37,6 +38,7 @@
     "coverage": "npm run --workspaces coverage",
     "lint": "npm run --workspaces lint",
     "test": "npm run --workspaces test",
+    "stage": "npm exec --workspaces lint-staged -- --concurrent=false",
     "next": "npm run release -- --prerelease next",
     "release": "run-s \"release:root -- {@}\" release:packages release:npm release:lock release:git --",
     "release:git": "run-s release:git:*",
@@ -50,6 +52,8 @@
   },
   "devDependencies": {
     "conventional-changelog-metahub": "^4.0.0",
+    "husky": "^7.0.0",
+    "lint-staged": "^11.0.0",
     "standard-version": "^9.3.0"
   }
 }
