@@ -17,10 +17,6 @@
     "presetter": "./packages/presetter/bin/cli",
     "preset": "./packages/presetter/bin/run"
   },
-  "publishConfig": {
-    "registry": "https://npm.pkg.github.com",
-    "access": "public"
-  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/alvis/presetter.git"
