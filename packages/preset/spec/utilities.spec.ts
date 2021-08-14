@@ -163,6 +163,17 @@ describe('fn:merge', () => {
       a: { b: 1 },
     });
   });
+
+  it('overwrite an object by null', () => {
+    expect(
+      merge(
+        {
+          a: { b: 0 },
+        },
+        { a: null },
+      ),
+    ).toEqual({ a: null });
+  });
 });
 
 describe('fn:template', () => {

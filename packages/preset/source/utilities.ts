@@ -192,7 +192,7 @@ function replace(source: unknown, replacement: unknown): any {
   }
 
   // primitive values
-  return replacement ?? source;
+  return replacement === undefined ? source : replacement;
 }
 
 /**
