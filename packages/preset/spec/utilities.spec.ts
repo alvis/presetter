@@ -18,6 +18,9 @@ import { readFile, writeFile } from 'fs-extra';
 import {
   buildJSONConfig,
   buildListConfig,
+  buildTextConfig,
+  createLinker,
+  filterLinks,
   loadText,
   loadYAML,
   merge,
@@ -42,6 +45,8 @@ jest.mock('fs-extra', () => ({
     switch (path) {
       case 'templates/list':
         return Buffer.from('line1');
+      case 'templates/text':
+        return Buffer.from('line1');
       case 'templates/json.yaml':
         return Buffer.from('a: 1');
       default:
@@ -55,22 +60,44 @@ describe('fn:buildListConfig', () => {
   beforeEach(jest.clearAllMocks);
 
   it('output the default template', async () => {
-    expect(await buildListConfig('list', { parameter: {} })).toEqual(
-      'dist/list',
-    );
-    expect(await buildListConfig('list', { parameter: {} })).toEqual(
-      'dist/list',
-    );
+    expect(
+      await buildListConfig({
+        name: 'list',
+        base: 'templates',
+        outDir: 'dist',
+      }),
+    ).toEqual('dist/list');
     expect(readFile).toBeCalledWith('templates/list');
     expect(writeFile).toBeCalledWith('dist/list', 'line1');
   });
 
   it('compile and write to the output folder', async () => {
-    expect(await buildListConfig('list', { extra: ['more'] })).toEqual(
-      'dist/list',
-    );
+    expect(
+      await buildListConfig({
+        name: 'list',
+        base: 'templates',
+        outDir: 'dist',
+        extra: ['more'],
+      }),
+    ).toEqual('dist/list');
     expect(readFile).toBeCalledWith('templates/list');
     expect(writeFile).toBeCalledWith('dist/list', 'line1\nmore');
+  });
+});
+
+describe('fn:buildTextConfig', () => {
+  beforeEach(jest.clearAllMocks);
+
+  it('output the default template', async () => {
+    expect(
+      await buildTextConfig({
+        name: 'text',
+        base: 'templates',
+        outDir: 'dist',
+      }),
+    ).toEqual('dist/text');
+    expect(readFile).toBeCalledWith('templates/text');
+    expect(writeFile).toBeCalledWith('dist/text', 'line1');
   });
 });
 
@@ -78,16 +105,87 @@ describe('fn:buildJSONConfig', () => {
   beforeEach(jest.clearAllMocks);
 
   it('output the default template', async () => {
-    expect(await buildJSONConfig('json')).toEqual('dist/json.json');
-    expect(await buildJSONConfig('json')).toEqual('dist/json.json');
+    expect(
+      await buildJSONConfig({
+        name: 'json',
+        base: 'templates',
+        outDir: 'dist',
+      }),
+    ).toEqual('dist/json.json');
+    expect(
+      await buildJSONConfig({
+        name: 'json',
+        base: 'templates',
+        outDir: 'dist',
+      }),
+    ).toEqual('dist/json.json');
     expect(readFile).toBeCalledWith('templates/json.yaml');
     expect(writeFile).toBeCalledWith('dist/json.json', '{\n  "a": 1\n}');
   });
 
   it('compile and write to the output folder', async () => {
-    expect(await buildJSONConfig('json', { extra: { b: 2 } })).toEqual(
+    expect(
+      await buildJSONConfig({
+        name: 'json',
+        base: 'templates',
+        outDir: 'dist',
+        extra: { b: 2 },
+      }),
+    ).toEqual('dist/json.json');
+    expect(readFile).toBeCalledWith('templates/json.yaml');
+    expect(writeFile).toBeCalledWith(
       'dist/json.json',
+      '{\n  "a": 1,\n  "b": 2\n}',
     );
+  });
+});
+
+describe('fn:filterLinks', () => {
+  it('should keep everything if no ignore list is given', () => {
+    expect(filterLinks({ link: 'destination' })).toEqual({
+      link: 'destination',
+    });
+  });
+
+  it('should ignore links that is asked not to create', () => {
+    expect(filterLinks({ link: 'destination' }, ['link'])).toEqual({});
+  });
+});
+
+describe('fn:createLinker', () => {
+  beforeEach(jest.clearAllMocks);
+
+  it('output the default template', async () => {
+    const { json, list, text } = createLinker({
+      base: 'templates',
+      outDir: 'dist',
+      parameter: { parameter: 'parameter' },
+    });
+
+    await json('json', { b: 2 });
+    await list('list', ['line2']);
+    await text('text');
+
+    expect(readFile).toBeCalledWith('templates/json.yaml');
+    expect(writeFile).toBeCalledWith(
+      'dist/json.json',
+      '{\n  "a": 1,\n  "b": 2\n}',
+    );
+    expect(readFile).toBeCalledWith('templates/list');
+    expect(writeFile).toBeCalledWith('dist/list', 'line1\nline2');
+    expect(readFile).toBeCalledWith('templates/text');
+    expect(writeFile).toBeCalledWith('dist/text', 'line1');
+  });
+
+  it('compile and write to the output folder', async () => {
+    expect(
+      await buildJSONConfig({
+        name: 'json',
+        base: 'templates',
+        outDir: 'dist',
+        extra: { b: 2 },
+      }),
+    ).toEqual('dist/json.json');
     expect(readFile).toBeCalledWith('templates/json.yaml');
     expect(writeFile).toBeCalledWith(
       'dist/json.json',
@@ -100,7 +198,7 @@ describe('fn:loadText', () => {
   beforeEach(jest.clearAllMocks);
 
   it('read a text-based template', async () => {
-    expect(await loadText('list')).toEqual('line1');
+    expect(await loadText('list', 'templates')).toEqual('line1');
   });
 });
 
@@ -108,7 +206,7 @@ describe('fn:loadYAML', () => {
   beforeEach(jest.clearAllMocks);
 
   it('read a yaml template', async () => {
-    expect(await loadYAML('json')).toEqual({ a: 1 });
+    expect(await loadYAML('json', 'templates')).toEqual({ a: 1 });
   });
 });
 

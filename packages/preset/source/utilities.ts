@@ -18,45 +18,33 @@ import { load } from 'js-yaml';
 import { resolve } from 'path';
 import pupa from 'pupa';
 
-// paths to directories
-const ROOT = resolve(__dirname, '..');
-const DISTRIBUTION = resolve(ROOT, 'dist');
-const TEMPLATES = resolve(ROOT, 'templates');
-
 // JSON format
 const INDENT = 2;
 
 /**
  * compile a JSON config template
- * @param name template name excluding the yaml extension
  * @param options additional information for config generation
+ * @param options.name template name excluding the yaml extension
  * @param options.base root directory of the template directory
  * @param options.outDir output directory for the asset created
  * @param options.extra additional config to be merged with the template
  * @param options.parameter variables to be substituted in the template
  * @returns path to the compiled template
  */
-export async function buildJSONConfig(
-  name: string,
-  options?: {
-    base?: string;
-    outDir?: string;
-    extra?: Record<string, any>;
-    parameter?: Record<string, string>;
-  },
-): Promise<string> {
-  const {
-    base = TEMPLATES,
-    outDir = '',
-    extra = {},
-    parameter = {},
-  } = { ...options };
+export async function buildJSONConfig(options: {
+  name: string;
+  base: string;
+  outDir: string;
+  extra?: Record<string, any>;
+  parameter?: Record<string, string>;
+}): Promise<string> {
+  const { name, base, outDir, extra = {}, parameter = {} } = { ...options };
 
   const source = await loadYAML(name, base);
   const merged = merge(source, extra);
   const normalised = JSON.stringify(template(merged, parameter), null, INDENT);
 
-  const path = resolve(DISTRIBUTION, outDir, `${name}.json`);
+  const path = resolve(outDir, `${name}.json`);
   await ensureFile(path);
   await writeFile(path, normalised);
 
@@ -65,40 +53,108 @@ export async function buildJSONConfig(
 
 /**
  * compile a list-based config template
- * @param name template name
  * @param options additional information for config generation
+ * @param options.name template name
  * @param options.base root directory of the template directory
  * @param options.outDir output directory for the assets created
  * @param options.extra additional config to be merged with the template
  * @param options.parameter variables to be substituted in the template
  * @returns path to the compiled template
  */
-export async function buildListConfig(
-  name: string,
-  options: {
-    base?: string;
-    outDir?: string;
-    extra?: string[];
-    parameter?: Record<string, string>;
-  },
-): Promise<string> {
-  const {
-    base = TEMPLATES,
-    outDir = '',
-    extra = [],
-    parameter = {},
-  } = { ...options };
+export async function buildListConfig(options: {
+  name: string;
+  base: string;
+  outDir: string;
+  extra?: string[];
+  parameter?: Record<string, string>;
+}): Promise<string> {
+  const { name, base, outDir, extra = [], parameter = {} } = { ...options };
 
   const source = await loadText(name, base);
   const ignores = source.split('\n');
   const merged: string[] = [...ignores, ...extra];
   const normalised = template(merged.join('\n'), parameter);
 
-  const path = resolve(DISTRIBUTION, outDir, name);
+  const path = resolve(outDir, name);
   await ensureFile(path);
   await writeFile(path, normalised);
 
   return path;
+}
+
+/**
+ * compile a list-based config template
+ * @param options additional information for config generation
+ * @param options.name template name
+ * @param options.base root directory of the template directory
+ * @param options.outDir output directory for the assets created
+ * @param options.parameter variables to be substituted in the template
+ * @returns path to the compiled template
+ */
+export async function buildTextConfig(options: {
+  name: string;
+  base: string;
+  outDir: string;
+  parameter?: Record<string, string>;
+}): Promise<string> {
+  const { name, base, outDir, parameter = {} } = { ...options };
+
+  const normalised = template(await loadText(name, base), parameter);
+
+  const path = resolve(outDir, name);
+  await ensureFile(path);
+  await writeFile(path, normalised);
+
+  return path;
+}
+
+/**
+ * create configuration files generators
+ * @param options additional information for config generation
+ * @param options.base root directory of the template directory
+ * @param options.outDir output directory for the assets created
+ * @param options.parameter variables to be substituted in the template
+ * @returns generators that return the location of the generated configuration file
+ */
+export function createLinker(options: {
+  base: string;
+  outDir: string;
+  parameter: Record<string, string>;
+}): {
+  json: (name: string, extra?: Record<string, unknown>) => Promise<string>;
+  list: (name: string, extra?: string[]) => Promise<string>;
+  text: (name: string) => Promise<string>;
+} {
+  const { base, outDir, parameter } = { ...options };
+
+  const json = async (
+    name: string,
+    extra?: Record<string, unknown>,
+  ): Promise<string> =>
+    buildJSONConfig({ name, base, outDir, extra, parameter });
+
+  const list = async (name: string, extra?: string[]): Promise<string> =>
+    buildListConfig({ name, base, outDir, extra, parameter });
+
+  const text = async (name: string): Promise<string> =>
+    buildTextConfig({ name, base, outDir, parameter });
+
+  return { json, list, text };
+}
+
+/**
+ * filter the symlinks map
+ * @param links mapping of symlinks
+ * @param ignores list of links to be ignored
+ * @returns mapping of symlinks without those should be ignored
+ */
+export function filterLinks(
+  links: Record<string, string>,
+  ignores: string[] = [],
+): Record<string, string> {
+  return Object.fromEntries(
+    Object.entries(links).filter(([file]) => !ignores.includes(file)),
+  );
 }
 
 /**
@@ -109,7 +165,7 @@ export async function buildListConfig(
  */
 export async function loadYAML<T = unknown>(
   template: string,
-  base: string = TEMPLATES,
+  base: string,
 ): Promise<Record<string, T>> {
   const content = await readFile(resolve(base, `${template}.yaml`));
 
@@ -124,7 +180,7 @@ export async function loadYAML<T = unknown>(
  */
 export async function loadText(
   template: string,
-  base: string = TEMPLATES,
+  base: string,
 ): Promise<string> {
   const content = await readFile(resolve(base, template));
 

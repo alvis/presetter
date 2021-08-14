@@ -15,15 +15,31 @@
 
 import configure from '#index';
 
+const mockLoadYAML = jest.fn(async (_template: string) => ({ yaml: true }));
+const mockLoadText = jest.fn(async (_template: string) => 'text');
 jest.mock('#utilities', () => ({
   _esModule: true,
   ...jest.requireActual('#utilities'),
-  buildJSONConfig: jest.fn(async (template: string) => template),
-  buildListConfig: jest.fn(async (template: string) => template),
-  loadYAML: jest.fn(async () => ({ test: true })),
+  createLinker: jest.fn(() => ({
+    json: async (template: string) => {
+      await mockLoadYAML(template);
+      return template;
+    },
+    list: async (template: string) => {
+      await mockLoadText(template);
+      return template;
+    },
+    text: async (template: string) => {
+      await mockLoadText(template);
+      return template;
+    },
+  })),
+  loadYAML: jest.fn().mockImplementation((template) => mockLoadYAML(template)),
+  loadText: jest.fn().mockImplementation((template) => mockLoadText(template)),
 }));
 
 describe('fn:configure', () => {
+  beforeEach(jest.clearAllMocks);
   const target = { name: 'project', root: '/path/to/project' };
 
   it('export preset configuration', async () => {
@@ -39,7 +55,7 @@ describe('fn:configure', () => {
         'tsconfig.json': 'tsconfig',
       },
       scripts: {
-        test: true,
+        yaml: true,
       },
     };
 
@@ -64,7 +80,7 @@ describe('fn:configure', () => {
       }),
     ).toEqual({
       links: { 'tsconfig.json': 'tsconfig' },
-      scripts: { test: true },
+      scripts: { yaml: true },
     });
   });
 });

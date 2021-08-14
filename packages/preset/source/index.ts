@@ -13,15 +13,22 @@
  * -------------------------------------------------------------------------
  */
 
+import { resolve } from 'path';
+
 import {
-  buildJSONConfig,
-  buildListConfig,
+  createLinker,
+  filterLinks,
   loadYAML,
   merge,
   template,
 } from './utilities';
 
 export * from './utilities';
+
+// paths to directories
+const ROOT = resolve(__dirname, '..');
+const TEMPLATES = resolve(ROOT, 'templates');
+const DISTRIBUTION = resolve(ROOT, 'dist');
 
 /** config for this preset */
 export interface PresetConfig {
@@ -96,13 +103,14 @@ export default async function (args: PresetArgs): Promise<PresetAsset> {
   const { config, target } = args;
   const parameter = { ...DEFAULT_DIRECTORY, ...config.directory };
 
-  const { json, list } = createLinker(parameter, target.name);
-  const defaultScripts = await loadYAML<string>('scripts');
+  const outDir = resolve(DISTRIBUTION, target.name);
+  const { json, list } = createLinker({ base: TEMPLATES, outDir, parameter });
+  const defaultScripts = await loadYAML<string>('scripts', TEMPLATES);
   const scripts = template(merge(defaultScripts, config.scripts), parameter);
 
   return {
-    links: Object.fromEntries(
-      Object.entries({
+    links: filterLinks(
+      {
         '.babelrc.json': await json('babelrc', config.babel),
         '.eslintrc.json': await json('eslintrc', config.eslint),
         '.jestrc.json': await json('jestrc', config.jest),
@@ -111,32 +119,9 @@ export default async function (args: PresetArgs): Promise<PresetAsset> {
         '.prettierrc.json': await json('prettierrc', config.prettier),
         'tsconfig.json': await json('tsconfig', config.tsconfig),
         'tsconfig.build.json': await json('tsconfig.build'),
-      }).filter(([file]) => !config.ignores?.includes(file)),
+      },
+      config.ignores,
     ),
     scripts,
   };
-}
-
-/**
- * create configuration files generators
- * @param parameter variables to be substituted in the template
- * @param outDir output directory for the assets created
- * @returns generators that return the location of the generated configuration file
- */
-function createLinker(
-  parameter: Required<NonNullable<PresetConfig['directory']>>,
-  outDir: string,
-): {
-  json: (name: string, extra?: Record<string, unknown>) => Promise<string>;
-  list: (name: string, extra?: string[]) => Promise<string>;
-} {
-  const json = async (
-    name: string,
-    extra: Record<string, unknown> = {},
-  ): Promise<string> => buildJSONConfig(name, { outDir, extra, parameter });
-
-  const list = async (name: string, extra: string[] = []): Promise<string> =>
-    buildListConfig(name, { outDir, extra, parameter });
-
-  return { json, list };
 }
