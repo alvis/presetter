@@ -2,7 +2,7 @@
 
 ![Logo](https://github.com/alvis/presetter/raw/master/logo.svg)
 
-🏄🏻 _A collection of opinionated configurations for a nodejs project in typescript for presetter_
+🏄🏻 _A collection of opinionated configurations for a NodeJS project in typescript for presetter_
 
 •   [Quick Start](#quick-start)   •   [Project Structure](#project-structure)   •   [Customisation](#customisation)   •   [Scripts](#script-template-summary)   •
 
@@ -18,14 +18,24 @@
 
 In addition to a set of opinionated configuration files, it also provides a number of essential lifecycle and helper commands.
 
+## Features
+
+- 👥 Babel
+- 🚿 ESLint
+- 🧪 Jest
+- 🐶 Husky
+- 💅 Prettier
+- 📤 Standard Version
+- 💯 Typescript
+
 ## Quick Start
 
 [**FULL DOCUMENTATION IS AVAILABLE HERE**](https://github.com/alvis/presetter/blob/master/README.md)
 
-1. Bootstrap your project with a preset (e.g. presetter-preset)
+1. Bootstrap your project with presetter-preset
 
 ```shell
-npx presetter use <preset package name>
+npx presetter use presetter-preset
 ```
 
 That's. One command and you're set.
@@ -68,7 +78,7 @@ Implement your business logic under `source` and prepare tests under `spec`.
 
 ## Customisation
 
-By default, this preset exports a handy configuration set for a nodejs project.
+By default, this preset exports a handy configuration set for a NodeJS project written in typescript.
 But you can further customise (either extending or replacing) the configuration by specifying the change in the config file (`.presetterrc` or `.presetterrc.json`).
 
 These settings are available in the `config` field in the config file. For directories, the setting is specified in the `directory` field, while configuration for other tools like babel and eslint are available in corresponding fields.
@@ -95,7 +105,7 @@ interface PresetterRC {
     prettier?: Record<string, unknown>;
     /** configuration to be merged with tsconfig.json */
     tsconfig?: Record<string, unknown>;
-    /** a list of files not to be linked */
+    /** a list of config files not to be created */
     ignores?: string[];
     /** relative path to root directories for different file types */
     directory?: {

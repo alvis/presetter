@@ -1,4 +1,4 @@
-# ![Logo](logo.svg)
+# ![Logo](assets/logo.svg)
 
 <div align="center">
 
@@ -15,9 +15,11 @@ What's more, what if you want to update configs for all projects? :man_facepalmi
 
 **Presetter is a utility for setting up building tools for your project from a template.** This means with just only two dev packages, namely this package and your favourite template preset, all essential development packages, such as typescript, eslint and jest, together with their configuration files provided by the preset, are automatically setup for you upon the project's initialisation.
 
+![Before and After](assets/before-and-after.jpg)
+
 ## Quick Start
 
-1. Bootstrap your project with a preset (e.g. presetter-preset)
+1. Bootstrap your project with a preset (e.g. [preset](packages/preset))
 
 ```shell
 npx presetter use <preset package name>
@@ -30,12 +32,11 @@ That's. One command and you're set.
 At this point, all development packages specified in the preset are installed,
 and now you can try to run some example life cycle scripts provided by the preset (e.g. try `npx run test`).
 
-![Demo](demo.gif)
+![Demo](assets/demo.gif)
 
 ## Concept
 
-The concept comprises two part: [presetter](packages/presetter) (this package) and a [preset](packages/preset) (which can be provided by yourself).
-
+The concept comprises two part: [presetter](packages/presetter) (this package) and a [preset](packages/preset).
 ### presetter
 
 Presetter is a utility for two tasks:
@@ -158,42 +159,51 @@ To fix the issue, you can simply replace the temporary `package.json` by its ori
 ## About
 
 This project originated from my personal pain on maintaining a number of projects with fairly similar structure, having exactly the same build and test procedures, same `.babelrc`, `tsconfig.json` etc.
-Every time when I setup a new project, I have to copy and setup the following **32** development dependencies!!!
+Every time when I setup a new project, I have to copy many **idential config files** such as `.babelrc`, `.eslintrc`, `.jestrc`, `.lintstagedrc`, `.npmignore`, `tsconfig.json` to name a few,
+together with the following **40** 😱 development dependencies!!!
 
 1. @babel/cli
-2. @babel/core
-3. @babel/plugin-proposal-class-properties
-4. @babel/plugin-proposal-decorators
-5. @babel/plugin-proposal-nullish-coalescing-operator
-6. @babel/plugin-proposal-object-rest-spread
-7. @babel/plugin-proposal-optional-chaining
-8. @babel/preset-env
-9. @babel/preset-typescript
-10. @types/jest
-11. @types/node
-12. @typescript-eslint/eslint-plugin
-13. @typescript-eslint/parser
-14. eslint
-15. eslint-config-prettier
-16. eslint-plugin-eslint-comments
-17. eslint-plugin-header
-18. eslint-plugin-jsdoc
-19. eslint-plugin-no-secrets
-20. eslint-plugin-sonarjs
-21. jest
-22. leasot
-23. npm-run-all
-24. prettier
-25. shx
-26. standard-version
-27. ts-jest
-28. ts-node
-29. ts-node-dev
-30. tsconfig-paths
-31. tscpaths
-32. typescript
+1. @babel/core
+1. @babel/node
+1. @babel/plugin-proposal-class-properties
+1. @babel/plugin-proposal-decorators
+1. @babel/plugin-proposal-nullish-coalescing-operator
+1. @babel/plugin-proposal-object-rest-spread
+1. @babel/plugin-proposal-optional-chaining
+1. @babel/preset-env
+1. @babel/preset-typescript
+1. @types/jest
+1. @types/node
+1. @typescript-eslint/eslint-plugin
+1. @typescript-eslint/parser
+1. babel-plugin-transform-typescript-metadata
+1. conventional-changelog-metahub
+1. cross-env
+1. eslint
+1. eslint-config-prettier
+1. eslint-plugin-eslint-comments
+1. eslint-plugin-header
+1. eslint-plugin-import
+1. eslint-plugin-jsdoc
+1. eslint-plugin-no-secrets
+1. eslint-plugin-sonarjs
+1. husky
+1. jest
+1. leasot
+1. lint-staged
+1. npm-run-all
+1. presetter
+1. prettier
+1. shx
+1. standard-version
+1. ts-jest
+1. ts-node
+1. ts-node-dev
+1. tsc-alias
+1. tsconfig-paths
+1. typescript
 
-So, I imagine, if it is possible to reduce all these 3x packages into 1?
+So, I imagine, if it is possible to reduce all these 40 packages into 1?
 I tried to look for a solution but no luck.
 Therefore, I make this tool and make it available to everyone who has a similar problem as me.
 
