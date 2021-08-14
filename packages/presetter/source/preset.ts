@@ -47,7 +47,7 @@ export interface PresetArgs<
     root: string;
   };
   /** the config field in .presetterrc.json */
-  config?: Config;
+  config: Config;
 }
 
 /** expected return from the configuration function from the preset */
@@ -118,7 +118,7 @@ export async function getPresetAsset(): Promise<PresetAsset> {
   const root = dirname(path);
 
   // get the preset name
-  const { preset, config } = await getConfiguration(root);
+  const { preset, config = {} } = await getConfiguration(root);
 
   // get the preset
   const module = resolvePackage(preset, { cwd: root });

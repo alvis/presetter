@@ -43,7 +43,7 @@ describe('fn:configure', () => {
       },
     };
 
-    expect(await configure({ target })).toEqual(expected);
+    expect(await configure({ target, config: {} })).toEqual(expected);
   });
 
   it('ignore specified files', async () => {

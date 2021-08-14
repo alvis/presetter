@@ -68,7 +68,7 @@ export interface PresetArgs<Config extends PresetConfig = PresetConfig> {
     root: string;
   };
   /** the config field in .presetterrc.json */
-  config?: Config;
+  config: Config;
 }
 
 /** detail of linked configuration files and script templates  */
@@ -94,24 +94,24 @@ export const DEFAULT_DIRECTORY = {
  */
 export default async function (args: PresetArgs): Promise<PresetAsset> {
   const { config, target } = args;
-  const parameter = { ...DEFAULT_DIRECTORY, ...config?.directory };
+  const parameter = { ...DEFAULT_DIRECTORY, ...config.directory };
 
   const { json, list } = createLinker(parameter, target.name);
   const defaultScripts = await loadYAML<string>('scripts');
-  const scripts = template(merge(defaultScripts, config?.scripts), parameter);
+  const scripts = template(merge(defaultScripts, config.scripts), parameter);
 
   return {
     links: Object.fromEntries(
       Object.entries({
-        '.babelrc.json': await json('babelrc', config?.babel),
-        '.eslintrc.json': await json('eslintrc', config?.eslint),
-        '.jestrc.json': await json('jestrc', config?.jest),
-        '.lintstagedrc.json': await json('lintstagedrc', config?.lintstaged),
-        '.npmignore': await list('npmignore', config?.npmignore),
-        '.prettierrc.json': await json('prettierrc', config?.prettier),
-        'tsconfig.json': await json('tsconfig', config?.tsconfig),
+        '.babelrc.json': await json('babelrc', config.babel),
+        '.eslintrc.json': await json('eslintrc', config.eslint),
+        '.jestrc.json': await json('jestrc', config.jest),
+        '.lintstagedrc.json': await json('lintstagedrc', config.lintstaged),
+        '.npmignore': await list('npmignore', config.npmignore),
+        '.prettierrc.json': await json('prettierrc', config.prettier),
+        'tsconfig.json': await json('tsconfig', config.tsconfig),
         'tsconfig.build.json': await json('tsconfig.build'),
-      }).filter(([file]) => !config?.ignores?.includes(file)),
+      }).filter(([file]) => !config.ignores?.includes(file)),
     ),
     scripts,
   };
