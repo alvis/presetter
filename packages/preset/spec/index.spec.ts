@@ -13,6 +13,9 @@
  * -------------------------------------------------------------------------
  */
 
+import { readdir } from 'fs-extra';
+import { resolve } from 'path';
+
 import configure from '#index';
 
 const mockLoadYAML = jest.fn(async (_template: string) => ({ yaml: true }));
@@ -82,5 +85,23 @@ describe('fn:configure', () => {
       links: { 'tsconfig.json': 'tsconfig' },
       scripts: { yaml: true },
     });
+  });
+
+  it('use all templates', async () => {
+    await configure({ config: {}, target });
+
+    const files = await readdir(resolve(__dirname, '..', 'templates'));
+    const yamlFiles = files.filter((file) => file.endsWith('.yaml'));
+    const textFiles = files.filter((file) => !file.endsWith('.yaml'));
+
+    expect(mockLoadText).toHaveBeenCalledTimes(textFiles.length);
+    for (const file of textFiles) {
+      expect(mockLoadText).toHaveBeenCalledWith(file);
+    }
+
+    expect(mockLoadYAML).toHaveBeenCalledTimes(yamlFiles.length);
+    for (const file of yamlFiles) {
+      expect(mockLoadYAML).toHaveBeenCalledWith(file.replace(/\.yaml$/, ''));
+    }
   });
 });
