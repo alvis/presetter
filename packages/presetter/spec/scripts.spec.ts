@@ -65,7 +65,7 @@ function should(
 }
 
 describe('fn:composeScript', () => {
-  describe('detect defination error', () => {
+  describe('detect definition error', () => {
     should('warn an non-existent task', {
       template: {
         build: 'builder',
