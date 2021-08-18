@@ -57,12 +57,8 @@ export function composeScripts(args: {
 }): Script {
   const { template, target } = args;
 
-  return mapValues(
-    {
-      ...template,
-      ...target,
-    },
-    (command): string => {
+  return mapValues({ ...template, ...target }, (command): string => {
+    try {
       // parse the shell command into its ast
       const ast = parser.Parse(command);
 
@@ -77,8 +73,15 @@ export function composeScripts(args: {
 
       // generate the code from ast
       return printer.Print(ast).trim();
-    },
-  );
+    } catch (error: unknown) {
+      if (error instanceof Error) {
+        throw error;
+      } else {
+        // parser.Parse may throw an empty object as an error, catch here
+        throw new Error(`failed to parse command: ${command}`);
+      }
+    }
+  });
 }
 
 /**

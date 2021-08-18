@@ -77,6 +77,18 @@ describe('fn:composeScript', () => {
         '"no-such-task" cannot be resolved in "run no-such-task"',
       ),
     });
+
+    should('warn a syntax error in the task definition', {
+      template: {
+        build: 'builder',
+      },
+      target: {
+        invalid: 'invalid shell script with a hanging quote"',
+      },
+      result: new Error(
+        'failed to parse command: invalid shell script with a hanging quote"',
+      ),
+    });
   });
 
   describe('simple task resolution', () => {
