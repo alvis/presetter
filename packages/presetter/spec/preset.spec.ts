@@ -17,7 +17,7 @@ import { info } from 'console';
 import { symlink, unlink, writeJSON } from 'fs-extra';
 import writePackage from 'write-pkg';
 
-import { installPackages } from '#package';
+import { reifyDependencies } from '#package';
 import {
   bootstrapPreset,
   getConfiguration,
@@ -139,8 +139,9 @@ jest.mock('#package', () => ({
         };
     }
   }),
-  installPackages: jest.fn(async ({ packages }: { packages: string[] }) =>
-    packages.map((name) => ({ name })),
+  reifyDependencies: jest.fn(
+    async ({ add }: Parameters<typeof reifyDependencies>[0]) =>
+      add?.map((name) => ({ name, version: '*' })),
   ),
 }));
 
@@ -157,13 +158,17 @@ describe('fn:unsetPreset', () => {
 });
 
 describe('fn:setupPreset', () => {
-  beforeAll(() => setupPreset('preset'));
+  beforeAll(() => {
+    jest.clearAllMocks();
+    setupPreset('preset');
+  });
 
   it('install presetter and the preset', async () => {
-    expect(installPackages).toBeCalledWith({
-      packages: ['presetter', 'preset'],
-      save: 'development',
-      lock: true,
+    expect(reifyDependencies).toBeCalledWith({
+      add: ['presetter', 'preset'],
+      root: process.cwd(),
+      saveAs: 'dev',
+      lockFile: true,
     });
   });
 
@@ -177,10 +182,8 @@ describe('fn:setupPreset', () => {
     );
   });
 
-  it('bootstrap the preset', async () => {
-    expect(installPackages).toHaveBeenCalledWith({
-      packages: ['package@version'],
-    });
+  it('install the peer dependencies provided by the preset', async () => {
+    expect(reifyDependencies).toHaveBeenCalledTimes(1);
   });
 
   it('merge the bootstrapping script to package.json', async () => {
@@ -240,9 +243,7 @@ describe('fn:bootstrapPreset', () => {
     });
 
     it('install packages specified by the preset', async () => {
-      expect(installPackages).toHaveBeenCalledWith({
-        packages: ['package@version'],
-      });
+      expect(reifyDependencies).toHaveBeenCalledTimes(1);
     });
   });
 
@@ -260,16 +261,14 @@ describe('fn:bootstrapPreset', () => {
     it('install packages regardless', async () => {
       await bootstrapPreset({ force: true });
 
-      expect(installPackages).toHaveBeenCalledWith({
-        packages: ['package@version'],
-      });
+      expect(reifyDependencies).toHaveBeenCalledTimes(1);
     });
 
     it('skip installing peer packages manually if it is supported by package manager', async () => {
       mockArePeerPackagesAutoInstalled = true;
       await bootstrapPreset();
 
-      expect(installPackages).not.toHaveBeenCalled();
+      expect(reifyDependencies).not.toHaveBeenCalled();
     });
   });
 });

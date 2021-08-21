@@ -31,7 +31,7 @@ import writePackage from 'write-pkg';
 import {
   arePeerPackagesAutoInstalled,
   getPackage,
-  installPackages,
+  reifyDependencies,
 } from './package';
 
 /** input for a preset configurator */
@@ -136,15 +136,16 @@ export async function getPresetAsset(): Promise<PresetAsset> {
  */
 export async function setupPreset(uri: string): Promise<void> {
   // install presetter & the preset
-  const installedPackages = await installPackages({
-    packages: ['presetter', uri],
-    save: 'development',
-    lock: true,
+  const packages = await reifyDependencies({
+    root: process.cwd(),
+    add: ['presetter', uri],
+    saveAs: 'dev',
+    lockFile: true,
   });
 
   // extract the name of the preset in case the supplied is a git url
-  const [{ name: preset }] = installedPackages.filter(
-    ({ name }) => name !== 'presetter',
+  const [{ name: preset }] = packages.filter(({ name, spec }) =>
+    [name, spec, `${name}@${spec}`].includes(uri),
   );
 
   const { path, json } = await getPackage();
@@ -159,7 +160,8 @@ export async function setupPreset(uri: string): Promise<void> {
   );
 
   // bootstrap the preset
-  await bootstrapPreset();
+  const asset = await getPresetAsset();
+  await linkConfigurations(asset.links);
 
   // insert post install script if not preset
   await writePackage(
@@ -187,7 +189,7 @@ export async function bootstrapPreset(options?: {
 
   if (force || !arePeerPackagesAutoInstalled()) {
     const { path } = await getPackage();
-    await installPresetPeerDependencies(dirname(path));
+    await reifyDependencies({ root: dirname(path) });
   }
 }
 
@@ -198,29 +200,6 @@ export async function unsetPreset(): Promise<void> {
   const preset = await getPresetAsset();
 
   await Promise.all([unlinkConfigurations(preset)]);
-}
-
-/**
- * install peer packages according to the preset
- * @param base directory of the end project package.json
- */
-async function installPresetPeerDependencies(base: string): Promise<void> {
-  const { preset } = await getConfiguration(base);
-
-  // get the path of the preset package
-  const path = resolvePackage(preset);
-
-  // get packages to be installed from the preset's package.json
-  const {
-    json: { peerDependencies },
-  } = await getPackage(path);
-
-  // install the packages
-  const packages = Object.entries({ ...peerDependencies }).map(
-    ([name, version]) => `${name}@${version}`,
-  );
-
-  await installPackages({ packages });
 }
 
 /**

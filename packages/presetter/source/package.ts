@@ -13,8 +13,8 @@
  * -------------------------------------------------------------------------
  */
 
-import { info } from 'console';
-import execa from 'execa';
+import { Arborist } from '@npmcli/arborist';
+import Config from '@npmcli/config';
 import { defaultsDeep } from 'lodash';
 import readPackageDetail from 'read-pkg-up';
 
@@ -77,59 +77,63 @@ export async function getPackage(root?: string): Promise<Package> {
 }
 
 /**
- * install packages to the target project
+ * reify packages for the target project
  * @param args list of packages and other options
- * @param args.packages list of package@version
- * @param args.save type of dependency
- * @param args.lock indicate whether package-lock.json should be produced
+ * @param args.root directory of the project package.json
+ * @param args.add list of packages to be added
+ * @param args.remove list of packages to be removed
+ * @param args.saveAs type of dependency
+ * @param args.lockFile indicate whether package-lock.json should be produced
  * @returns list of installed packages
  */
-export async function installPackages(args: {
-  packages: string[];
-  save?: 'development' | 'peer' | 'production' | 'none';
-  lock?: boolean;
-}): Promise<Array<{ name: string; version: string }>> {
-  const { packages, save = 'none', lock = false } = { ...args };
+export async function reifyDependencies(args: {
+  root: string;
+  add?: string[];
+  remove?: string[];
+  saveAs?: 'dev' | 'peer' | 'optional' | 'prod';
+  lockFile?: boolean;
+}): Promise<Array<{ name: string; spec: string }>> {
+  const {
+    root,
+    add = [],
+    remove = [],
+    saveAs = 'prod',
+    lockFile = false,
+  } = { ...args };
 
-  if (!packages.length) {
-    return [];
-  }
+  // use arborist to install peer dependencies
+  const arborist = new Arborist({
+    path: root,
+    registry: await getRegistry(),
+  });
 
-  info(`installing packages:${packages.map((name) => '\n+ ' + name).join('')}`);
-  const { stdout } = await execa(
-    'npm',
-    [
-      'install',
-      '--no-audit', // avoid unexpected exit due to audit warnings
-      '--legacy-peer-deps', // ignore peer dependency warnings
-      {
-        development: '--save-dev',
-        peer: '--save-peer',
-        production: '--save',
-        none: '--no-save',
-      }[save],
-      lock ? undefined : '--no-package-lock',
-      ...packages,
-    ].filter((arg): arg is string => !!arg),
-  );
+  // don't write to the lockfile
+  const actualTree = await arborist.reify({
+    add,
+    rm: remove,
+    saveType: saveAs,
+    save: lockFile,
+    update: true,
+  });
 
-  return extractPackagesFromNPMOutput(stdout);
+  return [...actualTree.edgesOut.values()].map((edge) => ({
+    name: edge.name,
+    spec: edge.spec,
+  }));
 }
 
 /**
- * extract package information from npm out
- * @param stdout output from npm
- * @returns list of installed packages
+ * get the url of the package registry of the target project
+ * @returns url of the registry
  */
-function extractPackagesFromNPMOutput(
-  stdout: string,
-): Array<{ name: string; version: string }> {
-  const installedPackages: RegExpExecArray[] = [];
-  const regex = /\+ (.*)@(.*)/g;
-  let match: RegExpExecArray | null;
-  while ((match = regex.exec(stdout))) {
-    installedPackages.push(match);
-  }
+async function getRegistry(): Promise<string> {
+  try {
+    // get npm config
+    const config = new Config({ definitions: {}, npmPath: '.' });
+    await config.load();
 
-  return installedPackages.map(([, name, version]) => ({ name, version }));
+    return config.get('registry');
+  } catch {
+    return 'https://registry.npmjs.org';
+  }
 }

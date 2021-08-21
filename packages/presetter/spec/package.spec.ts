@@ -16,18 +16,12 @@
 import {
   arePeerPackagesAutoInstalled,
   getPackage,
-  installPackages,
+  reifyDependencies,
 } from '#package';
-import execa from 'execa';
 
 jest.mock('console', () => ({
   __esModule: true,
   info: jest.fn(),
-}));
-
-jest.mock('execa', () => ({
-  __esModule: true,
-  default: jest.fn(() => ({ stdout: '+ package1@alpha\n+ package2@beta' })),
 }));
 
 jest.mock('read-pkg-up', () => ({
@@ -41,6 +35,39 @@ jest.mock('read-pkg-up', () => ({
       },
     })
     .mockResolvedValueOnce(undefined),
+}));
+
+const mockArborist = jest.fn();
+const mockArboristReify = jest.fn(async () => ({
+  edgesOut: new Map(
+    Object.entries({
+      package: { name: 'package', spec: '*' },
+    }),
+  ),
+}));
+jest.mock('@npmcli/arborist', () => ({
+  __esModule: true,
+  Arborist: jest.fn().mockImplementation((args) => {
+    mockArborist(args);
+
+    return {
+      reify: mockArboristReify,
+    };
+  }),
+}));
+
+const mockConfig = jest.fn();
+const mockConfigLoad = jest.fn();
+jest.mock('@npmcli/config', () => ({
+  __esModule: true,
+  default: jest.fn().mockImplementation((args) => {
+    mockConfig(args);
+
+    return {
+      get: jest.fn((key: string) => key),
+      load: mockConfigLoad,
+    };
+  }),
 }));
 
 describe('fn:arePeerPackagesAutoInstalled', () => {
@@ -85,52 +112,39 @@ describe('fn:getPackage', () => {
   });
 });
 
-describe('fn:installPackages', () => {
-  beforeEach(jest.clearAllMocks);
+describe('fn:reifyDependencies', () => {
+  // reset the mock before each test
+  beforeEach(() => mockConfigLoad.mockImplementation(() => undefined));
 
-  it('install packages via npm using default', async () => {
-    const packages = await installPackages({
-      packages: ['package1@alpha', 'package2@beta'],
+  it('use arborist to reify package dependencies', async () => {
+    await reifyDependencies({ root: 'root' });
+
+    expect(mockConfig).toHaveBeenCalledWith({
+      definitions: {},
+      npmPath: '.',
     });
+    expect(mockConfigLoad).toHaveBeenCalledTimes(1);
 
-    expect(execa).toHaveBeenCalledWith('npm', [
-      'install',
-      '--no-audit',
-      '--legacy-peer-deps',
-      '--no-save',
-      '--no-package-lock',
-      'package1@alpha',
-      'package2@beta',
-    ]);
-    expect(packages).toEqual([
-      { name: 'package1', version: 'alpha' },
-      { name: 'package2', version: 'beta' },
-    ]);
+    expect(mockArborist).toHaveBeenCalledWith({
+      path: 'root',
+      registry: 'registry',
+    });
+    expect(mockArboristReify).toHaveBeenCalledWith({
+      add: [],
+      rm: [],
+      save: false,
+      saveType: 'prod',
+      update: true,
+    });
   });
 
-  it('install packages via npm with package lock', async () => {
-    const packages = await installPackages({
-      packages: ['package1@alpha', 'package2@beta'],
-      lock: true,
+  it('use the default registry to reify package dependencies', async () => {
+    mockConfigLoad.mockRejectedValueOnce(new Error('registry not found'));
+    await reifyDependencies({ root: 'root' });
+
+    expect(mockArborist).toHaveBeenCalledWith({
+      path: 'root',
+      registry: 'https://registry.npmjs.org',
     });
-
-    expect(execa).toHaveBeenCalledWith('npm', [
-      'install',
-      '--no-audit',
-      '--legacy-peer-deps',
-      '--no-save',
-      'package1@alpha',
-      'package2@beta',
-    ]);
-    expect(packages).toEqual([
-      { name: 'package1', version: 'alpha' },
-      { name: 'package2', version: 'beta' },
-    ]);
-  });
-
-  it('does not install anything if none is supplied', async () => {
-    await installPackages({ packages: [] });
-
-    expect(execa).not.toHaveBeenCalled();
   });
 });

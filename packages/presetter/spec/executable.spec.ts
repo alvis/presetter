@@ -14,7 +14,7 @@
  */
 
 import { entry } from '#executable/entry';
-import { installPackages } from '#package';
+import { reifyDependencies } from '#package';
 import { bootstrapPreset, setupPreset, unsetPreset } from '#preset';
 import { run } from '#run';
 
@@ -26,9 +26,9 @@ jest.mock('fs-extra', () => ({
 jest.mock('#package', () => ({
   __esModule: true,
   getPackage: jest.fn(() => ({ path: '' })),
-  installPackages: jest.fn(
-    async ({ packages }: Parameters<typeof installPackages>[0]) =>
-      packages.map((name) => ({ name, version: 'latest' })),
+  reifyDependencies: jest.fn(
+    async ({ add }: Parameters<typeof reifyDependencies>[0]) =>
+      add?.map((name) => ({ name, version: '*' })),
   ),
 }));
 
@@ -101,7 +101,7 @@ describe('fn:entry', () => {
     process.argv = ['node', 'cli', 'unknown', '--arg-1'];
     await entry();
 
-    expect(installPackages).toBeCalledTimes(0);
+    expect(reifyDependencies).toBeCalledTimes(0);
     expect(bootstrapPreset).toBeCalledTimes(0);
     expect(unsetPreset).toBeCalledTimes(0);
     expect(run).toBeCalledTimes(0);
