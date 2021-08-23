@@ -150,9 +150,9 @@ export async function setupPreset(uri: string): Promise<void> {
 
   const { path, json } = await getPackage();
 
-  // update .presetterrc
+  // update .presetterrc.json
   await writeJSON(
-    resolve(dirname(path), PRESETTERRC),
+    resolve(dirname(path), `${PRESETTERRC}.json`),
     { preset },
     {
       spaces: JSON_INDENT,

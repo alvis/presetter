@@ -174,7 +174,7 @@ describe('fn:setupPreset', () => {
 
   it('write to .presetter', async () => {
     expect(writeJSON).toBeCalledWith(
-      '.presetterrc',
+      '.presetterrc.json',
       {
         preset: 'preset',
       },
