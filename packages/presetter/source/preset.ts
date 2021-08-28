@@ -184,13 +184,15 @@ export async function bootstrapPreset(options?: {
 }): Promise<void> {
   const { force = false } = { ...options };
 
-  const asset = await getPresetAsset();
-  await linkConfigurations(asset.links);
-
+  // install all related packages first
   if (force || !arePeerPackagesAutoInstalled()) {
     const { path } = await getPackage();
     await reifyDependencies({ root: dirname(path) });
   }
+
+  // then get the configuration assets from the preset
+  const asset = await getPresetAsset();
+  await linkConfigurations(asset.links);  
 }
 
 /**
