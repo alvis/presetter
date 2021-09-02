@@ -14,7 +14,8 @@
  */
 
 import { info } from 'console';
-import { symlink, unlink, writeJSON } from 'fs-extra';
+import { mkdir, symlink, unlink, writeJSON } from 'fs-extra';
+import { posix, sep } from 'path';
 import writePackage from 'write-pkg';
 
 import { reifyDependencies } from '#package';
@@ -38,39 +39,51 @@ jest.mock(
   () => ({
     __esModule: true,
     lstat: jest.fn(async (path: string): Promise<{}> => {
-      switch (path) {
-        case 'link-pointed-to-other':
+      // ensure that the paths below is compatible with windows
+      const { posix, relative, resolve, sep } = jest.requireActual('path');
+      const posixPath = relative(resolve('.'), path).split(sep).join(posix.sep);
+      switch (posixPath) {
+        case 'link/pointed/to/other':
           return {};
         default:
-          throw new Error();
+          throw new Error(`lstat: missing ${posixPath}`);
       }
     }),
+    mkdir: jest.fn(),
     pathExists: jest.fn(async (path: string): Promise<boolean> => {
-      switch (path) {
+      // ensure that the paths below is compatible with windows
+      const { posix, relative, resolve, sep } = jest.requireActual('path');
+      const posixPath = relative(resolve('.'), path).split(sep).join(posix.sep);
+      switch (posixPath) {
         case mockPresetterRC:
-        case 'link-rewritten-by-project':
+        case 'link/rewritten/by/project':
           return true;
         default:
           return false;
       }
     }),
     readFile: jest.fn(async (path: string): Promise<Buffer> => {
-      const filename = jest.requireActual('path').basename(path);
-      switch (filename) {
+      // ensure that the paths below is compatible with windows
+      const { posix, relative, resolve, sep } = jest.requireActual('path');
+      const posixPath = relative(resolve('.'), path).split(sep).join(posix.sep);
+      switch (posixPath) {
         case mockPresetterRC:
           return Buffer.from(JSON.stringify({ preset: 'preset' }));
         default:
-          throw new Error();
+          throw new Error(`readFile: missing ${posixPath}`);
       }
     }),
     readlink: jest.fn(async (path: string): Promise<string> => {
-      switch (path) {
-        case 'link-pointed-to-preset':
-          return 'path-to-preset';
-        case 'link-pointed-to-other':
-          return 'path-to-other';
+      // ensure that the paths below is compatible with windows
+      const { posix, relative, resolve, sep } = jest.requireActual('path');
+      const posixPath = relative(resolve('.'), path).split(sep).join(posix.sep);
+      switch (posixPath) {
+        case 'link/pointed/to/preset':
+          return 'path/to/preset'.split(posix.sep).join(sep);
+        case 'link/pointed/to/other':
+          return 'path/to/other'.split(posix.sep).join(sep);
         default:
-          throw new Error();
+          throw new Error(`readlink: missing ${posixPath}`);
       }
     }),
     symlink: jest.fn(),
@@ -92,9 +105,9 @@ jest.mock(
     __esModule: true,
     default: async () => ({
       links: {
-        'link-pointed-to-preset': 'path-to-preset',
-        'link-pointed-to-other': 'path-to-preset',
-        'link-rewritten-by-project': 'path-to-preset',
+        'link/pointed/to/preset': 'path/to/preset',
+        'link/pointed/to/other': 'path/to/preset',
+        'link/rewritten/by/project': 'path/to/preset',
       },
       scripts: { task: 'command' },
     }),
@@ -150,10 +163,10 @@ describe('fn:unsetPreset', () => {
 
   it('clean up any artifacts installed on the project root', async () => {
     expect(info).toHaveBeenCalledTimes(2);
-    expect(info).toHaveBeenCalledWith('removing link-pointed-to-preset');
-    expect(info).toHaveBeenCalledWith('skipping link-rewritten-by-project');
+    expect(info).toHaveBeenCalledWith('removing link/pointed/to/preset');
+    expect(info).toHaveBeenCalledWith('skipping link/rewritten/by/project');
     expect(unlink).toHaveBeenCalledTimes(1);
-    expect(unlink).toHaveBeenCalledWith('link-pointed-to-preset');
+    expect(unlink).toHaveBeenCalledWith('link/pointed/to/preset');
   });
 });
 
@@ -216,9 +229,9 @@ describe('fn:getPreset', () => {
   it('compute the preset configuration', async () => {
     expect(await getPresetAsset()).toEqual({
       links: {
-        'link-pointed-to-preset': 'path-to-preset',
-        'link-pointed-to-other': 'path-to-preset',
-        'link-rewritten-by-project': 'path-to-preset',
+        'link/pointed/to/preset': 'path/to/preset',
+        'link/pointed/to/other': 'path/to/preset',
+        'link/rewritten/by/project': 'path/to/preset',
       },
       scripts: { task: 'command' },
     });
@@ -235,10 +248,14 @@ describe('fn:bootstrapPreset', () => {
     });
 
     it('link up artifacts provided by the preset', async () => {
+      expect(mkdir).toHaveBeenCalledTimes(1);
+      expect(mkdir).toHaveBeenCalledWith('link/pointed/to', {
+        recursive: true,
+      });
       expect(symlink).toHaveBeenCalledTimes(1);
       expect(symlink).toHaveBeenCalledWith(
-        'path-to-preset',
-        'link-pointed-to-preset',
+        '../../../path/to/preset'.split(posix.sep).join(sep),
+        'link/pointed/to/preset',
       );
     });
 

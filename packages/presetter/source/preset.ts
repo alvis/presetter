@@ -16,6 +16,7 @@
 import { info } from 'console';
 import {
   lstat,
+  mkdir,
   pathExists,
   readFile,
   readlink,
@@ -192,7 +193,7 @@ export async function bootstrapPreset(options?: {
 
   // then get the configuration assets from the preset
   const asset = await getPresetAsset();
-  await linkConfigurations(asset.links);  
+  await linkConfigurations(asset.links);
 }
 
 /**
@@ -213,11 +214,13 @@ async function linkConfigurations(links: PresetAsset['links']): Promise<void> {
   const root = dirname(path);
 
   for (const [file, destination] of Object.entries(links)) {
+    const link = resolve(root, file);
+    const to = relative(dirname(link), destination);
+
     // create links only if the path really doesn't exist
-    if (!(await linkExists(file)) && !(await pathExists(file))) {
-      const link = resolve(root, file);
-      const to = relative(root, destination);
+    if (!(await linkExists(link)) && !(await pathExists(link))) {
       info(`linking ${link} => ${to}`);
+      await mkdir(dirname(link), { recursive: true });
       await symlink(to, link);
     }
   }
