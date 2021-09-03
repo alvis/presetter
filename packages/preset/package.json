@@ -63,6 +63,7 @@
     "@types/node": "*",
     "@typescript-eslint/eslint-plugin": "^4.0.0",
     "@typescript-eslint/parser": "^4.0.0",
+    "babel-plugin-module-resolver": "^4.0.0",
     "babel-plugin-transform-typescript-metadata": "0.3",
     "conventional-changelog-metahub": "^4.0.0",
     "cross-env": "^7.0.0",
