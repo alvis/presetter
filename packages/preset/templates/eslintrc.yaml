@@ -103,6 +103,8 @@ rules:
   '@typescript-eslint/array-type': # requires using either T[] or Array<T> depending on the type complexity
     - warn
     - default: array-simple
+  '@typescript-eslint/consistent-type-imports': # enforce import type whenever possible
+    - warn
   '@typescript-eslint/explicit-function-return-type': # tell us what is expected in return
     - warn
     - allowExpressions: true
