@@ -53,4 +53,4 @@ include:
   - '**/*.json'
   - '**/*.ts'
 exclude:
-  - ./node_modules/**
+  - '**/node_modules'
