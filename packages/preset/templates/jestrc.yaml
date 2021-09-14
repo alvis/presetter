@@ -16,6 +16,7 @@ globals:
   ignoreCoverageForAllDecorators: true
   ts-jest:
     babelConfig: true
+    isolatedModules: true
     tsconfig:
       allowJs: true
 moduleNameMapper:
