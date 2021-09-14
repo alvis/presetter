@@ -23,7 +23,7 @@ release: standard-version --preset metahub
 postrelease: shx mv package.json ~package.json && shx mv ~~package.json package.json
 setup: run-s setup:*
 setup:husky: (husky install && husky set .husky/pre-push "npx lint-staged --concurrent=false") || true
-stage: run-s "stage:* -- {@}" --
+stage: run-p "stage:* -- {@}" --
 stage:lint: run-s "lint:* -- {@}" --
 stage:coverage: run-s "test -- --maxWorkers=50% --coverage --collectCoverageFrom {@} --findRelatedTests {@}" --
 start: run-p "build:typescript -- -w" "build:types:* -- -w"

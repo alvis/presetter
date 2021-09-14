@@ -1,3 +1,2 @@
 '{source}/**/*.[tj]s':
-  - presetter run stage:lint
-  - presetter run stage:coverage
+  - presetter run stage
