@@ -87,9 +87,9 @@ rules:
   '@typescript-eslint/member-ordering': error # member group in a class should be in order
   '@typescript-eslint/naming-convention': error # use JS/TS naming convention
   header/header: # need a file header
-    - error
+    - warn
     - block
-    - - pattern: Copyright
+    - - pattern: summary
   capitalized-comments: # use lower case in comments
     - warn
     - never
