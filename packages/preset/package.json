@@ -81,7 +81,7 @@
     "lint-staged": "^11.0.0",
     "npm-run-all": "^4.0.0",
     "presetter": "*",
-    "prettier": "^2.0.0",
+    "prettier": "^2.4.0",
     "shx": "^0.3.0",
     "standard-version": "^9.0.0",
     "ts-jest": "^27.0.0",

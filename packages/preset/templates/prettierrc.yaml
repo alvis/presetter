@@ -1,5 +1,5 @@
 bracketSpacing: true
-jsxBracketSameLine: true
+bracketSameLine: true
 quoteProps: consistent
 semi: true
 singleQuote: true
