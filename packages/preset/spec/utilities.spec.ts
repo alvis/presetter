@@ -244,6 +244,12 @@ describe('fn:merge', () => {
     });
   });
 
+  it('deep merge a list', () => {
+    expect(merge({ a: [{ b: 0 }] }, { a: { 0: { c: 1 } } })).toEqual({
+      a: [{ b: 0, c: 1 }],
+    });
+  });
+
   it('deep extend a list', () => {
     expect(merge({ a: { b: [0] } }, { a: { b: [1] } })).toEqual({
       a: { b: [0, 1] },

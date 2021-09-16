@@ -260,7 +260,7 @@ function replace(source: unknown, replacement: unknown): any {
 function replaceArray(source: unknown[], replacement: unknown): any {
   if (isJSON(replacement)) {
     // overwrite a list
-    return source.map((value, index) => replacement[index] ?? value);
+    return source.map((value, index) => replace(value, replacement[index]));
   } else if (Array.isArray(replacement)) {
     // extend a list
     return [...source, ...replacement];
