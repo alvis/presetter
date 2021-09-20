@@ -283,12 +283,12 @@ describe('fn:getScripts', () => {
 describe('fn:setupPreset', () => {
   beforeAll(() => {
     jest.clearAllMocks();
-    setupPreset('preset');
+    setupPreset('preset1', 'preset2');
   });
 
   it('install presetter and the preset', async () => {
     expect(reifyDependencies).toBeCalledWith({
-      add: ['presetter', 'preset'],
+      add: ['presetter', 'preset1', 'preset2'],
       root: process.cwd(),
       saveAs: 'dev',
       lockFile: true,
@@ -299,7 +299,7 @@ describe('fn:setupPreset', () => {
     expect(writeJSON).toBeCalledWith(
       resolve('/project/.presetterrc.json'),
       {
-        preset: 'preset',
+        preset: ['preset1', 'preset2'],
       },
       { spaces: 2 },
     );

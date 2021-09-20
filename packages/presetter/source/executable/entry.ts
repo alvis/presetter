@@ -22,7 +22,7 @@ import { run } from '#run';
 import type { CommandModule } from 'yargs';
 
 const useCommand: CommandModule<Record<string, unknown>, { preset: string }> = {
-  command: 'use <preset>',
+  command: 'use <preset..>',
   describe: 'adopt the specified preset to the project',
   builder: (yargs) =>
     yargs
@@ -32,7 +32,7 @@ const useCommand: CommandModule<Record<string, unknown>, { preset: string }> = {
         description: 'proceed only if the specified file exists',
       })
       .help(),
-  handler: async (argv) => setupPreset(argv.preset),
+  handler: async (argv) => setupPreset(...argv.preset),
 };
 
 const bootstrapCommand: CommandModule<

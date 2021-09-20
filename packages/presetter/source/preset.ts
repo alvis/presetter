@@ -154,21 +154,25 @@ export async function getScripts(
 
 /**
  *  adopt a preset to the project
- * @param uri name or git url of the preset
+ * @param uris list of name or git url of the preset
  */
-export async function setupPreset(uri: string): Promise<void> {
+export async function setupPreset(...uris: string[]): Promise<void> {
   // install presetter & the preset
   const packages = await reifyDependencies({
     root: process.cwd(),
-    add: ['presetter', uri],
+    add: ['presetter', ...uris],
     saveAs: 'dev',
     lockFile: true,
   });
 
   // extract the name of the preset in case the supplied is a git url
-  const [{ name: preset }] = packages.filter(({ name, spec }) =>
-    [name, spec, `${name}@${spec}`].includes(uri),
-  );
+  const preset = uris.map((uri) => {
+    const [{ name }] = packages.filter(({ name, spec }) =>
+      [name, spec, `${name}@${spec}`].includes(uri),
+    );
+
+    return name;
+  });
 
   const context = await getContext();
   // update .presetterrc.json

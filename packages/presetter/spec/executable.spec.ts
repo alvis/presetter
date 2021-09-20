@@ -54,6 +54,13 @@ describe('fn:entry', () => {
 
       expect(setupPreset).toBeCalledWith('preset');
     });
+
+    it('take multiple presets', async () => {
+      process.argv = ['node', 'cli', 'use', 'preset1', 'preset2'];
+      await entry();
+
+      expect(setupPreset).toBeCalledWith('preset1', 'preset2');
+    });
   });
 
   describe('bootstrap', () => {
