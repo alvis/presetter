@@ -5,3 +5,4 @@ tsconfig.*
 !.presetterrc*
 .*rc.json
 .npmignore
+/generated

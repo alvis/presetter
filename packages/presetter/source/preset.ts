@@ -13,59 +13,27 @@
  * -------------------------------------------------------------------------
  */
 
-import { info } from 'console';
-import {
-  lstat,
-  mkdir,
-  pathExists,
-  readFile,
-  readlink,
-  symlink,
-  unlink,
-  writeJSON,
-} from 'fs-extra';
+import { pathExists, writeJSON } from 'fs-extra';
 import { defaultsDeep } from 'lodash';
-import { dirname, extname, relative, resolve } from 'path';
+import { dirname, resolve } from 'path';
 import resolvePackage from 'resolve-pkg';
 import writePackage from 'write-pkg';
 
+import { generateContent, getVariable } from './content';
+import { linkFiles, loadFile, unlinkFiles, writeFiles } from './io';
 import {
   arePeerPackagesAutoInstalled,
   getPackage,
   reifyDependencies,
 } from './package';
+import { filter, isJSON, merge, template } from './template';
 
-/** input for a preset configurator */
-
-export interface PresetArgs<
-  Config extends Record<string, unknown> = Record<string, unknown>,
-> {
-  /** information about the targeted project */
-  target: {
-    /** the package name defined in the targeted project's package.json */
-    name: string;
-    /** the root folder containing the targeted project's .presetterrc.json */
-    root: string;
-  };
-  /** the config field in .presetterrc.json */
-  config: Config;
-}
-
-/** expected return from the configuration function from the preset */
-export interface PresetAsset {
-  /** mapping of symlinks to configuration files provided by the preset */
-  links: Record<string, string>;
-  /** map of common scripts */
-  scripts: Record<string, string>;
-}
-
-/** data structure for .presetterrc */
-export interface PresetterConfig {
-  /** preset name */
-  preset: string;
-  /** configuration for customisation to be passed to the preset */
-  config?: Record<string, unknown>;
-}
+import type {
+  PresetAsset,
+  PresetContext,
+  PresetterConfig,
+  Template,
+} from './types';
 
 /** presetter configuration filename */
 const PRESETTERRC = '.presetterrc';
@@ -73,18 +41,22 @@ const PRESETTERRC = '.presetterrc';
 const JSON_INDENT = 2;
 
 /**
- * get the configuration file content
- * @param base the base directory in which a configuration file should be located
+ * get the .presetterrc configuration file content
+ * @param root the base directory in which the configuration file should be located
  * @returns content of the configuration file
  */
-export async function getConfiguration(base: string): Promise<PresetterConfig> {
+export async function getPresetterRC(root: string): Promise<PresetterConfig> {
   const potentialConfigFiles = ['', '.json'].map((ext) =>
-    resolve(base, `${PRESETTERRC}${ext}`),
+    resolve(root, `${PRESETTERRC}${ext}`),
   );
 
   for (const path of potentialConfigFiles) {
     if (await pathExists(path)) {
-      return readConfiguration(path);
+      // return the first customisation file found
+      const custom = await loadFile(path, 'json');
+      assertPresetterRC(custom);
+
+      return custom;
     }
   }
 
@@ -93,42 +65,91 @@ export async function getConfiguration(base: string): Promise<PresetterConfig> {
 }
 
 /**
- * convert the configuration file content based on the extension
- * @param path file path
- * @returns content of the configuration file
+ * check that the configuration is valid
+ * @param value content from a configuration file
  */
-async function readConfiguration(path: string): Promise<PresetterConfig> {
-  const content = (await readFile(path)).toString();
-
-  switch (extname(path)) {
-    case '.json':
-    default:
-      return JSON.parse(content) as PresetterConfig;
+export function assertPresetterRC(
+  value: unknown,
+): asserts value is PresetterConfig {
+  if (
+    !isJSON(value) ||
+    (typeof value['preset'] !== 'string' && !Array.isArray(value['preset']))
+  ) {
+    throw new Error(`invalid presetter configuration file`);
   }
 }
 
 /**
  * get the preset package name from package.json
+ * @param context context about the target project and any customisation in .presetterrc
  * @returns name of the preset package
  */
-export async function getPresetAsset(): Promise<PresetAsset> {
-  const {
-    json: { name },
-    path,
-  } = await getPackage();
-  const root = dirname(path);
-
+export async function getPresetAssets(
+  context: PresetContext,
+): Promise<PresetAsset[]> {
   // get the preset name
-  const { preset, config = {} } = await getConfiguration(root);
+  const { preset } = context.custom;
 
-  // get the preset
-  const module = resolvePackage(preset, { cwd: root });
+  const presets = Array.isArray(preset) ? preset : [preset];
 
-  const { default: configurator } = (await import(module!)) as {
-    default: (args: PresetArgs) => Promise<PresetAsset>;
-  };
+  return Promise.all(
+    presets.map(async (packageName) => {
+      try {
+        // get the preset
+        const module = resolvePackage(packageName, {
+          cwd: context.target.root,
+        });
 
-  return configurator({ target: { name, root }, config });
+        const { default: presetPresetAsset } = (await import(module!)) as {
+          default: (args: PresetContext) => Promise<PresetAsset>;
+        };
+
+        return await presetPresetAsset(context);
+      } catch {
+        throw new Error(`cannot resolve preset ${packageName}`);
+      }
+    }),
+  );
+}
+
+/**
+ * merge all scripts templates
+ * @param context context about the target project and any customisation in .presetterrc
+ * @returns scripts template
+ */
+export async function getScripts(
+  context: PresetContext,
+): Promise<Record<string, string>> {
+  const { custom } = context;
+
+  // get  assets from all configured presets
+  const assets = await getPresetAssets(context);
+
+  // compute the final variable to be used in the scripts template
+  const variable = getVariable(assets, context);
+
+  // load templated scripts from presets
+  const scripts = await Promise.all(
+    assets
+      .map((asset) => asset.scripts)
+      .filter((path): path is string => typeof path === 'string')
+      .map(
+        async (path) =>
+          (await loadFile(path, 'yaml')) as Record<string, string>,
+      ),
+  );
+
+  // merge all template scripts from presets
+  const scriptsFromPreset = scripts.reduce(
+    (merged, scripts) => merge(merged, scripts),
+    {},
+  );
+
+  // merge customised scripts with the preset scripts
+  const scriptsWithCustomConfig = merge(scriptsFromPreset, custom.scripts);
+
+  // replace the template variables
+  return template(scriptsWithCustomConfig, variable);
 }
 
 /**
@@ -149,28 +170,22 @@ export async function setupPreset(uri: string): Promise<void> {
     [name, spec, `${name}@${spec}`].includes(uri),
   );
 
-  const { path, json } = await getPackage();
-
+  const context = await getContext();
   // update .presetterrc.json
   await writeJSON(
-    resolve(dirname(path), `${PRESETTERRC}.json`),
+    resolve(context.target.root, `${PRESETTERRC}.json`),
     { preset },
-    {
-      spaces: JSON_INDENT,
-    },
+    { spaces: JSON_INDENT },
   );
 
-  // bootstrap the preset
-  const asset = await getPresetAsset();
-  await linkConfigurations(asset.links);
+  // bootstrap configuration files
+  await bootstrapContent(context);
 
   // insert post install script if not preset
   await writePackage(
-    dirname(path),
-    defaultsDeep(json, {
-      scripts: {
-        prepare: 'presetter bootstrap',
-      },
+    context.target.root,
+    defaultsDeep(context.target.package, {
+      scripts: { prepare: 'presetter bootstrap' },
     }),
   );
 }
@@ -185,82 +200,85 @@ export async function bootstrapPreset(options?: {
 }): Promise<void> {
   const { force = false } = { ...options };
 
+  const context = await getContext();
+
   // install all related packages first
   if (force || !arePeerPackagesAutoInstalled()) {
-    const { path } = await getPackage();
-    await reifyDependencies({ root: dirname(path) });
+    await reifyDependencies({ root: context.target.root });
   }
 
-  // then get the configuration assets from the preset
-  const asset = await getPresetAsset();
-  await linkConfigurations(asset.links);
+  // generate configurations
+  await bootstrapContent(context);
+}
+
+/**
+ * generate files from templates and link them to the target project root
+ * @param context context about the target project and any customisation in .presetterrc
+ */
+export async function bootstrapContent(context: PresetContext): Promise<void> {
+  const assets = await getPresetAssets(context);
+  const content = await generateContent(assets, context);
+  const filteredContent = filter(content, ...(context.custom.ignores ?? []));
+
+  const destinationMap = getDestinationMap(filteredContent, context);
+
+  await writeFiles(context.target.root, filteredContent, destinationMap);
+  await linkFiles(context.target.root, destinationMap);
 }
 
 /**
  * uninstall the preset from the current project root
  */
 export async function unsetPreset(): Promise<void> {
-  const preset = await getPresetAsset();
+  const context = await getContext();
+  const assets = await getPresetAssets(context);
+  const content = await generateContent(assets, context);
+  const configurationLink = getDestinationMap(content, context);
 
-  await Promise.all([unlinkConfigurations(preset)]);
+  await unlinkFiles(context.target.root, configurationLink);
 }
 
 /**
- * link configuration files from the preset module to the project root
- * @param links list of symlinks to configuration files provided by the preset
+ * get context about the target project and any customisation in .presetterrc
+ * @returns context about the target project and any customisation in .presetterrc
  */
-async function linkConfigurations(links: PresetAsset['links']): Promise<void> {
-  const { path } = await getPackage();
+export async function getContext(): Promise<PresetContext> {
+  const { json, path } = await getPackage();
   const root = dirname(path);
+  const target = { name: json.name, root, package: json };
+  const custom = await getPresetterRC(root);
 
-  for (const [file, destination] of Object.entries(links)) {
-    const link = resolve(root, file);
-    const to = relative(dirname(link), destination);
-
-    // create links only if the path really doesn't exist
-    if (!(await linkExists(link)) && !(await pathExists(link))) {
-      info(`linking ${link} => ${to}`);
-      await mkdir(dirname(link), { recursive: true });
-      await symlink(to, link);
-    }
-  }
+  return {
+    target,
+    custom,
+  };
 }
 
 /**
- * check if path is a symlink
- * @param path file path to be checked
- * @returns true if it is a symlink
+ * compute the output paths of all configuration files to be generated
+ * @param template resolved template map
+ * @param context resolved context about the target project and customisation
+ * @returns mapping of configuration symlinks to its real path
  */
-async function linkExists(path: string): Promise<boolean> {
-  try {
-    // NOTE use lstat instead of pathExists as it checks the link not the linked path
-    await lstat(path);
+export function getDestinationMap(
+  template: Record<string, Template>,
+  context: PresetContext,
+): Record<string, string> {
+  const {
+    custom: { noSymlinks },
+  } = context;
+  const outDir = resolve(__dirname, '..', 'generated', context.target.name);
 
-    return true;
-  } catch {
-    return false;
-  }
-}
+  const relativePaths = [...Object.keys(template)];
 
-/**
- * unlink configuration files from the preset module from the project root
- * @param preset package name of the preset
- */
-async function unlinkConfigurations(preset: PresetAsset): Promise<void> {
-  const { path } = await getPackage();
-  const root = dirname(path);
-
-  for (const [name, destination] of Object.entries(preset.links)) {
-    try {
-      const link = await readlink(name);
-      const to = relative(root, destination);
-
-      if (link === to) {
-        info(`removing ${name}`);
-        await unlink(resolve(root, name));
-      }
-    } catch (cause) {
-      info(`skipping ${name}`);
-    }
-  }
+  return Object.fromEntries([
+    ...relativePaths.map((relativePath): [string, string] => [
+      relativePath,
+      resolve(
+        // output on the project root if it's specified as not a symlink
+        noSymlinks?.includes(relativePath) ? context.target.root : outDir,
+        relativePath,
+      ),
+    ]),
+  ]);
 }

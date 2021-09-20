@@ -13,81 +13,45 @@
  * -------------------------------------------------------------------------
  */
 
-import { info } from 'console';
-import { mkdir, symlink, unlink, writeJSON } from 'fs-extra';
-import { posix, sep } from 'path';
+import { writeJSON } from 'fs-extra';
+import { resolve } from 'path';
 import writePackage from 'write-pkg';
 
 import { reifyDependencies } from '#package';
 import {
+  assertPresetterRC,
   bootstrapPreset,
-  getConfiguration,
-  getPresetAsset,
+  bootstrapContent,
+  getDestinationMap,
+  getPresetAssets,
+  getPresetterRC,
+  getScripts,
   setupPreset,
   unsetPreset,
+  getContext,
 } from '#preset';
 
-jest.mock('console', () => ({
-  __esModule: true,
-  info: jest.fn(),
-}));
+import { linkFiles, unlinkFiles, writeFiles } from '#io';
 
-// file name of the configuration file, null for missing file
-let mockPresetterRC: string | null = '.presetterrc';
+import type { PresetContext } from '#types';
+
 jest.mock(
   'fs-extra',
   () => ({
     __esModule: true,
-    lstat: jest.fn(async (path: string): Promise<{}> => {
-      // ensure that the paths below is compatible with windows
-      const { posix, relative, resolve, sep } = jest.requireActual('path');
-      const posixPath = relative(resolve('.'), path).split(sep).join(posix.sep);
-      switch (posixPath) {
-        case 'link/pointed/to/other':
-          return {};
-        default:
-          throw new Error(`lstat: missing ${posixPath}`);
-      }
-    }),
-    mkdir: jest.fn(),
     pathExists: jest.fn(async (path: string): Promise<boolean> => {
       // ensure that the paths below is compatible with windows
       const { posix, relative, resolve, sep } = jest.requireActual('path');
-      const posixPath = relative(resolve('.'), path).split(sep).join(posix.sep);
+      const posixPath = relative(resolve('/'), path).split(sep).join(posix.sep);
       switch (posixPath) {
-        case mockPresetterRC:
+        case `missing-preset/.presetterrc`:
+        case `project/.presetterrc`:
         case 'link/rewritten/by/project':
           return true;
         default:
           return false;
       }
     }),
-    readFile: jest.fn(async (path: string): Promise<Buffer> => {
-      // ensure that the paths below is compatible with windows
-      const { posix, relative, resolve, sep } = jest.requireActual('path');
-      const posixPath = relative(resolve('.'), path).split(sep).join(posix.sep);
-      switch (posixPath) {
-        case mockPresetterRC:
-          return Buffer.from(JSON.stringify({ preset: 'preset' }));
-        default:
-          throw new Error(`readFile: missing ${posixPath}`);
-      }
-    }),
-    readlink: jest.fn(async (path: string): Promise<string> => {
-      // ensure that the paths below is compatible with windows
-      const { posix, relative, resolve, sep } = jest.requireActual('path');
-      const posixPath = relative(resolve('.'), path).split(sep).join(posix.sep);
-      switch (posixPath) {
-        case 'link/pointed/to/preset':
-          return 'path/to/preset'.split(posix.sep).join(sep);
-        case 'link/pointed/to/other':
-          return 'path/to/other'.split(posix.sep).join(sep);
-        default:
-          throw new Error(`readlink: missing ${posixPath}`);
-      }
-    }),
-    symlink: jest.fn(),
-    unlink: jest.fn(),
     writeJSON: jest.fn(),
   }),
   { virtual: true },
@@ -96,7 +60,15 @@ jest.mock(
 jest.mock('path', () => ({
   __esModule: true,
   ...jest.requireActual<object>('path'),
-  resolve: jest.fn((_, path: string): string => path),
+  resolve: jest.fn((...pathSegments: string[]): string => {
+    const { relative, resolve } = jest.requireActual<any>('path');
+    const relativePath = relative(
+      resolve(__dirname, '..'),
+      resolve(...pathSegments),
+    );
+
+    return resolve('/', relativePath);
+  }),
 }));
 
 jest.mock(
@@ -104,12 +76,37 @@ jest.mock(
   () => ({
     __esModule: true,
     default: async () => ({
-      links: {
-        'link/pointed/to/preset': 'path/to/preset',
-        'link/pointed/to/other': 'path/to/preset',
-        'link/rewritten/by/project': 'path/to/preset',
+      // an empty preset
+    }),
+  }),
+  { virtual: true },
+);
+
+jest.mock(
+  'no-symlink-preset',
+  () => ({
+    __esModule: true,
+    default: async () => ({
+      template: {
+        'path/to/file': '/path/to/template',
       },
-      scripts: { task: 'command' },
+      scripts: '/path/to/no-symlink-preset/scripts.yaml',
+    }),
+  }),
+  { virtual: true },
+);
+
+jest.mock(
+  'symlink-only-preset',
+  () => ({
+    __esModule: true,
+    default: async () => ({
+      template: {
+        'link/pointed/to/preset': '/path/to/template',
+        'link/pointed/to/other': '/path/to/template',
+        'link/rewritten/by/project': '/path/to/template',
+      },
+      scripts: '/path/to/symlink-only-preset/scripts.yaml',
     }),
   }),
   { virtual: true },
@@ -125,13 +122,44 @@ jest.mock('write-pkg', () => ({
   default: jest.fn(),
 }));
 
+// file name of the configuration file, null for missing file
+jest.mock('#io', () => ({
+  __esModule: true,
+  linkFiles: jest.fn(),
+  loadFile: jest.fn((path: string) => {
+    // ensure that the paths below is compatible with windows
+    const { posix, relative, resolve, sep } = jest.requireActual('path');
+    const posixPath = relative(resolve('/'), path).split(sep).join(posix.sep);
+    switch (posixPath) {
+      case 'path/to/template':
+        return { template: true };
+      case 'path/to/no-symlink-preset/scripts.yaml':
+        return { task: 'command_from_file' };
+      case 'path/to/symlink-only-preset/scripts.yaml':
+        return { task: 'command_from_symlink' };
+      case `missing-preset/.presetterrc`:
+        return { preset: 'missing-preset' };
+      case `project/.presetterrc`:
+        return {
+          preset: ['no-symlink-preset', 'symlink-only-preset'],
+          noSymlinks: ['path/to/file'],
+        };
+      default:
+        throw new Error(`loadFile: missing ${path}`);
+    }
+  }),
+  unlinkFiles: jest.fn(),
+  writeFiles: jest.fn(),
+}));
+
 let mockArePeerPackagesAutoInstalled = false;
 jest.mock('#package', () => ({
   __esModule: true,
   arePeerPackagesAutoInstalled: () => mockArePeerPackagesAutoInstalled,
   getPackage: jest.fn(async (root) => {
     switch (root) {
-      case 'preset':
+      case 'no-symlink-preset':
+      case 'symlink-only-preset':
         return {
           json: {
             peerDependencies: {
@@ -141,7 +169,7 @@ jest.mock('#package', () => ({
         };
       default:
         return {
-          path: './package.json',
+          path: '/project/package.json',
           json: {
             name: 'client',
             scripts: {
@@ -158,15 +186,97 @@ jest.mock('#package', () => ({
   ),
 }));
 
-describe('fn:unsetPreset', () => {
-  beforeAll(unsetPreset);
+const defaultContext: PresetContext = {
+  target: {
+    name: 'client',
+    root: '/project',
+    package: {},
+  },
+  custom: {
+    preset: ['no-symlink-preset', 'symlink-only-preset'],
+  },
+};
 
-  it('clean up any artifacts installed on the project root', async () => {
-    expect(info).toHaveBeenCalledTimes(2);
-    expect(info).toHaveBeenCalledWith('removing link/pointed/to/preset');
-    expect(info).toHaveBeenCalledWith('skipping link/rewritten/by/project');
-    expect(unlink).toHaveBeenCalledTimes(1);
-    expect(unlink).toHaveBeenCalledWith('link/pointed/to/preset');
+describe('fn:getPresetterRC', () => {
+  it('accept an alternative file extension', async () => {
+    expect(await getPresetterRC('/project')).toEqual({
+      preset: ['no-symlink-preset', 'symlink-only-preset'],
+      noSymlinks: ['path/to/file'],
+    });
+  });
+
+  it('use the default preset when no configuration file is found', async () => {
+    expect(await getPresetterRC('/missing-presetterrc')).toEqual({
+      preset: 'presetter-preset',
+    });
+  });
+});
+
+describe('fn:assertPresetterRC', () => {
+  it('throw an error if the given value is not an object at all', () => {
+    expect(() => assertPresetterRC(null)).toThrow();
+  });
+
+  it('throw an error if the given configuration misses the preset field', () => {
+    expect(() => assertPresetterRC({})).toThrow();
+  });
+
+  it('throw an error if the preset field does not contain a preset name', () => {
+    expect(() =>
+      assertPresetterRC({ preset: { not: { a: { name: true } } } }),
+    ).toThrow();
+  });
+
+  it('pass if a valid preset is given', () => {
+    expect(() => assertPresetterRC({ preset: 'preset' })).not.toThrow();
+  });
+
+  it('pass if multiple valid presets are given', () => {
+    expect(() =>
+      assertPresetterRC({ preset: ['preset1', 'preset2'] }),
+    ).not.toThrow();
+  });
+});
+
+describe('fn:getPresetAssets', () => {
+  it('compute the preset configuration', async () => {
+    expect(await getPresetAssets(defaultContext)).toEqual([
+      {
+        template: {
+          'path/to/file': '/path/to/template',
+        },
+        scripts: '/path/to/no-symlink-preset/scripts.yaml',
+      },
+      {
+        template: {
+          'link/pointed/to/preset': '/path/to/template',
+          'link/pointed/to/other': '/path/to/template',
+          'link/rewritten/by/project': '/path/to/template',
+        },
+        scripts: '/path/to/symlink-only-preset/scripts.yaml',
+      },
+    ]);
+  });
+
+  it('warn about any missing presets', async () => {
+    await expect(() =>
+      getPresetAssets({
+        target: {
+          name: 'client',
+          root: '/missing-preset',
+          package: {},
+        },
+        custom: { preset: 'missing-preset' },
+      }),
+    ).rejects.toThrow();
+  });
+});
+
+describe('fn:getScripts', () => {
+  it('combine script templates from presets', async () => {
+    const scripts = await getScripts(defaultContext);
+
+    expect(scripts).toEqual({ task: 'command_from_symlink' });
   });
 });
 
@@ -187,7 +297,7 @@ describe('fn:setupPreset', () => {
 
   it('write to .presetter', async () => {
     expect(writeJSON).toBeCalledWith(
-      '.presetterrc.json',
+      resolve('/project/.presetterrc.json'),
       {
         preset: 'preset',
       },
@@ -200,40 +310,13 @@ describe('fn:setupPreset', () => {
   });
 
   it('merge the bootstrapping script to package.json', async () => {
-    expect(writePackage).toBeCalledWith('.', {
+    expect(writePackage).toBeCalledWith('/project', {
       name: 'client',
       scripts: {
         prepare: 'presetter bootstrap',
         test: 'test',
       },
       dependencies: {},
-    });
-  });
-});
-
-describe('fn:getConfiguration', () => {
-  afterEach(() => (mockPresetterRC = '.presetterrc'));
-
-  it('accept an alternative file extension', async () => {
-    mockPresetterRC = '.presetterrc.json';
-    expect(await getConfiguration('.')).toEqual({ preset: 'preset' });
-  });
-
-  it('use the default preset when no configuration file is found', async () => {
-    mockPresetterRC = null;
-    expect(await getConfiguration('.')).toEqual({ preset: 'presetter-preset' });
-  });
-});
-
-describe('fn:getPreset', () => {
-  it('compute the preset configuration', async () => {
-    expect(await getPresetAsset()).toEqual({
-      links: {
-        'link/pointed/to/preset': 'path/to/preset',
-        'link/pointed/to/other': 'path/to/preset',
-        'link/rewritten/by/project': 'path/to/preset',
-      },
-      scripts: { task: 'command' },
     });
   });
 });
@@ -245,18 +328,6 @@ describe('fn:bootstrapPreset', () => {
 
       mockArePeerPackagesAutoInstalled = false;
       await bootstrapPreset();
-    });
-
-    it('link up artifacts provided by the preset', async () => {
-      expect(mkdir).toHaveBeenCalledTimes(1);
-      expect(mkdir).toHaveBeenCalledWith('link/pointed/to', {
-        recursive: true,
-      });
-      expect(symlink).toHaveBeenCalledTimes(1);
-      expect(symlink).toHaveBeenCalledWith(
-        '../../../path/to/preset'.split(posix.sep).join(sep),
-        'link/pointed/to/preset',
-      );
     });
 
     it('install packages specified by the preset', async () => {
@@ -286,6 +357,154 @@ describe('fn:bootstrapPreset', () => {
       await bootstrapPreset();
 
       expect(reifyDependencies).not.toHaveBeenCalled();
+    });
+  });
+});
+
+describe('fn:bootstrapContent', () => {
+  it('write configuration and link symlinks', async () => {
+    await bootstrapContent({
+      ...defaultContext,
+      custom: { ...defaultContext.custom, noSymlinks: ['path/to/file'] },
+    });
+
+    expect(writeFiles).toBeCalledWith(
+      '/project',
+      {
+        'link/pointed/to/other': { template: true },
+        'link/pointed/to/preset': { template: true },
+        'link/rewritten/by/project': { template: true },
+        'path/to/file': { template: true },
+      },
+      {
+        'link/pointed/to/other': resolve(
+          '/generated/client/link/pointed/to/other',
+        ),
+        'link/pointed/to/preset': resolve(
+          '/generated/client/link/pointed/to/preset',
+        ),
+        'link/rewritten/by/project': resolve(
+          '/generated/client/link/rewritten/by/project',
+        ),
+        'path/to/file': resolve('/project/path/to/file'),
+      },
+    );
+    expect(linkFiles).toBeCalledWith('/project', {
+      'path/to/file': resolve('/project/path/to/file'),
+      'link/pointed/to/preset': resolve(
+        '/generated/client/link/pointed/to/preset',
+      ),
+      'link/pointed/to/other': resolve(
+        '/generated/client/link/pointed/to/other',
+      ),
+      'link/rewritten/by/project': resolve(
+        '/generated/client/link/rewritten/by/project',
+      ),
+    });
+  });
+
+  it('ignore configuration', async () => {
+    await bootstrapContent({
+      ...defaultContext,
+      custom: {
+        ...defaultContext.custom,
+        config: {
+          'path/to/file': { name: 'path/to/file' },
+          'link/pointed/to/preset': { name: 'link/pointed/to/preset' },
+          'link/pointed/to/other': { name: 'link/pointed/to/other' },
+          'link/rewritten/by/project': { name: 'link/rewritten/by/project' },
+        },
+        noSymlinks: ['path/to/file'],
+        ignores: [
+          'link/pointed/to/preset',
+          'link/pointed/to/other',
+          'link/rewritten/by/project',
+          { 'path/to/file': ['name'] },
+        ],
+      },
+    });
+
+    expect(writeFiles).toBeCalledWith(
+      '/project',
+      { 'path/to/file': { template: true } },
+      { 'path/to/file': resolve('/project/path/to/file') },
+    );
+    expect(linkFiles).toBeCalledWith('/project', {
+      'path/to/file': resolve('/project/path/to/file'),
+    });
+  });
+});
+
+describe('fn:unsetPreset', () => {
+  beforeAll(unsetPreset);
+
+  it('clean up any artifacts installed on the project root', async () => {
+    expect(unlinkFiles).toHaveBeenCalledWith('/project', {
+      'link/pointed/to/other': resolve(
+        '/generated/client/link/pointed/to/other',
+      ),
+      'link/pointed/to/preset': resolve(
+        '/generated/client/link/pointed/to/preset',
+      ),
+      'link/rewritten/by/project': resolve(
+        '/generated/client/link/rewritten/by/project',
+      ),
+      'path/to/file': resolve('/project/path/to/file'),
+    });
+  });
+});
+
+describe('fn:getContext', () => {
+  it('compute the current context', async () => {
+    expect(await getContext()).toEqual({
+      target: {
+        name: 'client',
+        root: '/project',
+        package: {
+          dependencies: {},
+          name: 'client',
+          scripts: {
+            test: 'test',
+          },
+        },
+      },
+      custom: {
+        preset: ['no-symlink-preset', 'symlink-only-preset'],
+        noSymlinks: ['path/to/file'],
+      },
+    });
+  });
+});
+
+describe('fn:getDestinationMap', () => {
+  it('compute the correct output paths', async () => {
+    expect(
+      await getDestinationMap(
+        {
+          config: '/path/to/template',
+        },
+        defaultContext,
+      ),
+    ).toEqual({
+      config: resolve('/generated/client/config'),
+    });
+  });
+
+  it('compute the correct output paths', async () => {
+    expect(
+      await getDestinationMap(
+        {
+          noSymlink: '/path/to/template',
+          symlink: '/path/to/template',
+        },
+        {
+          ...defaultContext,
+          custom: { ...defaultContext.custom, noSymlinks: ['noSymlink'] },
+        },
+      ),
+    ).toEqual({
+      noSymlink: resolve('/project/noSymlink'),
+      symlink: resolve('/generated/client/symlink'),
     });
   });
 });

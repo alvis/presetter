@@ -2,7 +2,7 @@
 
 ![Logo](https://github.com/alvis/presetter/raw/master/logo.svg)
 
-🏄🏻 _A collection of opinionated configurations for a NodeJS project in typescript for presetter_
+🏄🏻 _A collection of opinionated configurations for a typescript project for presetter_
 
 •   [Quick Start](#quick-start)   •   [Project Structure](#project-structure)   •   [Customisation](#customisation)   •   [Scripts](#script-template-summary)   •
 
@@ -78,17 +78,17 @@ Implement your business logic under `source` and prepare tests under `spec`.
 
 ## Customisation
 
-By default, this preset exports a handy configuration set for a NodeJS project written in typescript.
+By default, this preset exports a handy configuration for rollup for a typescript project.
 But you can further customise (either extending or replacing) the configuration by specifying the change in the config file (`.presetterrc` or `.presetterrc.json`).
 
-These settings are available in the `config` field in the config file. For directories, the setting is specified in the `directory` field, while configuration for other tools like babel and eslint are available in corresponding fields.
+These settings are available in the `config` field in the config file. For directories, the setting is specified in the `variable` field.
 
-The structure of `.presetterrc` must be the following:
+The structure of `.presetterrc` should follow the interface below:
 
 ```ts
 interface PresetterRC {
   /** name of the preset e.g. presetter-preset */
-  name: string;
+  name: string | string[];
   /** additional configuration passed to the preset for generating the configuration files */
   config?: {
     /** configuration to be merged with .babelrc */
@@ -107,19 +107,19 @@ interface PresetterRC {
     tsconfig?: Record<string, unknown>;
     /** a list of config files not to be created */
     ignores?: string[];
-    /** relative path to root directories for different file types */
-    directory?: {
-      /** the directory containing the whole repository (default: .) */
-      root?: string;
-      /** the directory containing all source code (default: source) */
-      source?: string;
-      /** the directory containing all typing files (default: types) */
-      types?: string;
-      /** the directory containing all output tile (default: source) */
-      output?: string;
-      /** the directory containing all test files (default: spec) */
-      test?: string;
-    };
+  };
+  /** relative path to root directories for different file types */
+  variable?: {
+    /** the directory containing the whole repository (default: .) */
+    root?: string;
+    /** the directory containing all source code (default: source) */
+    source?: string;
+    /** the directory containing all typing files (default: types) */
+    types?: string;
+    /** the directory containing all output tile (default: source) */
+    output?: string;
+    /** the directory containing all test files (default: spec) */
+    test?: string;
   };
 }
 ```
@@ -137,4 +137,4 @@ interface PresetterRC {
 
 ## Notes
 
-- Since git 2.32 ([released on 2020-06-06](https://lore.kernel.org/lkml/xmqqa6o3xj2e.fsf@gitster.g/T/#u)), git no longer follows `.gitignore` as a symlink. Therefore, the packaged `.gitignore` will be ignored. To make it work again, overwrite the `.gitignore` with a file list the standard way. You may want to copy [our template here](https://raw.githubusercontent.com/alvis/presetter/master/packages/preset/templates/gitignore).
+- Since git 2.32 ([released on 2020-06-06](https://lore.kernel.org/lkml/xmqqa6o3xj2e.fsf@gitster.g/T/#u)), git no longer follows `.gitignore` as a symlink. Therefore, the packaged `.gitignore` will no longer symlinked but created on the root directory of the project instead.

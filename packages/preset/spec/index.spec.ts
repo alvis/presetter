@@ -13,95 +13,26 @@
  * -------------------------------------------------------------------------
  */
 
-import { readdir } from 'fs-extra';
+import { readdirSync } from 'fs';
 import { resolve } from 'path';
 
-import configure from '#index';
+import getPresetAsset from '#index';
 
-const mockLoadYAML = jest.fn(async (_template: string) => ({ yaml: true }));
-const mockLoadText = jest.fn(async (_template: string) => 'text');
-jest.mock('#utilities', () => ({
-  _esModule: true,
-  ...jest.requireActual('#utilities'),
-  createLinker: jest.fn(() => ({
-    json: async (template: string) => {
-      await mockLoadYAML(template);
-      return template;
-    },
-    list: async (template: string) => {
-      await mockLoadText(template);
-      return template;
-    },
-    text: async (template: string) => {
-      await mockLoadText(template);
-      return template;
-    },
-  })),
-  loadYAML: jest.fn().mockImplementation((template) => mockLoadYAML(template)),
-  loadText: jest.fn().mockImplementation((template) => mockLoadText(template)),
+jest.mock('path', () => ({
+  __esModule: true,
+  ...jest.requireActual('path'),
+  resolve: jest.fn(jest.requireActual('path').resolve),
 }));
 
-describe('fn:configure', () => {
-  beforeEach(jest.clearAllMocks);
-  const target = { name: 'project', root: '/path/to/project' };
-
-  it('export preset configuration', async () => {
-    const expected = {
-      links: {
-        '.babelrc.json': 'babelrc',
-        '.eslintrc.json': 'eslintrc',
-        '.jestrc.json': 'jestrc',
-        '.lintstagedrc.json': 'lintstagedrc',
-        '.npmignore': 'npmignore',
-        '.prettierrc.json': 'prettierrc',
-        'tsconfig.build.json': 'tsconfig.build',
-        'tsconfig.json': 'tsconfig',
-      },
-      scripts: {
-        yaml: true,
-      },
-    };
-
-    expect(await configure({ target, config: {} })).toEqual(expected);
-  });
-
-  it('ignore specified files', async () => {
-    expect(
-      await configure({
-        config: {
-          ignores: [
-            '.babelrc.json',
-            '.eslintrc.json',
-            '.jestrc.json',
-            '.lintstagedrc.json',
-            '.npmignore',
-            '.prettierrc.json',
-            'tsconfig.build.json',
-          ],
-        },
-        target,
-      }),
-    ).toEqual({
-      links: { 'tsconfig.json': 'tsconfig' },
-      scripts: { yaml: true },
-    });
-  });
-
+describe('fn:getPresetAsset', () => {
   it('use all templates', async () => {
-    await configure({ config: {}, target });
+    await getPresetAsset();
 
-    const files = await readdir(resolve(__dirname, '..', 'templates'));
-    const yamlFiles = files.filter((file) => file.endsWith('.yaml'));
-    const textFiles = files.filter((file) => !file.endsWith('.yaml'));
+    const TEMPLATES = resolve(__dirname, '..', 'templates');
+    const allTemplates = await readdirSync(TEMPLATES);
 
-    expect(mockLoadText).toHaveBeenCalledTimes(textFiles.length);
-    for (const file of textFiles) {
-      expect(mockLoadText).toHaveBeenCalledWith(file);
-    }
-
-    expect(mockLoadYAML).toHaveBeenCalledTimes(yamlFiles.length);
-    for (const file of yamlFiles) {
-      expect(mockLoadYAML).toHaveBeenCalledWith(file.replace(/\.yaml$/, ''));
+    for (const path of allTemplates) {
+      expect(resolve).toBeCalledWith(TEMPLATES, path);
     }
   });
 });

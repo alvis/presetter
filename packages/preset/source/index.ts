@@ -5,7 +5,7 @@
  * See the LICENSE file for details.
  * -------------------------------------------------------------------------
  *
- * @summary
+ * @summary   Collection of preset assets
  *
  * @author    Alvis HT Tang <alvis@hilbert.space>
  * @license   MIT
@@ -15,23 +15,11 @@
 
 import { resolve } from 'path';
 
-import {
-  createLinker,
-  filterLinks,
-  loadYAML,
-  merge,
-  template,
-} from './utilities';
-
-export * from './utilities';
-
-// paths to directories
-const ROOT = resolve(__dirname, '..');
-const TEMPLATES = resolve(ROOT, 'templates');
-const DISTRIBUTION = resolve(ROOT, 'dist');
+// paths to the template directory
+const TEMPLATES = resolve(__dirname, '..', 'templates');
 
 /** config for this preset */
-export interface PresetConfig {
+export type PresetConfig = {
   /** configuration to be merged with .babelrc */
   babel?: Record<string, unknown>;
   /** configuration to be merged with .eslintrc */
@@ -46,47 +34,33 @@ export interface PresetConfig {
   prettier?: Record<string, unknown>;
   /** configuration to be merged with tsconfig.json */
   tsconfig?: Record<string, unknown>;
-  /** a list of files not to be linked */
-  ignores?: string[];
-  /** extra scripts available */
-  scripts?: Record<string, string>;
-  /** relative path to root directories for different file types */
-  directory?: {
-    /** the directory containing the whole repository (default: .) */
-    root?: string;
-    /** the directory containing all source code (default: source) */
-    source?: string;
-    /** the directory containing all extra typing files (default: types) */
-    types?: string;
-    /** the directory containing all the compiled files (default: lib) */
-    output?: string;
-    /** the directory containing all test files (default: spec) */
-    test?: string;
-  };
-}
+};
 
-/** input for a preset configurator */
-export interface PresetArgs<Config extends PresetConfig = PresetConfig> {
-  /** information about the targeted project */
-  target: {
-    /** the package name defined in the targeted project's package.json */
-    name: string;
-    /** the root folder containing the targeted project's .presetterrc.json */
-    root: string;
-  };
-  /** the config field in .presetterrc.json */
-  config: Config;
-}
+/** List of configurable variables */
+export type Variable = {
+  /** the directory containing the whole repository (default: .) */
+  root: string;
+  /** the directory containing all source code (default: source) */
+  source: string;
+  /** the directory containing all extra typing files (default: types) */
+  types: string;
+  /** the directory containing all the compiled files (default: lib) */
+  output: string;
+  /** the directory containing all test files (default: spec) */
+  test: string;
+};
 
-/** detail of linked configuration files and script templates  */
+/** detail of linked/created configuration files and script templates  */
 export interface PresetAsset {
-  /** mapping of symlinks to configuration files provided by the preset */
-  links: Record<string, string>;
-  /** map of common scripts */
-  scripts: Record<string, string>;
+  /** mapping of files to be generated to its configuration template files (key: file path relative to the target project's root, value: template path) */
+  template?: Record<string, string>;
+  /** path to the scripts template */
+  scripts?: string;
+  /** default variables */
+  variable?: Variable;
 }
 
-export const DEFAULT_DIRECTORY = {
+export const DEFAULT_VARIABLE: Variable = {
   root: '.',
   source: 'source',
   types: 'types',
@@ -95,33 +69,22 @@ export const DEFAULT_DIRECTORY = {
 };
 
 /**
- * get a list of presets
- * @param args options for the configurator
- * @returns preset list
+ * get the list of templates provided by this preset
+ * @returns list of preset templates
  */
-export default async function (args: PresetArgs): Promise<PresetAsset> {
-  const { config, target } = args;
-  const parameter = { ...DEFAULT_DIRECTORY, ...config.directory };
-
-  const outDir = resolve(DISTRIBUTION, target.name);
-  const { json, list } = createLinker({ base: TEMPLATES, outDir, parameter });
-  const defaultScripts = await loadYAML<string>('scripts', TEMPLATES);
-  const scripts = template(merge(defaultScripts, config.scripts), parameter);
-
+export default async function (): Promise<PresetAsset> {
   return {
-    links: filterLinks(
-      {
-        '.babelrc.json': await json('babelrc', config.babel),
-        '.eslintrc.json': await json('eslintrc', config.eslint),
-        '.jestrc.json': await json('jestrc', config.jest),
-        '.lintstagedrc.json': await json('lintstagedrc', config.lintstaged),
-        '.npmignore': await list('npmignore', config.npmignore),
-        '.prettierrc.json': await json('prettierrc', config.prettier),
-        'tsconfig.json': await json('tsconfig', config.tsconfig),
-        'tsconfig.build.json': await json('tsconfig.build'),
-      },
-      config.ignores,
-    ),
-    scripts,
+    template: {
+      '.babelrc.json': resolve(TEMPLATES, 'babelrc.yaml'),
+      '.eslintrc.json': resolve(TEMPLATES, 'eslintrc.yaml'),
+      '.jestrc.json': resolve(TEMPLATES, 'jestrc.yaml'),
+      '.lintstagedrc.json': resolve(TEMPLATES, 'lintstagedrc.yaml'),
+      '.npmignore': resolve(TEMPLATES, 'npmignore'),
+      '.prettierrc.json': resolve(TEMPLATES, 'prettierrc.yaml'),
+      'tsconfig.json': resolve(TEMPLATES, 'tsconfig.yaml'),
+      'tsconfig.build.json': resolve(TEMPLATES, 'tsconfig.build.yaml'),
+    },
+    scripts: resolve(TEMPLATES, 'scripts.yaml'),
+    variable: DEFAULT_VARIABLE,
   };
 }
