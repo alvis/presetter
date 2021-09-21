@@ -165,8 +165,8 @@ function replaceArray(source: unknown[], replacement: unknown): any {
     // overwrite a list
     return source.map((value, index) => replace(value, replacement[index]));
   } else if (Array.isArray(replacement)) {
-    // extend a list
-    return [...source, ...replacement];
+    // extend a list uniquely
+    return [...new Set([...source, ...replacement]).values()];
   } else {
     // primitive values
     return replacement ?? source;

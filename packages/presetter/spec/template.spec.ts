@@ -87,10 +87,6 @@ describe('fn:merge', () => {
     expect(merge({ a: 0 }, { a: 1 })).toEqual({ a: 1 });
   });
 
-  it('attach to a list', () => {
-    expect(merge({ a: [0] }, { a: [1] })).toEqual({ a: [0, 1] });
-  });
-
   it('overwrite a list', () => {
     expect(merge({ a: [0, 1] }, { a: { 0: 1 } })).toEqual({ a: [1, 1] });
   });
@@ -122,6 +118,10 @@ describe('fn:merge', () => {
     expect(merge({ a: { b: [0] } }, { a: { b: [1] } })).toEqual({
       a: { b: [0, 1] },
     });
+  });
+
+  it('deep merge a list uniquely', () => {
+    expect(merge({ a: [0] }, { a: [0] })).toEqual({ a: [0] });
   });
 
   it('deep overwrite a list item', () => {
