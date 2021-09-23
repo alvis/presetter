@@ -33,7 +33,7 @@ import {
 
 import { linkFiles, unlinkFiles, writeFiles } from '#io';
 
-import type { PresetContext } from '#types';
+import type { ResolvedPresetContext } from '#types';
 
 jest.mock(
   'fs-extra',
@@ -125,6 +125,7 @@ jest.mock('write-pkg', () => ({
 // file name of the configuration file, null for missing file
 jest.mock('#io', () => ({
   __esModule: true,
+  loadDynamic: jest.fn(),
   linkFiles: jest.fn(),
   loadFile: jest.fn((path: string) => {
     // ensure that the paths below is compatible with windows
@@ -186,7 +187,7 @@ jest.mock('#package', () => ({
   ),
 }));
 
-const defaultContext: PresetContext = {
+const defaultContext: ResolvedPresetContext = {
   target: {
     name: 'client',
     root: '/project',
@@ -194,6 +195,9 @@ const defaultContext: PresetContext = {
   },
   custom: {
     preset: ['no-symlink-preset', 'symlink-only-preset'],
+    config: {},
+    noSymlinks: [],
+    variable: {},
   },
 };
 

@@ -223,6 +223,17 @@ describe('fn:resolveContext', () => {
     });
   });
 
+  it('consolidate all symlinks both provided by presets and presetterrc', async () => {
+    expect(
+      await resolveContext([{ noSymlinks: () => ['preset'] }], {
+        ...defaultContext,
+        custom: { ...defaultContext.custom, noSymlinks: ['custom'] },
+      }),
+    ).toMatchObject({
+      custom: { noSymlinks: ['preset', 'custom'] },
+    });
+  });
+
   it('pass on custom configs', async () => {
     expect(
       await resolveContext([], {

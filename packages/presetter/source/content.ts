@@ -138,12 +138,18 @@ export async function resolveContext(
     },
   };
 
+  const customList = context.custom.noSymlinks ?? [];
+  const assetList = assets.map(async ({ noSymlinks }) =>
+    loadDynamic(noSymlinks ?? [], variableContext),
+  );
+  const noSymlinks = [...(await Promise.all(assetList)), ...customList].flat();
+
   return {
     ...variableContext,
     custom: {
       ...variableContext.custom,
       config: { ...context.custom.config },
-      noSymlinks: context.custom.noSymlinks ?? [],
+      noSymlinks: [...new Set(noSymlinks)],
     },
   };
 }

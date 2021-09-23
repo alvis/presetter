@@ -19,7 +19,7 @@ import { dirname, resolve } from 'path';
 import resolvePackage from 'resolve-pkg';
 import writePackage from 'write-pkg';
 
-import { generateContent, getVariable } from './content';
+import { generateContent, getVariable, resolveContext } from './content';
 import { linkFiles, loadFile, unlinkFiles, writeFiles } from './io';
 import {
   arePeerPackagesAutoInstalled,
@@ -32,6 +32,7 @@ import type {
   PresetAsset,
   PresetContext,
   PresetterConfig,
+  ResolvedPresetContext,
   Template,
 } from './types';
 
@@ -222,9 +223,13 @@ export async function bootstrapPreset(options?: {
 export async function bootstrapContent(context: PresetContext): Promise<void> {
   const assets = await getPresetAssets(context);
   const content = await generateContent(assets, context);
+  const resolvedContext = await resolveContext(assets, context);
   const filteredContent = filter(content, ...(context.custom.ignores ?? []));
 
-  const destinationMap = getDestinationMap(filteredContent, context);
+  const destinationMap = await getDestinationMap(
+    filteredContent,
+    resolvedContext,
+  );
 
   await writeFiles(context.target.root, filteredContent, destinationMap);
   await linkFiles(context.target.root, destinationMap);
@@ -237,7 +242,8 @@ export async function unsetPreset(): Promise<void> {
   const context = await getContext();
   const assets = await getPresetAssets(context);
   const content = await generateContent(assets, context);
-  const configurationLink = getDestinationMap(content, context);
+  const resolvedContext = await resolveContext(assets, context);
+  const configurationLink = await getDestinationMap(content, resolvedContext);
 
   await unlinkFiles(context.target.root, configurationLink);
 }
@@ -264,10 +270,10 @@ export async function getContext(): Promise<PresetContext> {
  * @param context resolved context about the target project and customisation
  * @returns mapping of configuration symlinks to its real path
  */
-export function getDestinationMap(
+export async function getDestinationMap(
   template: Record<string, Template>,
-  context: PresetContext,
-): Record<string, string> {
+  context: ResolvedPresetContext<'noSymlinks'>,
+): Promise<Record<string, string>> {
   const {
     custom: { noSymlinks },
   } = context;
@@ -280,7 +286,7 @@ export function getDestinationMap(
       relativePath,
       resolve(
         // output on the project root if it's specified as not a symlink
-        noSymlinks?.includes(relativePath) ? context.target.root : outDir,
+        noSymlinks.includes(relativePath) ? context.target.root : outDir,
         relativePath,
       ),
     ]),
