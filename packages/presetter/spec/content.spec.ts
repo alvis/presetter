@@ -18,12 +18,15 @@ import {
   generateContent,
   getConfigKey,
   getVariable,
+  resolveContext,
+  resolveDynamicMap,
 } from '#content';
 
-import type { PresetContext } from '#types';
+import type { PresetContext, ResolvedPresetContext } from '#types';
 
 jest.mock('#io', () => ({
   __esModule: true,
+  ...jest.requireActual('#io'),
   loadFile: jest.fn(async (path) => {
     // ensure that the paths below is compatible with windows
     const { posix, relative, resolve, sep } = jest.requireActual('path');
@@ -185,5 +188,91 @@ describe('fn:getVariable', () => {
         },
       ),
     ).toEqual({ a: 'a', b: 'b', c: 'c' });
+  });
+});
+
+describe('fn:resolveContext', () => {
+  it('make those required fields available', async () => {
+    expect(await resolveContext([], defaultContext)).toMatchObject({
+      custom: { config: {}, noSymlinks: [], variable: {} },
+    });
+  });
+
+  it('compute the final variables', async () => {
+    expect(
+      await resolveContext(
+        [
+          { variable: { var1: 'var1' } },
+          { variable: { var1: 'changed', var2: 'var2' } },
+        ],
+        defaultContext,
+      ),
+    ).toMatchObject({
+      custom: { variable: { var1: 'changed', var2: 'var2' } },
+    });
+  });
+
+  it('pass on symlinks', async () => {
+    expect(
+      await resolveContext([], {
+        ...defaultContext,
+        custom: { ...defaultContext.custom, noSymlinks: ['noSymlink'] },
+      }),
+    ).toMatchObject({
+      custom: { noSymlinks: ['noSymlink'] },
+    });
+  });
+
+  it('pass on custom configs', async () => {
+    expect(
+      await resolveContext([], {
+        ...defaultContext,
+        custom: { ...defaultContext.custom, config: { list: ['line'] } },
+      }),
+    ).toMatchObject({
+      custom: { config: { list: ['line'] } },
+    });
+  });
+});
+
+describe('fn:resolveDynamicMap', () => {
+  const resolvedContext: ResolvedPresetContext = {
+    ...defaultContext,
+    custom: {
+      ...defaultContext.custom,
+      config: {},
+      noSymlinks: [],
+      variable: {},
+    },
+  };
+
+  it('pass on the template map if no generator is supplied', async () => {
+    expect(
+      await resolveDynamicMap(
+        [{ template: { form: 'literal' } }],
+        resolvedContext,
+        'template',
+      ),
+    ).toMatchObject({ form: 'literal' });
+  });
+
+  it('compute the template map via a generator', async () => {
+    expect(
+      await resolveDynamicMap(
+        [{ template: () => ({ form: 'map generator' }) }],
+        resolvedContext,
+        'template',
+      ),
+    ).toMatchObject({ form: 'map generator' });
+  });
+
+  it('load a content from a file', async () => {
+    expect(
+      await resolveDynamicMap(
+        [{ template: () => ({ file: '/path/to/config.json' }) }],
+        resolvedContext,
+        'template',
+      ),
+    ).toMatchObject({ file: { json: true } });
   });
 });

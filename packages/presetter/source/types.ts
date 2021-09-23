@@ -30,24 +30,79 @@ export interface PresetContext {
   custom: PresetterConfig;
 }
 
+/** resolved PresetContext with certain fields resolved and made available */
+export interface ResolvedPresetContext<
+  F extends keyof PresetterConfig = 'config' | 'noSymlinks' | 'variable',
+> extends PresetContext {
+  custom: PresetterConfig & {
+    [K in keyof Pick<PresetterConfig, F>]-?: PresetterConfig[K];
+  } & {
+    [K in keyof Pick<
+      PresetterConfig,
+      Exclude<keyof PresetterConfig, F>
+    >]: PresetterConfig[K];
+  };
+}
+
+/** a helper type for a potentially promise return */
+export type PotentiallyPromise<T> = T | PromiseLike<T>;
+
+/** a dynamic content generator */
+export type Generator<
+  R,
+  K extends keyof PresetterConfig = 'config' | 'noSymlinks' | 'variable',
+> = (args: ResolvedPresetContext<K>) => PotentiallyPromise<R>;
+
 /** an auxiliary type for representing a file path */
 type Path = string;
 /** an auxiliary type for representing a template (either path to the template file or its content) */
 export type Template = string | Record<string, unknown>;
+/** an auxiliary type for representing a dynamic template generator */
+export type TemplateGenerator = Generator<Template>;
 /** an auxiliary type for representing a collection of template (key: output path, value: template definition) */
-export type TemplateMap = Record<string, Path>;
+export type TemplateMap = Record<string, Path | Template | TemplateGenerator>;
+/** an auxiliary type for representing a dynamic template map generator */
+export type TemplateMapGenerator = Generator<TemplateMap>;
 
 /** expected return from the configuration function from the preset */
 export interface PresetAsset {
   /** mapping of files to be generated to its configuration template files (key: file path relative to the target project's root, value: template path) */
-  template?: TemplateMap;
+  template?: TemplateMap | TemplateMapGenerator;
   /** list of templates that should not be created as symlinks */
-  noSymlinks?: string[];
+  noSymlinks?: string[] | Generator<string[], 'variable'>;
   /** path to the scripts template */
   scripts?: string;
   /** variables to be substituted in templates */
   variable?: Record<string, string>;
 }
+
+/** a helper type for finding the required fields for a generator */
+export type RequiredResolution<
+  F extends DynamicAssetField = DynamicAssetField,
+> = PresetAsset[F] extends infer R
+  ? R extends Generator<any, infer K>
+    ? K
+    : never
+  : never;
+
+/** all potential fields that can be a dynamic content */
+export type DynamicAssetField = {
+  [F in keyof PresetAsset]-?: Generator<any, never> extends PresetAsset[F]
+    ? Record<string, any> extends PresetAsset[F]
+      ? F
+      : never
+    : never;
+}[keyof PresetAsset];
+
+/** all potential dynamic content */
+export type DynamicAsset<F extends DynamicAssetField> = Exclude<
+  PresetAsset[F],
+  undefined | Generator<any>
+>[string] extends infer R
+  ? R extends Generator<infer V>
+    ? V
+    : never
+  : never;
 
 /** information about the targeted project */
 export interface PresetTarget {
