@@ -38,6 +38,7 @@
     "setup": "run-p setup:**",
     "setup:babel": "js-yaml templates/babelrc.yaml > .babelrc.json",
     "setup:eslint": "js-yaml templates/eslintrc.yaml | pupa --test=spec --output=lib > .eslintrc.json",
+    "setup:gitignore": "cat templates/gitignore | pupa --output=lib > .gitignore",
     "setup:jest": "js-yaml templates/jestrc.yaml | pupa --root=../.. --source=source --output=lib > .jestrc.json",
     "setup:lintstaged": "js-yaml templates/lintstagedrc.yaml | pupa --source=source > .lintstagedrc.json",
     "setup:prettier": "js-yaml templates/prettierrc.yaml > .prettierrc.json",

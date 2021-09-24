@@ -1,5 +1,8 @@
 {
   "preset": "presetter-preset",
+  "config": {
+    "gitignore": ["/generated"]
+  },
   "variable": {
     "root": "../.."
   }

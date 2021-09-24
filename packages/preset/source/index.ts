@@ -26,6 +26,8 @@ export type PresetConfig = {
   eslint?: Record<string, unknown>;
   /** configuration to be merged with .jestrc */
   jest?: Record<string, unknown>;
+  /** patterns to be added to .gitignore */
+  gitignore?: string[];
   /** configuration to be merged with .lintstagedrc */
   lintstaged?: Record<string, unknown>;
   /** patterns to be added to .npmignore */
@@ -54,6 +56,8 @@ export type Variable = {
 export interface PresetAsset {
   /** mapping of files to be generated to its configuration template files (key: file path relative to the target project's root, value: template path) */
   template?: Record<string, string>;
+  /** list of templates that should not be created as symlinks */
+  noSymlinks?: string[];
   /** path to the scripts template */
   scripts?: string;
   /** default variables */
@@ -77,6 +81,7 @@ export default async function (): Promise<PresetAsset> {
     template: {
       '.babelrc.json': resolve(TEMPLATES, 'babelrc.yaml'),
       '.eslintrc.json': resolve(TEMPLATES, 'eslintrc.yaml'),
+      '.gitignore': resolve(TEMPLATES, 'gitignore'),
       '.jestrc.json': resolve(TEMPLATES, 'jestrc.yaml'),
       '.lintstagedrc.json': resolve(TEMPLATES, 'lintstagedrc.yaml'),
       '.npmignore': resolve(TEMPLATES, 'npmignore'),
@@ -84,6 +89,7 @@ export default async function (): Promise<PresetAsset> {
       'tsconfig.json': resolve(TEMPLATES, 'tsconfig.yaml'),
       'tsconfig.build.json': resolve(TEMPLATES, 'tsconfig.build.yaml'),
     },
+    noSymlinks: ['.gitignore'],
     scripts: resolve(TEMPLATES, 'scripts.yaml'),
     variable: DEFAULT_VARIABLE,
   };
