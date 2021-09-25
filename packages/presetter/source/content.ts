@@ -138,6 +138,11 @@ export async function resolveContext(
     },
   };
 
+  const config = merge(
+    await resolveDynamicMap(assets, variableContext, 'supplementaryConfig'),
+    context.custom.config,
+  );
+
   const customList = context.custom.noSymlinks ?? [];
   const assetList = assets.map(async ({ noSymlinks }) =>
     loadDynamic(noSymlinks ?? [], variableContext),
@@ -148,7 +153,7 @@ export async function resolveContext(
     ...variableContext,
     custom: {
       ...variableContext.custom,
-      config: { ...context.custom.config },
+      config,
       noSymlinks: [...new Set(noSymlinks)],
     },
   };

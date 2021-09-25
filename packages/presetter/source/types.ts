@@ -63,6 +63,14 @@ export type TemplateGenerator = Generator<Template>;
 export type TemplateMap = Record<string, Path | Template | TemplateGenerator>;
 /** an auxiliary type for representing a dynamic template map generator */
 export type TemplateMapGenerator = Generator<TemplateMap>;
+/** an auxiliary type for representing a config */
+export type Config = string[] | Record<string, unknown>;
+/** an auxiliary type for representing a dynamic config generator */
+export type ConfigGenerator = Generator<Config>;
+/** an auxiliary type for representing a config map */
+export type ConfigMap = Record<string, Path | Config | ConfigGenerator>;
+/** an auxiliary type for representing a dynamic config map generator */
+export type ConfigMapGenerator = Generator<ConfigMap, 'variable'>;
 
 /** expected return from the configuration function from the preset */
 export interface PresetAsset {
@@ -74,6 +82,8 @@ export interface PresetAsset {
   scripts?: string;
   /** variables to be substituted in templates */
   variable?: Record<string, string>;
+  /** supplementary configuration applied to .presetterrc for enriching other presets */
+  supplementaryConfig?: ConfigMap | ConfigMapGenerator;
 }
 
 /** a helper type for finding the required fields for a generator */
