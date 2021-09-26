@@ -34,6 +34,7 @@ Here's a quick guide to the content of the monorepo.
 | [presetter](packages/presetter)                 | The core of presetter containing all the logic and the CLI utility             |
 | [presetter-preset](packages/preset)             | A battery-loaded preset for building presetter, containing typescript and more |
 | [presetter-preset-react](packages/preset-react) | An opinionated preset for building a React project                             |
+| [presetter-preset-web](packages/preset-web)     | An example pure bundle preset for building a web project                       |
 
 ---
 

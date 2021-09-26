@@ -25,10 +25,11 @@
     "packages/*"
   ],
   "scripts": {
-    "prepare": "run-s prepare:husky prepare:preset prepare:presetter prepare:preset-react",
+    "prepare": "run-s prepare:husky prepare:preset prepare:presetter prepare:preset-react prepare:preset-web",
     "prepare:husky": "husky install && husky set .husky/pre-push \"npm run stage\"",
     "prepare:preset": "npm run bootstrap --workspace=presetter-preset",
     "prepare:preset-react": "npm run bootstrap --workspace=presetter-preset-react",
+    "prepare:preset-web": "npm run bootstrap --workspace=presetter-preset-web",
     "prepare:presetter": "npm run bootstrap --workspace=presetter",
     "update": "npm install --ignore-script --package-lock-only",
     "build": "npm run --workspaces build",

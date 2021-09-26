@@ -1,0 +1,6 @@
+compilerOptions:
+  # libraries
+  lib:
+    - DOM
+    - DOM.Iterable
+    - ESNext

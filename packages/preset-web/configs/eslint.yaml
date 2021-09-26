@@ -1,0 +1,2 @@
+extends
+- plugin:tailwindcss/recommended
