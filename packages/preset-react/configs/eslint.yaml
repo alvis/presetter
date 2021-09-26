@@ -1,0 +1,14 @@
+rules:
+  '@typescript-eslint/naming-convention':
+    - error
+    - selector: variable
+      types:
+        - function
+      format:
+        - camelCase
+        - PascalCase
+  jsdoc/require-returns: # tell us what the function is expected to return
+    1:
+      contexts:
+        - FunctionDeclaration:has(BlockStatement > ReturnStatement:not([argument.type='JSXElement']))
+        - ArrowFunctionExpression:has(BlockStatement > ReturnStatement:not([argument.type='JSXElement']))

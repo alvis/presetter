@@ -1,0 +1,2 @@
+'{source}/**/*.[tj]sx':
+  - presetter run stage

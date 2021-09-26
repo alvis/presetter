@@ -29,10 +29,11 @@ so you easily run tests and lint your code during development.
 This repo is a monorepo. It contains the code for presetter and a simple preset.
 Here's a quick guide to the content of the monorepo.
 
-| Package                             | Description                                                                    |
-| ----------------------------------- | -----------------------------------------------------------------------------  |
-| [presetter](packages/presetter)     | The core of presetter containing all the logic and the CLI utility             |
-| [presetter-preset](packages/preset) | A battery-loaded preset for building presetter, containing typescript and more |
+| Package                                         | Description                                                                    |
+|-------------------------------------------------|--------------------------------------------------------------------------------|
+| [presetter](packages/presetter)                 | The core of presetter containing all the logic and the CLI utility             |
+| [presetter-preset](packages/preset)             | A battery-loaded preset for building presetter, containing typescript and more |
+| [presetter-preset-react](packages/preset-react) | An opinionated preset for building a React project                             |
 
 ---
 

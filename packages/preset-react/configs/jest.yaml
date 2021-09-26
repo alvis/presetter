@@ -1,0 +1,5 @@
+collectCoverageFrom:
+  - src/**/*.tsx
+testEnvironment: jsdom
+testMatch:
+  - '**/?(*.)+(spec).tsx'
