@@ -16,6 +16,7 @@
 /* istanbul ignore file */
 
 export * from '#content';
+export * from '#directive';
 export * from '#io';
 export * from '#template';
 
