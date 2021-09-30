@@ -74,6 +74,8 @@ export type ConfigMapGenerator = Generator<ConfigMap, 'variable'>;
 
 /** expected return from the configuration function from the preset */
 export interface PresetAsset {
+  /** list of presets to extend from */
+  extends?: string[];
   /** mapping of files to be generated to its configuration template files (key: file path relative to the target project's root, value: template path) */
   template?: TemplateMap | TemplateMapGenerator;
   /** list of templates that should not be created as symlinks */

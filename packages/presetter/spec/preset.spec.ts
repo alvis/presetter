@@ -83,6 +83,17 @@ jest.mock(
 );
 
 jest.mock(
+  'extension-preset',
+  () => ({
+    __esModule: true,
+    default: async () => ({
+      extends: ['no-symlink-preset', 'symlink-only-preset'],
+    }),
+  }),
+  { virtual: true },
+);
+
+jest.mock(
   'no-symlink-preset',
   () => ({
     __esModule: true,
@@ -259,6 +270,31 @@ describe('fn:getPresetAssets', () => {
         },
         scripts: '/path/to/symlink-only-preset/scripts.yaml',
       },
+    ]);
+  });
+
+  it('add and merge extended presets', async () => {
+    expect(
+      await getPresetAssets({
+        ...defaultContext,
+        custom: { ...defaultContext.custom, preset: 'extension-preset' },
+      }),
+    ).toEqual([
+      {
+        template: {
+          'path/to/file': '/path/to/template',
+        },
+        scripts: '/path/to/no-symlink-preset/scripts.yaml',
+      },
+      {
+        template: {
+          'link/pointed/to/preset': '/path/to/template',
+          'link/pointed/to/other': '/path/to/template',
+          'link/rewritten/by/project': '/path/to/template',
+        },
+        scripts: '/path/to/symlink-only-preset/scripts.yaml',
+      },
+      { extends: ['no-symlink-preset', 'symlink-only-preset'] },
     ]);
   });
 

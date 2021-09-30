@@ -93,24 +93,39 @@ export async function getPresetAssets(
 
   const presets = Array.isArray(preset) ? preset : [preset];
 
-  return Promise.all(
-    presets.map(async (packageName) => {
-      try {
-        // get the preset
-        const module = resolvePackage(packageName, {
-          cwd: context.target.root,
-        });
+  const assets: PresetAsset[] = [];
 
-        const { default: presetPresetAsset } = (await import(module!)) as {
-          default: (args: PresetContext) => Promise<PresetAsset>;
-        };
+  for (const preset of presets) {
+    try {
+      // get the preset
+      const module = resolvePackage(preset, {
+        cwd: context.target.root,
+      });
 
-        return await presetPresetAsset(context);
-      } catch {
-        throw new Error(`cannot resolve preset ${packageName}`);
-      }
-    }),
-  );
+      const { default: presetPresetAsset } = (await import(module!)) as {
+        default: (args: PresetContext) => Promise<PresetAsset>;
+      };
+
+      const asset = await presetPresetAsset(context);
+
+      // add extended assets first
+      const extensions =
+        asset.extends?.map(async (extension) =>
+          getPresetAssets({
+            ...context,
+            custom: { ...context.custom, preset: extension },
+          }),
+        ) ?? [];
+      assets.push(...(await Promise.all(extensions)).flat());
+
+      // then asset from this preset so that this preset can override the extended ones
+      assets.push(asset);
+    } catch {
+      throw new Error(`cannot resolve preset ${preset}`);
+    }
+  }
+
+  return assets;
 }
 
 /**
