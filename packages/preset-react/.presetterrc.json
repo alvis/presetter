@@ -1,5 +1,5 @@
 {
-  "preset": "presetter-preset-essentials",
+  "preset": "presetter-preset-strict",
   "config": {
     "npmignore": ["!/configs/**", "!/templates/**"]
   },
