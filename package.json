@@ -25,11 +25,12 @@
     "packages/*"
   ],
   "scripts": {
-    "prepare": "run-s prepare:husky prepare:preset-essentials prepare:presetter prepare:preset-react prepare:preset-web prepare:preset-rollup",
+    "prepare": "run-s prepare:husky prepare:preset-essentials prepare:preset-strict prepare:presetter prepare:preset-react prepare:preset-web prepare:preset-rollup",
     "prepare:husky": "husky install && husky set .husky/pre-push \"npm run stage\"",
     "prepare:preset-essentials": "npm run bootstrap --workspace=presetter-preset-essentials",
     "prepare:preset-react": "npm run bootstrap --workspace=presetter-preset-react",
     "prepare:preset-rollup": "npm run bootstrap --workspace=presetter-preset-rollup",
+    "prepare:preset-strict": "npm run bootstrap --workspace=presetter-preset-strict",
     "prepare:preset-web": "npm run bootstrap --workspace=presetter-preset-web",
     "prepare:presetter": "npm run bootstrap --workspace=presetter",
     "update": "npm install --ignore-script --package-lock-only",

@@ -1,0 +1,65 @@
+{
+  "name": "presetter-preset-strict",
+  "version": "0.0.0",
+  "description": "An extension of presetter-preset-essentials to provide stricter lint rules for typescript projects",
+  "keywords": [
+    "presetter",
+    "preset"
+  ],
+  "homepage": "https://github.com/alvis/presetter#readme",
+  "bugs": {
+    "url": "https://github.com/alvis/presetter/issues"
+  },
+  "license": "MIT",
+  "author": "Alvis HT Tang <alvis@hilbert.space>",
+  "main": "lib/index.js",
+  "types": "lib/index.d.ts",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/alvis/presetter.git"
+  },
+  "scripts": {
+    "bootstrap": "run-s build",
+    "build": "run-s clean setup build:*",
+    "build:typescript": "babel --extensions .ts,.tsx,.d.ts --source-maps --copy-files --out-dir lib ./source",
+    "build:types": "tsc -p tsconfig.build.json --emitDeclarationOnly",
+    "clean": "run-p clean:**",
+    "clean:lib": "shx rm -rf lib",
+    "clean:rc": "shx rm -f .*rc.json",
+    "clean:ts": "shx rm -f tsconfig.*",
+    "coverage": "npm run test -- --coverage",
+    "lint": "run-s \"lint:* -- source spec\"",
+    "lint:prettier": "prettier --write --no-error-on-unmatched-pattern",
+    "lint:fixme": "leasot --skip-unsupported --exit-nicely package.json",
+    "lint:eslint": "eslint --fix --format codeframe --max-warnings 0 --no-error-on-unmatched-pattern",
+    "prepublishOnly": "run-s --npm-path npm bootstrap coverage lint",
+    "release": "run-s release:peer:*",
+    "release:peer:presetter": "npm pkg set peerDependencies.presetter=^$(npx -c 'echo $npm_package_version')",
+    "release:peer:preset-essential": "npm pkg set peerDependencies.presetter-preset-essentials=^$(npx -c 'echo $npm_package_version')",
+    "setup": "run-p setup:**",
+    "setup:babel": "js-yaml ../preset-essentials//templates/babelrc.yaml > .babelrc.json",
+    "setup:eslint": "js-yaml ../preset-essentials//templates/eslintrc.yaml | pupa --test=spec --output=lib > .eslintrc.json",
+    "setup:gitignore": "cat ../preset-essentials//templates/gitignore | pupa --output=lib > .gitignore",
+    "setup:jest": "js-yaml ../preset-essentials//templates/jestrc.yaml | pupa --root=../.. --source=source --output=lib > .jestrc.json",
+    "setup:lintstaged": "js-yaml ../preset-essentials//templates/lintstagedrc.yaml | pupa --source=source > .lintstagedrc.json",
+    "setup:prettier": "js-yaml ../preset-essentials//templates/prettierrc.yaml > .prettierrc.json",
+    "setup:tsconfig:base": "js-yaml ../preset-essentials//templates/tsconfig.yaml | pupa --source=source --types=types --output=lib > tsconfig.json",
+    "setup:tsconfig:build": "js-yaml ../preset-essentials//templates/tsconfig.build.yaml | pupa --source=source > tsconfig.build.json",
+    "stage": "run-s \"stage:* -- {@}\" --",
+    "stage:lint": "run-s \"lint:* -- {@}\" --",
+    "stage:coverage": "run-s \"test -- --maxWorkers=50% --coverage --collectCoverageFrom {@} --findRelatedTests {@}\" --",
+    "test": "jest --config .jestrc.json --no-cache --passWithNoTests --verbose"
+  },
+  "peerDependencies": {
+    "eslint-plugin-header": "^3.0.0",
+    "eslint-plugin-no-secrets": "^0.8.0",
+    "eslint-plugin-sonarjs": "0.10",
+    "husky": "^7.0.0",
+    "lint-staged": "^11.0.0",
+    "presetter": "*",
+    "presetter-preset-essentials": "*"
+  },
+  "devDependencies": {
+    "@types/node": "*"
+  }
+}

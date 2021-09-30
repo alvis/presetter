@@ -1,0 +1,55 @@
+extends:
+  - plugin:@typescript-eslint/recommended-requiring-type-checking
+  - plugin:sonarjs/recommended # code quality
+parserOptions:
+  project: tsconfig.json
+  sourceType: module
+plugins:
+  - header # enforce a header in each source file
+  - no-secrets # check if there's any secret left in the code
+rules:
+  # ECMAScript
+  '@typescript-eslint/prefer-nullish-coalescing': warn # simplify a logic by using the nullish coalescing operator
+
+  # Stylistic Issues
+  header/header: # need a file header
+    - warn
+    - block
+    - - pattern: summary
+
+  # Best Practices
+  '@typescript-eslint/no-base-to-string': error # disallow Object.toString() which returns the meaningless [object Object]
+  '@typescript-eslint/promise-function-async': warn # ensure any function that returns a promise to be marked async for better readability
+  '@typescript-eslint/return-await': error # return an awaited promised in the try catch block for better stack trace
+  '@typescript-eslint/no-unnecessary-condition': error # reduce the complexity of a piece of code by removing redundant logic
+  curly: error # all control statement must be enclosed by a curly bracket
+  default-case: error # ensure a default case in any switch
+
+  # Code Quality
+  '@typescript-eslint/no-unused-expressions': warn # unused expressions must be at least commented
+  '@typescript-eslint/prefer-function-type': warn # make a function a function instead of an interface
+  '@typescript-eslint/unified-signatures': warn # simplify an overloading signature
+  no-secrets/no-secrets: error # no sensitive information
+  sonarjs/cognitive-complexity: # ensure a function is intuitively understandable
+    - warn
+    - 5
+  sonarjs/no-small-switch: off # sometimes you prefer switch than if for extension and better readability
+  complexity: warn # limit cyclomatic complexity in a function
+  max-lines: # it's hard to follow a large file
+    - warn
+    - max: 250
+      skipBlankLines: true
+      skipComments: true
+  max-lines-per-function: # it's hard to follow a long function
+    - warn
+    - max: 30
+      skipBlankLines: true
+      skipComments: true
+      IIFEs: true
+  no-console: warn # console is often used for debug, but it can leak sensitive information
+  no-eval: error # eval is evil
+
+  # Error Prevention
+  '@typescript-eslint/no-misused-promises': # ensure that there's an await before a promise
+    - warn
+    - checksVoidReturn: false
