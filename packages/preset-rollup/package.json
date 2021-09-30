@@ -1,0 +1,53 @@
+{
+  "name": "presetter-preset-rollup",
+  "version": "0.0.0",
+  "description": "An opinionated presetter preset for using rollup as a bundler",
+  "keywords": [
+    "presetter",
+    "preset"
+  ],
+  "homepage": "https://github.com/alvis/presetter#readme",
+  "bugs": {
+    "url": "https://github.com/alvis/presetter/issues"
+  },
+  "license": "MIT",
+  "author": {
+    "name": "Alvis HT Tang",
+    "email": "alvis@hilbert.space"
+  },
+  "main": "lib/index.js",
+  "types": "lib/index.d.ts",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/alvis/presetter.git"
+  },
+  "scripts": {
+    "bootstrap": "presetter bootstrap && run prepare",
+    "build": "run build",
+    "coverage": "run coverage",
+    "lint": "run lint",
+    "prepublishOnly": "run prepare && run prepublishOnly",
+    "release": "run-s release:peer:*",
+    "release:peer:presetter": "npm pkg set peerDependencies.presetter=^$(npx -c 'echo $npm_package_version')",
+    "test": "run test",
+    "watch": "run watch"
+  },
+  "peerDependencies": {
+    "@rollup/plugin-commonjs": "^20.0.0",
+    "@rollup/plugin-graphql": "^1.0.0",
+    "@rollup/plugin-image": "^2.0.0",
+    "@rollup/plugin-json": "^4.0.0",
+    "@rollup/plugin-node-resolve": "^13.0.0",
+    "@rollup/plugin-yaml": "^3.0.0",
+    "presetter": "^3.0.0",
+    "rollup": "^2.0.0",
+    "rollup-plugin-postcss": "^4.0.0",
+    "rollup-plugin-ts": "^1.0.0",
+    "rollup-plugin-tsconfig-paths": "^1.0.0",
+    "rollup-plugin-visualizer": "^5.0.0"
+  },
+  "devDependencies": {
+    "presetter": "file:../presetter",
+    "presetter-preset": "file:../preset"
+  }
+}
