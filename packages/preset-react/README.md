@@ -18,7 +18,7 @@
 
 ## Features
 
-**presetter-preset-react** is an opinionated preset for you to setup rollup in a fraction of time you usually take via [**presetter**](https://github.com/alvis/presetter).
+**presetter-preset-react** is an opinionated preset for you to setup a React project in a fraction of time you usually take via [**presetter**](https://github.com/alvis/presetter).
 
 - ✨ TSX support
 - 🧪 @testing-library/react
@@ -28,7 +28,7 @@
 
 [**FULL DOCUMENTATION IS AVAILABLE HERE**](https://github.com/alvis/presetter/blob/master/README.md)
 
-1. Bootstrap your project with `presetter-preset` & `presetter-preset-react`
+1. Bootstrap your project with `presetter-preset-essentials` & `presetter-preset-react`
 
 ```shell
 npx presetter use presetter-preset presetter-preset-react
@@ -45,9 +45,11 @@ and now you can try to run some example life cycle scripts (e.g. run prepare).
 
 ## Project Structure
 
-After installing `presetter-preset-react`, your project file structure should look like the following or with more configuration file if you also installed `presetter-preset`.
+After installation, your project file structure should resemble the following or with more configuration files if you also installed other presets such as [`presetter-preset-essentials`](https://github.com/alvis/presetter/blob/master/packages/preset-essentials).
 
 Implement your business logic under `source` and prepare tests under `spec`. The `.d.ts` files are handy type definitions for you to import `.css` or image files in typescript.
+
+**TIPS** You can always change the source directory to other (e.g. src) by setting the `source` variable in `.presetterrc.json`. See the [customisation](https://github.com/alvis/presetter/blob/master/packages/preset-react#customisation) section below for more details.
 
 ```
 (root)
@@ -80,11 +82,11 @@ The structure of `.presetterrc` should follow the interface below:
 
 ```ts
 interface PresetterRC {
-  /** name(s) of the preset e.g. presetter-preset */
+  /** name(s) of the preset e.g. presetter-preset-react */
   name: string | string[];
   /** additional configuration passed to the preset for generating the configuration files */
   config?: {
-    //  ┌─ configuration for other tools via other presets (e.g. presetter-preset)
+    //  ┌─ configuration for other tools via other presets (e.g. presetter-preset-essentials)
     // ...
 
     /** configuration to be merged with .eslintrc */

@@ -1,6 +1,6 @@
 <div align="center">
 
-![Logo](https://github.com/alvis/presetter/raw/master/logo.svg)
+![Logo](https://github.com/alvis/presetter/raw/master/assets/logo.svg)
 
 🏄🏻 _Setup build settings from a template, quick and right!_
 
@@ -29,7 +29,7 @@ What's more, what if you want to update configs for all projects? :man_facepalmi
 
 [**FULL DOCUMENTATION IS AVAILABLE HERE**](https://github.com/alvis/presetter/blob/master/README.md)
 
-1. Bootstrap your project with a preset (e.g. presetter-preset)
+1. Bootstrap your project with a preset (e.g. [presetter-preset-essentials](https://github.com/alvis/presetter/tree/master/packages/preset-essentials))
 
 ```shell
 npx presetter use <preset package name>
@@ -42,7 +42,7 @@ That's. One command and you're set.
 At this point, all development packages specified in the preset are installed,
 and now you can try to run some example life cycle scripts (e.g. run prepare) provided by the template.
 
-![Demo](https://raw.githubusercontent.com/alvis/presetter/master/demo.gif)
+![Demo](https://raw.githubusercontent.com/alvis/presetter/master/assets/demo.gif)
 
 ---
 
@@ -135,11 +135,11 @@ Presetter support customisation in two ways.
 #### Preset Customisation
 
 If your preset support customisation, you can supply the customisation parameter via the `config` field in `.presetterrc`.
-e.g. For [presetter-preset](https://github.com/alvis/presetter/tree/master/packages/preset), you can adding an expression to `.gitignore` with the following in `.presetterrc`:
+e.g. For [presetter-preset-essentials](https://github.com/alvis/presetter/tree/master/packages/preset-essentials), you can adding an expression to `.gitignore` with the following in `.presetterrc`:
 
 ```json
 {
-  "preset": "presetter-preset",
+  "preset": "presetter-preset-essentials",
   "config": {
     "gitignore": ["<pattern to ignore>"]
   }

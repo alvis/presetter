@@ -211,7 +211,7 @@ describe('fn:getPresetterRC', () => {
 
   it('use the default preset when no configuration file is found', async () => {
     expect(await getPresetterRC('/missing-presetterrc')).toEqual({
-      preset: 'presetter-preset',
+      preset: 'presetter-preset-essentials',
     });
   });
 });

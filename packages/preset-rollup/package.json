@@ -48,6 +48,6 @@
   },
   "devDependencies": {
     "presetter": "file:../presetter",
-    "presetter-preset": "file:../preset"
+    "presetter-preset-essentials": "file:../preset-essentials"
   }
 }

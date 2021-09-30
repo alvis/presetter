@@ -1,24 +1,24 @@
 <div align="center">
 
-![Logo](https://github.com/alvis/presetter/raw/master/logo.svg)
+![Logo](https://github.com/alvis/presetter/raw/master/assets/logo.svg)
 
 🏄🏻 _A collection of opinionated configurations for a typescript project for presetter_
 
 •   [Quick Start](#quick-start)   •   [Project Structure](#project-structure)   •   [Customisation](#customisation)   •   [Scripts](#script-template-summary)   •
 
-[![npm](https://img.shields.io/npm/v/presetter-preset?style=flat-square)](https://github.com/alvis/presetter/releases)
+[![npm](https://img.shields.io/npm/v/presetter-preset-essentials?style=flat-square)](https://github.com/alvis/presetter/releases)
 [![build](https://img.shields.io/github/workflow/status/alvis/presetter/code%20test?style=flat-square)](https://github.com/alvis/presetter/actions)
 [![maintainability](https://img.shields.io/codeclimate/maintainability/alvis/presetter?style=flat-square)](https://codeclimate.com/github/alvis/presetter/maintainability)
 [![coverage](https://img.shields.io/codeclimate/coverage/alvis/presetter?style=flat-square)](https://codeclimate.com/github/alvis/presetter/test_coverage)
-[![security](https://img.shields.io/snyk/vulnerabilities/github/alvis/presetter/packages/preset/package.json.svg?style=flat-square)](https://snyk.io/test/github/alvis/presetter?targetFile=packages/preset/package.json&style=flat-square)
-[![dependencies](https://img.shields.io/david/alvis/presetter?path=packages/preset&style=flat-square)](https://david-dm.org/alvis/presetter?path=packages/preset)
+[![security](https://img.shields.io/snyk/vulnerabilities/github/alvis/presetter/packages/preset-essentials/package.json.svg?style=flat-square)](https://snyk.io/test/github/alvis/presetter?targetFile=packages/preset-essentials/package.json&style=flat-square)
+[![dependencies](https://img.shields.io/david/alvis/presetter?path=packages/preset-essentials&style=flat-square)](https://david-dm.org/alvis/presetter?path=packages/preset-essentials)
 [![license](https://img.shields.io/github/license/alvis/presetter.svg?style=flat-square)](https://github.com/alvis/presetter/blob/master/LICENSE)
 
 </div>
 
-In addition to a set of opinionated configuration files, it also provides a number of essential lifecycle and helper commands.
-
 ## Features
+
+**presetter-preset-essentials** is a collection of essential dev tools you usually need to setup a typescript project in a fraction of time you usually take via [**presetter**](https://github.com/alvis/presetter). In addition to a set of opinionated configuration files, it also provides a number of essential lifecycle and helper commands.
 
 - 👥 Babel
 - 🚿 ESLint
@@ -31,10 +31,10 @@ In addition to a set of opinionated configuration files, it also provides a numb
 
 [**FULL DOCUMENTATION IS AVAILABLE HERE**](https://github.com/alvis/presetter/blob/master/README.md)
 
-1. Bootstrap your project with presetter-preset
+1. Bootstrap your project with presetter-preset-essentials
 
 ```shell
-npx presetter use presetter-preset
+npx presetter use presetter-preset-essentials
 ```
 
 That's. One command and you're set.
@@ -44,13 +44,15 @@ That's. One command and you're set.
 At this point, all development packages specified in the preset are installed,
 and now you can try to run some example life cycle scripts (e.g. run prepare).
 
-![Demo](https://raw.githubusercontent.com/alvis/presetter/master/demo.gif)
+![Demo](https://raw.githubusercontent.com/alvis/presetter/master/assets/demo.gif)
 
 ## Project Structure
 
-After installing this preset, your project file structure should look like the following.
+After installation, your project file structure should resemble the following or with more configuration files if you also installed other presets such as [`presetter-preset-rollup`](https://github.com/alvis/presetter/blob/master/packages/preset-rollup).
 
 Implement your business logic under `source` and prepare tests under `spec`.
+
+**TIPS** You can always change the source directory to other (e.g. src) by setting the `source` variable in `.presetterrc.json`. See the [customisation](https://github.com/alvis/presetter/blob/master/packages/preset-essentials#customisation) section below for more details.
 
 ```
 (root)
@@ -66,7 +68,7 @@ Implement your business logic under `source` and prepare tests under `spec`.
  ├─ source
  │   ├─ <folders>
  │   ├─ index.ts
- │   ├─ (auxillary).ts
+ │   ├─ (auxiliary).ts
  ├─ spec
  │   ├─ *.spec.ts
  ├─ package.json
@@ -85,10 +87,13 @@ The structure of `.presetterrc` should follow the interface below:
 
 ```ts
 interface PresetterRC {
-  /** name of the preset e.g. presetter-preset */
+  /** name of the preset e.g. presetter-preset-essentials */
   name: string | string[];
   /** additional configuration passed to the preset for generating the configuration files */
   config?: {
+    //  ┌─ configuration for other tools via other presets (e.g. presetter-preset-rollup)
+    // ...
+
     /** configuration to be merged with .babelrc */
     babel?: Record<string, unknown>;
     /** configuration to be merged with .eslintrc */

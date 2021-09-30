@@ -49,7 +49,7 @@
     "@types/lodash": "^4.0.0",
     "@types/node": "*",
     "@types/yargs": "^17.0.0",
-    "presetter-preset": "file:../preset",
+    "presetter-preset-essentials": "file:../preset-essentials",
     "ts-node": "^10.0.0",
     "tsconfig-paths": "^3.0.0",
     "typescript": "^4.0.0"

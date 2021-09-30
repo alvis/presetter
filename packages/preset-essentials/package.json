@@ -1,5 +1,5 @@
 {
-  "name": "presetter-preset",
+  "name": "presetter-preset-essentials",
   "version": "2.1.0",
   "description": "A collection of opinionated preset configurations for typescript projects",
   "keywords": [

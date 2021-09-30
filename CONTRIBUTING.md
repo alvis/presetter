@@ -29,13 +29,13 @@ so you easily run tests and lint your code during development.
 This repo is a monorepo. It contains the code for presetter and a simple preset.
 Here's a quick guide to the content of the monorepo.
 
-| Package                                           | Description                                                                    |
-|---------------------------------------------------|--------------------------------------------------------------------------------|
-| [presetter](packages/presetter)                   | The core of presetter containing all the logic and the CLI utility             |
-| [presetter-preset](packages/preset)               | A battery-loaded preset for building presetter, containing typescript and more |
-| [presetter-preset-react](packages/preset-react)   | An opinionated preset for building a React project                             |
-| [presetter-preset-rollup](packages/preset-rollup) | An advanced preset for setting up rollup for code bundling                     |
-| [presetter-preset-web](packages/preset-web)       | An example pure bundle preset for building a web project                       |
+| Package                                                   | Description                                                                 |
+|-----------------------------------------------------------|--------------------------------------------------------------------------------|
+| [presetter](packages/presetter)                           | The core of presetter containing all the logic and the CLI utility             |
+| [presetter-preset-essentials](packages/preset-essentials) | A battery-loaded preset for building presetter, containing typescript and more |
+| [presetter-preset-react](packages/preset-react)           | An opinionated preset for building a React project                             |
+| [presetter-preset-rollup](packages/preset-rollup)         | An advanced preset for setting up rollup for code bundling                     |
+| [presetter-preset-web](packages/preset-web)               | An example pure bundle preset for building a web project                       |
 
 ---
 
@@ -54,7 +54,7 @@ If your system doesn't have npm 7.20+, you can achieve it by using [nvm](https:/
 
 ### Code Standard
 
-This project employs code standard rules exported from [presetter-preset](packages/preset/templates/eslintrc.yaml),
+This project employs code standard rules exported from [presetter-preset-essentials](packages/preset-essentials/templates/eslintrc.yaml),
 which mostly follow the recommended rules from
 
 - [Eslint](https://eslint.org)

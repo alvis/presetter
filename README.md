@@ -19,7 +19,7 @@ What's more, what if you want to update configs for all projects? :man_facepalmi
 
 ## Quick Start
 
-1. Bootstrap your project with a preset (e.g. [preset](packages/preset))
+1. Bootstrap your project with a preset (e.g. [preset-essentials](packages/preset-essentials))
 
 ```shell
 npx presetter use <preset package name>
@@ -36,7 +36,7 @@ and now you can try to run some example life cycle scripts provided by the prese
 
 ## Concept
 
-The concept comprises two part: [presetter](packages/presetter) (this package) and a [preset](packages/preset).
+The concept comprises two part: [presetter](packages/presetter) (this package) and a [preset](packages/preset-essentials).
 
 ### presetter
 
@@ -107,7 +107,7 @@ presetter will generate a `package.json` with the content below before running t
 ### preset
 
 A preset is a collection of configuration to be shared.
-An example can be found in the [demo preset](/packages/preset) which is also used for developing presetter.
+An example can be found in [preset-essentials](/packages/preset-essentials) which is also used for developing presetter.
 
 A preset contains three parts:
 
@@ -119,7 +119,7 @@ A preset contains three parts:
    These scripts provide the base where the `presetter run` command will use for merging.
 
 For 1, the set of development packages to be installed is exported via `package.json`.
-For 2 & 3, the configuration is exported via the default function in the preset package ([example](/packages/preset/source/index.ts)).
+For 2 & 3, the configuration is exported via the default function in the preset package ([example](/packages/preset-essentials/source/index.ts)).
 
 #### Config Extension
 
@@ -129,7 +129,7 @@ you can specify the new configuration under the `config` parameter in the config
 During installation and life cycle script execution,
 the content of this parameter will be passed to the configurator function provided by the preset package.
 With this parameter, the preset can dynamically export customised config files and life cycle scripts.
-You can [checkout the example preset to see how it work](/packages/preset/source/index.ts).
+You can [checkout the example preset to see how it work](/packages/preset-essentials/source/index.ts).
 
 ## Known Limitations
 

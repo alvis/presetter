@@ -25,9 +25,9 @@
     "packages/*"
   ],
   "scripts": {
-    "prepare": "run-s prepare:husky prepare:preset prepare:presetter prepare:preset-react prepare:preset-web prepare:preset-rollup",
+    "prepare": "run-s prepare:husky prepare:preset-essentials prepare:presetter prepare:preset-react prepare:preset-web prepare:preset-rollup",
     "prepare:husky": "husky install && husky set .husky/pre-push \"npm run stage\"",
-    "prepare:preset": "npm run bootstrap --workspace=presetter-preset",
+    "prepare:preset-essentials": "npm run bootstrap --workspace=presetter-preset-essentials",
     "prepare:preset-react": "npm run bootstrap --workspace=presetter-preset-react",
     "prepare:preset-rollup": "npm run bootstrap --workspace=presetter-preset-rollup",
     "prepare:preset-web": "npm run bootstrap --workspace=presetter-preset-web",

@@ -62,7 +62,7 @@ export async function getPresetterRC(root: string): Promise<PresetterConfig> {
   }
 
   // the default preset
-  return { preset: 'presetter-preset' };
+  return { preset: 'presetter-preset-essentials' };
 }
 
 /**

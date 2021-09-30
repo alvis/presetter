@@ -38,7 +38,7 @@
 
 [**FULL DOCUMENTATION IS AVAILABLE HERE**](https://github.com/alvis/presetter/blob/master/README.md)
 
-1. Bootstrap your project with `presetter-preset` & `presetter-preset-rollup`
+1. Bootstrap your project with `presetter-preset-essentials` & `presetter-preset-rollup`
 
 ```shell
 npx presetter use presetter-preset presetter-preset-rollup
@@ -72,7 +72,7 @@ For NodeJS to import the correct export, remember to specify the following in yo
 
 ## Project Structure
 
-After installing `presetter-preset` & `presetter-preset-rollup`, your project file structure should look like the following or with more configuration file if you also installed `presetter-preset`.
+After installation, your project file structure should resemble the following or with more configuration files if you also installed other presets such as [`presetter-preset-essentials`](https://github.com/alvis/presetter/blob/master/packages/preset-essentials).
 
 Implement your business logic under `source` and prepare tests under `spec`.
 
@@ -104,11 +104,11 @@ The structure of `.presetterrc` should follow the interface below:
 
 ```ts
 interface PresetterRC {
-  /** name(s) of the preset e.g. presetter-preset */
+  /** name(s) of the preset e.g. presetter-preset-rollup */
   name: string | string[];
   /** additional configuration passed to the preset for generating the configuration files */
   config?: {
-    //  ┌─ configuration for other tools via other presets (e.g. presetter-preset)
+    //  ┌─ configuration for other tools via other presets (e.g. presetter-preset-essentials)
     // ...
 
     /** additional configuration for rollup */
