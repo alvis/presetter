@@ -23,7 +23,6 @@ In addition to a set of opinionated configuration files, it also provides a numb
 - 👥 Babel
 - 🚿 ESLint
 - 🧪 Jest
-- 🐶 Husky
 - 💅 Prettier
 - 📤 Standard Version
 - 💯 Typescript
@@ -60,7 +59,6 @@ Implement your business logic under `source` and prepare tests under `spec`.
  ├─ .git
  ├─ .husky
  ├─ .jestrc.json
- ├─ .lintstagedrc.json
  ├─ .npmignore
  ├─ .prettierrc.json
  ├─ .preseterrc.json
@@ -97,8 +95,6 @@ interface PresetterRC {
     eslint?: Record<string, unknown>;
     /** configuration to be merged with .jestrc */
     jest?: Record<string, unknown>;
-    /** configuration to be merged with .lintstagedrc */
-    lintstaged?: Record<string, unknown>;
     /** patterns to be added to .npmignore */
     npmignore?: string[];
     /** configuration to be merged with .presetterrc */

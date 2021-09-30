@@ -40,7 +40,6 @@
     "setup:eslint": "js-yaml templates/eslintrc.yaml | pupa --test=spec --output=lib > .eslintrc.json",
     "setup:gitignore": "cat templates/gitignore | pupa --output=lib > .gitignore",
     "setup:jest": "js-yaml templates/jestrc.yaml | pupa --root=../.. --source=source --output=lib > .jestrc.json",
-    "setup:lintstaged": "js-yaml templates/lintstagedrc.yaml | pupa --source=source > .lintstagedrc.json",
     "setup:prettier": "js-yaml templates/prettierrc.yaml > .prettierrc.json",
     "setup:tsconfig:base": "js-yaml templates/tsconfig.yaml | pupa --source=source --types=types --output=lib > tsconfig.json",
     "setup:tsconfig:build": "js-yaml templates/tsconfig.build.yaml | pupa --source=source > tsconfig.build.json",
@@ -70,15 +69,10 @@
     "eslint": "^7.0.0",
     "eslint-config-prettier": "^8.0.0",
     "eslint-plugin-eslint-comments": "^3.0.0",
-    "eslint-plugin-header": "^3.0.0",
     "eslint-plugin-import": "^2.0.0",
     "eslint-plugin-jsdoc": "^35.0.0",
-    "eslint-plugin-no-secrets": "^0.8.0",
-    "eslint-plugin-sonarjs": "0.10",
-    "husky": "^7.0.0",
     "jest": "^27.0.0",
     "leasot": "^12.0.0",
-    "lint-staged": "^11.0.0",
     "npm-run-all": "^4.0.0",
     "presetter": "*",
     "prettier": "^2.4.0",
@@ -93,8 +87,7 @@
   },
   "devDependencies": {
     "@types/node": "*",
+    "js-yaml": "^4.0.0",
     "pupa-cli": "^1.0.0"
-  },
-  "dependencies": {
   }
 }

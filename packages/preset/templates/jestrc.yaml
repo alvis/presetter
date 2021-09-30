@@ -6,12 +6,6 @@ coverageReporters:
   - text
   - - lcov
     - projectRoot: '{root}'
-coverageThreshold:
-  global:
-    branches: 95
-    functions: 95
-    lines: 95
-    statements: 95
 globals:
   ignoreCoverageForAllDecorators: true
   ts-jest:

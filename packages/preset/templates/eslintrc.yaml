@@ -1,11 +1,10 @@
+root: true
 extends:
   - eslint:recommended
   - plugin:@typescript-eslint/recommended # typescript specific rules
-  - plugin:@typescript-eslint/recommended-requiring-type-checking
   - plugin:eslint-comments/recommended # ESLint rules for ESLint directive comments
   - plugin:jsdoc/recommended # documentation
   - plugin:import/typescript # support linting import/export statements in typescript
-  - plugin:sonarjs/recommended # code quality
   - prettier # ignore formatting issue
 env:
   es6: true
@@ -17,10 +16,8 @@ parserOptions:
   sourceType: module
 plugins:
   - '@typescript-eslint' # typescript support
-  - header # enforce a header in each source file
   - import # enforce best practices on import/export statements
   - jsdoc # enforce documentation
-  - no-secrets # check if there's any secret left in the code
 settings:
   jsdoc:
     mode: typescript
@@ -69,7 +66,6 @@ rules:
 
   # ECMAScript
   '@typescript-eslint/prefer-for-of': warn # use for of if possible
-  '@typescript-eslint/prefer-nullish-coalescing': warn # simplify a logic by using the nullish coalescing operator
   '@typescript-eslint/prefer-optional-chain': warn # simplify a logic by using the optional chain operator
   object-shorthand: warn # reduce {x:x} to {x}
   prefer-const: # if a variable is never reassigned, using the const declaration is better
@@ -86,10 +82,6 @@ rules:
   # Stylistic Issues
   '@typescript-eslint/member-ordering': error # member group in a class should be in order
   '@typescript-eslint/naming-convention': error # use JS/TS naming convention
-  header/header: # need a file header
-    - warn
-    - block
-    - - pattern: summary
   capitalized-comments: # use lower case in comments
     - warn
     - never
@@ -112,7 +104,6 @@ rules:
     - error
     - overrides:
         constructors: 'no-public'
-  '@typescript-eslint/no-base-to-string': error # disallow Object.toString() which returns the meaningless [object Object]
   '@typescript-eslint/no-magic-numbers': # only allow obvious cases
     - warn
     - ignore:
@@ -124,9 +115,7 @@ rules:
       ignoreReadonlyClassProperties: true
       ignoreEnums: true
   '@typescript-eslint/no-parameter-properties': warn # no private, readonly etc in functional arguments
-  '@typescript-eslint/promise-function-async': warn # ensure any function that returns a promise to be marked async for better readability
   '@typescript-eslint/require-await': off # sometimes you need an async function to fulfil the signature inherited from an abstract class
-  '@typescript-eslint/return-await': error # return an awaited promised in the try catch block for better stack trace
   import/first: warn # ensure that all import statements are on the top of a file
   import/no-deprecated: warn # use no deprecated method
   import/no-duplicates: warn # merge multiple imports into one
@@ -147,8 +136,6 @@ rules:
         - unknown
         - type
       newlines-between: always-and-inside-groups # enable a space line between import type statements for different module types
-  curly: error # all control statement must be enclosed by a curly bracket
-  default-case: error # ensure a default case in any switch
   eqeqeq: error # enforce type-safe equality operators
   max-classes-per-file: error # only one class max for a file
   no-async-promise-executor: off # turn off in order to use await in the executor function
@@ -173,38 +160,12 @@ rules:
 
   # Code Quality
   '@typescript-eslint/no-explicit-any': off # allow any type
-  '@typescript-eslint/no-unnecessary-condition': error # reduce the complexity of a piece of code by removing redundant logic
-  '@typescript-eslint/no-unused-expressions': error # unused expressions must be at least commented
   '@typescript-eslint/no-unused-vars': # use a name starting with _ as a placeholder instead
     - error
     - varsIgnorePattern: ^_
       argsIgnorePattern: ^_
-  '@typescript-eslint/prefer-function-type': warn # make a function a function instead of an interface
-  '@typescript-eslint/unified-signatures': warn # simplify an overloading signature
-  no-secrets/no-secrets: error # no sensitive information
-  sonarjs/cognitive-complexity: # ensure a function is intuitively understandable
-    - warn
-    - 5
-  sonarjs/no-small-switch: off # sometimes you prefer switch than if for extension and better readability
-  complexity: warn # limit cyclomatic complexity in a function
-  max-lines: # it's hard to follow a large file
-    - warn
-    - max: 250
-      skipBlankLines: true
-      skipComments: true
-  max-lines-per-function: # it's hard to follow a long function
-    - warn
-    - max: 30
-      skipBlankLines: true
-      skipComments: true
-      IIFEs: true
-  no-console: warn # console is often used for debug, but it can leak sensitive information
-  no-eval: error # eval is evil
 
   # Error Prevention
-  '@typescript-eslint/no-misused-promises': # ensure that there's an await before a promise
-    - warn
-    - checksVoidReturn: false
   '@typescript-eslint/no-non-null-assertion': off # sometimes typescript fails to detect that a variable is non-null
   '@typescript-eslint/no-use-before-define': # things should be used only after they're declared
     - warn
