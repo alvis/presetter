@@ -36,7 +36,7 @@ and now you can try to run some example life cycle scripts provided by the prese
 
 ## Concept
 
-The concept comprises two part: [presetter](packages/presetter) (this package) and a [preset](packages/preset-essentials).
+The concept comprises two part: [**presetter**](packages/presetter) (this package) and a **preset**, which you can easily [create one for your own requirement](#how-to-create-a-preset).
 
 ### presetter
 
@@ -107,7 +107,7 @@ presetter will generate a `package.json` with the content below before running t
 ### preset
 
 A preset is a collection of configuration to be shared.
-An example can be found in [preset-essentials](/packages/preset-essentials) which is also used for developing presetter.
+An example can be found in [preset-essentials](/packages/preset-essentials) which is also used for developing presetter and [other demo presets below](#demo-presets).
 
 A preset contains three parts:
 
@@ -156,6 +156,76 @@ The [auto peer dependencies installation](https://github.blog/2020-10-13-present
 
 It may be the case when a life cycle script crashed, resulting in `package.json` not be restored to its original version.
 To fix the issue, you can simply replace the temporary `package.json` by its original at `~package.json`.
+
+#### How to create a preset?
+
+It's actually rather simple. You just need to prepare an ordinary npm package with a default export with signature `(args: PresetContext) => PresetAsset | Promise<PresetAsset>`, where
+```ts
+/** input for a preset configurator */
+export interface PresetContext {
+  /** information about the targeted project */
+  target: {
+    /** the package name defined in the targeted project's package.json */
+    name: string;
+    /** the root folder containing the targeted project's .presetterrc.json */
+    root: string;
+    /** normalised package.json from the targeted project's package.json */
+    package: PackageJson;
+  };
+  /** content of .presetterrc */
+  custom: PresetterConfig;
+}
+
+/** expected return from the configuration function from the preset */
+export interface PresetAsset {
+  /** list of presets to extend from */
+  extends?: string[];
+  /** mapping of files to be generated to its configuration template files (key: file path relative to the target project's root, value: template path) */
+  template?: TemplateMap | TemplateMapGenerator;
+  /** list of templates that should not be created as symlinks */
+  noSymlinks?: string[] | Generator<string[]>;
+  /** path to the scripts template */
+  scripts?: string;
+  /** variables to be substituted in templates */
+  variable?: Record<string, string>;
+  /** supplementary configuration applied to .presetterrc for enriching other presets */
+  supplementaryConfig?: ConfigMap | ConfigMapGenerator;
+}
+
+/** an auxiliary type for representing a file path */
+type Path = string;
+/** an auxiliary type for representing a template (either path to the template file or its content) */
+export type Template = string | Record<string, unknown>;
+/** an auxiliary type for representing a dynamic template generator */
+export type TemplateGenerator = Generator<Template>;
+/** an auxiliary type for representing a collection of template (key: output path, value: template definition) */
+export type TemplateMap = Record<string, Path | Template | TemplateGenerator>;
+/** an auxiliary type for representing a dynamic template map generator */
+export type TemplateMapGenerator = Generator<TemplateMap>;
+/** an auxiliary type for representing a config */
+export type Config = string[] | Record<string, unknown>;
+/** an auxiliary type for representing a dynamic config generator */
+export type ConfigGenerator = Generator<Config>;
+/** an auxiliary type for representing a config map */
+export type ConfigMap = Record<string, Path | Config | ConfigGenerator>;
+/** an auxiliary type for representing a dynamic config map generator */
+export type ConfigMapGenerator = Generator<ConfigMap>;
+```
+
+This function is a manifest generator which will be used to inform presetter what and how use the template files. For bundling other dev tools, you only need to declare them in `peerDependencies` in the `package.json` of the preset package. Presetter will pick them up and automatically install them on your target project.
+
+## Demo Presets
+
+There are many ways to create a preset. Checkout our example presets to learn more:
+
+| Preset                                                         | Description                                                                                                                                                                                                    |
+|----------------------------------------------------------------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| [presetter-preset-essentials](/packages/preset-essentials)     | A starter preset with lots of useful dev tools (e.g. eslint, jest etc.) bundled and configuration following the best practices.                                                                                |
+| [presetter-preset-react](/packages/preset-react)               | Want to control the output path of the generated files? or which template to use based on the context? `presetter-preset-react` is an example showing you how to generate your manifest programmatically.      |
+| [presetter-preset-rollup](/packages/preset-rollup)             | An advanced preset showing you how to generate a content based on consolidated configs.                                                                                                                        |
+| [presetter-preset-strict](/packages/preset-strict)             | Want to build a preset on top of an existing one? Check this out, it extends `presetter-preset-essentials` with extra rules.                                                                                   |
+| [presetter-preset-web](/packages/preset-web)                   | Just want a preset with tools bundled? This one has only GraphQL, PostCSS and TailwindCSS bundled, with nothing extra.                                                                                         |
+| [@alvis/preset-gatsby](https://github.com/alvis/preset-gatsby) | How to make a preset without publishing it? Check out my personal preset. For my case, I can just use `presetter use https://github.com/alvis/preset-gatsby` to setup my dev environment for a Gatsby project. |
 
 ## About
 
