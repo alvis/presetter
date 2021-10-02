@@ -13,6 +13,7 @@
  * -------------------------------------------------------------------------
  */
 
+import { info } from 'console';
 import { pathExists, writeJSON } from 'fs-extra';
 import { defaultsDeep } from 'lodash';
 import { dirname, resolve } from 'path';
@@ -174,6 +175,7 @@ export async function getScripts(
  */
 export async function setupPreset(...uris: string[]): Promise<void> {
   // install presetter & the preset
+  info(`Installing ${uris.join(' ')}... it may take a few moment...`);
   const packages = await reifyDependencies({
     root: process.cwd(),
     add: ['presetter', ...uris],
@@ -190,6 +192,7 @@ export async function setupPreset(...uris: string[]): Promise<void> {
     return name;
   });
 
+  info('Updating .presetterrc.json & package.json');
   const context = await getContext();
   // update .presetterrc.json
   await writeJSON(
@@ -208,6 +211,8 @@ export async function setupPreset(...uris: string[]): Promise<void> {
       scripts: { prepare: 'presetter bootstrap' },
     }),
   );
+
+  info('Done. Enjoy coding!');
 }
 
 /**
