@@ -178,7 +178,8 @@ export async function setupPreset(...uris: string[]): Promise<void> {
   // NOTE: comparing packages before and after installation is the only reliable way
   // to extract the name of the preset in case it's given as a git url or file path etc.
 
-  const root = process.cwd();
+  const context = await getContext();
+  const { root } = context.target;
   const packageBefore = (await readPackage({ cwd: root })).devDependencies;
 
   // install presetter & the preset
@@ -196,20 +197,19 @@ export async function setupPreset(...uris: string[]): Promise<void> {
   const preset = newPackages.filter((name) => name !== 'presetter');
 
   info('Updating .presetterrc.json & package.json');
-  const context = await getContext();
   // update .presetterrc.json
   await writeJSON(
-    resolve(context.target.root, `${PRESETTERRC}.json`),
+    resolve(root, `${PRESETTERRC}.json`),
     { preset },
     { spaces: JSON_INDENT },
   );
 
-  // bootstrap configuration files
-  await bootstrapContent(context);
+  // bootstrap configuration files with the new .presetterrc.json
+  await bootstrapContent(await getContext());
 
   // insert post install script if not preset
   await writePackage(
-    context.target.root,
+    root,
     defaultsDeep(context.target.package, {
       scripts: { prepare: 'presetter bootstrap' },
     }),

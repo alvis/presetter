@@ -22,13 +22,13 @@ import {
   assertPresetterRC,
   bootstrapPreset,
   bootstrapContent,
+  getContext,
   getDestinationMap,
   getPresetAssets,
   getPresetterRC,
   getScripts,
   setupPreset,
   unsetPreset,
-  getContext,
 } from '#preset';
 
 import { linkFiles, unlinkFiles, writeFiles } from '#io';
@@ -353,7 +353,7 @@ describe('fn:setupPreset', () => {
   it('install presetter and the preset', async () => {
     expect(reifyDependencies).toBeCalledWith({
       add: ['presetter', 'preset1', 'preset2'],
-      root: process.cwd(),
+      root: '/project',
       saveAs: 'dev',
       lockFile: true,
     });
