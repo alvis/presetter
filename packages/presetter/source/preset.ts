@@ -63,8 +63,25 @@ export async function getPresetterRC(root: string): Promise<PresetterConfig> {
     }
   }
 
-  // the default preset
-  return { preset: 'presetter-preset-essentials' };
+  throw new Error('Missing preset defined in .presetterrc');
+}
+
+/**
+ * update .presetterrc configuration file content
+ * @param root the base directory in which the configuration file should be located
+ * @param config content to be merged with the existing configuration file
+ */
+export async function updatePresetterRC(
+  root: string,
+  config: PresetterConfig,
+): Promise<void> {
+  const existingPresetterRC = await getPresetterRC(root).catch(() => ({}));
+
+  await writeJSON(
+    resolve(root, `${PRESETTERRC}.json`),
+    merge(existingPresetterRC, config),
+    { spaces: JSON_INDENT },
+  );
 }
 
 /**
@@ -198,11 +215,7 @@ export async function setupPreset(...uris: string[]): Promise<void> {
 
   info('Updating .presetterrc.json & package.json');
   // update .presetterrc.json
-  await writeJSON(
-    resolve(root, `${PRESETTERRC}.json`),
-    { preset },
-    { spaces: JSON_INDENT },
-  );
+  await updatePresetterRC(root, { preset });
 
   // bootstrap configuration files with the new .presetterrc.json
   await bootstrapContent(await getContext());

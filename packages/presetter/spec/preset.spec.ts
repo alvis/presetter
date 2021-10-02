@@ -29,6 +29,7 @@ import {
   getScripts,
   setupPreset,
   unsetPreset,
+  updatePresetterRC,
 } from '#preset';
 
 import { linkFiles, unlinkFiles, writeFiles } from '#io';
@@ -244,10 +245,35 @@ describe('fn:getPresetterRC', () => {
     });
   });
 
-  it('use the default preset when no configuration file is found', async () => {
-    expect(await getPresetterRC('/missing-presetterrc')).toEqual({
-      preset: 'presetter-preset-essentials',
-    });
+  it('throw an error if no configuration file is found', async () => {
+    expect(() => getPresetterRC('/missing-presetterrc')).rejects.toThrow();
+  });
+});
+
+describe('fn:updatePresetterRC', () => {
+  it('create a new .presetterrc if it is inexistent', async () => {
+    await updatePresetterRC('/missing-presetterrc', { preset: ['new-preset'] });
+
+    expect(writeJSON).toBeCalledWith(
+      resolve('/missing-presetterrc/.presetterrc.json'),
+      {
+        preset: ['new-preset'],
+      },
+      { spaces: 2 },
+    );
+  });
+
+  it('merge with the existing .presetterrc', async () => {
+    await updatePresetterRC('/project', { preset: ['new-preset'] });
+
+    expect(writeJSON).toBeCalledWith(
+      resolve('/project/.presetterrc.json'),
+      {
+        preset: ['no-symlink-preset', 'symlink-only-preset', 'new-preset'],
+        noSymlinks: ['path/to/file'],
+      },
+      { spaces: 2 },
+    );
   });
 });
 
@@ -363,7 +389,13 @@ describe('fn:setupPreset', () => {
     expect(writeJSON).toBeCalledWith(
       resolve('/project/.presetterrc.json'),
       {
-        preset: ['preset1', 'preset2'],
+        preset: [
+          'no-symlink-preset',
+          'symlink-only-preset',
+          'preset1',
+          'preset2',
+        ],
+        noSymlinks: ['path/to/file'],
       },
       { spaces: 2 },
     );
