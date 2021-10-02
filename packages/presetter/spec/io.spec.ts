@@ -260,9 +260,9 @@ describe('fn:unlinkFiles', () => {
     });
 
     expect(info).toHaveBeenCalledTimes(3);
-    expect(info).toHaveBeenCalledWith('removing old/symlink/by/presetter');
-    expect(info).toHaveBeenCalledWith('skipping old/symlink/pointed/to/other');
-    expect(info).toHaveBeenCalledWith('skipping old/symlink/rewritten/by/user');
+    expect(info).toHaveBeenCalledWith('Removing old/symlink/by/presetter');
+    expect(info).toHaveBeenCalledWith('Skipping old/symlink/pointed/to/other');
+    expect(info).toHaveBeenCalledWith('Skipping old/symlink/rewritten/by/user');
     expect(unlink).toHaveBeenCalledTimes(1);
     expect(unlink).toHaveBeenCalledWith(
       resolve('/project/old/symlink/by/presetter'),
@@ -274,7 +274,7 @@ describe('fn:unlinkFiles', () => {
       'on/project/root': resolve('/project/on/project/root'),
     });
     expect(info).toHaveBeenCalledTimes(1);
-    expect(info).toHaveBeenCalledWith('skipping on/project/root');
+    expect(info).toHaveBeenCalledWith('Skipping on/project/root');
     expect(unlink).toHaveBeenCalledTimes(0);
   });
 });

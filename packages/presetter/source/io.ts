@@ -140,7 +140,7 @@ export async function writeFiles(
       // content to be written under the configurations folder
       destination !== resolve(root, key)
     ) {
-      info(`generating ${key}`);
+      info(`Generating ${key}`);
 
       // ensure that all parent folders exist to avoid errors from writeFile
       await ensureFile(destination);
@@ -148,7 +148,7 @@ export async function writeFiles(
       // write content to the destination path
       await writeFile(destination, serialiseContent(destination, content));
     } else {
-      info(`skipping ${key}`);
+      info(`Skipping ${key}`);
     }
   }
 }
@@ -173,11 +173,11 @@ export async function linkFiles(
       // for files that mean to be created directly on the target project root, not via symlink
       to !== basename(to)
     ) {
-      info(`linking ${relative(root, link)} => ${to}`);
+      info(`Linking ${relative(root, link)} => ${to}`);
       await mkdir(dirname(link), { recursive: true });
       await symlink(to, link);
     } else if (to !== basename(to)) {
-      info(`skipping ${relative(root, link)} => ${to}`);
+      info(`Skipping ${relative(root, link)} => ${to}`);
     }
   }
 }
@@ -197,7 +197,7 @@ export async function unlinkFiles(
       const to = relative(root, destination);
 
       if (link === to) {
-        info(`removing ${name}`);
+        info(`Removing ${name}`);
         await unlink(resolve(root, name));
         continue;
       }
@@ -205,7 +205,7 @@ export async function unlinkFiles(
       // do nothing
     }
 
-    info(`skipping ${name}`);
+    info(`Skipping ${name}`);
   }
 }
 
