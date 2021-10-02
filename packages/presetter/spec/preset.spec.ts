@@ -35,6 +35,11 @@ import { linkFiles, unlinkFiles, writeFiles } from '#io';
 
 import type { ResolvedPresetContext } from '#types';
 
+jest.mock('console', () => ({
+  __esModule: true,
+  info: jest.fn(),
+}));
+
 jest.mock(
   'fs-extra',
   () => ({
@@ -122,6 +127,25 @@ jest.mock(
   }),
   { virtual: true },
 );
+
+jest.mock('read-pkg', () => ({
+  __esModule: true,
+  default: jest
+    .fn()
+    .mockReturnValueOnce({
+      devDependencies: {
+        other: '*',
+      },
+    })
+    .mockReturnValueOnce({
+      devDependencies: {
+        other: '*',
+        presetter: '*',
+        preset1: '*',
+        preset2: '*',
+      },
+    }),
+}));
 
 jest.mock('resolve-pkg', () => ({
   __esModule: true,

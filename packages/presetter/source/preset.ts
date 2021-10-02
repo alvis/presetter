@@ -17,6 +17,7 @@ import { info } from 'console';
 import { pathExists, writeJSON } from 'fs-extra';
 import { defaultsDeep } from 'lodash';
 import { dirname, resolve } from 'path';
+import readPackage from 'read-pkg';
 import resolvePackage from 'resolve-pkg';
 import writePackage from 'write-pkg';
 
@@ -174,23 +175,25 @@ export async function getScripts(
  * @param uris list of name or git url of the preset
  */
 export async function setupPreset(...uris: string[]): Promise<void> {
+  // NOTE: comparing packages before and after installation is the only reliable way
+  // to extract the name of the preset in case it's given as a git url or file path etc.
+
+  const root = process.cwd();
+  const packageBefore = (await readPackage({ cwd: root })).devDependencies;
+
   // install presetter & the preset
   info(`Installing ${uris.join(' ')}... it may take a few moment...`);
-  const packages = await reifyDependencies({
-    root: process.cwd(),
+  await reifyDependencies({
+    root,
     add: ['presetter', ...uris],
     saveAs: 'dev',
     lockFile: true,
   });
 
-  // extract the name of the preset in case the supplied is a git url
-  const preset = uris.map((uri) => {
-    const [{ name }] = packages.filter(({ name, spec }) =>
-      [name, spec, `${name}@${spec}`].includes(uri),
-    );
-
-    return name;
-  });
+  // extract the name of the installed preset
+  const packageAfter = (await readPackage({ cwd: root })).devDependencies;
+  const newPackages = getNewPackages({ ...packageBefore }, { ...packageAfter });
+  const preset = newPackages.filter((name) => name !== 'presetter');
 
   info('Updating .presetterrc.json & package.json');
   const context = await getContext();
@@ -311,4 +314,17 @@ export async function getDestinationMap(
       ),
     ]),
   ]);
+}
+
+/**
+ * get a list of new packages installed by comparing the before and after state of devDependencies in package.json
+ * @param before before state of devDependencies in package.json
+ * @param after after state of devDependencies in package.json
+ * @returns list of new package names
+ */
+function getNewPackages(
+  before: Record<string, string>,
+  after: Record<string, string>,
+): string[] {
+  return Object.keys(after).filter((name): name is string => !before[name]);
 }
