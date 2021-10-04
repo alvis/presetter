@@ -44,6 +44,8 @@ export interface PresetAsset {
   scripts?: string;
   /** default variables */
   variable?: Variable;
+  /** supplementary configuration applied to .presetterrc for enriching other presets */
+  supplementaryConfig?: Record<string, string[] | Record<string, unknown>>;
 }
 
 export const DEFAULT_VARIABLE: Variable = {
@@ -64,5 +66,8 @@ export default async function (): Promise<PresetAsset> {
     },
     scripts: resolve(TEMPLATES, 'scripts.yaml'),
     variable: DEFAULT_VARIABLE,
+    supplementaryConfig: {
+      gitignore: ['/.husky', '/.lintstagedrc.json'],
+    },
   };
 }
