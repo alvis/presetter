@@ -118,7 +118,7 @@ function resolveApplyDirective(
 
       const resolvedName = registerUsage(packages, packageName, importName);
 
-      return `${resolvedName}(...${argsExpression})`;
+      return `${resolvedName}(...(${argsExpression} as const))`;
     }
   }
 

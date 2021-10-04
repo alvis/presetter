@@ -163,7 +163,7 @@ describe('fn:parseConfig', () => {
   it('replace content with a function call via the apply directive', () => {
     expect(resolveDirective({ applied: ['@apply another'] }, context)).toEqual({
       importMap: { another: 'import0' },
-      stringifiedConfig: '{"applied": import0(...[])}',
+      stringifiedConfig: '{"applied": import0(...([] as const))}',
     });
   });
 
@@ -172,7 +172,7 @@ describe('fn:parseConfig', () => {
       resolveDirective({ applied: ['@apply another[named]'] }, context),
     ).toEqual({
       importMap: { another: 'import0' },
-      stringifiedConfig: '{"applied": import0.named(...[])}',
+      stringifiedConfig: '{"applied": import0.named(...([] as const))}',
     });
   });
 
@@ -184,7 +184,8 @@ describe('fn:parseConfig', () => {
       ),
     ).toEqual({
       importMap: { another: 'import0' },
-      stringifiedConfig: '{"applied": import0(...[{"options": null}])}',
+      stringifiedConfig:
+        '{"applied": import0(...([{"options": null}] as const))}',
     });
   });
 
@@ -210,7 +211,7 @@ describe('fn:parseConfig', () => {
       ),
     ).toEqual({
       importMap: { options: 'import0', another: 'import1' },
-      stringifiedConfig: '{"applied": import1(...[import0.name])}',
+      stringifiedConfig: '{"applied": import1(...([import0.name] as const))}',
     });
   });
 
@@ -228,7 +229,7 @@ describe('fn:parseConfig', () => {
     ).toEqual({
       importMap: { options: 'import0', another: 'import1' },
       stringifiedConfig:
-        '{"applied": import1(...[{"extra": true, "name": import0.name}])}',
+        '{"applied": import1(...([{"extra": true, "name": import0.name}] as const))}',
     });
   });
 
@@ -251,7 +252,7 @@ describe('fn:parseConfig', () => {
         options1: 'import3',
       },
       stringifiedConfig:
-        '{"apply0": import1(...[import0.name]), "apply1": import2(...[import0.name]), "apply2": import1(...[import3.name]), "apply3": import2(...[import3.name])}',
+        '{"apply0": import1(...([import0.name] as const)), "apply1": import2(...([import0.name] as const)), "apply2": import1(...([import3.name] as const)), "apply3": import2(...([import3.name] as const))}',
     });
   });
 
@@ -271,7 +272,7 @@ describe('fn:parseConfig', () => {
     ).toEqual({
       importMap: { options: 'import0', another: 'import1' },
       stringifiedConfig:
-        '{"extra": true, "applied": import1(...[{"extra": true, "name": import0.name}]), "imported": import1.name}',
+        '{"extra": true, "applied": import1(...([{"extra": true, "name": import0.name}] as const)), "imported": import1.name}',
     });
   });
 

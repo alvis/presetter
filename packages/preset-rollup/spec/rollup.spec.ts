@@ -51,7 +51,7 @@ describe('fn:getRollupParameter', () => {
     ).toEqual({
       rollupImport: `import * as import0 from 'newPlugin';`,
       rollupExport:
-        'export default {"plugins": [import0(...[{"name": "newPlugin"}])]}',
+        'export default {"plugins": [import0(...([{"name": "newPlugin"}] as const))]}',
     });
   });
 
@@ -64,7 +64,7 @@ describe('fn:getRollupParameter', () => {
       ),
     ).toEqual({
       rollupImport: `import * as import0 from 'newPlugin';`,
-      rollupExport: 'export default {"plugins": [import0(...[])]}',
+      rollupExport: 'export default {"plugins": [import0(...([] as const))]}',
     });
   });
 
@@ -77,7 +77,7 @@ describe('fn:getRollupParameter', () => {
       ),
     ).toEqual({
       rollupImport: `import * as import0 from 'newPlugin';`,
-      rollupExport: 'export default {"plugins": [import0(...[])]}',
+      rollupExport: 'export default {"plugins": [import0(...([] as const))]}',
     });
   });
 
@@ -91,7 +91,7 @@ describe('fn:getRollupParameter', () => {
     ).toEqual({
       rollupImport: `import * as import0 from 'newPlugin';`,
       rollupExport:
-        'export default {"plugins": [import0(...[{"name": "newPlugin"}])]}',
+        'export default {"plugins": [import0(...([{"name": "newPlugin"}] as const))]}',
     });
   });
 
@@ -124,7 +124,7 @@ describe('fn:getRollupParameter', () => {
     ).toEqual({
       rollupImport: `import * as import0 from 'newPlugin';`,
       rollupExport:
-        'export default {"plugins": [import0.plugin(...[{"options": true}])]}',
+        'export default {"plugins": [import0.plugin(...([{"options": true}] as const))]}',
     });
   });
 
@@ -163,7 +163,7 @@ describe('fn:getRollupParameter', () => {
       ),
     ).toEqual({
       rollupImport: `import * as import0 from 'another';\nimport * as import1 from 'pluginWithOptions';\nimport * as import2 from 'pluginWithoutOptions';`,
-      rollupExport: `export default {"plugins": [import1(...[import0]), import2(...[import0])]}`,
+      rollupExport: `export default {"plugins": [import1(...([import0] as const)), import2(...([import0] as const))]}`,
     });
 
     expect(
@@ -177,7 +177,7 @@ describe('fn:getRollupParameter', () => {
       ),
     ).toEqual({
       rollupImport: `import * as import0 from 'another';\nimport * as import1 from 'pluginWithOptions';\nimport * as import2 from 'pluginWithoutOptions';`,
-      rollupExport: `export default {"plugins": [import1(...[import0]), import2(...[import0])]}`,
+      rollupExport: `export default {"plugins": [import1(...([import0] as const)), import2(...([import0] as const))]}`,
     });
   });
 
@@ -195,7 +195,7 @@ describe('fn:getRollupParameter', () => {
       ),
     ).toEqual({
       rollupImport: `import * as import0 from 'another';\nimport * as import1 from 'plugin0';\nimport * as import2 from 'plugin1';`,
-      rollupExport: `export default {"plugins": [import1(...[import0.export0]), import2(...[import0.export1])]}`,
+      rollupExport: `export default {"plugins": [import1(...([import0.export0] as const)), import2(...([import0.export1] as const))]}`,
     });
   });
 
@@ -214,7 +214,7 @@ describe('fn:getRollupParameter', () => {
       ),
     ).toEqual({
       rollupImport: `import * as import0 from 'options';\nimport * as import1 from 'plugin0';`,
-      rollupExport: `export default {"plugins": [import1(...[{"plugins": [["another", import0.export0]]}])]}`,
+      rollupExport: `export default {"plugins": [import1(...([{"plugins": [["another", import0.export0]]}] as const))]}`,
     });
   });
 });
