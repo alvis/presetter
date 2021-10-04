@@ -1,6 +1,6 @@
 {
   "name": "presetter-preset-react",
-  "version": "0.0.0",
+  "version": "3.0.0",
   "description": "An opinionated presetter preset for a React project",
   "keywords": [
     "presetter",
@@ -34,7 +34,7 @@
     "@testing-library/react": "^12.0.0",
     "@types/react": "^17.0.0",
     "eslint-plugin-react": "^7.0.0",
-    "presetter": "*"
+    "presetter": "^3.0.0"
   },
   "devDependencies": {
     "presetter": "file:../presetter",

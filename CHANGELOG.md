@@ -1,7 +1,126 @@
-# Change Log
+# Changelog
 
-All notable changes to this project will be documented in this file.
-See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
+All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
+
+# [3.0.0](https://github.com/alvis/presetter/compare/v2.1.0...v3.0.0) (2021-10-04)
+
+
+### ✨ Features
+
+* **prefix/lint:** ensure that `import type` is always used ([1c2b76f](https://github.com/alvis/presetter/commit/1c2b76f6d19c1f742bd13d66f1ca1db2c15d7533))
+* **preset-react:** provide a preset for a react project ([a9577e2](https://github.com/alvis/presetter/commit/a9577e27f02ec4f11fa8f876b09b8a7bca741688))
+* **preset-rollup:** provide a preset for code bundling via rollup ([b0704b0](https://github.com/alvis/presetter/commit/b0704b0fe727c2724d7057d3803ecee49c230eff))
+* **preset-strict:** extends preset-essentials for a stricter rules ([d7a73f8](https://github.com/alvis/presetter/commit/d7a73f880560b670379c45b55d9ef6b1946b73be))
+* **preset-web:** provide a preset for a web project ([4f6c033](https://github.com/alvis/presetter/commit/4f6c033ebb030f7c9319e9764a032caeffbf786d))
+* **preset/build:** add babel node to the build toolset ([cc830bd](https://github.com/alvis/presetter/commit/cc830bd2f64f18f57c8b799f21062e4f6f077d5d))
+* **preset/build:** add babel-plugin-module-resolver custom paths ([d9b5ff6](https://github.com/alvis/presetter/commit/d9b5ff646593e65c410dd4cdd05dcfe2518c9fef))
+* **preset/build:** add cross-env into the build toolset ([2f119c1](https://github.com/alvis/presetter/commit/2f119c16212e1d584a5268c33370d0131c715d53))
+* **preset/lint:** add rules for import/export statements ([17cbe1b](https://github.com/alvis/presetter/commit/17cbe1b228a03cf6b68df62fd3bce42e556e060b))
+* **preset/lint:** require file header with a summary ([ab793f4](https://github.com/alvis/presetter/commit/ab793f41b0e59df9911d7d87b4cbb0e1ad8b6c45))
+* **preset/lint:** update eslint-plugin-sonarjs to v0.10 ([b84f89d](https://github.com/alvis/presetter/commit/b84f89da97a14bc0914527668a4d23aff79ed81b))
+* **preset/lint:** update prettier to v2.4 ([70a3b61](https://github.com/alvis/presetter/commit/70a3b61f86abe77747ef1a8612a6b1ef8e8f2b68))
+* **preset/lint:** use husky and lint-staged for quick precommit QA ([3c7e04f](https://github.com/alvis/presetter/commit/3c7e04ffb03c4b97c089a02ecb2a9747367ca0d1))
+* **preset/test:** update jest to v27 ([85bde44](https://github.com/alvis/presetter/commit/85bde44b2036583292743b87bcb1c21e8407789a))
+* **preset:** allow users to add additional scripts ([8409840](https://github.com/alvis/presetter/commit/84098407667d1dbb678c95d2873826e3674e7699))
+* **preset:** allow users to ignore certain template configs ([f0a7947](https://github.com/alvis/presetter/commit/f0a7947940dcc4fee57ac45e7b4221732e6ea801))
+* **preset:** export types and utilities ([0a2a7a3](https://github.com/alvis/presetter/commit/0a2a7a34ba32ca33ceb36930043ca6231aabbb12))
+* **preset:** modularise preset helpers ([9b9bef6](https://github.com/alvis/presetter/commit/9b9bef63715de1013ea75f028f3d896edb97c414))
+* **preset:** provide a .gitignore template again ([356fae1](https://github.com/alvis/presetter/commit/356fae1cc5c590afa28cbd096e2e09e18334d9df))
+* **presetter/cli:** support multiple presets initialisation ([6e6fd71](https://github.com/alvis/presetter/commit/6e6fd71a824beda802bfd653607b42d7640498a3))
+* **presetter/preset:** show progress for `presetter use` ([efe939b](https://github.com/alvis/presetter/commit/efe939ba673e4b3c0f8426d74e0a8426d2587958))
+* **presetter:** add .presetterrc a .json extension by default ([61c0aad](https://github.com/alvis/presetter/commit/61c0aaded5bd0b74907de573443d11df349fd7f6))
+* **presetter:** add a loader for potentially dynamic content ([c17abc2](https://github.com/alvis/presetter/commit/c17abc2ae2b37f20732e15644830d77bd0404f89))
+* **presetter:** allow preset to further extends other presets ([6eacf2f](https://github.com/alvis/presetter/commit/6eacf2fd4405d10bd878e29dc610a58bcdc4bf31))
+* **presetter:** allow preset to supply supplementary config ([d4d85af](https://github.com/alvis/presetter/commit/d4d85af55053fb9c61ce81ec6486e3c478b18463))
+* **presetter:** export types for other presets ([c6d326d](https://github.com/alvis/presetter/commit/c6d326d1a4fc967fdfe453f671a4e337d9ee4817))
+* **presetter:** make target information available to preset ([090c341](https://github.com/alvis/presetter/commit/090c3410e62cfd43643e396438e7dda51476a107))
+* **presetter:** provider helpers for parsing directives in config ([b3ee728](https://github.com/alvis/presetter/commit/b3ee728c61d6470c1b0a7371f10c2d3b7e25cf5e))
+* **presetter:** support dynamic symlinks creation ([158a8ad](https://github.com/alvis/presetter/commit/158a8adf21d03b516f33bc02d1d9d1bd88b00dfc))
+* **presetter:** use arborist for installing peer dependences ([50ec8ae](https://github.com/alvis/presetter/commit/50ec8ae0eae7138c08b54542a6c972d2822af142))
+* **preset:** use target's package name as part of the output path ([2eaea0a](https://github.com/alvis/presetter/commit/2eaea0a5912a3183dfbd9cf44534658ede6c1c8e))
+* simplify preset with common features moved to presetter ([044a132](https://github.com/alvis/presetter/commit/044a132b046f93434c86c3fda66a2ed8663f5bf1))
+
+
+### 🐛 Bug Fixes
+
+* **preset/build:** exclude node_modules at all levels ([af17788](https://github.com/alvis/presetter/commit/af17788f5bbac3fccdd424605d355f8906276cbe))
+* **preset/build:** explicitly declare loose mode to ignore warnings ([b3fa0b4](https://github.com/alvis/presetter/commit/b3fa0b4bbc94d10bc2396da7769165d8d1700786))
+* **preset:** allow file path(s) to be specified to the lint script ([1dc69da](https://github.com/alvis/presetter/commit/1dc69da7f9a08c164daae4bab9b575d390adc288))
+* **preset:** ensure that an object in a list is correctly merged ([46555e4](https://github.com/alvis/presetter/commit/46555e41ec99d5f6980deaf3c39f7d220eece9a6))
+* **preset:** remove .gitignore as symlink is removed since git 2.32 ([3d4098b](https://github.com/alvis/presetter/commit/3d4098b5d881f8f1137e95a7a2300961cb463179))
+* **preset:** replace target value as long as the value is defined ([0fdb597](https://github.com/alvis/presetter/commit/0fdb59711e4aa8daa0a02244f6a2a14cec13df3d))
+* **presetter:** allow config files to be placed other than the root ([4153314](https://github.com/alvis/presetter/commit/4153314d9f7fa3d7c3902b6adda550eba150612b))
+* **presetter:** detect preset name reliably ([44d586b](https://github.com/alvis/presetter/commit/44d586b934613924b4be4a465c539851939d5454))
+* **presetter:** ensure all packages are there before bootstrapping ([c6ad0f0](https://github.com/alvis/presetter/commit/c6ad0f0be367d6a2780b5e1f10c0e34842c7a6de))
+* **presetter:** ensure that a list is attached uniquely ([7091053](https://github.com/alvis/presetter/commit/7091053973c9a7e227877687f79c19db36dd092b))
+* **presetter:** make runner resolution reliable ([b7a529c](https://github.com/alvis/presetter/commit/b7a529cd4101f956d54e492c9b996da6a4ecdca6))
+* **presetter:** merge any new presets to the existing .presetterrc ([33b9d99](https://github.com/alvis/presetter/commit/33b9d99a0c9babdbe5e7d9c30a3609b6ed5ff9e0))
+* **presetter:** narrow types in directive's argument ([c6de804](https://github.com/alvis/presetter/commit/c6de8044d4d9f584e3ef4ef688f81c08db425d1c))
+* **presetter:** use the latest .presetterrc after setting it up ([2820e21](https://github.com/alvis/presetter/commit/2820e21bb1221a01a71c6efb3e8331c901f72ef3))
+* **presetter:** warn for any invalid shell scripts ([6f083e7](https://github.com/alvis/presetter/commit/6f083e711ba7e3d6fbed9fc2b2848084aaf57d86))
+
+
+### 🛠 Builds
+
+* fully replace lerna with npm workspace ([343ee59](https://github.com/alvis/presetter/commit/343ee59894cd1dd7d83d7af25462377dc5179b2b))
+* use presetter-preset-strict wherever possible ([4ff72a1](https://github.com/alvis/presetter/commit/4ff72a1a9730dfd4ad99d0a63dd4b005041ce759))
+
+
+### 📦 Code Refactoring
+
+* **preset/lint:** reorder rules with plugin first ([c4840b5](https://github.com/alvis/presetter/commit/c4840b501987ab69f4f384075e5c928c4cda39b3))
+* **preset:** abstract away pupa from resolving the template ([5b572e6](https://github.com/alvis/presetter/commit/5b572e6dfc6754239959f2fa83301906663eb299))
+* **preset:** allow flexible template loading ([356c857](https://github.com/alvis/presetter/commit/356c857cf5acb304ecda63f2707f7356aaeec0f8))
+* **preset:** relax rules to make it just an essential set ([74b5bd8](https://github.com/alvis/presetter/commit/74b5bd8e351abe95c6143b80045e4f71756aecdd))
+* **preset:** take the default out from the main function ([237a1e4](https://github.com/alvis/presetter/commit/237a1e402e7a9dbe412e46c69856e563d845386a))
+* **presetter:** pass an empty config by default ([d6a5d71](https://github.com/alvis/presetter/commit/d6a5d711904020b9c955894e703b1bbbcf698135))
+* rename presetter-preset to presetter-preset-essentials ([b799587](https://github.com/alvis/presetter/commit/b7995871d85a1ccb8d2e43ba9b3a7e305de7a99b))
+
+
+### 📚 Documentation
+
+* describe how a preset can be made ([4735d54](https://github.com/alvis/presetter/commit/4735d542a7412de5e78f2e590e5208c015c0be34))
+* enrich README ([8509f41](https://github.com/alvis/presetter/commit/8509f410b200b32896cd74a9f2e51732d8a5cf6a))
+* update status on eslint-plugin-sonarjs ([0a43ed8](https://github.com/alvis/presetter/commit/0a43ed80536e616a4c77de9c39dd314a6d2a0c60))
+
+
+### 🚨 Tests
+
+* **preset:** make sure all templates are used ([50b6644](https://github.com/alvis/presetter/commit/50b66446f10d91c725074728dee70f7509c5a445))
+
+
+### ⚙️ Continuous Integrations
+
+* reduce the complexity of style and coverage checks ([2df3587](https://github.com/alvis/presetter/commit/2df3587dcc5eb4eff4fe4077eefea9fe1b4ea7ed))
+
+
+### ♻️ Chores
+
+* clean up unused configurations ([866c5ac](https://github.com/alvis/presetter/commit/866c5ac1fc81a4348deb7627d3327189593a3a48))
+* **presetter:** adopt .json extension for presetterrc ([b48edbd](https://github.com/alvis/presetter/commit/b48edbda9abad286e1512d9942842314e620fca7))
+
+
+### 💎 Styles
+
+* clean up the code with better naming and order ([bc17738](https://github.com/alvis/presetter/commit/bc17738c044e2870031f81b085cbe3346433b225))
+* **preset:** remove unused function documentation ([87a54c4](https://github.com/alvis/presetter/commit/87a54c4fb9d8084f37a9e0e50dcd65cbd280f0ee))
+* **presetter/script:** fix a typo in the test ([ff3190d](https://github.com/alvis/presetter/commit/ff3190d2a8f10e2bcc6a75caf2171261f5375c8d))
+* **presetter:** reformat the messages for consistency ([7c0f876](https://github.com/alvis/presetter/commit/7c0f8769cae441f181e562d9a3bde66231581539))
+
+
+### Breaking changes
+
+* Now, presets only need to report the absolute paths of their
+template files. All configuration generation is now performed by presetter. Due
+to this change, multiple presets is now supported in a mix and match fashion.
+* **preset:** Previously buildJSONConfig and buildListConfig assume that
+templates are bundled with presetter-preset if the base path is not specified.
+Now, the base path must be explicitly specified so that they can be more readily
+reused by other presets.
+* **presetter:** Now, presets will take the end project name and config as
+the agrument instead of just the config.
+
+
 
 # [2.1.0](https://github.com/alvis/presetter/compare/v2.0.0...v2.1.0) (2021-07-04)
 
