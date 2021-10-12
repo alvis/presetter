@@ -13,9 +13,9 @@ develop:
   --debounce 250 --respawn --clear --no-notify --tree-kill --dedupe --ignore-watch
   node_modules -- $@
 lint: run-s "lint:* -- {source} {test}"
-lint:prettier: prettier --write --no-error-on-unmatched-pattern
-lint:fixme: leasot --skip-unsupported --exit-nicely package.json
 lint:eslint: eslint --fix --format codeframe --no-error-on-unmatched-pattern --ext js,jsx,ts,tsx
+lint:fixme: leasot --skip-unsupported --exit-nicely package.json
+lint:prettier: prettier --write --no-error-on-unmatched-pattern
 prepare: run-s build
 prepublishOnly: run-s coverage lint
 prerelease: shx mv package.json ~~package.json && shx mv ~package.json package.json
