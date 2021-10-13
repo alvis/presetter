@@ -19,7 +19,7 @@ What's more, what if you want to update configs for all projects? :man_facepalmi
 
 ## Quick Start
 
-1. Bootstrap your project with a preset (e.g. [preset-essentials](packages/preset-essentials))
+1. Bootstrap your project with a preset (e.g. [presetter-preset-essentials](packages/preset-essentials))
 
 ```shell
 npx presetter use <preset package name>
@@ -107,7 +107,7 @@ presetter will generate a `package.json` with the content below before running t
 ### preset
 
 A preset is a collection of configuration to be shared.
-An example can be found in [preset-essentials](/packages/preset-essentials) which is also used for developing presetter and [other demo presets below](#demo-presets).
+An example can be found in [presetter-preset-essentials](/packages/preset-essentials) which is also used for developing presetter and [other demo presets below](#demo-presets).
 
 A preset contains three parts:
 
