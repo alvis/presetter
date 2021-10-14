@@ -474,13 +474,13 @@ describe('fn:bootstrapContent', () => {
       },
       {
         'link/pointed/to/other': resolve(
-          '/generated/client/link/pointed/to/other',
+          '/presetter/generated/client/link/pointed/to/other',
         ),
         'link/pointed/to/preset': resolve(
-          '/generated/client/link/pointed/to/preset',
+          '/presetter/generated/client/link/pointed/to/preset',
         ),
         'link/rewritten/by/project': resolve(
-          '/generated/client/link/rewritten/by/project',
+          '/presetter/generated/client/link/rewritten/by/project',
         ),
         'path/to/file': resolve('/project/path/to/file'),
       },
@@ -488,13 +488,13 @@ describe('fn:bootstrapContent', () => {
     expect(linkFiles).toBeCalledWith('/project', {
       'path/to/file': resolve('/project/path/to/file'),
       'link/pointed/to/preset': resolve(
-        '/generated/client/link/pointed/to/preset',
+        '/presetter/generated/client/link/pointed/to/preset',
       ),
       'link/pointed/to/other': resolve(
-        '/generated/client/link/pointed/to/other',
+        '/presetter/generated/client/link/pointed/to/other',
       ),
       'link/rewritten/by/project': resolve(
-        '/generated/client/link/rewritten/by/project',
+        '/presetter/generated/client/link/rewritten/by/project',
       ),
     });
   });
@@ -537,13 +537,13 @@ describe('fn:unsetPreset', () => {
   it('clean up any artifacts installed on the project root', async () => {
     expect(unlinkFiles).toHaveBeenCalledWith('/project', {
       'link/pointed/to/other': resolve(
-        '/generated/client/link/pointed/to/other',
+        '/presetter/generated/client/link/pointed/to/other',
       ),
       'link/pointed/to/preset': resolve(
-        '/generated/client/link/pointed/to/preset',
+        '/presetter/generated/client/link/pointed/to/preset',
       ),
       'link/rewritten/by/project': resolve(
-        '/generated/client/link/rewritten/by/project',
+        '/presetter/generated/client/link/rewritten/by/project',
       ),
       'path/to/file': resolve('/project/path/to/file'),
     });
@@ -582,7 +582,7 @@ describe('fn:getDestinationMap', () => {
         defaultContext,
       ),
     ).toEqual({
-      config: resolve('/generated/client/config'),
+      config: resolve('/presetter/generated/client/config'),
     });
   });
 
@@ -600,7 +600,7 @@ describe('fn:getDestinationMap', () => {
       ),
     ).toEqual({
       noSymlink: resolve('/project/noSymlink'),
-      symlink: resolve('/generated/client/symlink'),
+      symlink: resolve('/presetter/generated/client/symlink'),
     });
   });
 });

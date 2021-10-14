@@ -312,8 +312,11 @@ export async function getDestinationMap(
 ): Promise<Record<string, string>> {
   const {
     custom: { noSymlinks },
+    target: { root },
   } = context;
-  const outDir = resolve(__dirname, '..', 'generated', context.target.name);
+  // make sure we use the path of presetter under the target project, not the one via npx
+  const presetterDir = resolvePackage('presetter', { cwd: root });
+  const outDir = resolve(presetterDir!, 'generated', context.target.name);
 
   const relativePaths = [...Object.keys(template)];
 
