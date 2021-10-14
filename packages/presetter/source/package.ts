@@ -102,10 +102,9 @@ export async function reifyDependencies(args: {
   } = { ...args };
 
   // use arborist to install peer dependencies
-  const arborist = new Arborist({
-    path: root,
-    registry: await getRegistry(),
-  });
+  const registry = await getRegistry();
+  const forceAuth = await getRegistryCredentials(registry);
+  const arborist = new Arborist({ path: root, registry, forceAuth });
 
   // don't write to the lockfile
   const actualTree = await arborist.reify({
@@ -135,5 +134,29 @@ async function getRegistry(): Promise<string> {
     return config.get('registry');
   } catch {
     return 'https://registry.npmjs.org';
+  }
+}
+
+/**
+ * get credentials for the package registry
+ * @param registryURI url of the registry
+ * @returns credentials for the registry
+ */
+async function getRegistryCredentials(registryURI: string): Promise<{
+  email?: string;
+  token?: string;
+  username?: string;
+  password?: string;
+  auth?: string;
+}> {
+  // get npm config
+  const config = new Config({ definitions: {}, npmPath: '.' });
+  try {
+    await config.load();
+
+    return config.getCredentialsByURI(registryURI);
+  } catch {
+    // it may throw an error if the default registry is not found in .npmrc, but it's fine
+    return {};
   }
 }

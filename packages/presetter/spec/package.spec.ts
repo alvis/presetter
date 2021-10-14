@@ -66,6 +66,9 @@ jest.mock('@npmcli/config', () => ({
     return {
       get: jest.fn((key: string) => key),
       load: mockConfigLoad,
+      getCredentialsByURI: jest.fn((uri: string) => ({
+        token: 'token',
+      })),
     };
   }),
 }));
@@ -123,11 +126,12 @@ describe('fn:reifyDependencies', () => {
       definitions: {},
       npmPath: '.',
     });
-    expect(mockConfigLoad).toHaveBeenCalledTimes(1);
+    expect(mockConfigLoad).toHaveBeenCalledTimes(2); // one for getting the registry, one for getting the credentials
 
     expect(mockArborist).toHaveBeenCalledWith({
       path: 'root',
       registry: 'registry',
+      forceAuth: { token: 'token' },
     });
     expect(mockArboristReify).toHaveBeenCalledWith({
       add: [],
@@ -145,6 +149,7 @@ describe('fn:reifyDependencies', () => {
     expect(mockArborist).toHaveBeenCalledWith({
       path: 'root',
       registry: 'https://registry.npmjs.org',
+      forceAuth: { token: 'token' },
     });
   });
 });

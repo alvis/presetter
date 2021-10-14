@@ -22,4 +22,11 @@ export default class Config {
 
   public get(key: string): string;
   public load(): Promise<void>;
+  public getCredentialsByURI(uri: string): {
+    email?: string;
+    token?: string;
+    username?: string;
+    password?: string;
+    auth?: string;
+  };
 }
