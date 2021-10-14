@@ -161,7 +161,7 @@ rules:
   # Code Quality
   '@typescript-eslint/no-explicit-any': off # allow any type
   '@typescript-eslint/no-unused-vars': # use a name starting with _ as a placeholder instead
-    - error
+    - warn
     - varsIgnorePattern: ^_
       argsIgnorePattern: ^_
 
