@@ -94,6 +94,11 @@ jest.mock(
     __esModule: true,
     default: async () => ({
       extends: ['no-symlink-preset', 'symlink-only-preset'],
+      supplementaryIgnores: () => [
+        'link/pointed/to/preset',
+        'link/pointed/to/other',
+        'link/rewritten/by/project',
+      ],
     }),
   }),
   { virtual: true },
@@ -324,12 +329,13 @@ describe('fn:getPresetAssets', () => {
   });
 
   it('add and merge extended presets', async () => {
-    expect(
-      await getPresetAssets({
-        ...defaultContext,
-        custom: { ...defaultContext.custom, preset: 'extension-preset' },
-      }),
-    ).toEqual([
+    const assets = await getPresetAssets({
+      ...defaultContext,
+      custom: { ...defaultContext.custom, preset: 'extension-preset' },
+    });
+
+    expect(assets.length).toEqual(3);
+    expect(assets).toMatchObject([
       {
         template: {
           'path/to/file': '/path/to/template',
@@ -344,7 +350,9 @@ describe('fn:getPresetAssets', () => {
         },
         scripts: '/path/to/symlink-only-preset/scripts.yaml',
       },
-      { extends: ['no-symlink-preset', 'symlink-only-preset'] },
+      {
+        extends: ['no-symlink-preset', 'symlink-only-preset'],
+      },
     ]);
   });
 
@@ -527,6 +535,22 @@ describe('fn:bootstrapContent', () => {
     );
     expect(linkFiles).toBeCalledWith('/project', {
       'path/to/file': resolve('/project/path/to/file'),
+    });
+  });
+
+  it('honours ignore rules supplied by presets', async () => {
+    await bootstrapContent({
+      ...defaultContext,
+      custom: { ...defaultContext.custom, preset: 'extension-preset' },
+    });
+
+    expect(writeFiles).toBeCalledWith(
+      '/project',
+      { 'path/to/file': { template: true } },
+      { 'path/to/file': resolve('/presetter/generated/client/path/to/file') },
+    );
+    expect(linkFiles).toBeCalledWith('/project', {
+      'path/to/file': resolve('/presetter/generated/client/path/to/file'),
     });
   });
 });

@@ -31,6 +31,7 @@ import {
 import { filter, isJSON, merge, template } from './template';
 
 import type {
+  IgnoreRule,
   PresetAsset,
   PresetContext,
   PresetterConfig,
@@ -260,7 +261,21 @@ export async function bootstrapContent(context: PresetContext): Promise<void> {
   const assets = await getPresetAssets(context);
   const content = await generateContent(assets, context);
   const resolvedContext = await resolveContext(assets, context);
-  const filteredContent = filter(content, ...(context.custom.ignores ?? []));
+
+  const userIgnores = context.custom.ignores ?? [];
+  const presetIgnores = (
+    await Promise.all(
+      assets.map(({ supplementaryIgnores }) =>
+        supplementaryIgnores instanceof Function
+          ? supplementaryIgnores(resolvedContext)
+          : supplementaryIgnores,
+      ),
+    )
+  )
+    .filter((rules): rules is IgnoreRule[] => !!rules)
+    .flat();
+
+  const filteredContent = filter(content, ...presetIgnores, ...userIgnores);
 
   const destinationMap = await getDestinationMap(
     filteredContent,

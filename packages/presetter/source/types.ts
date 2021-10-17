@@ -45,6 +45,8 @@ export interface PresetAsset {
   variable?: Record<string, string>;
   /** supplementary configuration applied to .presetterrc for enriching other presets */
   supplementaryConfig?: ConfigMap | ConfigMapGenerator;
+  /** a list of files not to be linked or fields to be ignores */
+  supplementaryIgnores?: IgnoreRule[] | IgnoreRulesGenerator;
 }
 
 /** input for a preset configurator */
@@ -98,6 +100,8 @@ export type ConfigMapGenerator = Generator<ConfigMap, 'variable'>;
 export type IgnoreRule = string | number | Record<string, IgnorePath>;
 /** field names of a config template to be ignored */
 export type IgnorePath = Array<string | number> | { [key: string]: IgnorePath };
+/** an auxiliary type for representing a dynamic ignore rules generator */
+export type IgnoreRulesGenerator = Generator<IgnoreRule[], 'variable'>;
 
 /** a dynamic content generator */
 export type Generator<
