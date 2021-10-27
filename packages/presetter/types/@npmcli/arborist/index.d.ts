@@ -113,13 +113,14 @@ export class Arborist {
   constructor(options?: {
     path?: string;
     registry?: string;
-    forceAuth: {
+    forceAuth?: {
       email?: string;
       token?: string;
       username?: string;
       password?: string;
       auth?: string;
     };
+    [key: string]: string;
   });
 
   public loadActual(): Promise<ArboristNode>;

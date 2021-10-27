@@ -102,9 +102,7 @@ export async function reifyDependencies(args: {
   } = { ...args };
 
   // use arborist to install peer dependencies
-  const registry = await getRegistry();
-  const forceAuth = await getRegistryCredentials(registry);
-  const arborist = new Arborist({ path: root, registry, forceAuth });
+  const arborist = new Arborist({ path: root, ...(await getNPMConfig()) });
 
   // don't write to the lockfile
   const actualTree = await arborist.reify({
@@ -125,38 +123,67 @@ export async function reifyDependencies(args: {
  * get the url of the package registry of the target project
  * @returns url of the registry
  */
-async function getRegistry(): Promise<string> {
+async function getNPMConfig(): Promise<Record<string, string>> {
   try {
     // get npm config
-    const config = new Config({ definitions: {}, npmPath: '.' });
+    const config = new Config({
+      definitions: {},
+      npmPath: '.',
+      flatten: (
+        config: Record<string, string>,
+        flattenedConfig: Record<string, string>,
+      ): void => {
+        // NOTE: this function is called multiple time for flattening the configs at multiple levels, user, project, cli etc.
+
+        // ensure that higher level configs are always in priority
+        Object.assign(flattenedConfig, config);
+      },
+    });
+
     await config.load();
 
-    return config.get('registry');
+    return config.flat;
   } catch {
-    return 'https://registry.npmjs.org';
-  }
-}
-
-/**
- * get credentials for the package registry
- * @param registryURI url of the registry
- * @returns credentials for the registry
- */
-async function getRegistryCredentials(registryURI: string): Promise<{
-  email?: string;
-  token?: string;
-  username?: string;
-  password?: string;
-  auth?: string;
-}> {
-  // get npm config
-  const config = new Config({ definitions: {}, npmPath: '.' });
-  try {
-    await config.load();
-
-    return config.getCredentialsByURI(registryURI);
-  } catch {
-    // it may throw an error if the default registry is not found in .npmrc, but it's fine
     return {};
   }
 }
+
+// /**
+//  * get the url of the package registry of the target project
+//  * @returns url of the registry
+//  */
+// async function getRegistry(): Promise<string> {
+//   try {
+//     // get npm config
+//     const config = new Config({ definitions: {}, npmPath: '.' });
+//     await config.load();
+
+//     return config.get('registry');
+//   } catch {
+//     return 'https://registry.npmjs.org';
+//   }
+// }
+
+// /**
+//  * get credentials for the package registry
+//  * @param registryURI url of the registry
+//  * @returns credentials for the registry
+//  */
+// async function getRegistryCredentials(registryURI: string): Promise<{
+//   email?: string;
+//   token?: string;
+//   username?: string;
+//   password?: string;
+//   auth?: string;
+// }> {
+//   // get npm config
+//   const config = new Config({ definitions: {}, npmPath: '.' });
+//   try {
+//     await config.load();
+
+//     return config.getCredentialsByURI(registryURI);
+//   } catch {
+//     // it may throw an error if the default registry is not found in .npmrc, but it's fine
+//     return {};
+//   }
+// }
