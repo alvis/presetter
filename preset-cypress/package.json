@@ -1,7 +1,7 @@
 {
-  "name": "presetter-preset-web",
-  "version": "3.0.2",
-  "description": "An opinionated presetter preset for a web project",
+  "name": "presetter-preset-cypress",
+  "version": "3.0.1",
+  "description": "An opinionated presetter preset for a setting up an e2e testing",
   "keywords": [
     "presetter",
     "preset"
@@ -30,12 +30,10 @@
     "watch": "run watch"
   },
   "peerDependencies": {
-    "autoprefixer": "^10.0.0",
-    "eslint-plugin-tailwindcss": "^1.0.0",
-    "graphql": "^15.0.0",
-    "postcss": "^8.3.0",
-    "presetter": "^3.0.2",
-    "tailwindcss": "^2.2.0"
+    "@testing-library/cypress": "^8.0.0",
+    "@testing-library/dom": "^8.0.0",
+    "@testing-library/jest-dom": "^5.0.0",
+    "@testing-library/user-event": "^13.0.0"
   },
   "devDependencies": {
     "presetter": "file:../presetter",
