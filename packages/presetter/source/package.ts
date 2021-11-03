@@ -102,10 +102,9 @@ export async function reifyDependencies(args: {
   } = { ...args };
 
   // use arborist to install peer dependencies
-  const arborist = new Arborist({
-    path: root,
-    registry: await getRegistry(),
-  });
+  const registry = await getRegistry();
+  const workspacesEnabled = arePeerPackagesAutoInstalled(); // no workspace before npm 7
+  const arborist = new Arborist({ path: root, registry, workspacesEnabled });
 
   // don't write to the lockfile
   const actualTree = await arborist.reify({

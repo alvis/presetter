@@ -110,7 +110,11 @@ class ArboristEdge {
 }
 
 export class Arborist {
-  constructor(options?: { path?: string; registry?: string });
+  constructor(options?: {
+    path?: string;
+    registry?: string;
+    workspacesEnabled?: boolean;
+  });
 
   public loadActual(): Promise<ArboristNode>;
   public loadVirtual(): Promise<ArboristNode>;

@@ -128,6 +128,7 @@ describe('fn:reifyDependencies', () => {
     expect(mockArborist).toHaveBeenCalledWith({
       path: 'root',
       registry: 'registry',
+      workspacesEnabled: arePeerPackagesAutoInstalled(),
     });
     expect(mockArboristReify).toHaveBeenCalledWith({
       add: [],
@@ -145,6 +146,7 @@ describe('fn:reifyDependencies', () => {
     expect(mockArborist).toHaveBeenCalledWith({
       path: 'root',
       registry: 'https://registry.npmjs.org',
+      workspacesEnabled: arePeerPackagesAutoInstalled(),
     });
   });
 });
