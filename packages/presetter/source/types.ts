@@ -15,6 +15,38 @@
 
 import type { PackageJson } from 'read-pkg-up';
 
+/** data structure for .presetterrc */
+export interface PresetterConfig {
+  /** preset name */
+  preset: string | string[];
+  /** configuration for customisation to be passed to the preset */
+  config?: Record<string, Record<string, unknown> | string[]>;
+  /** extra scripts available */
+  scripts?: Record<string, string>;
+  /** variables to be substituted in templates */
+  variable?: Record<string, string>;
+  /** a list of files not to be linked or fields to be ignores */
+  ignores?: IgnoreRule[];
+  /** list of templates that should not be created as symlinks */
+  noSymlinks?: string[];
+}
+
+/** expected return from the configuration function from the preset */
+export interface PresetAsset {
+  /** list of presets to extend from */
+  extends?: string[];
+  /** mapping of files to be generated to its configuration template files (key: file path relative to the target project's root, value: template path) */
+  template?: TemplateMap | TemplateMapGenerator;
+  /** list of templates that should not be created as symlinks */
+  noSymlinks?: string[] | Generator<string[], 'variable'>;
+  /** path to the scripts template */
+  scripts?: string;
+  /** variables to be substituted in templates */
+  variable?: Record<string, string>;
+  /** supplementary configuration applied to .presetterrc for enriching other presets */
+  supplementaryConfig?: ConfigMap | ConfigMapGenerator;
+}
+
 /** input for a preset configurator */
 export interface PresetContext {
   /** information about the targeted project */
@@ -44,15 +76,6 @@ export interface ResolvedPresetContext<
   };
 }
 
-/** a helper type for a potentially promise return */
-export type PotentiallyPromise<T> = T | PromiseLike<T>;
-
-/** a dynamic content generator */
-export type Generator<
-  R,
-  K extends keyof PresetterConfig = 'config' | 'noSymlinks' | 'variable',
-> = (args: ResolvedPresetContext<K>) => PotentiallyPromise<R>;
-
 /** an auxiliary type for representing a file path */
 type Path = string;
 /** an auxiliary type for representing a template (either path to the template file or its content) */
@@ -67,35 +90,20 @@ export type TemplateMapGenerator = Generator<TemplateMap>;
 export type Config = string[] | Record<string, unknown>;
 /** an auxiliary type for representing a dynamic config generator */
 export type ConfigGenerator = Generator<Config>;
-/** an auxiliary type for representing a config map */
+/** an auxiliary type for representing a map containing multiple configs */
 export type ConfigMap = Record<string, Path | Config | ConfigGenerator>;
 /** an auxiliary type for representing a dynamic config map generator */
 export type ConfigMapGenerator = Generator<ConfigMap, 'variable'>;
+/** file name to be ignored or fields of config templates to be ignored */
+export type IgnoreRule = string | number | Record<string, IgnorePath>;
+/** field names of a config template to be ignored */
+export type IgnorePath = Array<string | number> | { [key: string]: IgnorePath };
 
-/** expected return from the configuration function from the preset */
-export interface PresetAsset {
-  /** list of presets to extend from */
-  extends?: string[];
-  /** mapping of files to be generated to its configuration template files (key: file path relative to the target project's root, value: template path) */
-  template?: TemplateMap | TemplateMapGenerator;
-  /** list of templates that should not be created as symlinks */
-  noSymlinks?: string[] | Generator<string[], 'variable'>;
-  /** path to the scripts template */
-  scripts?: string;
-  /** variables to be substituted in templates */
-  variable?: Record<string, string>;
-  /** supplementary configuration applied to .presetterrc for enriching other presets */
-  supplementaryConfig?: ConfigMap | ConfigMapGenerator;
-}
-
-/** a helper type for finding the required fields for a generator */
-export type RequiredResolution<
-  F extends DynamicAssetField = DynamicAssetField,
-> = PresetAsset[F] extends infer R
-  ? R extends Generator<any, infer K>
-    ? K
-    : never
-  : never;
+/** a dynamic content generator */
+export type Generator<
+  R,
+  K extends keyof PresetterConfig = 'config' | 'noSymlinks' | 'variable',
+> = (args: ResolvedPresetContext<K>) => PotentiallyPromise<R>;
 
 /** all potential fields that can be a dynamic content */
 export type DynamicAssetField = {
@@ -116,32 +124,14 @@ export type DynamicAsset<F extends DynamicAssetField> = Exclude<
     : never
   : never;
 
-/** information about the targeted project */
-export interface PresetTarget {
-  /** the package name defined in the targeted project's package.json */
-  name: string;
-  /** the root folder containing the targeted project's .presetterrc.json */
-  root: string;
-}
+/** a helper type for a potentially promise return */
+export type PotentiallyPromise<T> = T | PromiseLike<T>;
 
-/** data structure for .presetterrc */
-export interface PresetterConfig {
-  /** preset name */
-  preset: string | string[];
-  /** configuration for customisation to be passed to the preset */
-  config?: Record<string, Record<string, unknown> | string[]>;
-  /** extra scripts available */
-  scripts?: Record<string, string>;
-  /** variables to be substituted in templates */
-  variable?: Record<string, string>;
-  /** a list of files not to be linked or fields to be ignores */
-  ignores?: IgnoreRule[];
-  /** list of templates that should not be created as symlinks */
-  noSymlinks?: string[];
-}
-
-/** file name to be ignored or fields of config templates to be ignored */
-export type IgnoreRule = string | number | Record<string, IgnorePath>;
-
-/** field names of a config template to be ignored */
-export type IgnorePath = Array<string | number> | { [key: string]: IgnorePath };
+/** a helper type for finding the required fields for a generator */
+export type RequiredResolution<
+  F extends DynamicAssetField = DynamicAssetField,
+> = PresetAsset[F] extends infer R
+  ? R extends Generator<any, infer K>
+    ? K
+    : never
+  : never;
