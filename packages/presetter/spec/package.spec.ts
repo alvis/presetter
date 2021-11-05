@@ -56,20 +56,6 @@ jest.mock('@npmcli/arborist', () => ({
   }),
 }));
 
-const mockConfig = jest.fn();
-const mockConfigLoad = jest.fn();
-jest.mock('@npmcli/config', () => ({
-  __esModule: true,
-  default: jest.fn().mockImplementation((args) => {
-    mockConfig(args);
-
-    return {
-      get: jest.fn((key: string) => key),
-      load: mockConfigLoad,
-    };
-  }),
-}));
-
 describe('fn:arePeerPackagesAutoInstalled', () => {
   it('return false for unknown npm agent', () => {
     process.env['npm_config_user_agent'] = undefined;
@@ -113,40 +99,21 @@ describe('fn:getPackage', () => {
 });
 
 describe('fn:reifyDependencies', () => {
-  // reset the mock before each test
-  beforeEach(() => mockConfigLoad.mockImplementation(() => undefined));
-
   it('use arborist to reify package dependencies', async () => {
     await reifyDependencies({ root: 'root' });
 
-    expect(mockConfig).toHaveBeenCalledWith({
-      definitions: {},
-      npmPath: '.',
-    });
-    expect(mockConfigLoad).toHaveBeenCalledTimes(1);
-
-    expect(mockArborist).toHaveBeenCalledWith({
-      path: 'root',
-      registry: 'registry',
-      workspacesEnabled: arePeerPackagesAutoInstalled(),
-    });
+    expect(mockArborist).toHaveBeenCalledWith(
+      expect.objectContaining({
+        path: 'root',
+        workspacesEnabled: arePeerPackagesAutoInstalled(),
+      }),
+    );
     expect(mockArboristReify).toHaveBeenCalledWith({
       add: [],
       rm: [],
       save: false,
       saveType: 'prod',
       update: true,
-    });
-  });
-
-  it('use the default registry to reify package dependencies', async () => {
-    mockConfigLoad.mockRejectedValueOnce(new Error('registry not found'));
-    await reifyDependencies({ root: 'root' });
-
-    expect(mockArborist).toHaveBeenCalledWith({
-      path: 'root',
-      registry: 'https://registry.npmjs.org',
-      workspacesEnabled: arePeerPackagesAutoInstalled(),
     });
   });
 });

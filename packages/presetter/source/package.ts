@@ -16,6 +16,8 @@
 import { Arborist } from '@npmcli/arborist';
 import Config from '@npmcli/config';
 import { defaultsDeep } from 'lodash';
+import { homedir } from 'os';
+import { resolve } from 'path';
 import readPackageDetail from 'read-pkg-up';
 
 import type { NormalizedPackageJson } from 'read-pkg-up';
@@ -102,9 +104,9 @@ export async function reifyDependencies(args: {
   } = { ...args };
 
   // use arborist to install peer dependencies
-  const registry = await getRegistry();
+  const config = await getNPMConfig();
   const workspacesEnabled = arePeerPackagesAutoInstalled(); // no workspace before npm 7
-  const arborist = new Arborist({ path: root, registry, workspacesEnabled });
+  const arborist = new Arborist({ path: root, workspacesEnabled, ...config });
 
   // don't write to the lockfile
   const actualTree = await arborist.reify({
@@ -125,14 +127,26 @@ export async function reifyDependencies(args: {
  * get the url of the package registry of the target project
  * @returns url of the registry
  */
-async function getRegistry(): Promise<string> {
-  try {
-    // get npm config
-    const config = new Config({ definitions: {}, npmPath: '.' });
-    await config.load();
+async function getNPMConfig(): Promise<Record<string, string>> {
+  // get npm config
+  const config = new Config({
+    definitions: {
+      userconfig: { default: resolve(homedir(), '.npmrc'), type: String },
+      registry: { default: 'https://registry.npmjs.org', type: String },
+    },
+    npmPath: '.',
+    flatten: (
+      config: Record<string, string>,
+      flattenedConfig: Record<string, string>,
+    ): void => {
+      // NOTE: this function is called multiple time for flattening the configs at multiple levels, user, project, cli etc.
 
-    return config.get('registry');
-  } catch {
-    return 'https://registry.npmjs.org';
-  }
+      // ensure that higher level configs are always in priority
+      Object.assign(flattenedConfig, config);
+    },
+  });
+
+  await config.load();
+
+  return config.flat;
 }
