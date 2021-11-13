@@ -12,7 +12,7 @@ compilerOptions:
   experimentalDecorators: true
   emitDecoratorMetadata: true
   isolatedModules: false
-  jsx: react
+  jsx: react-jsx
 
   # module resolution
   moduleResolution: node

@@ -1,5 +1,6 @@
 extends:
   - plugin:react/recommended
+  - plugin:react/jsx-runtime
 rules:
   react/boolean-prop-naming: warn
   react/button-has-type: warn
