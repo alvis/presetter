@@ -5,7 +5,7 @@ rules:
   react/boolean-prop-naming: warn
   react/button-has-type: warn
   react/destructuring-assignment: warn
-  react/prop-types: 'off'
+  react/prop-types: off
   react/sort-comp: warn
   react/jsx-sort-props:
     - warn
