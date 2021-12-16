@@ -38,6 +38,7 @@ import type {
   ResolvedPresetContext,
   Template,
 } from './types';
+import type { PackageJson } from 'read-pkg';
 
 /** presetter configuration filename */
 const PRESETTERRC = '.presetterrc';
@@ -226,7 +227,7 @@ export async function setupPreset(...uris: string[]): Promise<void> {
     root,
     defaultsDeep(context.target.package, {
       scripts: { prepare: 'presetter bootstrap' },
-    }),
+    }) as PackageJson & Record<string, string>,
   );
 
   info('Done. Enjoy coding!');

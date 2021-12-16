@@ -13,7 +13,7 @@ develop:
   --debounce 250 --respawn --clear --no-notify --tree-kill --dedupe --ignore-watch
   node_modules -- $@
 lint: run-s "lint:* -- {source} {test}"
-lint:eslint: eslint --fix --format codeframe --no-error-on-unmatched-pattern --ext js,jsx,ts,tsx
+lint:eslint: eslint --fix --format stylish --no-error-on-unmatched-pattern --ext js,jsx,ts,tsx
 lint:fixme: leasot --skip-unsupported --exit-nicely package.json
 lint:prettier: prettier --write --no-error-on-unmatched-pattern
 prepare: run-s build
