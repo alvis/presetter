@@ -12,3 +12,9 @@ rules:
       contexts:
         - FunctionDeclaration:has(BlockStatement > ReturnStatement:not([argument.type='JSXElement']))
         - ArrowFunctionExpression:has(BlockStatement > ReturnStatement:not([argument.type='JSXElement']))
+overrides:
+  - files:
+      - '**/__tests__/**/*.[jt]sx'
+      - '**/?(*.)+(spec|test).[jt]sx'
+    extends:
+      - plugin:testing-library/react
