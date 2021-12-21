@@ -3,8 +3,10 @@
 node_modules
 /.babelrc.json
 /.eslintrc.json
+/.husky
 /.jestrc.json
 /.gitignore
+/.lintstagedrc.json
 /.npmignore
 /.prettierrc.json
 /tsconfig.*

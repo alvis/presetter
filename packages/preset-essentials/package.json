@@ -25,8 +25,6 @@
     "build:types": "tsc -p tsconfig.build.json --emitDeclarationOnly",
     "clean": "run-p clean:**",
     "clean:lib": "shx rm -rf lib",
-    "clean:rc": "shx rm -f .*rc.json",
-    "clean:ts": "shx rm -f tsconfig.*",
     "coverage": "npm run test -- --coverage",
     "lint": "run-s \"lint:* -- source spec\"",
     "lint:prettier": "prettier --write --no-error-on-unmatched-pattern",
@@ -40,6 +38,7 @@
     "setup:eslint": "js-yaml templates/eslintrc.yaml | pupa --test=spec --output=lib > .eslintrc.json",
     "setup:gitignore": "cat templates/gitignore | pupa --output=lib > .gitignore",
     "setup:jest": "js-yaml templates/jestrc.yaml | pupa --root=../.. --source=source --output=lib > .jestrc.json",
+    "setup:lintstaged": "js-yaml templates/lintstagedrc.yaml | pupa --source=source > .lintstagedrc.json",
     "setup:prettier": "js-yaml templates/prettierrc.yaml > .prettierrc.json",
     "setup:tsconfig:base": "js-yaml templates/tsconfig.yaml | pupa --source=source --types=types --output=lib > tsconfig.json",
     "setup:tsconfig:build": "js-yaml templates/tsconfig.build.yaml | pupa --source=source > tsconfig.build.json",
@@ -88,7 +87,9 @@
   },
   "devDependencies": {
     "@types/node": "*",
+    "husky": "^7.0.0",
     "js-yaml": "^4.0.0",
+    "lint-staged": "^11.0.0",
     "pupa-cli": "^1.0.0"
   }
 }

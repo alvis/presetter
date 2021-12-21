@@ -28,6 +28,8 @@ export type PresetConfig = {
   jest?: Record<string, unknown>;
   /** patterns to be added to .gitignore */
   gitignore?: string[];
+  /** configuration to be merged with .lintstagedrc */
+  lintstaged?: Record<string, unknown>;
   /** patterns to be added to .npmignore */
   npmignore?: string[];
   /** configuration to be merged with .presetterrc */
@@ -81,6 +83,7 @@ export default async function (): Promise<PresetAsset> {
       '.eslintrc.json': resolve(TEMPLATES, 'eslintrc.yaml'),
       '.gitignore': resolve(TEMPLATES, 'gitignore'),
       '.jestrc.json': resolve(TEMPLATES, 'jestrc.yaml'),
+      '.lintstagedrc.json': resolve(TEMPLATES, 'lintstagedrc.yaml'),
       '.npmignore': resolve(TEMPLATES, 'npmignore'),
       '.prettierrc.json': resolve(TEMPLATES, 'prettierrc.yaml'),
       'tsconfig.json': resolve(TEMPLATES, 'tsconfig.yaml'),

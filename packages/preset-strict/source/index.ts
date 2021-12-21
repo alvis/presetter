@@ -24,8 +24,6 @@ export type PresetConfig = {
   eslint?: Record<string, unknown>;
   /** configuration to be merged with .jestrc */
   jest?: Record<string, unknown>;
-  /** configuration to be merged with .lintstagedrc */
-  lintstaged?: Record<string, unknown>;
 };
 
 /** List of configurable variables */
@@ -62,12 +60,8 @@ export default async function (): Promise<PresetAsset> {
     template: {
       '.eslintrc.json': resolve(TEMPLATES, 'eslintrc.yaml'),
       '.jestrc.json': resolve(TEMPLATES, 'jestrc.yaml'),
-      '.lintstagedrc.json': resolve(TEMPLATES, 'lintstagedrc.yaml'),
     },
     scripts: resolve(TEMPLATES, 'scripts.yaml'),
     variable: DEFAULT_VARIABLE,
-    supplementaryConfig: {
-      gitignore: ['/.husky', '/.lintstagedrc.json'],
-    },
   };
 }
