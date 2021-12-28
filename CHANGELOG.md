@@ -2,6 +2,34 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+# [3.1.0](https://github.com/alvis/presetter/compare/v3.0.3...v3.1.0) (2021-12-28)
+
+
+### ✨ Features
+
+* **preset-essentials:** add dotenv to the build toolset ([2e5ceb3](https://github.com/alvis/presetter/commit/2e5ceb3b62a4cc11289bba39407a12c31f0da290))
+* **preset-react:** add testing library to the build toolset ([c7a9b78](https://github.com/alvis/presetter/commit/c7a9b78ed69d91d74c181e1eb143a31e9e0a7bc5))
+* **preset-react:** use react-jsx transform for React v17+ ([4d2b688](https://github.com/alvis/presetter/commit/4d2b6880a6332d8ba041bbc58a07c6beded407f5))
+* **preset-web:** add testing library to the build toolset ([1dae1c2](https://github.com/alvis/presetter/commit/1dae1c247559da9956e63bd6d00b709f389c7a95))
+* **presetter/package:** support private registry ([c4eed24](https://github.com/alvis/presetter/commit/c4eed249cd0976d9599283c2beaf5d32fe090d46))
+* **presetter/preset:** support supplementary ignores from presets ([58cbd64](https://github.com/alvis/presetter/commit/58cbd64e47ce633371517b54a35b467dfccac9f2))
+
+
+### 🐛 Bug Fixes
+
+* **preset-react:** add back the missing DOM.Iterable to tsconfig.json ([533d24d](https://github.com/alvis/presetter/commit/533d24d5613e97fe673e0047a0dd20167c28d906))
+* **preset-web:** update tailwindcss to v3 ([ce9f102](https://github.com/alvis/presetter/commit/ce9f102ab95c45c066f12aa6197e4312654e1b93))
+* **preset/lint:** update eslint to v8 ([f8cfa4d](https://github.com/alvis/presetter/commit/f8cfa4de68eaaf0fe7501f89b174b9c1262a7d1c))
+* **preset:** lint code before committing ([e7219b2](https://github.com/alvis/presetter/commit/e7219b24e5293434ea2d588aa32496842c3535ce))
+
+
+### 💎 Styles
+
+* **preset-react:** remove the unnecessary quotation mark ([40caccf](https://github.com/alvis/presetter/commit/40caccf2ddcaed55bdf24ec55399dc70a3bd6ba5))
+* **presetter:** reorder types definitions for clarity ([d7b54eb](https://github.com/alvis/presetter/commit/d7b54eb212a70bdae3b83764e4696966675da45d))
+
+
+
 ## [3.0.3](https://github.com/alvis/presetter/compare/v3.0.2...v3.0.3) (2021-11-03)
 
 
