@@ -17,3 +17,9 @@ overrides:
       - '**/?(*.)+(spec|test).[jt]sx'
     extends:
       - plugin:testing-library/react
+  - files:
+      - src/**/*.tsx
+    rules:
+      max-lines-per-function:
+        - warn
+        - max: 120
