@@ -11,3 +11,9 @@ rules:
     - warn
     - callbacksLast: true
       shorthandFirst: true
+overrides:
+  - files:
+      - '**/__tests__/**/*.[jt]sx'
+      - '**/?(*.)+(spec|test).[jt]sx'
+    extends:
+      - plugin:testing-library/react
