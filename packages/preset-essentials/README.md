@@ -20,7 +20,6 @@
 
 **presetter-preset-essentials** is a collection of essential dev tools you usually need to setup a typescript project in a fraction of time you usually take via [**presetter**](https://github.com/alvis/presetter). In addition to a set of opinionated configuration files, it also provides a number of essential lifecycle and helper commands.
 
-- 👥 Babel
 - 🚿 ESLint
 - 🧪 Jest
 - 💅 Prettier
@@ -56,7 +55,6 @@ Implement your business logic under `source` and prepare tests under `spec`.
 
 ```
 (root)
- ├─ .babelrc
  ├─ .eslintrc.json
  ├─ .git
  ├─ .husky
@@ -94,8 +92,6 @@ interface PresetterRC {
     //  ┌─ configuration for other tools via other presets (e.g. presetter-preset-rollup)
     // ...
 
-    /** configuration to be merged with .babelrc */
-    babel?: Record<string, unknown>;
     /** configuration to be merged with .eslintrc */
     eslint?: Record<string, unknown>;
     /** configuration to be merged with .jestrc */

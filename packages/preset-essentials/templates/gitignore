@@ -1,7 +1,6 @@
 /{output}
 /coverage
 node_modules
-/.babelrc.json
 /.eslintrc.json
 /.husky
 /.jestrc.json

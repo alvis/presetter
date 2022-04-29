@@ -20,8 +20,6 @@ const TEMPLATES = resolve(__dirname, '..', 'templates');
 
 /** config for this preset */
 export type PresetConfig = {
-  /** configuration to be merged with .babelrc */
-  babel?: Record<string, unknown>;
   /** configuration to be merged with .eslintrc */
   eslint?: Record<string, unknown>;
   /** configuration to be merged with .jestrc */
@@ -79,7 +77,6 @@ export const DEFAULT_VARIABLE: Variable = {
 export default async function (): Promise<PresetAsset> {
   return {
     template: {
-      '.babelrc.json': resolve(TEMPLATES, 'babelrc.yaml'),
       '.eslintrc.json': resolve(TEMPLATES, 'eslintrc.yaml'),
       '.gitignore': resolve(TEMPLATES, 'gitignore'),
       '.jestrc.json': resolve(TEMPLATES, 'jestrc.yaml'),

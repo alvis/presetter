@@ -61,7 +61,6 @@ Implement your business logic under `source` and prepare tests under `spec`.
 
 ```
 (root)
- ├─ .babelrc
  ├─ .eslintrc.json
  ├─ .git
  ├─ .husky
@@ -100,8 +99,6 @@ interface PresetterRC {
     //  ┌─ configuration for other tools via other presets (e.g. presetter-preset-rollup)
     // ...
 
-    /** configuration to be merged with .babelrc */
-    babel?: Record<string, unknown>;
     /** configuration to be merged with .eslintrc */
     eslint?: Record<string, unknown>;
     /** configuration to be merged with .jestrc */

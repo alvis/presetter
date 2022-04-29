@@ -159,7 +159,6 @@ describe('fn:generateContent', () => {
 
 describe('fn:getConfigKey', () => {
   it('get config keys based on the filename', () => {
-    expect(getConfigKey('.babelrc.json')).toEqual('babel');
     expect(getConfigKey('.tsconfig.json')).toEqual('tsconfig');
     expect(getConfigKey('.npmignore')).toEqual('npmignore');
     expect(getConfigKey('rollup.config.ts')).toEqual('rollup');
