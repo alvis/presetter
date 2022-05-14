@@ -114,6 +114,7 @@ rules:
       ignoreNumericLiteralTypes: true
       ignoreReadonlyClassProperties: true
       ignoreEnums: true
+      ignoreTypeIndexes: true
   '@typescript-eslint/no-parameter-properties': warn # no private, readonly etc in functional arguments
   '@typescript-eslint/require-await': off # sometimes you need an async function to fulfil the signature inherited from an abstract class
   import/first: warn # ensure that all import statements are on the top of a file
