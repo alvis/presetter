@@ -58,8 +58,10 @@ export default async function (): Promise<PresetAsset> {
   return {
     extends: ['presetter-preset-essentials'],
     template: {
+      /* eslint-disable @typescript-eslint/naming-convention */
       '.eslintrc.json': resolve(TEMPLATES, 'eslintrc.yaml'),
       '.jestrc.json': resolve(TEMPLATES, 'jestrc.yaml'),
+      /* eslint-enable @typescript-eslint/naming-convention */
     },
     scripts: resolve(TEMPLATES, 'scripts.yaml'),
     variable: DEFAULT_VARIABLE,

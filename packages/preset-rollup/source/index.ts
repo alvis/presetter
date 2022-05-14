@@ -18,9 +18,8 @@ import { loadFile, template } from 'presetter';
 
 import { getRollupParameter } from './rollup';
 
-import type { PresetAsset } from 'presetter';
-
 import type { RollupConfig } from './rollup';
+import type { PresetAsset } from 'presetter';
 
 // paths to the template directory
 const TEMPLATES = resolve(__dirname, '..', 'templates');
@@ -51,6 +50,7 @@ export const DEFAULT_VARIABLE: Variable = {
 export default async function (): Promise<PresetAsset> {
   return {
     template: {
+      /* eslint-disable @typescript-eslint/naming-convention */
       'rollup.config.ts': async (context) => {
         const content = await loadFile(
           resolve(TEMPLATES, 'rollup.config.ts'),
@@ -59,6 +59,7 @@ export default async function (): Promise<PresetAsset> {
         const variable = await getRollupParameter(context);
 
         return template(content, variable);
+        /* eslint-enable @typescript-eslint/naming-convention */
       },
     },
     scripts: resolve(TEMPLATES, 'scripts.yaml'),

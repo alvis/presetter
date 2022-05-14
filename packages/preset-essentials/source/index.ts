@@ -77,6 +77,7 @@ export const DEFAULT_VARIABLE: Variable = {
 export default async function (): Promise<PresetAsset> {
   return {
     template: {
+      /* eslint-disable @typescript-eslint/naming-convention */
       '.eslintrc.json': resolve(TEMPLATES, 'eslintrc.yaml'),
       '.gitignore': resolve(TEMPLATES, 'gitignore'),
       '.jestrc.json': resolve(TEMPLATES, 'jestrc.yaml'),
@@ -85,6 +86,7 @@ export default async function (): Promise<PresetAsset> {
       '.prettierrc.json': resolve(TEMPLATES, 'prettierrc.yaml'),
       'tsconfig.json': resolve(TEMPLATES, 'tsconfig.yaml'),
       'tsconfig.build.json': resolve(TEMPLATES, 'tsconfig.build.yaml'),
+      /* eslint-enable @typescript-eslint/naming-convention */
     },
     noSymlinks: ['.gitignore'],
     scripts: resolve(TEMPLATES, 'scripts.yaml'),

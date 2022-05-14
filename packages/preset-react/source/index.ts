@@ -53,10 +53,12 @@ const template: PresetAsset['template'] = ({
     variable: { types },
   },
 }) => ({
+  /* eslint-disable @typescript-eslint/naming-convention */
   '.eslintrc.json': resolve(TEMPLATES, 'eslintrc.yaml'),
   'tsconfig.json': resolve(TEMPLATES, 'tsconfig.yaml'),
   [join(types, IMAGE_TYPE)]: resolve(TEMPLATES, IMAGE_TYPE),
   [join(types, STYLE_TYPE)]: resolve(TEMPLATES, STYLE_TYPE),
+  /* eslint-enable @typescript-eslint/naming-convention */
 });
 
 const noSymlinks: PresetAsset['noSymlinks'] = ({
