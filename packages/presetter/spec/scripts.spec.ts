@@ -119,7 +119,7 @@ describe('fn:composeScript', () => {
       },
     });
 
-    should('allow task customisation at target', {
+    should('allow task customization at target', {
       template: {
         'build': 'run-s build:*',
         'build:typescript': 'tsc',
@@ -171,7 +171,7 @@ describe('fn:composeScript', () => {
         other: 'other',
       },
       target: {
-        // customise the destination task
+        // customize the destination task
         build: 'run other -- --arg1 --arg2',
       },
       result: {
@@ -180,7 +180,7 @@ describe('fn:composeScript', () => {
       },
     });
 
-    should('run additional customised scripts', {
+    should('run additional customized scripts', {
       template: {
         'build': 'run-s build:*',
         'build:typescript': 'tsc',
@@ -227,7 +227,7 @@ describe('fn:composeScript', () => {
       },
     });
 
-    should('resolve multiple tasks with customised flow', {
+    should('resolve multiple tasks with customized flow', {
       template: {
         'build': 'run-s build:*',
         'build:typescript': 'tsc',

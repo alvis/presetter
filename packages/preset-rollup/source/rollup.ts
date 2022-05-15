@@ -35,7 +35,6 @@ import type {
   ResolvedPresetContext,
 } from 'presetter';
 
-
 /** preset configuration for rollup */
 export interface RollupConfig {
   [index: string]: unknown | RollupConfig;
@@ -67,17 +66,17 @@ export async function getRollupParameter(
 ): Promise<Record<'rollupImport' | 'rollupExport', string>> {
   const { config, variable } = context.custom;
 
-  const normalisedConfig = template(
-    normaliseConfig(transformConfig({ ...config.rollup })),
+  const normalizedConfig = template(
+    normalizeConfig(transformConfig({ ...config.rollup })),
     variable,
   );
 
-  return generateRollupParameter(normalisedConfig, context);
+  return generateRollupParameter(normalizedConfig, context);
 }
 
 /**
  * generate template parameters for rollup
- * @param config normalised rollup config
+ * @param config normalized rollup config
  * @param context context about the build environment
  * @returns template parameter related to rollup
  */
@@ -99,42 +98,42 @@ function generateRollupParameter(
 }
 
 /**
- * normalise rollup config with all plugins represented as a list
+ * normalize rollup config with all plugins represented as a list
  * @param config transformed config
  * @returns config that rollup would take
  */
-function normaliseConfig(config: IntermediateRollupConfig): TrueRollupConfig {
+function normalizeConfig(config: IntermediateRollupConfig): TrueRollupConfig {
   return Object.fromEntries(
     Object.entries(config).map(([key, value]): [string, unknown] => {
       return [
         key,
-        isDirective(value) ? value : normaliseConfigValue(key, value),
+        isDirective(value) ? value : normalizeConfigValue(key, value),
       ];
     }),
   );
 }
 
 /**
- * try to normalise any nested configuration
+ * try to normalize any nested configuration
  * @param key field name
  * @param value value of a field
- * @returns normalised value
+ * @returns normalized value
  */
-function normaliseConfigValue(key: string, value: unknown): unknown {
+function normalizeConfigValue(key: string, value: unknown): unknown {
   switch (key) {
     case 'plugins':
       return [
         ...Object.entries(value as PluginObject)
           .filter(([_, options]) => options !== null)
           .map(([plugin, options]) =>
-            [plugin, normaliseConfigValue(plugin, options)].filter(
+            [plugin, normalizeConfigValue(plugin, options)].filter(
               (element) => element !== undefined,
             ),
           ),
       ];
     default:
       return isJSON(value)
-        ? normaliseConfig(value as IntermediateRollupConfig)
+        ? normalizeConfig(value as IntermediateRollupConfig)
         : value;
   }
 }
@@ -178,12 +177,12 @@ function transformConfigValue(key: string, value: unknown): unknown {
 /**
  * objectify rollup plugins
  * @param plugins rollup plugin config
- * @returns normalised plugin config
+ * @returns normalized plugin config
  */
 function objectifyPlugins(
   plugins: PluginManifest,
 ): IntermediateRollupConfig['plugins'] {
-  const normalisedPlugin: PluginObject = {};
+  const normalizedPlugin: PluginObject = {};
 
   const pluginList: PluginConfiguration[] = Array.isArray(plugins)
     ? arrayToPluginConfiguration(plugins)
@@ -191,18 +190,18 @@ function objectifyPlugins(
 
   for (const [name, options] of pluginList) {
     Object.assign(
-      normalisedPlugin,
-      merge(normalisedPlugin, { [name]: options }),
+      normalizedPlugin,
+      merge(normalizedPlugin, { [name]: options }),
     );
   }
 
-  return normalisedPlugin;
+  return normalizedPlugin;
 }
 
 /**
- * normalise rollup plugin config in array form
+ * normalize rollup plugin config in array form
  * @param plugins rollup plugin config in array form
- * @returns normalised plugin config
+ * @returns normalized plugin config
  */
 function arrayToPluginConfiguration(
   plugins: PluginList,
@@ -213,9 +212,9 @@ function arrayToPluginConfiguration(
 }
 
 /**
- * normalise rollup plugin config in object form
+ * normalize rollup plugin config in object form
  * @param plugins rollup plugin config in object form
- * @returns normalised plugin config
+ * @returns normalized plugin config
  */
 function objectToPluginConfiguration(
   plugins: PluginObject,

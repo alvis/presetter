@@ -44,7 +44,7 @@ interface ScriptContext {
 
 /**
  * merge the script definitions from the template and the target package.json
- * @param args template and customised scripts to be merged
+ * @param args template and customized scripts to be merged
  * @param args.template scripts defined from the template
  * @param args.target scripts defined from target's package.json
  * @returns a dictionary of merged definitions

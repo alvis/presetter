@@ -57,7 +57,7 @@ export async function getPresetterRC(root: string): Promise<PresetterConfig> {
 
   for (const path of potentialConfigFiles) {
     if (await pathExists(path)) {
-      // return the first customisation file found
+      // return the first customization file found
       const custom = await loadFile(path, 'json');
       assertPresetterRC(custom);
 
@@ -103,7 +103,7 @@ export function assertPresetterRC(
 
 /**
  * get the preset package name from package.json
- * @param context context about the target project and any customisation in .presetterrc
+ * @param context context about the target project and any customization in .presetterrc
  * @returns name of the preset package
  */
 export async function getPresetAssets(
@@ -151,7 +151,7 @@ export async function getPresetAssets(
 
 /**
  * merge all scripts templates
- * @param context context about the target project and any customisation in .presetterrc
+ * @param context context about the target project and any customization in .presetterrc
  * @returns scripts template
  */
 export async function getScripts(
@@ -182,7 +182,7 @@ export async function getScripts(
     {},
   );
 
-  // merge customised scripts with the preset scripts
+  // merge customized scripts with the preset scripts
   const scriptsWithCustomConfig = merge(scriptsFromPreset, custom.scripts);
 
   // replace the template variables
@@ -256,7 +256,7 @@ export async function bootstrapPreset(options?: {
 
 /**
  * generate files from templates and link them to the target project root
- * @param context context about the target project and any customisation in .presetterrc
+ * @param context context about the target project and any customization in .presetterrc
  */
 export async function bootstrapContent(context: PresetContext): Promise<void> {
   const assets = await getPresetAssets(context);
@@ -301,8 +301,8 @@ export async function unsetPreset(): Promise<void> {
 }
 
 /**
- * get context about the target project and any customisation in .presetterrc
- * @returns context about the target project and any customisation in .presetterrc
+ * get context about the target project and any customization in .presetterrc
+ * @returns context about the target project and any customization in .presetterrc
  */
 export async function getContext(): Promise<PresetContext> {
   const { json, path } = await getPackage();
@@ -319,7 +319,7 @@ export async function getContext(): Promise<PresetContext> {
 /**
  * compute the output paths of all configuration files to be generated
  * @param template resolved template map
- * @param context resolved context about the target project and customisation
+ * @param context resolved context about the target project and customization
  * @returns mapping of configuration symlinks to its real path
  */
 export async function getDestinationMap(

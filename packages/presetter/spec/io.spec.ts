@@ -20,7 +20,7 @@ import { posix, relative, resolve, sep } from 'path';
 import {
   loadDynamic,
   loadFile,
-  serialiseContent,
+  serializeContent,
   writeFiles,
   linkFiles,
   unlinkFiles,
@@ -161,19 +161,19 @@ describe('fn:loadFile', () => {
   });
 });
 
-describe('fn:serialiseContent', () => {
+describe('fn:serializeContent', () => {
   it('treat string as a string', () => {
-    expect(serialiseContent('/path/to/config.json', '{ "json": true }'));
+    expect(serializeContent('/path/to/config.json', '{ "json": true }'));
   });
 
   it('convert an object to a json format', () => {
-    expect(serialiseContent('/path/to/config.json', { json: true })).toEqual(
+    expect(serializeContent('/path/to/config.json', { json: true })).toEqual(
       '{\n  "json": true\n}',
     );
   });
 
   it('convert an object to a yaml format', () => {
-    expect(serialiseContent('/path/to/config.yaml', { yaml: true })).toEqual(
+    expect(serializeContent('/path/to/config.yaml', { yaml: true })).toEqual(
       'yaml: true\n',
     );
   });

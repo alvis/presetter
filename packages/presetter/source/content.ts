@@ -29,12 +29,12 @@ import type {
 } from './types';
 
 /**
- * customise the template with customisation from .presetterrc
+ * customize the template with customization from .presetterrc
  * @param template template configuration
  * @param custom content to be merged with the template configuration
- * @returns customised configuration
+ * @returns customized configuration
  */
-export function customise(
+export function customize(
   template: Template,
   custom?: string[] | Record<string, unknown>,
 ): Template {
@@ -47,9 +47,9 @@ export function customise(
   }
 }
 /**
- * generate configuration content from preset with user customisation
+ * generate configuration content from preset with user customization
  * @param assets list of preset assets
- * @param context context about the target project and any customisation in .presetterrc
+ * @param context context about the target project and any customization in .presetterrc
  * @returns a map of configuration content
  */
 export async function generateContent(
@@ -72,7 +72,7 @@ export async function generateContent(
           const customConfig =
             resolvedContext.custom.config[getConfigKey(relativePath)];
 
-          return [relativePath, customise(templateConfig, customConfig)];
+          return [relativePath, customize(templateConfig, customConfig)];
         },
       ),
     ),
@@ -96,7 +96,7 @@ export function getConfigKey(filename: string): string {
 /**
  * combine the default variables from presets with custom variables
  * @param assets list of preset assets
- * @param context context about the target project and any customisation in .presetterrc
+ * @param context context about the target project and any customization in .presetterrc
  * @returns combined variables
  */
 export function getVariable(
@@ -123,7 +123,7 @@ export function getVariable(
 /**
  * resolve context values which may be dynamic
  * @param assets list of preset assets
- * @param context context about the target project and any customisation in .presetterrc
+ * @param context context about the target project and any customization in .presetterrc
  * @returns a context with no further dynamic content
  */
 export async function resolveContext(

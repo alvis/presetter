@@ -104,7 +104,7 @@ describe('fn:entry', () => {
     });
   });
 
-  it('does not do anything if the command cannot be recognised', async () => {
+  it('does not do anything if the command cannot be recognized', async () => {
     process.argv = ['node', 'cli', 'unknown', '--arg-1'];
     await entry();
 

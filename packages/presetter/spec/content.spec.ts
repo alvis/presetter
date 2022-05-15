@@ -14,7 +14,7 @@
  */
 
 import {
-  customise,
+  customize,
   generateContent,
   getConfigKey,
   getVariable,
@@ -55,20 +55,20 @@ const defaultContext: PresetContext = {
   custom: { preset: 'preset' },
 };
 
-describe('fn:customise', () => {
-  it('return the template if the supplied customisation is missing', () => {
-    expect(customise('line')).toEqual('line');
+describe('fn:customize', () => {
+  it('return the template if the supplied customization is missing', () => {
+    expect(customize('line')).toEqual('line');
   });
 
   it('add extra lines into a list', () => {
-    expect(customise('line1', ['line2', 'line3'])).toEqual(
+    expect(customize('line1', ['line2', 'line3'])).toEqual(
       'line1\nline2\nline3',
     );
   });
 
   it('merge the template config with custom config', () => {
     expect(
-      customise(
+      customize(
         { merged: { a: 1 }, replaced: true },
         { merged: { b: 2 }, replaced: false },
       ),
@@ -78,9 +78,9 @@ describe('fn:customise', () => {
     });
   });
 
-  it('just return the template if the supplied customisation is in the wrong format', () => {
-    expect(customise('line', { incorrect: true })).toEqual('line');
-    expect(customise({ object: true }, ['not a list'])).toEqual({
+  it('just return the template if the supplied customization is in the wrong format', () => {
+    expect(customize('line', { incorrect: true })).toEqual('line');
+    expect(customize({ object: true }, ['not a list'])).toEqual({
       object: true,
     });
   });
@@ -116,7 +116,7 @@ describe('fn:generateContent', () => {
     });
   });
 
-  it('return the templated configuration if no customisation is supplied', async () => {
+  it('return the templated configuration if no customization is supplied', async () => {
     expect(
       await generateContent(
         [
@@ -133,7 +133,7 @@ describe('fn:generateContent', () => {
     });
   });
 
-  it('return a customised configuration', async () => {
+  it('return a customized configuration', async () => {
     expect(
       await generateContent(
         [

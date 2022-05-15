@@ -13,7 +13,7 @@ How many dev dependencies you have to install before you can kick start a projec
 
 What's more, what if you want to update configs for all projects? :man_facepalming:
 
-**Presetter is a utility for setting up building tools for your project from a template.** This means with just only two dev packages, namely this package and your favourite template preset, all essential development packages, such as typescript, eslint and jest, together with their configuration files provided by the preset, are automatically setup for you upon the project's initialisation.
+**Presetter is a utility for setting up building tools for your project from a template.** This means with just only two dev packages, namely this package and your favorite template preset, all essential development packages, such as typescript, eslint and jest, together with their configuration files provided by the preset, are automatically setup for you upon the project's initialization.
 
 ![Before and After](assets/before-and-after.jpg)
 
@@ -61,7 +61,7 @@ When you run `presetter run <task>` (or its alias `run <task>`), presetter will 
 
 _PROTIPS_:
 Local scripts always have a higher priority than the template scripts.
-So you can always customise the life cycle script by putting your own version into `package.json`.
+So you can always customize the life cycle script by putting your own version into `package.json`.
 
 Upon running a life-cycle script involving the `run <task>` command in `package.json`, presetter will automatically resolve the task according to the template, so that you can always use the conventional `npm run <task>` as usual.
 
@@ -128,7 +128,7 @@ you can specify the new configuration under the `config` parameter in the config
 
 During installation and life cycle script execution,
 the content of this parameter will be passed to the configurator function provided by the preset package.
-With this parameter, the preset can dynamically export customised config files and life cycle scripts.
+With this parameter, the preset can dynamically export customized config files and life cycle scripts.
 You can [checkout the example preset to see how it work](/packages/preset-essentials/source/index.ts).
 
 ## Known Limitations
@@ -169,7 +169,7 @@ export interface PresetContext {
     name: string;
     /** the root folder containing the targeted project's .presetterrc.json */
     root: string;
-    /** normalised package.json from the targeted project's package.json */
+    /** normalized package.json from the targeted project's package.json */
     package: PackageJson;
   };
   /** content of .presetterrc */
@@ -230,7 +230,7 @@ There are many ways to create a preset. Checkout our example presets to learn mo
 ## About
 
 This project originated from my personal pain on maintaining a number of projects with fairly similar structure, having exactly the same build and test procedures, same `.babelrc`, `tsconfig.json` etc.
-Every time when I setup a new project, I have to copy many **idential config files** such as `.babelrc`, `.eslintrc`, `.jestrc`, `.lintstagedrc`, `.npmignore`, `tsconfig.json` to name a few,
+Every time when I setup a new project, I have to copy many **identical config files** such as `.babelrc`, `.eslintrc`, `.jestrc`, `.lintstagedrc`, `.npmignore`, `tsconfig.json` to name a few,
 together with the following **40** 😱 development dependencies!!!
 
 1. @babel/cli

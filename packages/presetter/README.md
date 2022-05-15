@@ -4,7 +4,7 @@
 
 🏄🏻 _Setup build settings from a template, quick and right!_
 
-•   [Quick Start](#quick-start)   •   [Usage](#usage)   •   [Customisation](#customisation)   •
+•   [Quick Start](#quick-start)   •   [Usage](#usage)   •   [Customization](#customization)   •
 
 [![npm](https://img.shields.io/npm/v/presetter?style=flat-square)](https://github.com/alvis/presetter/releases)
 [![build](https://img.shields.io/github/workflow/status/alvis/presetter/code%20test?style=flat-square)](https://github.com/alvis/presetter/actions)
@@ -21,7 +21,7 @@ How many dev dependencies you have to install before you can kick start a projec
 
 What's more, what if you want to update configs for all projects? :man_facepalming:
 
-**Presetter is a utility for setting up building tools for your project from a template.** This means with just only two dev packages, namely this package and your favourite template preset, all essential development packages, such as typescript, eslint and jest, together with their configuration files provided by the preset, are automatically setup for you upon the project's initialisation.
+**Presetter is a utility for setting up building tools for your project from a template.** This means with just only two dev packages, namely this package and your favorite template preset, all essential development packages, such as typescript, eslint and jest, together with their configuration files provided by the preset, are automatically setup for you upon the project's initialization.
 
 ---
 
@@ -128,13 +128,13 @@ _PROTIPS_: Install `presetter` globally via `npm install -g presetter` and you c
 
 ---
 
-## Customisation
+## Customization
 
-Presetter support customisation in two ways.
+Presetter support customization in two ways.
 
-#### Preset Customisation
+#### Preset Customization
 
-If your preset support customisation, you can supply the customisation parameter via the `config` field in `.presetterrc`.
+If your preset support customization, you can supply the customization parameter via the `config` field in `.presetterrc`.
 e.g. For [presetter-preset-essentials](https://github.com/alvis/presetter/tree/master/packages/preset-essentials), you can adding an expression to `.gitignore` with the following in `.presetterrc`:
 
 ```json

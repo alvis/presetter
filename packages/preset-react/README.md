@@ -4,7 +4,7 @@
 
 🏄🏻 _A collection of opinionated configurations for a React project in typescript for presetter_
 
-•   [Quick Start](#quick-start)   •   [Project Structure](#project-structure)   •   [Customisation](#customisation)   •   [Scripts](#script-template-summary)   •
+•   [Quick Start](#quick-start)   •   [Project Structure](#project-structure)   •   [Customization](#customization)   •   [Scripts](#script-template-summary)   •
 
 [![npm](https://img.shields.io/npm/v/presetter-preset-react?style=flat-square)](https://github.com/alvis/presetter/releases)
 [![build](https://img.shields.io/github/workflow/status/alvis/presetter/code%20test?style=flat-square)](https://github.com/alvis/presetter/actions)
@@ -49,13 +49,13 @@ After installation, your project file structure should resemble the following or
 
 Implement your business logic under `source` and prepare tests under `spec`. The `.d.ts` files are handy type definitions for you to import `.css` or image files in typescript.
 
-**TIPS** You can always change the source directory to other (e.g. src) by setting the `source` variable in `.presetterrc.json`. See the [customisation](https://github.com/alvis/presetter/blob/master/packages/preset-react#customisation) section below for more details.
+**TIPS** You can always change the source directory to other (e.g. src) by setting the `source` variable in `.presetterrc.json`. See the [customization](https://github.com/alvis/presetter/blob/master/packages/preset-react#customization) section below for more details.
 
 ```
 (root)
  ├─ .eslintrc.json
  ├─ .git
- ├─ .preseterrc.json
+ ├─ .presetterrc.json
  ├─ node_modules
  ├─ source
  │   ├─ <folders>
@@ -71,10 +71,10 @@ Implement your business logic under `source` and prepare tests under `spec`. The
  └─ tsconfig.json
 ```
 
-## Customisation
+## Customization
 
 By default, this preset exports a handy configuration set for a React project written in typescript.
-But you can further customise (either extending or replacing) the configuration by specifying the change in the config file (`.presetterrc` or `.presetterrc.json`).
+But you can further customize (either extending or replacing) the configuration by specifying the change in the config file (`.presetterrc` or `.presetterrc.json`).
 
 These settings are available in the `config` field in the config file. For directories, the setting is specified in the `variable` field.
 

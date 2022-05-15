@@ -12,7 +12,7 @@
 ## The Essential
 
 Presetter relies on typescript and other tools for building and testing too.
-Therefore, it's important that you have all the toolsets installed before making any change to the code.
+Therefore, it's important that you have all the tools installed before making any change to the code.
 But setting up the code base is easy, just follow these steps:
 
 1. Clone this repo
@@ -81,7 +81,7 @@ Example
 ```
 feat(presetter): new awesome feature
 
-BREAKING CHANGE: something will change the behaviour
+BREAKING CHANGE: something will change the behavior
 ```
 
 List of types:

@@ -165,7 +165,7 @@ describe('fn:template', () => {
     ).toEqual({ key: 'value' });
   });
 
-  it('return the original content if not recognised', () => {
+  it('return the original content if not recognized', () => {
     expect(template(null, {})).toEqual(null);
   });
 });

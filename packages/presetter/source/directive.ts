@@ -15,7 +15,7 @@
 
 import type { PresetContext } from './types';
 
-/** syntax for an apply direc ti ve */
+/** syntax for an apply directive */
 export type ApplyDirective = `@apply ${string}` | `@apply ${string}[${string}]`;
 
 /** syntax for an import directive */

@@ -96,12 +96,12 @@ export async function loadFile(
 }
 
 /**
- * serialise a configuration content to the right format according to its destination
+ * serialize a configuration content to the right format according to its destination
  * @param destination the path to which the content will be written
  * @param content configuration content
- * @returns serialised content
+ * @returns serialized content
  */
-export function serialiseContent(
+export function serializeContent(
   destination: string,
   content: Template,
 ): string {
@@ -146,7 +146,7 @@ export async function writeFiles(
       await ensureFile(destination);
 
       // write content to the destination path
-      await writeFile(destination, serialiseContent(destination, content));
+      await writeFile(destination, serializeContent(destination, content));
     } else {
       info(`Skipping ${key}`);
     }

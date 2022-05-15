@@ -19,7 +19,7 @@ import type { PackageJson } from 'read-pkg-up';
 export interface PresetterConfig {
   /** preset name */
   preset: string | string[];
-  /** configuration for customisation to be passed to the preset */
+  /** configuration for customization to be passed to the preset */
   config?: Record<string, Record<string, unknown> | string[]>;
   /** extra scripts available */
   scripts?: Record<string, string>;
@@ -57,7 +57,7 @@ export interface PresetContext {
     name: string;
     /** the root folder containing the targeted project's .presetterrc.json */
     root: string;
-    /** normalised package.json from the targeted project's package.json */
+    /** normalized package.json from the targeted project's package.json */
     package: PackageJson;
   };
   /** content of .presetterrc */

@@ -4,7 +4,7 @@
 
 🏄🏻 _A collection of opinionated configurations for a building a code bundle via rollup for presetter_
 
-•   [Quick Start](#quick-start)   •   [Project Structure](#project-structure)   •   [Customisation](#customisation)   •   [Scripts](#script-template-summary)   •
+•   [Quick Start](#quick-start)   •   [Project Structure](#project-structure)   •   [Customization](#customization)   •   [Scripts](#script-template-summary)   •
 
 [![npm](https://img.shields.io/npm/v/presetter-preset-rollup?style=flat-square)](https://github.com/alvis/presetter/releases)
 [![build](https://img.shields.io/github/workflow/status/alvis/presetter/code%20test?style=flat-square)](https://github.com/alvis/presetter/actions)
@@ -76,12 +76,12 @@ After installation, your project file structure should resemble the following or
 
 Implement your business logic under `source` and prepare tests under `spec`.
 
-**TIPS** You can always change the source directory to other (e.g. src) by setting the `source` variable in `.presetterrc.json`. See the [customisation](https://github.com/alvis/presetter/blob/master/packages/preset-rollup#customisation) section below for more details.
+**TIPS** You can always change the source directory to other (e.g. src) by setting the `source` variable in `.presetterrc.json`. See the [customization](https://github.com/alvis/presetter/blob/master/packages/preset-rollup#customization) section below for more details.
 
 ```
 (root)
  ├─ .git
- ├─ .preseterrc.json
+ ├─ .presetterrc.json
  ├─ node_modules
  ├─ source
  │   ├─ <folders>
@@ -93,10 +93,10 @@ Implement your business logic under `source` and prepare tests under `spec`.
  └─ rollup.config.ts
 ```
 
-## Customisation
+## Customization
 
 By default, this preset exports a handy configuration for rollup for a typescript project.
-But you can further customise (either extending or replacing) the configuration by specifying the change in the config file (`.presetterrc` or `.presetterrc.json`).
+But you can further customize (either extending or replacing) the configuration by specifying the change in the config file (`.presetterrc` or `.presetterrc.json`).
 
 These settings are available in the `config` field in the config file. For directories, the setting is specified in the `variable` field.
 
@@ -118,7 +118,7 @@ interface PresetterRC {
 
       /** list of plugin and its options */
       plugins?:
-        | NormalisedRollupConfig['plugins']
+        | NormalizedRollupConfig['plugins']
         | Array<
             | string
             | [name: string]

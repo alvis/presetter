@@ -4,7 +4,7 @@
 
 🏄🏻 _A collection of opinionated configurations for a web project in typescript for presetter_
 
-•   [Quick Start](#quick-start)   •   [Project Structure](#project-structure)   •   [Customisation](#customisation)   •   [Scripts](#script-template-summary)   •
+•   [Quick Start](#quick-start)   •   [Project Structure](#project-structure)   •   [Customization](#customization)   •   [Scripts](#script-template-summary)   •
 
 [![npm](https://img.shields.io/npm/v/presetter-preset-web?style=flat-square)](https://github.com/alvis/presetter/releases)
 [![build](https://img.shields.io/github/workflow/status/alvis/presetter/code%20test?style=flat-square)](https://github.com/alvis/presetter/actions)
@@ -53,18 +53,18 @@ It's because `presetter-preset-web` is a bundle only preset, meaning it only hel
 ```
 (root)
  ├─ .git
- ├─ .preseterrc.json
+ ├─ .presetterrc.json
  ├─ node_modules
  └─ package.json
 ```
 
-## Customisation
+## Customization
 
-As a bundle only preset, it offers no further customisation.
+As a bundle only preset, it offers no further customization.
 
 However, you are still required to specify the preset name in `.presetterrc` or `.presetterrc.json` as the interface below.
 
-**NOTE**: You may want to use other presets together with `presetter-preset-web` to setup your project, specify the presets in `.presetterrc` or `.presetterrc.json` as well and checkout their available customisation.
+**NOTE**: You may want to use other presets together with `presetter-preset-web` to setup your project, specify the presets in `.presetterrc` or `.presetterrc.json` as well and checkout their available customization.
 
 ```ts
 interface PresetterRC {
