@@ -19,6 +19,7 @@ plugins:
   - import # enforce best practices on import/export statements
   - jsdoc # enforce documentation
 settings:
+  import/internal-regex: '^#'
   jsdoc:
     mode: typescript
 ignorePatterns:
