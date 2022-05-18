@@ -2,6 +2,31 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+# [3.2.0](https://github.com/alvis/presetter/compare/v3.1.1...v3.2.0) (2022-05-18)
+
+
+### ✨ Features
+
+* **preset-essentials:** remove babel in favorite of tsc ([dd62e01](https://github.com/alvis/presetter/commit/dd62e01d2519ab755713a27db99d38203e50a992))
+
+
+### 🐛 Bug Fixes
+
+* **preset-react:** allow react components to be bulkier ([091b305](https://github.com/alvis/presetter/commit/091b305af2e0dfaeb0f76cb49d8900181ad80bb2))
+* **preset-react:** mark testing-library rules as provided ([3446e25](https://github.com/alvis/presetter/commit/3446e2535c17c56dabe7589458626d0246bbd67c))
+
+
+### 📦 Code Refactoring
+
+* use American English ([17315b7](https://github.com/alvis/presetter/commit/17315b78a9d65fb6193a609dd27b4d34454df1bc))
+
+
+### ♻️ Chores
+
+* update package dependencies ([4e50e0d](https://github.com/alvis/presetter/commit/4e50e0d2fce1bea470fbea62fc1eba52dccb3aed))
+
+
+
 ## [3.1.1](https://github.com/alvis/presetter/compare/v3.1.0...v3.1.1) (2021-12-29)
 
 
