@@ -11,7 +11,7 @@
 [![maintainability](https://img.shields.io/codeclimate/maintainability/alvis/presetter?style=flat-square)](https://codeclimate.com/github/alvis/presetter/maintainability)
 [![coverage](https://img.shields.io/codeclimate/coverage/alvis/presetter?style=flat-square)](https://codeclimate.com/github/alvis/presetter/test_coverage)
 [![security](https://img.shields.io/snyk/vulnerabilities/github/alvis/presetter/packages/preset-react/package.json.svg?style=flat-square)](https://snyk.io/test/github/alvis/presetter?targetFile=packages/preset-react/package.json&style=flat-square)
-[![dependencies](https://img.shields.io/david/alvis/presetter?path=packages/preset-react&style=flat-square)](https://david-dm.org/alvis/presetter?path=packages/preset-react)
+[![dependencies](https://img.shields.io/librariesio/release/npm/presetter-preset-react?style=flat-square)](https://libraries.io/npm/presetter-preset-react)
 [![license](https://img.shields.io/github/license/alvis/presetter.svg?style=flat-square)](https://github.com/alvis/presetter/blob/master/LICENSE)
 
 </div>
