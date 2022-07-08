@@ -167,8 +167,10 @@ export async function getScripts(
 
   // load templated scripts from presets
   const scripts = await Promise.all(
-    assets
-      .map((asset) => asset.scripts)
+    [
+      ...assets.map(({ scripts }) => scripts),
+      ...assets.map(({ supplementaryScripts }) => supplementaryScripts),
+    ]
       .filter((path): path is string => typeof path === 'string')
       .map(
         async (path) =>

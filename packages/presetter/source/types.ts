@@ -47,6 +47,8 @@ export interface PresetAsset {
   supplementaryConfig?: ConfigMap | ConfigMapGenerator;
   /** a list of files not to be linked or fields to be ignores */
   supplementaryIgnores?: IgnoreRule[] | IgnoreRulesGenerator;
+  /** path to the scripts template to be applied at end of preset merging */
+  supplementaryScripts?: string;
 }
 
 /** input for a preset configurator */
