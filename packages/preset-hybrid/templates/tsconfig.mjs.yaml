@@ -1,0 +1,4 @@
+extends: ./tsconfig.build
+compilerOptions:
+  module: ES2022
+  target: ES2022

@@ -1,7 +1,8 @@
 build: run-s clean build:*
-build:typescript: run-s build:typescript:*
-build:typescript:tsc: tsc -p tsconfig.build.json
-build:typescript:path: tsc-alias
+build:typescript: run-s build:typescript:cjs
+build:typescript:cjs: run-s build:typescript:cjs:*
+build:typescript:cjs:tsc: tsc -p tsconfig.build.json
+build:typescript:cjs:path: tsc-alias
 clean: run-p clean:**
 clean:lib: shx rm -rf {output}
 clean:coverage: shx rm -rf coverage

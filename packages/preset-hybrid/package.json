@@ -1,0 +1,42 @@
+{
+  "name": "presetter-preset-hybrid",
+  "version": "3.2.0",
+  "description": "An opinionated presetter preset for delivering a dual CommonJS/ESM package",
+  "keywords": [
+    "presetter",
+    "preset"
+  ],
+  "homepage": "https://github.com/alvis/presetter#readme",
+  "bugs": {
+    "url": "https://github.com/alvis/presetter/issues"
+  },
+  "license": "MIT",
+  "author": "Alvis HT Tang <alvis@hilbert.space>",
+  "main": "lib/index.js",
+  "types": "lib/index.d.ts",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/alvis/presetter.git"
+  },
+  "scripts": {
+    "bootstrap": "presetter bootstrap && run prepare",
+    "build": "run build",
+    "coverage": "run coverage",
+    "lint": "run lint",
+    "prepublishOnly": "run prepare && run prepublishOnly",
+    "release": "run-s release:peer:*",
+    "release:peer:presetter": "npm pkg set peerDependencies.presetter=^$(npx -c 'echo $npm_package_version')",
+    "release:peer:preset-essential": "npm pkg set peerDependencies.presetter-preset-essentials=^$(npx -c 'echo $npm_package_version')",
+    "test": "run test",
+    "watch": "run watch"
+  },
+  "peerDependencies": {
+    "presetter": "^3.2.0",
+    "presetter-preset-essentials": "^3.2.0",
+    "tsc-esm-fix": "^2.0.0"
+  },
+  "devDependencies": {
+    "presetter": "file:../presetter",
+    "presetter-preset-strict": "file:../preset-strict"
+  }
+}

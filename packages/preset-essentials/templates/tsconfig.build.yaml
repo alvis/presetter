@@ -1,3 +1,5 @@
 extends: .
 include:
   - '{source}'
+compilerOptions:
+  noEmit: false

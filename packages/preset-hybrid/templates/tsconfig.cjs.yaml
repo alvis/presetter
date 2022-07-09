@@ -1,0 +1,4 @@
+extends: ./tsconfig.build
+compilerOptions:
+  module: commonjs
+  target: ES2017 # use ES2017 as it's the latest standard node 10 can be fully compatible with

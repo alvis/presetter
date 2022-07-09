@@ -4,7 +4,7 @@ compilerOptions:
   module: commonjs # node doesn't support anything non commonjs code yet
   target: ES2017 # use ES2017 as it's the latest standard node 10 can be fully compatible with
   declaration: true
-  sourceMap: true
+  inlineSourceMap: true
 
   # compatibility
   allowSyntheticDefaultImports: true

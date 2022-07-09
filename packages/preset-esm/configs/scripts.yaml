@@ -1,0 +1,5 @@
+build:typescript: run-s build:typescript:mjs
+build:typescript:mjs: run-s build:typescript:mjs:*
+build:typescript:mjs:tsc: tsc -p tsconfig.build.json
+build:typescript:mjs:path: tsc-alias
+build:typescript:mjs:fix: tsc-esm-fix --target {output}

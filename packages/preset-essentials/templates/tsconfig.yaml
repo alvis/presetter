@@ -1,10 +1,11 @@
 compilerOptions:
   # emittance
   outDir: '{output}'
-  module: commonjs # node doesn't support anything non commonjs code yet
-  target: ES2017 # use ES2017 as it's the latest standard node 10 can be fully compatible with
+  module: commonjs
+  target: ES2017
   declaration: true
-  sourceMap: true
+  inlineSourceMap: true
+  noEmit: true
   noImplicitUseStrict: false
   preserveConstEnums: true
   removeComments: true
@@ -52,5 +53,8 @@ compilerOptions:
 include:
   - '**/*.json'
   - '**/*.ts'
+  - '**/*.cts'
+  - '**/*.mts'
 exclude:
   - '**/node_modules'
+  - '{output}'
