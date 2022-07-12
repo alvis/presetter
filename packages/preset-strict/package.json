@@ -1,6 +1,6 @@
 {
   "name": "presetter-preset-strict",
-  "version": "3.2.0",
+  "version": "3.3.0",
   "description": "An extension of presetter-preset-essentials to provide stricter lint rules for typescript projects",
   "keywords": [
     "presetter",
@@ -52,8 +52,8 @@
     "eslint-plugin-header": "^3.0.0",
     "eslint-plugin-no-secrets": "^0.8.0",
     "eslint-plugin-sonarjs": "0.11",
-    "presetter": "^3.2.0",
-    "presetter-preset-essentials": "^3.2.0"
+    "presetter": "^3.3.0",
+    "presetter-preset-essentials": "^3.3.0"
   },
   "devDependencies": {
     "@types/node": "*"

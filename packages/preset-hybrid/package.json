@@ -1,6 +1,6 @@
 {
   "name": "presetter-preset-hybrid",
-  "version": "3.2.0",
+  "version": "3.3.0",
   "description": "An opinionated presetter preset for delivering a dual CommonJS/ESM package",
   "keywords": [
     "presetter",
@@ -31,8 +31,8 @@
     "watch": "run watch"
   },
   "peerDependencies": {
-    "presetter": "^3.2.0",
-    "presetter-preset-essentials": "^3.2.0",
+    "presetter": "^3.3.0",
+    "presetter-preset-essentials": "^3.3.0",
     "tsc-esm-fix": "^2.0.0"
   },
   "devDependencies": {
