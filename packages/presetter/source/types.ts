@@ -15,6 +15,19 @@
 
 import type { PackageJson } from 'read-pkg-up';
 
+/** a graph representing the dependency of all preset assets */
+export type PresetGraph = PresetNode[];
+
+/** a node in the preset graph */
+export type PresetNode = {
+  /** the name of the preset */
+  name: string;
+  /** assets provided by the preset */
+  asset: PresetAsset;
+  /** list of assets from extended presets */
+  nodes: PresetGraph;
+};
+
 /** data structure for .presetterrc */
 export interface PresetterConfig {
   /** preset name */
@@ -40,7 +53,7 @@ export interface PresetAsset {
   /** list of templates that should not be created as symlinks */
   noSymlinks?: string[] | Generator<string[], 'variable'>;
   /** path to the scripts template */
-  scripts?: string;
+  scripts?: Record<string, string> | string;
   /** variables to be substituted in templates */
   variable?: Record<string, string>;
   /** supplementary configuration applied to .presetterrc for enriching other presets */
@@ -48,20 +61,41 @@ export interface PresetAsset {
   /** a list of files not to be linked or fields to be ignores */
   supplementaryIgnores?: IgnoreRule[] | IgnoreRulesGenerator;
   /** path to the scripts template to be applied at end of preset merging */
-  supplementaryScripts?: string;
+  supplementaryScripts?: Record<string, string> | string;
+}
+
+/** realized PresetAsset that doesn't need any further processing */
+export interface ResolvedPresetAsset extends Omit<PresetAsset, 'extends'> {
+  /** mapping of files to be generated to its configuration template files (key: file path relative to the target project's root, value: content to be written to file) */
+  template?: Record<string, Record<string, unknown>>;
+  /** list of templates that should not be created as symlinks */
+  noSymlinks?: string[];
+  /** path to the scripts template */
+  scripts?: Record<string, string>;
+  /** variables to be substituted in templates */
+  variable?: Record<string, string>;
+  /** supplementary configuration applied to .presetterrc for enriching other presets */
+  supplementaryConfig?: Record<string, Config>;
+  /** a list of files not to be linked or fields to be ignores */
+  supplementaryIgnores?: Array<string | Record<string, IgnorePath>>;
+  /** path to the scripts template to be applied at end of preset merging */
+  supplementaryScripts?: Record<string, string>;
+}
+
+/** information about the targeted project */
+export interface TargetContext {
+  /** the package name defined in the targeted project's package.json */
+  name: string;
+  /** the root folder containing the targeted project's .presetterrc.json */
+  root: string;
+  /** normalized package.json from the targeted project's package.json */
+  package: PackageJson;
 }
 
 /** input for a preset configurator */
 export interface PresetContext {
   /** information about the targeted project */
-  target: {
-    /** the package name defined in the targeted project's package.json */
-    name: string;
-    /** the root folder containing the targeted project's .presetterrc.json */
-    root: string;
-    /** normalized package.json from the targeted project's package.json */
-    package: PackageJson;
-  };
+  target: TargetContext;
   /** content of .presetterrc */
   custom: PresetterConfig;
 }
@@ -101,7 +135,7 @@ export type ConfigMapGenerator = Generator<ConfigMap, 'variable'>;
 /** file name to be ignored or fields of config templates to be ignored */
 export type IgnoreRule = string | number | Record<string, IgnorePath>;
 /** field names of a config template to be ignored */
-export type IgnorePath = Array<string | number> | { [key: string]: IgnorePath };
+export type IgnorePath = string[] | number[] | { [key: string]: IgnorePath };
 /** an auxiliary type for representing a dynamic ignore rules generator */
 export type IgnoreRulesGenerator = Generator<IgnoreRule[], 'variable'>;
 

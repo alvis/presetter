@@ -24,9 +24,9 @@ import {
   bootstrapContent,
   getContext,
   getDestinationMap,
-  getPresetAssets,
-  getPresetterRC,
   getScripts,
+  getPresetGraph,
+  getPresetterRC,
   setupPreset,
   unsetPreset,
   updatePresetterRC,
@@ -35,33 +35,33 @@ import {
 import { linkFiles, unlinkFiles, writeFiles } from '#io';
 
 import type { ResolvedPresetContext } from '#types';
+import { isContext } from 'vm';
 
 jest.mock('console', () => ({
   __esModule: true,
   info: jest.fn(),
 }));
 
-jest.mock(
-  'fs-extra',
-  () => ({
-    __esModule: true,
-    pathExists: jest.fn(async (path: string): Promise<boolean> => {
-      // ensure that the paths below is compatible with windows
-      const { posix, relative, resolve, sep } = jest.requireActual('path');
-      const posixPath = relative(resolve('/'), path).split(sep).join(posix.sep);
-      switch (posixPath) {
-        case `missing-preset/.presetterrc`:
-        case `project/.presetterrc`:
-        case 'link/rewritten/by/project':
-          return true;
-        default:
-          return false;
-      }
-    }),
-    writeJSON: jest.fn(),
+jest.mock('fs-extra', () => ({
+  __esModule: true,
+  pathExists: jest.fn(async (path: string): Promise<boolean> => {
+    // ensure that the paths below is compatible with windows
+    const { posix, relative, resolve, sep } = jest.requireActual('path');
+    const posixPath = relative(resolve('/'), path).split(sep).join(posix.sep);
+    switch (posixPath) {
+      case 'path/to/template':
+      case 'path/to/no-symlink-preset/scripts.yaml':
+      case 'path/to/symlink-only-preset/scripts.yaml':
+      case `missing-preset/.presetterrc`:
+      case `project/.presetterrc`:
+      case 'link/rewritten/by/project':
+        return true;
+      default:
+        return false;
+    }
   }),
-  { virtual: true },
-);
+  writeJSON: jest.fn(),
+}));
 
 jest.mock('path', () => ({
   __esModule: true,
@@ -166,7 +166,6 @@ jest.mock('write-pkg', () => ({
 // file name of the configuration file, null for missing file
 jest.mock('#io', () => ({
   __esModule: true,
-  loadDynamic: jest.fn(),
   linkFiles: jest.fn(),
   loadFile: jest.fn((path: string) => {
     // ensure that the paths below is compatible with windows
@@ -305,76 +304,6 @@ describe('fn:assertPresetterRC', () => {
     expect(() =>
       assertPresetterRC({ preset: ['preset1', 'preset2'] }),
     ).not.toThrow();
-  });
-});
-
-describe('fn:getPresetAssets', () => {
-  it('compute the preset configuration', async () => {
-    expect(await getPresetAssets(defaultContext)).toEqual([
-      {
-        template: {
-          'path/to/file': '/path/to/template',
-        },
-        scripts: '/path/to/no-symlink-preset/scripts.yaml',
-      },
-      {
-        template: {
-          'link/pointed/to/preset': '/path/to/template',
-          'link/pointed/to/other': '/path/to/template',
-          'link/rewritten/by/project': '/path/to/template',
-        },
-        scripts: '/path/to/symlink-only-preset/scripts.yaml',
-      },
-    ]);
-  });
-
-  it('add and merge extended presets', async () => {
-    const assets = await getPresetAssets({
-      ...defaultContext,
-      custom: { ...defaultContext.custom, preset: 'extension-preset' },
-    });
-
-    expect(assets.length).toEqual(3);
-    expect(assets).toMatchObject([
-      {
-        template: {
-          'path/to/file': '/path/to/template',
-        },
-        scripts: '/path/to/no-symlink-preset/scripts.yaml',
-      },
-      {
-        template: {
-          'link/pointed/to/preset': '/path/to/template',
-          'link/pointed/to/other': '/path/to/template',
-          'link/rewritten/by/project': '/path/to/template',
-        },
-        scripts: '/path/to/symlink-only-preset/scripts.yaml',
-      },
-      {
-        extends: ['no-symlink-preset', 'symlink-only-preset'],
-      },
-    ]);
-  });
-
-  it('warn about any missing presets', async () => {
-    await expect(() =>
-      getPresetAssets({
-        target: {
-          name: 'client',
-          root: '/missing-preset',
-          package: {},
-        },
-        custom: { preset: 'missing-preset' },
-      }),
-    ).rejects.toThrow();
-  });
-});
-
-describe('fn:getScripts', () => {
-  it('combine script templates from presets', async () => {
-    const scripts = await getScripts(defaultContext);
-
-    expect(scripts).toEqual({ task: 'command_from_symlink' });
   });
 });
 
@@ -626,5 +555,96 @@ describe('fn:getDestinationMap', () => {
       noSymlink: resolve('/project/noSymlink'),
       symlink: resolve('/presetter/generated/client/symlink'),
     });
+  });
+});
+
+describe('fn:getScripts', () => {
+  it('return the scripts of the given preset', async () => {
+    expect(await getScripts()).toEqual({
+      task: 'command_from_symlink',
+    });
+  });
+});
+
+describe('fn:getPresetGraph', () => {
+  it('compute the preset graph', async () => {
+    expect(await getPresetGraph(defaultContext)).toEqual([
+      {
+        name: 'no-symlink-preset',
+        asset: {
+          template: {
+            'path/to/file': '/path/to/template',
+          },
+          scripts: '/path/to/no-symlink-preset/scripts.yaml',
+        },
+        nodes: [],
+      },
+      {
+        name: 'symlink-only-preset',
+        asset: {
+          template: {
+            'link/pointed/to/preset': '/path/to/template',
+            'link/pointed/to/other': '/path/to/template',
+            'link/rewritten/by/project': '/path/to/template',
+          },
+          scripts: '/path/to/symlink-only-preset/scripts.yaml',
+        },
+        nodes: [],
+      },
+    ]);
+  });
+
+  it('add and merge extended presets', async () => {
+    const graph = await getPresetGraph({
+      ...defaultContext,
+      custom: { ...defaultContext.custom, preset: 'extension-preset' },
+    });
+
+    expect(graph.length).toEqual(1);
+    expect(graph).toMatchObject([
+      {
+        name: 'extension-preset',
+        asset: {
+          extends: ['no-symlink-preset', 'symlink-only-preset'],
+        },
+        nodes: [
+          {
+            name: 'no-symlink-preset',
+            asset: {
+              template: {
+                'path/to/file': '/path/to/template',
+              },
+              scripts: '/path/to/no-symlink-preset/scripts.yaml',
+            },
+            nodes: [],
+          },
+          {
+            name: 'symlink-only-preset',
+            asset: {
+              template: {
+                'link/pointed/to/preset': '/path/to/template',
+                'link/pointed/to/other': '/path/to/template',
+                'link/rewritten/by/project': '/path/to/template',
+              },
+              scripts: '/path/to/symlink-only-preset/scripts.yaml',
+            },
+            nodes: [],
+          },
+        ],
+      },
+    ]);
+  });
+
+  it('warn about any missing presets', async () => {
+    await expect(() =>
+      getPresetGraph({
+        target: {
+          name: 'client',
+          root: '/missing-preset',
+          package: {},
+        },
+        custom: { preset: 'missing-preset' },
+      }),
+    ).rejects.toThrow();
   });
 });

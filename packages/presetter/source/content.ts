@@ -5,7 +5,7 @@
  * See the LICENSE file for details.
  * -------------------------------------------------------------------------
  *
- * @summary   Collection of config related helpers
+ * @summary   Collection of context resolvers
  *
  * @author    Alvis HT Tang <alvis@hilbert.space>
  * @license   MIT
@@ -13,189 +13,428 @@
  * -------------------------------------------------------------------------
  */
 
-import { basename, extname, isAbsolute } from 'path';
+import { extname } from 'path';
 
-import { loadDynamic, loadFile } from './io';
-import { merge, template } from './template';
+import { getConfigKey, loadDynamic, loadDynamicMap } from './resolution';
+import { filter, merge, template } from './template';
 
+import type { MergeMode } from './template';
 import type {
-  DynamicAsset,
-  DynamicAssetField,
-  PresetAsset,
+  Config,
   PresetContext,
-  RequiredResolution,
+  PresetGraph,
+  PresetNode,
+  PresetterConfig,
   ResolvedPresetContext,
   Template,
 } from './types';
 
 /**
- * customize the template with customization from .presetterrc
- * @param template template configuration
- * @param custom content to be merged with the template configuration
- * @returns customized configuration
+ * enrich the context with the resolved supplementary assets
+ * @param _ collection of arguments
+ * @param _.graph preset graph
+ * @param _.context preset context
+ * @returns enriched preset context
  */
-export function customize(
-  template: Template,
-  custom?: string[] | Record<string, unknown>,
-): Template {
-  if (typeof template === 'string' && Array.isArray(custom)) {
-    return merge(template.split('\n'), custom).join('\n');
-  } else if (typeof template === 'object' && !Array.isArray(custom)) {
-    return merge(template, custom);
-  } else {
-    return template;
-  }
-}
-/**
- * generate configuration content from preset with user customization
- * @param assets list of preset assets
- * @param context context about the target project and any customization in .presetterrc
- * @returns a map of configuration content
- */
-export async function generateContent(
-  assets: PresetAsset[],
-  context: PresetContext,
-): Promise<Record<string, Template>> {
-  const resolvedContext = await resolveContext(assets, context);
+export async function resolveContext(_: {
+  graph: PresetGraph;
+  context: PresetContext;
+}): Promise<ResolvedPresetContext> {
+  const { graph } = _;
 
-  const resolvedTemplate = await resolveDynamicMap(
-    assets,
-    resolvedContext,
-    'template',
-  );
+  // compute a new context with variable resolved
+  const context: ResolvedPresetContext<'variable'> = {
+    ..._.context,
+    custom: {
+      ..._.context.custom,
+      variable: resolveVariable({ graph, config: _.context.custom }),
+    },
+  };
 
-  // merge templates with custom configuration
-  const custom = Object.fromEntries(
-    await Promise.all(
-      Object.entries(resolvedTemplate).map(
-        async ([relativePath, templateConfig]): Promise<[string, Template]> => {
-          const customConfig =
-            resolvedContext.custom.config[getConfigKey(relativePath)];
+  const config = await resolveSupplementaryConfig({ graph, context });
+  const noSymlinks = await resolveNoSymlinks({ graph, context });
+  const scripts = await resolveSupplementaryScripts({ graph, context });
 
-          return [relativePath, customize(templateConfig, customConfig)];
-        },
-      ),
-    ),
-  );
-
-  return template(custom, resolvedContext.custom.variable);
-}
-
-/**
- * compute the corresponding field within the config field of .presetterrc
- * @param filename symlink name
- * @returns field name in config
- */
-export function getConfigKey(filename: string): string {
-  return basename(filename, extname(filename))
-    .replace(/^\./, '')
-    .replace(/rc$/, '')
-    .replace(/\.config$/, '');
-}
-
-/**
- * combine the default variables from presets with custom variables
- * @param assets list of preset assets
- * @param context context about the target project and any customization in .presetterrc
- * @returns combined variables
- */
-export function getVariable(
-  assets: PresetAsset[],
-  context: PresetContext,
-): Record<string, string> {
-  const variables = assets
-    .map((asset) => asset.variable)
-    .filter((variable): variable is Record<string, string> => !!variable);
-
-  const variableFromPresets = variables.reduce(
-    (merged, variable) => merge(merged, variable),
-    {},
-  );
-
-  const variableWithCustomConfig = merge(
-    variableFromPresets,
-    context.custom.variable,
-  );
-
-  return { ...variableWithCustomConfig };
-}
-
-/**
- * resolve context values which may be dynamic
- * @param assets list of preset assets
- * @param context context about the target project and any customization in .presetterrc
- * @returns a context with no further dynamic content
- */
-export async function resolveContext(
-  assets: PresetAsset[],
-  context: PresetContext,
-): Promise<ResolvedPresetContext> {
-  const variableContext: ResolvedPresetContext<'variable'> = {
-    ...context,
+  // return a new context with everything resolved
+  return {
+    target: context.target,
     custom: {
       ...context.custom,
-      variable: getVariable(assets, context),
-    },
-  };
-
-  const config = merge(
-    await resolveDynamicMap(assets, variableContext, 'supplementaryConfig'),
-    context.custom.config,
-  );
-
-  const customList = context.custom.noSymlinks ?? [];
-  const assetList = assets.map(async ({ noSymlinks }) =>
-    loadDynamic(noSymlinks ?? [], variableContext),
-  );
-  const noSymlinks = [...(await Promise.all(assetList)), ...customList].flat();
-
-  return {
-    ...variableContext,
-    custom: {
-      ...variableContext.custom,
+      preset: context.custom.preset,
       config,
-      noSymlinks: [...new Set(noSymlinks)],
+      noSymlinks,
+      scripts,
     },
   };
 }
 
 /**
- * resolve a dynamic asset content
- * @param assets list of preset assets
- * @param context arguments to be passed to the generator function
- * @param field field name of PresetAsset to be resolved
- * @returns content of the resolved field
+ * resolve no noSymlinks
+ * @param _ collection of arguments
+ * @param _.graph preset graph
+ * @param _.context preset context
+ * @returns list of noSymlinks
  */
-export async function resolveDynamicMap<F extends DynamicAssetField>(
-  assets: PresetAsset[],
-  context: ResolvedPresetContext<RequiredResolution<F>>,
-  field: F,
-): Promise<Record<string, DynamicAsset<F>>> {
-  // load templated configuration from presets
-  const templates = await Promise.all(
-    assets.map(async (asset) => {
-      const content = asset[field];
+export async function resolveNoSymlinks(_: {
+  graph: PresetGraph;
+  context: ResolvedPresetContext<'variable'>;
+}): Promise<string[]> {
+  const { graph, context } = _;
 
-      return Object.fromEntries(
-        await Promise.all(
-          Object.entries(
-            content instanceof Function
-              ? await content(context as ResolvedPresetContext)
-              : { ...content },
-          ).map(
-            async ([relativePath, value]): Promise<[string, any]> => [
-              relativePath,
-              // load a file if it's a valid path only
-              typeof value === 'string' && isAbsolute(value)
-                ? await loadFile(value)
-                : await loadDynamic(value, context as ResolvedPresetContext),
-            ],
-          ),
-        ),
-      );
+  const fromPreset = (
+    await Promise.all(
+      graph.map(async (node) => resolveNoSymlinksFromNode({ node, context })),
+    )
+  ).flat();
+  const fromUser = context.custom.noSymlinks ?? [];
+
+  return [...new Set([...fromPreset, ...fromUser])];
+}
+
+/**
+ * resolve noSymlinks from a preset node
+ * @param _ collection of arguments
+ * @param _.node preset node
+ * @param _.context resolved preset context
+ * @returns list of noSymlinks
+ */
+async function resolveNoSymlinksFromNode(_: {
+  node: PresetNode;
+  context: ResolvedPresetContext<'variable'>;
+}): Promise<string[]> {
+  const { node, context } = _;
+  const { asset, nodes } = node;
+
+  // resolve noSymlink lists from preset's extensions
+  const fromChildren = (
+    await Promise.all(
+      nodes.map(async (extension) =>
+        resolveNoSymlinksFromNode({ node: extension, context }),
+      ),
+    )
+  ).flat();
+
+  // resolve preset's noSymlink list
+  const fromPreset = await loadDynamic(asset.noSymlinks ?? [], context);
+
+  return [...new Set([...fromChildren, ...fromPreset])];
+}
+
+/**
+ * compute the final config map
+ * @param _ collection of arguments
+ * @param _.graph preset graph
+ * @param _.context preset context
+ * @returns map of config content
+ */
+export async function resolveSupplementaryConfig(_: {
+  graph: PresetGraph;
+  context: ResolvedPresetContext<'variable'>;
+}): Promise<Record<string, Config>> {
+  const { graph, context } = _;
+
+  const fromPresets = (
+    await Promise.all(
+      graph.map(async (node) =>
+        resolveSupplementaryConfigFromNode({ node, context }),
+      ),
+    )
+  ).reduce((merged, next) => merge(merged, next, { mode: 'overwrite' }), {});
+
+  return merge(fromPresets, context.custom.config, { mode: 'overwrite' });
+}
+
+/**
+ * compute the supplementary config map from a preset node
+ * @param _ collection of arguments
+ * @param _.node preset node
+ * @param _.context preset context
+ * @returns map of config content
+ */
+export async function resolveSupplementaryConfigFromNode(_: {
+  node: PresetNode;
+  context: ResolvedPresetContext<'variable'>;
+}): Promise<Record<string, Config>> {
+  const { node, context } = _;
+  const { asset, nodes } = node;
+
+  // resolve configs from the preset's extensions
+  const fromChildren = (
+    await Promise.all(
+      nodes.map(async (node) =>
+        resolveSupplementaryConfigFromNode({ node, context }),
+      ),
+    )
+  ).reduce((merged, next) => merge(merged, next, { mode: 'overwrite' }), {});
+
+  // resolve preset's config
+  const fromPreset = await loadDynamicMap<'supplementaryConfig'>(
+    asset.supplementaryConfig,
+    context,
+  );
+
+  // merge preset's config on top of the extensions
+  return merge(fromChildren, fromPreset, { mode: 'addition' });
+}
+
+/**
+ * compute script that will be merged with those provided by presets
+ * @param _ collection of arguments
+ * @param _.graph preset graph
+ * @param _.context preset context
+ * @returns map of config content
+ */
+export async function resolveSupplementaryScripts(_: {
+  graph: PresetGraph;
+  context: ResolvedPresetContext<'variable'>;
+}): Promise<Record<string, string>> {
+  const { graph, context } = _;
+
+  const fromPresets = (
+    await Promise.all(
+      graph.map(async (node) =>
+        resolveSupplementaryScriptsFromNode({ node, context }),
+      ),
+    )
+  ).reduce((merged, next) => merge(merged, next, { mode: 'overwrite' }), {});
+
+  return merge(fromPresets, context.custom.scripts, { mode: 'overwrite' });
+}
+
+/**
+ * compute the supplementary config map from a preset node
+ * @param _ collection of arguments
+ * @param _.node preset node
+ * @param _.context preset context
+ * @returns map of config content
+ */
+export async function resolveSupplementaryScriptsFromNode(_: {
+  node: PresetNode;
+  context: ResolvedPresetContext<'variable'>;
+}): Promise<Record<string, string>> {
+  const { node, context } = _;
+  const { asset, nodes } = node;
+  const { supplementaryScripts } = asset;
+
+  // resolve configs from the preset's extensions
+  const fromChildren = (
+    await Promise.all(
+      nodes.map(async (node) =>
+        resolveSupplementaryScriptsFromNode({ node, context }),
+      ),
+    )
+  ).reduce((merged, next) => merge(merged, next, { mode: 'overwrite' }), {});
+
+  // resolve preset's config
+  const fromPreset = await loadDynamic(supplementaryScripts ?? {}, context);
+
+  // merge preset's config on top of the extensions
+  return merge(fromChildren, fromPreset, { mode: 'addition' });
+}
+
+/**
+ * combine default variables from presets with custom variables
+ * @param _ collection of arguments
+ * @param _.graph preset graph
+ * @param _.config user config
+ * @returns combined variables
+ */
+export function resolveVariable(_: {
+  graph: PresetGraph;
+  config: PresetterConfig;
+}): Record<string, string> {
+  const { graph, config } = _;
+
+  // get the default from presets
+  const fromPresets = graph
+    .map((node) => resolveVariableFromNode({ node }))
+    .reduce((merged, next) => merge(merged, next), {});
+
+  // merge with those from the config file
+  return merge(fromPresets, config.variable);
+}
+
+/**
+ * resolve variables from a preset node
+ * @param _ collection of arguments
+ * @param _.node preset node
+ * @returns combined variables
+ */
+function resolveVariableFromNode(_: {
+  node: PresetNode;
+}): Record<string, string> {
+  const { node } = _;
+  const { asset, nodes } = node;
+
+  // resolve variables from the preset's extensions
+  const fromChildren = nodes
+    .map((node) => resolveVariableFromNode({ node }))
+    .reduce((merged, next) => merge(merged, next), {});
+
+  // merge with the preset's default variables
+  return merge(fromChildren, asset.variable);
+}
+
+/**
+ * merge templates
+ * @param current current template
+ * @param candidate new template content
+ * @param options collection of options
+ * @param options.mode merge mode
+ * @returns customized configuration
+ */
+export function mergeTemplate(
+  current: Record<string, Template>,
+  candidate: Record<string, Template>,
+  options: { mode: MergeMode },
+): Record<string, Template> {
+  const resolvedMerge = Object.fromEntries(
+    Object.entries(current).map(([path, template]) => {
+      const isIgnoreFile = !extname(path) && typeof template === 'string';
+
+      // NOTE
+      // for JSON content, merge with the specified mode
+      // for string content, there are two scenarios:
+      // 1. if the content is a list such as an ignore file, merge as appendion
+      // 2. for others such as a typescript file, merge as override
+      const modeForText = isIgnoreFile ? 'addition' : 'overwrite';
+      const mode = typeof template === 'string' ? modeForText : options.mode;
+
+      return [path, merge(template, candidate[path], { mode })];
     }),
   );
 
-  // merge all maps
-  return templates.reduce((merged, map) => merge(merged, map), {});
+  return { ...candidate, ...resolvedMerge };
+}
+
+/**
+ * compute the final template content
+ * @param _ collection of arguments
+ * @param _.graph preset graph
+ * @param _.context preset context
+ * @returns map of template content
+ */
+export async function resolveTemplate(_: {
+  graph: PresetGraph;
+  context: ResolvedPresetContext;
+}): Promise<Record<string, Template>> {
+  const { graph, context } = _;
+
+  // deduce all the template contents and their paths from presets
+  const fromPreset = (
+    await Promise.all(
+      graph.map(async (node) => resolveTemplateFromNode({ node, context })),
+    )
+  ).reduce(
+    (merged, next) => mergeTemplate(merged, next, { mode: 'overwrite' }),
+    {},
+  );
+
+  // merge the template with the config supplied by user
+  const merged = Object.fromEntries(
+    Object.entries(fromPreset).map(([path, current]) => {
+      const config = context.custom.config[getConfigKey(path)];
+      const candidate = Array.isArray(config) ? config.join('\n') : config;
+      const options = { mode: 'addition' as const };
+
+      return [path, merge(current, candidate, options)];
+    }),
+  );
+
+  const resolvedTemplate = filter(merged, ...(context.custom.ignores ?? []));
+
+  return template(resolvedTemplate, context.custom.variable);
+}
+
+/**
+ * compute the final template content from a preset node
+ * @param _ collection of arguments
+ * @param _.node preset node
+ * @param _.context preset context
+ * @returns map of template content
+ */
+export async function resolveTemplateFromNode(_: {
+  node: PresetNode;
+  context: ResolvedPresetContext;
+}): Promise<Record<string, Template>> {
+  const { node, context } = _;
+  const { asset, nodes } = node;
+  const { supplementaryIgnores } = asset;
+
+  // resolve template from the preset's extensions
+  const fromChildren = (
+    await Promise.all(
+      nodes.map(async (node) => resolveTemplateFromNode({ node, context })),
+    )
+  ).reduce(
+    (current, next) => mergeTemplate(current, next, { mode: 'overwrite' }),
+    {},
+  );
+
+  const fromPreset = await loadDynamicMap<'template'>(asset.template, context);
+
+  const merged = mergeTemplate(fromChildren, fromPreset, { mode: 'addition' });
+
+  const ignoreRules =
+    typeof supplementaryIgnores === 'function'
+      ? await supplementaryIgnores(context)
+      : supplementaryIgnores;
+
+  return filter(merged, ...(ignoreRules ?? []));
+}
+
+/**
+ * compute the final script map
+ * @param _ collection of arguments
+ * @param _.graph preset graph
+ * @param _.context preset context
+ * @returns map of script content
+ */
+export async function resolveScripts(_: {
+  graph: PresetGraph;
+  context: ResolvedPresetContext<'variable'>;
+}): Promise<Record<string, string>> {
+  const { graph, context } = _;
+
+  // resolve scripts from all presets
+  const fromPresets = (
+    await Promise.all(
+      graph.map(async (node) => resolveScriptsFromNode({ node, context })),
+    )
+  ).reduce((merged, next) => merge(merged, next, { mode: 'overwrite' }), {});
+
+  const fromConfig = context.custom.scripts;
+
+  return template(
+    merge(fromPresets, fromConfig, { mode: 'addition' }),
+    context.custom.variable,
+  );
+}
+
+/**
+ * compute the final script map from a preset node
+ * @param _ collection of arguments
+ * @param _.node preset node
+ * @param _.context preset context
+ * @returns map of script content
+ */
+export async function resolveScriptsFromNode(_: {
+  node: PresetNode;
+  context: ResolvedPresetContext<'variable'>;
+}): Promise<Record<string, string>> {
+  const { node, context } = _;
+  const { asset, nodes } = node;
+
+  // resolve scripts from the preset's extensions
+  const fromChildren = (
+    await Promise.all(
+      nodes.map(async (node) => resolveScriptsFromNode({ node, context })),
+    )
+  ).reduce((merged, next) => merge(merged, next, { mode: 'overwrite' }), {});
+
+  // resolve preset's scripts
+  const fromPreset = await loadDynamic(asset.scripts ?? {}, context);
+
+  // merge preset's scripts on top of the extensions
+  return merge(fromChildren, fromPreset, { mode: 'addition' });
 }

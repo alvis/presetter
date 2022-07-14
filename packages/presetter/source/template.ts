@@ -17,10 +17,10 @@ import pupa from 'pupa';
 
 import type { IgnorePath, IgnoreRule } from './types';
 
-type MergeMode = 'addition' | 'overwrite';
+export type MergeMode = 'addition' | 'overwrite';
 
 /**
- * filter fields in an object according to the given rules
+ * remove part of the template content according to the given rules
  * @param subject an object to be filtered
  * @param ignores a list of ignore rules
  * @returns filtered content
@@ -111,25 +111,26 @@ export function isJSON(subject: unknown): subject is Record<string, any> {
  * @param options.mode indicate how to merge the properties
  * @returns merged object
  */
-export function merge<Source extends Record<string, any> | unknown[]>(
-  source: Source,
-  replacement?: Record<string, any> | unknown[],
+export function merge<S extends string | Record<string, any> | unknown[]>(
+  source: S,
+  replacement?: string | Record<string, any> | unknown[],
   options?: {
     mode?: MergeMode;
   },
-): Source {
+): S {
   const { mode = 'addition' } = options ?? {};
-  const finalOptions = { mode };
 
   if (Array.isArray(source)) {
-    return replace(source, replacement, finalOptions);
+    return replace(source, replacement, { mode });
+  } else if (typeof source === 'string' || typeof replacement === 'string') {
+    return mergeText(source, replacement, { mode });
   }
 
   const keys = [...Object.keys(source), ...Object.keys(replacement ?? {})];
 
   const entries: Array<[string, any]> = keys.map((key) => [
     key,
-    replace(source[key], replacement?.[key], finalOptions),
+    replace(source[key], replacement?.[key], { mode }),
   ]);
 
   return Object.assign(
@@ -138,6 +139,31 @@ export function merge<Source extends Record<string, any> | unknown[]>(
       [key]: value,
     })),
   );
+}
+
+/**
+ * merge content of two templates
+ * @param current current template
+ * @param candidate new template content
+ * @param options collection of options
+ * @param options.mode merge mode
+ * @returns merged template
+ */
+function mergeText<S extends string | Record<string, any>>(
+  current: S,
+  candidate: string | string[] | Record<string, any> | undefined,
+  options: { mode: MergeMode },
+): S {
+  if (
+    typeof current === 'string' &&
+    typeof candidate === 'string' &&
+    options.mode === 'addition'
+  ) {
+    return [...new Set(`${current}\n${candidate}`.split('\n'))].join('\n') as S;
+  }
+
+  // keep the current content since it cannot be merged
+  return typeof current === typeof candidate ? (candidate as S) : current;
 }
 
 /**

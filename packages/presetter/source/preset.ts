@@ -21,19 +21,20 @@ import readPackage from 'read-pkg';
 import resolvePackage from 'resolve-pkg';
 import writePackage from 'write-pkg';
 
-import { generateContent, getVariable, resolveContext } from './content';
+import { resolveContext, resolveScripts, resolveTemplate } from './content';
 import { linkFiles, loadFile, unlinkFiles, writeFiles } from './io';
 import {
   arePeerPackagesAutoInstalled,
   getPackage,
   reifyDependencies,
 } from './package';
-import { filter, isJSON, merge, template } from './template';
+import { isJSON, merge } from './template';
 
 import type {
-  IgnoreRule,
   PresetAsset,
   PresetContext,
+  PresetGraph,
+  PresetNode,
   PresetterConfig,
   ResolvedPresetContext,
   Template,
@@ -44,6 +45,17 @@ import type { PackageJson } from 'read-pkg';
 const PRESETTERRC = '.presetterrc';
 
 const JSON_INDENT = 2;
+
+// NOTE on resolution steps
+// STEP 1 build a dependency tree of presets
+// STEP 2 resolve variables from the tree
+//
+// for template resolution
+// STEP 3 resolve template content from resolved variables
+// STEP 4 resolve noSimlinks from resolved variables
+//
+// for script resolution
+// STEP 3 resolve script content from resolved variables
 
 /**
  * get the .presetterrc configuration file content
@@ -102,93 +114,76 @@ export function assertPresetterRC(
 }
 
 /**
- * get the preset package name from package.json
- * @param context context about the target project and any customization in .presetterrc
- * @returns name of the preset package
+ * get assets from a preset
+ * @param name name of the preset
+ * @param context context about the target project and customization in .presetterrc
  */
-export async function getPresetAssets(
+export async function getPresetAsset(
+  name: string,
   context: PresetContext,
-): Promise<PresetAsset[]> {
+): Promise<PresetAsset> {
+  try {
+    // get the preset
+    const module = resolvePackage(name, {
+      cwd: context.target.root,
+    });
+
+    const { default: presetPresetAsset } = (await import(module!)) as {
+      default: (args: PresetContext) => Promise<PresetAsset>;
+    };
+
+    return await presetPresetAsset(context);
+  } catch {
+    throw new Error(`cannot resolve preset ${name}`);
+  }
+}
+
+/**
+ * resolve a preset as a node
+ * @param name name of the preset
+ * @param context context about the target project and customization in .presetterrc
+ * @returns resolved preset node
+ */
+export async function getPresetNode(
+  name: string,
+  context: PresetContext,
+): Promise<PresetNode> {
+  const asset = await getPresetAsset(name, context);
+  const nodes = await Promise.all(
+    (asset.extends ?? []).map(async (extension) =>
+      getPresetNode(extension, context),
+    ),
+  );
+
+  return { name, asset, nodes };
+}
+
+/**
+ * compute a graph of presets
+ * @param context context about the target project and customization in .presetterrc
+ * @returns resolved preset graph
+ */
+export async function getPresetGraph(
+  context: PresetContext,
+): Promise<PresetGraph> {
   // get the preset name
   const { preset } = context.custom;
 
   const presets = Array.isArray(preset) ? preset : [preset];
 
-  const assets: PresetAsset[] = [];
-
-  for (const preset of presets) {
-    try {
-      // get the preset
-      const module = resolvePackage(preset, {
-        cwd: context.target.root,
-      });
-
-      const { default: presetPresetAsset } = (await import(module!)) as {
-        default: (args: PresetContext) => Promise<PresetAsset>;
-      };
-
-      const asset = await presetPresetAsset(context);
-
-      // add extended assets first
-      const extensions =
-        asset.extends?.map(async (extension) =>
-          getPresetAssets({
-            ...context,
-            custom: { ...context.custom, preset: extension },
-          }),
-        ) ?? [];
-      assets.push(...(await Promise.all(extensions)).flat());
-
-      // then asset from this preset so that this preset can override the extended ones
-      assets.push(asset);
-    } catch {
-      throw new Error(`cannot resolve preset ${preset}`);
-    }
-  }
-
-  return assets;
+  return Promise.all(presets.map(async (name) => getPresetNode(name, context)));
 }
 
 /**
- * merge all scripts templates
- * @param context context about the target project and any customization in .presetterrc
+ * get the merged scripts templates
  * @returns scripts template
  */
-export async function getScripts(
-  context: PresetContext,
-): Promise<Record<string, string>> {
-  const { custom } = context;
+export async function getScripts(): Promise<Record<string, string>> {
+  const context = await getContext();
+  const graph = await getPresetGraph(context);
+  const resolvedContext = await resolveContext({ graph, context });
 
-  // get  assets from all configured presets
-  const assets = await getPresetAssets(context);
-
-  // compute the final variable to be used in the scripts template
-  const variable = getVariable(assets, context);
-
-  // load templated scripts from presets
-  const scripts = await Promise.all(
-    [
-      ...assets.map(({ scripts }) => scripts),
-      ...assets.map(({ supplementaryScripts }) => supplementaryScripts),
-    ]
-      .filter((path): path is string => typeof path === 'string')
-      .map(
-        async (path) =>
-          (await loadFile(path, 'yaml')) as Record<string, string>,
-      ),
-  );
-
-  // merge all template scripts from presets
-  const scriptsFromPreset = scripts.reduce(
-    (merged, scripts) => merge(merged, scripts),
-    {},
-  );
-
-  // merge customized scripts with the preset scripts
-  const scriptsWithCustomConfig = merge(scriptsFromPreset, custom.scripts);
-
-  // replace the template variables
-  return template(scriptsWithCustomConfig, variable);
+  return resolveScripts({ graph, context: resolvedContext });
 }
 
 /**
@@ -261,31 +256,13 @@ export async function bootstrapPreset(options?: {
  * @param context context about the target project and any customization in .presetterrc
  */
 export async function bootstrapContent(context: PresetContext): Promise<void> {
-  const assets = await getPresetAssets(context);
-  const content = await generateContent(assets, context);
-  const resolvedContext = await resolveContext(assets, context);
+  const graph = await getPresetGraph(context);
+  const resolvedContext = await resolveContext({ graph, context });
+  const content = await resolveTemplate({ graph, context: resolvedContext });
 
-  const userIgnores = context.custom.ignores ?? [];
-  const presetIgnores = (
-    await Promise.all(
-      assets.map(({ supplementaryIgnores }) =>
-        supplementaryIgnores instanceof Function
-          ? supplementaryIgnores(resolvedContext)
-          : supplementaryIgnores,
-      ),
-    )
-  )
-    .filter((rules): rules is IgnoreRule[] => !!rules)
-    .flat();
+  const destinationMap = await getDestinationMap(content, resolvedContext);
 
-  const filteredContent = filter(content, ...presetIgnores, ...userIgnores);
-
-  const destinationMap = await getDestinationMap(
-    filteredContent,
-    resolvedContext,
-  );
-
-  await writeFiles(context.target.root, filteredContent, destinationMap);
+  await writeFiles(context.target.root, content, destinationMap);
   await linkFiles(context.target.root, destinationMap);
 }
 
@@ -294,9 +271,9 @@ export async function bootstrapContent(context: PresetContext): Promise<void> {
  */
 export async function unsetPreset(): Promise<void> {
   const context = await getContext();
-  const assets = await getPresetAssets(context);
-  const content = await generateContent(assets, context);
-  const resolvedContext = await resolveContext(assets, context);
+  const graph = await getPresetGraph(context);
+  const resolvedContext = await resolveContext({ graph, context });
+  const content = await resolveTemplate({ graph, context: resolvedContext });
   const configurationLink = await getDestinationMap(content, resolvedContext);
 
   await unlinkFiles(context.target.root, configurationLink);

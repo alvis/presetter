@@ -28,40 +28,10 @@ import {
 import { dump, load } from 'js-yaml';
 import { basename, dirname, extname, relative, resolve } from 'path';
 
-import type {
-  Generator,
-  PresetterConfig,
-  ResolvedPresetContext,
-  Template,
-} from './types';
+import type { Template } from './types';
 
 // JSON format
 const INDENT = 2;
-
-/**
- * load a potentially dynamic content
- * @param value content to be loaded
- * @param context context to be supplied to the generator
- * @returns resolved content
- */
-export async function loadDynamic<
-  R extends Template | string[],
-  K extends keyof PresetterConfig,
->(
-  value:
-    | string // path to a template file
-    | R // template content
-    | Generator<R, K>,
-  context: ResolvedPresetContext<K>,
-): Promise<R> {
-  if (typeof value === 'function') {
-    return value(context);
-  } else if (typeof value === 'string' && (await pathExists(value))) {
-    return (await loadFile(value)) as R;
-  } else {
-    return value as R;
-  }
-}
 
 /**
  * load the content of a file

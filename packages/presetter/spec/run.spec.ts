@@ -92,7 +92,6 @@ jest.mock('#package', () => ({
 
 jest.mock('#preset', () => ({
   esModule: true,
-  getContext: jest.fn(),
   getScripts: jest.fn(async () => ({
     task: 'command --arg-template',
     other: 'other --arg-template',

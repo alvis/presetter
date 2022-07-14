@@ -14,198 +14,151 @@
  */
 
 import {
-  customize,
-  generateContent,
-  getConfigKey,
-  getVariable,
   resolveContext,
-  resolveDynamicMap,
+  resolveNoSymlinks,
+  resolveVariable,
+  resolveScripts,
+  resolveSupplementaryConfig,
+  resolveSupplementaryScripts,
+  resolveTemplate,
 } from '#content';
 
-import type { PresetContext, ResolvedPresetContext } from '#types';
+import type { PresetGraph, ResolvedPresetContext } from '#types';
 
-jest.mock('#io', () => ({
-  __esModule: true,
-  ...jest.requireActual('#io'),
-  loadFile: jest.fn(async (path) => {
+jest.mock('#resolution', () => {
+  const getFileContext = (path) => {
     // ensure that the paths below is compatible with windows
     const { posix, relative, resolve, sep } = jest.requireActual('path');
     const posixPath = relative(resolve('/'), path).split(sep).join(posix.sep);
     switch (posixPath) {
       case 'path/to/config.json':
-        return { json: true };
+        return { json: true, list: [0] };
       case 'path/to/config.yaml':
         return { yaml: true };
+      case 'path/to/file1':
+        return 'file1';
+      case 'path/to/file2':
+        return 'file2';
       case 'path/to/list1':
         return 'list1';
       case 'path/to/list2':
         return 'list2';
+      case 'path/to/script.yaml':
+        return { task: 'cmd' };
       default:
         throw new Error(`loadFile: missing path ${path}`);
     }
-  }),
-}));
+  };
 
-const defaultContext: PresetContext = {
+  const loadDynamic = (value, context) => {
+    if (typeof value === 'function') {
+      return value(context);
+    } else if (typeof value === 'string') {
+      return getFileContext(value);
+    } else {
+      return value;
+    }
+  };
+
+  return {
+    __esModule: true,
+    ...jest.requireActual('#resolution'),
+    loadDynamic: jest.fn(loadDynamic),
+    loadDynamicMap: jest.fn((map, context) =>
+      Object.fromEntries(
+        Object.entries({ ...map }).map(
+          ([relativePath, value]): [string, any] => [
+            relativePath,
+            loadDynamic(value, context as ResolvedPresetContext),
+          ],
+        ),
+      ),
+    ),
+  };
+});
+
+const graph: PresetGraph = [
+  {
+    name: 'preset1',
+    asset: {
+      template: {
+        '.config.json': '/path/to/config.json',
+        '.list': '/path/to/list1',
+      },
+      supplementaryIgnores: () => ['.ignore'],
+    },
+    nodes: [
+      {
+        name: 'preset11',
+        asset: {
+          scripts: '/path/to/script.yaml',
+          template: {
+            '.config.json': { list: [1] },
+            '.list': '/path/to/list1',
+            'general.file': '/path/to/file1',
+            '.ignore': '/path/to/file1',
+          },
+        },
+        nodes: [],
+      },
+      {
+        name: 'preset12',
+        asset: {
+          scripts: '/path/to/script.yaml',
+          template: {
+            '.config.json': { list: [2] },
+            '.list': '/path/to/list1',
+          },
+        },
+        nodes: [],
+      },
+    ],
+  },
+  {
+    name: 'preset2',
+    asset: {
+      scripts: {
+        task_from_preset2: 'cmd',
+      },
+      template: {
+        '.config.json': '/path/to/config.yaml',
+        '.list': '/path/to/list2',
+        'general.file': '/path/to/file2',
+      },
+    },
+    nodes: [],
+  },
+];
+
+const context: ResolvedPresetContext = {
   target: {
     name: 'client',
     root: '/project',
     package: {},
   },
-  custom: { preset: 'preset' },
+  custom: { preset: 'preset', config: {}, variable: {}, noSymlinks: [] },
 };
-
-describe('fn:customize', () => {
-  it('return the template if the supplied customization is missing', () => {
-    expect(customize('line')).toEqual('line');
-  });
-
-  it('add extra lines into a list', () => {
-    expect(customize('line1', ['line2', 'line3'])).toEqual(
-      'line1\nline2\nline3',
-    );
-  });
-
-  it('merge the template config with custom config', () => {
-    expect(
-      customize(
-        { merged: { a: 1 }, replaced: true },
-        { merged: { b: 2 }, replaced: false },
-      ),
-    ).toEqual({
-      merged: { a: 1, b: 2 },
-      replaced: false,
-    });
-  });
-
-  it('just return the template if the supplied customization is in the wrong format', () => {
-    expect(customize('line', { incorrect: true })).toEqual('line');
-    expect(customize({ object: true }, ['not a list'])).toEqual({
-      object: true,
-    });
-  });
-});
-
-describe('fn:generateContent', () => {
-  it('give an empty object if no template is given at all', async () => {
-    expect(await generateContent([], defaultContext)).toEqual({});
-  });
-
-  it('merge config from all presets', async () => {
-    expect(
-      await generateContent(
-        [
-          {
-            template: {
-              '.config': '/path/to/config.json',
-              '.list': '/path/to/list1',
-            },
-          },
-          {
-            template: {
-              '.config': '/path/to/config.yaml',
-              '.list': '/path/to/list2',
-            },
-          },
-        ],
-        defaultContext,
-      ),
-    ).toEqual({
-      '.config': { json: true, yaml: true },
-      '.list': 'list2',
-    });
-  });
-
-  it('return the templated configuration if no customization is supplied', async () => {
-    expect(
-      await generateContent(
-        [
-          {
-            template: {
-              '.config': '/path/to/config.json',
-            },
-          },
-        ],
-        defaultContext,
-      ),
-    ).toEqual({
-      '.config': { json: true },
-    });
-  });
-
-  it('return a customized configuration', async () => {
-    expect(
-      await generateContent(
-        [
-          {
-            template: {
-              '.config': '/path/to/config.json',
-            },
-          },
-        ],
-        {
-          ...defaultContext,
-          custom: {
-            ...defaultContext.custom,
-            config: { config: { extra: true } },
-          },
-        },
-      ),
-    ).toEqual({
-      '.config': { json: true, extra: true },
-    });
-  });
-});
-
-describe('fn:getConfigKey', () => {
-  it('get config keys based on the filename', () => {
-    expect(getConfigKey('.tsconfig.json')).toEqual('tsconfig');
-    expect(getConfigKey('.npmignore')).toEqual('npmignore');
-    expect(getConfigKey('rollup.config.ts')).toEqual('rollup');
-  });
-});
-
-describe('fn:getVariable', () => {
-  it('compute the final variables', () => {
-    expect(
-      getVariable(
-        [
-          {
-            variable: {
-              a: 'a',
-            },
-          },
-          {
-            variable: {
-              b: 'b',
-            },
-          },
-        ],
-        {
-          ...defaultContext,
-          custom: { ...defaultContext.custom, variable: { c: 'c' } },
-        },
-      ),
-    ).toEqual({ a: 'a', b: 'b', c: 'c' });
-  });
-});
 
 describe('fn:resolveContext', () => {
   it('make those required fields available', async () => {
-    expect(await resolveContext([], defaultContext)).toMatchObject({
+    expect(await resolveContext({ graph: [], context })).toMatchObject({
       custom: { config: {}, noSymlinks: [], variable: {} },
     });
   });
 
   it('compute the final variables', async () => {
     expect(
-      await resolveContext(
-        [
-          { variable: { var1: 'var1' } },
-          { variable: { var1: 'changed', var2: 'var2' } },
+      await resolveContext({
+        graph: [
+          { name: 'preset1', asset: { variable: { var1: 'var1' } }, nodes: [] },
+          {
+            name: 'preset1',
+            asset: { variable: { var1: 'changed', var2: 'var2' } },
+            nodes: [],
+          },
         ],
-        defaultContext,
-      ),
+        context,
+      }),
     ).toMatchObject({
       custom: { variable: { var1: 'changed', var2: 'var2' } },
     });
@@ -213,9 +166,12 @@ describe('fn:resolveContext', () => {
 
   it('pass on symlinks', async () => {
     expect(
-      await resolveContext([], {
-        ...defaultContext,
-        custom: { ...defaultContext.custom, noSymlinks: ['noSymlink'] },
+      await resolveContext({
+        graph: [],
+        context: {
+          ...context,
+          custom: { ...context.custom, noSymlinks: ['noSymlink'] },
+        },
       }),
     ).toMatchObject({
       custom: { noSymlinks: ['noSymlink'] },
@@ -224,9 +180,18 @@ describe('fn:resolveContext', () => {
 
   it('consolidate all symlinks both provided by presets and presetterrc', async () => {
     expect(
-      await resolveContext([{ noSymlinks: () => ['preset'] }], {
-        ...defaultContext,
-        custom: { ...defaultContext.custom, noSymlinks: ['custom'] },
+      await resolveContext({
+        graph: [
+          {
+            name: 'preset1',
+            asset: { noSymlinks: () => ['preset'] },
+            nodes: [],
+          },
+        ],
+        context: {
+          ...context,
+          custom: { ...context.custom, noSymlinks: ['custom'] },
+        },
       }),
     ).toMatchObject({
       custom: { noSymlinks: ['preset', 'custom'] },
@@ -235,9 +200,12 @@ describe('fn:resolveContext', () => {
 
   it('pass on custom configs', async () => {
     expect(
-      await resolveContext([], {
-        ...defaultContext,
-        custom: { ...defaultContext.custom, config: { list: ['line'] } },
+      await resolveContext({
+        graph: [],
+        context: {
+          ...context,
+          custom: { ...context.custom, config: { list: ['line'] } },
+        },
       }),
     ).toMatchObject({
       custom: { config: { list: ['line'] } },
@@ -245,44 +213,244 @@ describe('fn:resolveContext', () => {
   });
 });
 
-describe('fn:resolveDynamicMap', () => {
-  const resolvedContext: ResolvedPresetContext = {
-    ...defaultContext,
-    custom: {
-      ...defaultContext.custom,
-      config: {},
-      noSymlinks: [],
-      variable: {},
-    },
-  };
-
-  it('pass on the template map if no generator is supplied', async () => {
+describe('fn:resolveSupplementaryConfig', () => {
+  it('compute the final rules to overwrite those form the presets', async () => {
     expect(
-      await resolveDynamicMap(
-        [{ template: { form: 'literal' } }],
-        resolvedContext,
-        'template',
-      ),
-    ).toMatchObject({ form: 'literal' });
+      await resolveSupplementaryConfig({
+        graph: [
+          {
+            name: 'preset1',
+            asset: {
+              supplementaryConfig: {
+                config: { flag: true },
+              },
+            },
+            nodes: [],
+          },
+          {
+            name: 'preset2',
+            asset: {
+              supplementaryConfig: {
+                config: { extra: true },
+              },
+            },
+            nodes: [
+              {
+                name: 'preset3',
+                asset: {
+                  supplementaryConfig: {
+                    config: { flag: false },
+                  },
+                },
+                nodes: [],
+              },
+            ],
+          },
+        ],
+        context: {
+          ...context,
+          custom: {
+            ...context.custom,
+            config: {
+              config: { extra: false },
+            },
+            variable: {},
+          },
+        },
+      }),
+    ).toEqual({ config: { flag: false, extra: false } });
+  });
+});
+
+describe('fn:resolveSupplementaryScripts', () => {
+  it('compute the final scripts to overwrite those form the presets', async () => {
+    expect(
+      await resolveSupplementaryScripts({
+        graph: [
+          {
+            name: 'preset1',
+            asset: {
+              supplementaryScripts: {
+                task1: 'replaced',
+              },
+            },
+            nodes: [],
+          },
+          {
+            name: 'preset2',
+            asset: {
+              supplementaryScripts: {
+                task1: 'command1',
+              },
+            },
+            nodes: [
+              {
+                name: 'preset3',
+                asset: {
+                  supplementaryScripts: {
+                    task2: 'command2',
+                  },
+                },
+                nodes: [],
+              },
+            ],
+          },
+        ],
+        context: {
+          ...context,
+          custom: {
+            ...context.custom,
+            scripts: {
+              task3: 'command3',
+            },
+            variable: {},
+          },
+        },
+      }),
+    ).toEqual({ task1: 'command1', task2: 'command2', task3: 'command3' });
+  });
+});
+
+describe('fn:resolveNoSymlinks', () => {
+  it('compute the final no symlinks list', async () => {
+    expect(
+      await resolveNoSymlinks({
+        graph: [
+          {
+            name: 'preset1',
+            asset: {
+              noSymlinks: ['file1', 'file2'],
+            },
+            nodes: [],
+          },
+          {
+            name: 'preset2',
+            asset: {
+              noSymlinks: ['file1', 'file3'],
+            },
+            nodes: [
+              {
+                name: 'preset3',
+                asset: {
+                  noSymlinks: ['file4'],
+                },
+                nodes: [],
+              },
+            ],
+          },
+        ],
+        context: {
+          ...context,
+          custom: { ...context.custom, variable: {}, noSymlinks: undefined },
+        },
+      }),
+    ).toEqual(['file1', 'file2', 'file4', 'file3']);
+  });
+});
+
+describe('fn:resolveVariable', () => {
+  it('compute the final variables', () => {
+    expect(
+      resolveVariable({
+        graph: [
+          {
+            name: 'preset1',
+            asset: {
+              variable: {
+                a: 'a',
+              },
+            },
+            nodes: [],
+          },
+          {
+            name: 'preset2',
+            asset: {
+              variable: {
+                b: 'b',
+              },
+            },
+            nodes: [
+              {
+                name: 'preset3',
+                asset: {
+                  variable: {
+                    b: 'other',
+                  },
+                },
+                nodes: [],
+              },
+            ],
+          },
+        ],
+        config: { ...context.custom, variable: { c: 'c' } },
+      }),
+    ).toEqual({ a: 'a', b: 'b', c: 'c' });
+  });
+});
+
+describe('fn:resolveScripts', () => {
+  it('combine script templates from presets', async () => {
+    const scripts = await resolveScripts({ graph, context });
+
+    expect(scripts).toEqual({ task: 'cmd', task_from_preset2: 'cmd' });
+  });
+});
+
+describe('fn:resolveTemplate', () => {
+  it('give an empty object if no template is given at all', async () => {
+    expect(await resolveTemplate({ graph: [], context })).toEqual({});
   });
 
-  it('compute the template map via a generator', async () => {
-    expect(
-      await resolveDynamicMap(
-        [{ template: () => ({ form: 'map generator' }) }],
-        resolvedContext,
-        'template',
-      ),
-    ).toMatchObject({ form: 'map generator' });
+  it('merge config from all presets', async () => {
+    expect(await resolveTemplate({ graph, context })).toEqual({
+      '.config.json': { json: true, yaml: true, list: [2, 0] },
+      '.list': 'list1\nlist2',
+      'general.file': 'file2',
+    });
   });
 
-  it('load a content from a file', async () => {
+  it('return a customized configuration', async () => {
     expect(
-      await resolveDynamicMap(
-        [{ template: () => ({ file: '/path/to/config.json' }) }],
-        resolvedContext,
-        'template',
-      ),
-    ).toMatchObject({ file: { json: true } });
+      await resolveTemplate({
+        graph,
+        context: {
+          ...context,
+          custom: {
+            ...context.custom,
+            config: {
+              config: { json: false, yaml: false, extra: true, list: [99] },
+              list: ['list3'],
+            },
+          },
+        },
+      }),
+    ).toEqual({
+      '.config.json': {
+        json: false,
+        yaml: false,
+        extra: true,
+        list: [2, 0, 99],
+      },
+      '.list': 'list1\nlist2\nlist3',
+      'general.file': 'file2',
+    });
+  });
+
+  it('filter out unwanted items', async () => {
+    expect(
+      await resolveTemplate({
+        graph,
+        context: {
+          ...context,
+          custom: {
+            ...context.custom,
+            ignores: ['general.file', { '.config.json': ['list'] }],
+          },
+        },
+      }),
+    ).toEqual({
+      '.config.json': { json: true, yaml: true },
+      '.list': 'list1\nlist2',
+    });
   });
 });

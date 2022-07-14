@@ -71,6 +71,25 @@ describe('fn:filter', () => {
 });
 
 describe('fn:merge', () => {
+  it('overwite list content', () => {
+    expect(merge('list1', 'list2', { mode: 'overwrite' })).toEqual('list2');
+  });
+
+  it('merge two lists', () => {
+    expect(merge('list1', 'list2')).toEqual('list1\nlist2');
+  });
+
+  it('add extra lines into a list', () => {
+    expect(merge('line1', ['line2', 'line3'].join('\n'))).toEqual(
+      'line1\nline2\nline3',
+    );
+  });
+
+  it('just return the original if the supplied customization cannot be mergeed', () => {
+    expect(merge('line', { object: true })).toEqual('line');
+    expect(merge({ object: true }, 'line')).toEqual({ object: true });
+  });
+
   it('return the subject if no replacement is given', () => {
     expect(merge({ a: 0 })).toEqual({ a: 0 });
   });

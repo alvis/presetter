@@ -18,7 +18,6 @@ import { ensureFile, mkdir, symlink, unlink, writeFile } from 'fs-extra';
 import { posix, relative, resolve, sep } from 'path';
 
 import {
-  loadDynamic,
   loadFile,
   serializeContent,
   writeFiles,
@@ -103,37 +102,6 @@ jest.mock('fs-extra', () => ({
   unlink: jest.fn(),
   writeFile: jest.fn(),
 }));
-
-describe('fn:loadDynamic', () => {
-  const context: ResolvedPresetContext<'variable'> = {
-    target: { name: 'name', root: 'root', package: {} },
-    custom: { preset: 'preset', variable: { key: 'value' } },
-  };
-
-  it('load the content from a dynamic generator', async () => {
-    expect(
-      await loadDynamic(
-        (args: ResolvedPresetContext<'variable'>) => ({
-          key: args.custom.variable.key,
-        }),
-        context,
-      ),
-    ).toEqual({
-      key: 'value',
-    });
-  });
-
-  it('load the content from a file if it is a valid path', async () => {
-    expect(await loadDynamic('/path/to/config.json', context)).toEqual({
-      json: true,
-    });
-  });
-
-  it('return any non-generator content directly', async () => {
-    expect(await loadDynamic('text', context)).toEqual('text');
-    expect(await loadDynamic({ a: 0 }, context)).toEqual({ a: 0 });
-  });
-});
 
 describe('fn:loadFile', () => {
   it('load a json file', async () => {

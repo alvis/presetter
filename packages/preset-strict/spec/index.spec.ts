@@ -15,7 +15,7 @@
 
 import { readdirSync } from 'fs';
 import { resolve } from 'path';
-import { resolveContext, resolveDynamicMap } from 'presetter';
+import { loadDynamicMap, resolveContext } from 'presetter';
 
 import getPresetAsset from '#index';
 
@@ -27,15 +27,18 @@ jest.mock('path', () => ({
 
 describe('fn:getPresetAsset', () => {
   it('use all templates', async () => {
-    const assets = [await getPresetAsset()];
-    const context = await resolveContext(assets, {
-      target: { name: 'preset', root: '/', package: {} },
-      custom: { preset: 'preset' },
+    const asset = await getPresetAsset();
+    const context = await resolveContext({
+      graph: [{ name: 'preset', asset, nodes: [] }],
+      context: {
+        target: { name: 'preset', root: '/', package: {} },
+        custom: { preset: 'preset' },
+      },
     });
 
     // load all potential dynamic content
-    await resolveDynamicMap(assets, context, 'supplementaryConfig');
-    await resolveDynamicMap(assets, context, 'template');
+    await loadDynamicMap(asset.supplementaryConfig, context);
+    await loadDynamicMap(asset.template, context);
 
     const TEMPLATES = resolve(__dirname, '..', 'templates');
     const allTemplates = await readdirSync(TEMPLATES);
