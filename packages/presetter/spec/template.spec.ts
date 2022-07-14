@@ -83,6 +83,10 @@ describe('fn:merge', () => {
     expect(merge([0], [1])).toEqual([0, 1]);
   });
 
+  it('overwrite a list', () => {
+    expect(merge([0], [1], { mode: 'overwrite' })).toEqual([1]);
+  });
+
   it('overwrite a primitive property', () => {
     expect(merge({ a: 0 }, { a: 1 })).toEqual({ a: 1 });
   });
@@ -108,6 +112,14 @@ describe('fn:merge', () => {
     });
   });
 
+  it('deep merge an object in overwrite mode', () => {
+    expect(
+      merge({ a: { b: 0 } }, { a: { c: 1 } }, { mode: 'overwrite' }),
+    ).toEqual({
+      a: { b: 0, c: 1 },
+    });
+  });
+
   it('deep merge a list', () => {
     expect(merge({ a: [{ b: 0 }] }, { a: { 0: { c: 1 } } })).toEqual({
       a: [{ b: 0, c: 1 }],
@@ -117,6 +129,14 @@ describe('fn:merge', () => {
   it('deep extend a list', () => {
     expect(merge({ a: { b: [0] } }, { a: { b: [1] } })).toEqual({
       a: { b: [0, 1] },
+    });
+  });
+
+  it('deep overwrite a list', () => {
+    expect(
+      merge({ a: { b: [0] } }, { a: { b: [1] } }, { mode: 'overwrite' }),
+    ).toEqual({
+      a: { b: [1] },
     });
   });
 

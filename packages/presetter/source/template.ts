@@ -17,6 +17,8 @@ import pupa from 'pupa';
 
 import type { IgnorePath, IgnoreRule } from './types';
 
+type MergeMode = 'addition' | 'overwrite';
+
 /**
  * filter fields in an object according to the given rules
  * @param subject an object to be filtered
@@ -105,21 +107,29 @@ export function isJSON(subject: unknown): subject is Record<string, any> {
  * deep merge an object
  * @param source default object if no additional property is supplied
  * @param replacement properties to be merged with the default
+ * @param options options for the merge operation
+ * @param options.mode indicate how to merge the properties
  * @returns merged object
  */
 export function merge<Source extends Record<string, any> | unknown[]>(
   source: Source,
   replacement?: Record<string, any> | unknown[],
+  options?: {
+    mode?: MergeMode;
+  },
 ): Source {
+  const { mode = 'addition' } = options ?? {};
+  const finalOptions = { mode };
+
   if (Array.isArray(source)) {
-    return replace(source, replacement);
+    return replace(source, replacement, finalOptions);
   }
 
   const keys = [...Object.keys(source), ...Object.keys(replacement ?? {})];
 
   const entries: Array<[string, any]> = keys.map((key) => [
     key,
-    replace(source[key], replacement?.[key]),
+    replace(source[key], replacement?.[key], finalOptions),
   ]);
 
   return Object.assign(
@@ -134,23 +144,33 @@ export function merge<Source extends Record<string, any> | unknown[]>(
  * replace source according to the replacement instruction
  * @param source source value if there's no replacement
  * @param replacement value to be merged with the default
+ * @param options options for the merge operation
+ * @param options.mode indicate how to merge the properties
  * @returns merged value
  */
-function replace(source: unknown, replacement: unknown): any {
+function replace(
+  source: unknown,
+  replacement: unknown,
+  options: {
+    mode: MergeMode;
+  },
+): any {
+  const { mode } = options;
+
   // LOGIC
   //       S\R | Array   | Object  | Primitive
   // Array     | EXTEND  | AMEND   | replace
   // Object    | replace | MERGE   | replace
   // Primitive | replace | replace | replace
 
-  if (Array.isArray(source)) {
+  if (mode === 'addition' && Array.isArray(source)) {
     return replaceArray(source, replacement);
   } else if (isJSON(source) && isJSON(replacement)) {
     // deep merge any objects
-    return merge(source, replacement);
+    return merge(source, replacement, options);
   }
 
-  // primitive values
+  // primitive values or mode === 'overwrite'
   return replacement === undefined ? source : replacement;
 }
 
@@ -163,7 +183,9 @@ function replace(source: unknown, replacement: unknown): any {
 function replaceArray(source: unknown[], replacement: unknown): any {
   if (isJSON(replacement)) {
     // overwrite a list
-    return source.map((value, index) => replace(value, replacement[index]));
+    return source.map((value, index) =>
+      replace(value, replacement[index], { mode: 'addition' }),
+    );
   } else if (Array.isArray(replacement)) {
     // extend a list uniquely
     return [...new Set([...source, ...replacement]).values()];
