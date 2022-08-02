@@ -232,18 +232,12 @@ export async function setupPreset(...uris: string[]): Promise<void> {
 
 /**
  * bootstrap the preset to the current project root
- * @param options options on how to bootstrap the preset
- * @param options.force do all steps despite potential step saving
  */
-export async function bootstrapPreset(options?: {
-  force?: boolean;
-}): Promise<void> {
-  const { force = false } = { ...options };
-
+export async function bootstrapPreset(): Promise<void> {
   const context = await getContext();
 
   // install all related packages first
-  if (force || !arePeerPackagesAutoInstalled()) {
+  if (!arePeerPackagesAutoInstalled()) {
     await reifyDependencies({ root: context.target.root });
   }
 

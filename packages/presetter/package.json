@@ -39,7 +39,7 @@
     "url": "git+https://github.com/alvis/presetter.git"
   },
   "scripts": {
-    "bootstrap": "npm run ts-node -- --eval \"require('./source/preset.ts').bootstrapPreset({ force: true })\" && npm run script -- prepare",
+    "bootstrap": "npm run ts-node -- --eval \"require('./source/preset.ts').bootstrapPreset()\" && npm run script -- prepare",
     "build": "npm run script -- build",
     "clean": "npm run script -- clean",
     "coverage": "npm run script -- coverage",

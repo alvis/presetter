@@ -379,12 +379,6 @@ describe('fn:bootstrapPreset', () => {
       mockArePeerPackagesAutoInstalled = false;
     });
 
-    it('install packages regardless', async () => {
-      await bootstrapPreset({ force: true });
-
-      expect(reifyDependencies).toHaveBeenCalledTimes(1);
-    });
-
     it('skip installing peer packages manually if it is supported by package manager', async () => {
       mockArePeerPackagesAutoInstalled = true;
       await bootstrapPreset();
