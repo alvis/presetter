@@ -51,7 +51,7 @@
   "peerDependencies": {
     "eslint-plugin-header": "^3.0.0",
     "eslint-plugin-no-secrets": "^0.8.0",
-    "eslint-plugin-sonarjs": "0.11",
+    "eslint-plugin-sonarjs": "^0.14.0",
     "presetter": "^3.4.0",
     "presetter-preset-essentials": "^3.4.0"
   },

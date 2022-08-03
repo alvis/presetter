@@ -33,7 +33,7 @@
     "watch": "run watch"
   },
   "peerDependencies": {
-    "@rollup/plugin-commonjs": "^20.0.0",
+    "@rollup/plugin-commonjs": "^22.0.0",
     "@rollup/plugin-graphql": "^1.0.0",
     "@rollup/plugin-image": "^2.0.0",
     "@rollup/plugin-json": "^4.0.0",
@@ -42,7 +42,7 @@
     "presetter": "^3.4.0",
     "rollup": "^2.0.0",
     "rollup-plugin-postcss": "^4.0.0",
-    "rollup-plugin-ts": "^1.0.0",
+    "rollup-plugin-ts": "^3.0.0",
     "rollup-plugin-tsconfig-paths": "^1.0.0",
     "rollup-plugin-visualizer": "^5.0.0"
   },

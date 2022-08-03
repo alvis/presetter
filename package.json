@@ -54,8 +54,8 @@
   },
   "devDependencies": {
     "conventional-changelog-metahub": "^4.0.0",
-    "husky": "^7.0.0",
-    "lint-staged": "^11.0.0",
-    "standard-version": "^9.3.0"
+    "husky": "^8.0.0",
+    "lint-staged": "^13.0.0",
+    "standard-version": "^9.5.0"
   }
 }
