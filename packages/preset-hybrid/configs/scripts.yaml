@@ -2,7 +2,7 @@ build:typescript: run-s build:typescript:mjs build:typescript:cjs
 build:typescript:mjs: run-s build:typescript:mjs:*
 build:typescript:mjs:tsc: tsc -p tsconfig.mjs.json
 build:typescript:mjs:path: tsc-alias
-build:typescript:mjs:fix: tsc-esm-fix --target {output} --ext .mjs
+build:typescript:mjs:fix: tsc-esm-fix --sourceMap --target {output} --ext .mjs
 build:typescript:cjs: run-s build:typescript:cjs:*
 build:typescript:cjs:tsc: tsc -p tsconfig.cjs.json
 build:typescript:cjs:path: tsc-alias
