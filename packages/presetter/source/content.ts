@@ -13,12 +13,9 @@
  * -------------------------------------------------------------------------
  */
 
-import { extname } from 'path';
-
 import { getConfigKey, loadDynamic, loadDynamicMap } from './resolution';
-import { filter, merge, template } from './template';
+import { filter, merge, mergeTemplate, template } from './template';
 
-import type { MergeMode } from './template';
 import type {
   Config,
   PresetContext,
@@ -273,38 +270,6 @@ function resolveVariableFromNode(_: {
 
   // merge with the preset's default variables
   return merge(fromChildren, asset.variable);
-}
-
-/**
- * merge templates
- * @param current current template
- * @param candidate new template content
- * @param options collection of options
- * @param options.mode merge mode
- * @returns customized configuration
- */
-export function mergeTemplate(
-  current: Record<string, Template>,
-  candidate: Record<string, Template>,
-  options: { mode: MergeMode },
-): Record<string, Template> {
-  const resolvedMerge = Object.fromEntries(
-    Object.entries(current).map(([path, template]) => {
-      const isIgnoreFile = !extname(path) && typeof template === 'string';
-
-      // NOTE
-      // for JSON content, merge with the specified mode
-      // for string content, there are two scenarios:
-      // 1. if the content is a list such as an ignore file, merge as appendion
-      // 2. for others such as a typescript file, merge as override
-      const modeForText = isIgnoreFile ? 'addition' : 'overwrite';
-      const mode = typeof template === 'string' ? modeForText : options.mode;
-
-      return [path, merge(template, candidate[path], { mode })];
-    }),
-  );
-
-  return { ...candidate, ...resolvedMerge };
 }
 
 /**

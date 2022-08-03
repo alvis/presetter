@@ -13,7 +13,7 @@
  * -------------------------------------------------------------------------
  */
 
-import { filter, merge, template } from '#template';
+import { filter, merge, mergeTemplate, template } from '#template';
 
 describe('fn:filter', () => {
   it('return the subject without filtering', () => {
@@ -206,5 +206,20 @@ describe('fn:template', () => {
 
   it('return the original content if not recognized', () => {
     expect(template(null, {})).toEqual(null);
+  });
+});
+
+describe('fn:mergeTemplate', () => {
+  it('merge a template', () => {
+    expect(
+      mergeTemplate(
+        { 'file': { a: true }, '.list': 'line1' },
+        { 'file': { b: true }, '.list': 'line2' },
+        { mode: 'overwrite' },
+      ),
+    ).toEqual({
+      'file': { a: true, b: true },
+      '.list': 'line1\nline2',
+    });
   });
 });
