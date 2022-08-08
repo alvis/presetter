@@ -403,7 +403,7 @@ describe('fn:resolveTemplate', () => {
 
   it('merge config from all presets', async () => {
     expect(await resolveTemplate({ graph, context })).toEqual({
-      '.config.json': { json: true, yaml: true, list: [2, 0] },
+      '.config.json': { json: true, yaml: true, list: [1, 2, 0] },
       '.list': 'list1\nlist2',
       'general.file': 'file2',
     });
@@ -429,7 +429,7 @@ describe('fn:resolveTemplate', () => {
         json: false,
         yaml: false,
         extra: true,
-        list: [2, 0, 99],
+        list: [1, 2, 0, 99],
       },
       '.list': 'list1\nlist2\nlist3',
       'general.file': 'file2',

@@ -60,6 +60,7 @@
     "presetter-preset-strict": "file:../preset-strict",
     "ts-node": "^10.0.0",
     "tsconfig-paths": "^4.0.0",
+    "type-fest": "^2.0.0",
     "typescript": "^4.0.0"
   },
   "dependencies": {

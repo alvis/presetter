@@ -72,26 +72,18 @@ describe('fn:filter', () => {
 
 describe('fn:merge', () => {
   it('overwite list content', () => {
-    expect(merge('list1', 'list2', { mode: 'overwrite' })).toEqual('list2');
+    expect(merge('list1', 'list2')).toEqual('list2');
   });
 
-  it('merge two lists', () => {
-    expect(merge('list1', 'list2')).toEqual('list1\nlist2');
+  it('just return the replacement if the supplied customization cannot be mergeed', () => {
+    expect(merge('line', { object: true })).toEqual({ object: true });
+    expect(merge({ object: true }, 'line')).toEqual('line');
   });
 
-  it('add extra lines into a list', () => {
-    expect(merge('line1', ['line2', 'line3'].join('\n'))).toEqual(
-      'line1\nline2\nline3',
-    );
-  });
-
-  it('just return the original if the supplied customization cannot be mergeed', () => {
-    expect(merge('line', { object: true })).toEqual('line');
-    expect(merge({ object: true }, 'line')).toEqual({ object: true });
-  });
-
-  it('return the subject if no replacement is given', () => {
+  it('return the original if no replacement is given', () => {
+    expect(merge(0)).toEqual(0);
     expect(merge({ a: 0 })).toEqual({ a: 0 });
+    expect(merge([0])).toEqual([0]);
   });
 
   it('merge two independent objects', () => {
@@ -103,7 +95,7 @@ describe('fn:merge', () => {
   });
 
   it('overwrite a list', () => {
-    expect(merge([0], [1], { mode: 'overwrite' })).toEqual([1]);
+    expect(merge([0], 1)).toEqual(1);
   });
 
   it('overwrite a primitive property', () => {
@@ -132,9 +124,7 @@ describe('fn:merge', () => {
   });
 
   it('deep merge an object in overwrite mode', () => {
-    expect(
-      merge({ a: { b: 0 } }, { a: { c: 1 } }, { mode: 'overwrite' }),
-    ).toEqual({
+    expect(merge({ a: { b: 0 } }, { a: { c: 1 } })).toEqual({
       a: { b: 0, c: 1 },
     });
   });
@@ -153,9 +143,12 @@ describe('fn:merge', () => {
 
   it('deep overwrite a list', () => {
     expect(
-      merge({ a: { b: [0] } }, { a: { b: [1] } }, { mode: 'overwrite' }),
+      merge(
+        { a: { b: [0, { options: false }] } },
+        { a: { b: [1, { options: true }] } },
+      ),
     ).toEqual({
-      a: { b: [1] },
+      a: { b: [1, { options: true }] },
     });
   });
 
@@ -173,17 +166,6 @@ describe('fn:merge', () => {
     expect(merge({ a: { b: [0] } }, { a: { b: 1 } })).toEqual({
       a: { b: 1 },
     });
-  });
-
-  it('overwrite an object by null', () => {
-    expect(
-      merge(
-        {
-          a: { b: 0 },
-        },
-        { a: null },
-      ),
-    ).toEqual({ a: null });
   });
 });
 
@@ -210,16 +192,37 @@ describe('fn:template', () => {
 });
 
 describe('fn:mergeTemplate', () => {
-  it('merge a template', () => {
+  it('keep source template if the target does not have one', () => {
     expect(
       mergeTemplate(
-        { 'file': { a: true }, '.list': 'line1' },
-        { 'file': { b: true }, '.list': 'line2' },
-        { mode: 'overwrite' },
+        { common: 'to be written', sourceOnly: 'source_only' },
+        { common: 'common' },
       ),
     ).toEqual({
-      'file': { a: true, b: true },
+      common: 'common',
+      sourceOnly: 'source_only',
+    });
+  });
+
+  it('merge a JSON template', () => {
+    expect(mergeTemplate({ json: { a: true } }, { json: { b: true } })).toEqual(
+      {
+        json: { a: true, b: true },
+      },
+    );
+  });
+
+  it('merge a list', () => {
+    expect(mergeTemplate({ '.list': 'line1' }, { '.list': 'line2' })).toEqual({
       '.list': 'line1\nline2',
+    });
+  });
+
+  it('overwhite value if the template file is not a list', () => {
+    expect(
+      mergeTemplate({ 'notalist.file': 'line1' }, { 'notalist.file': 'line2' }),
+    ).toEqual({
+      'notalist.file': 'line2',
     });
   });
 });

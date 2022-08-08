@@ -14,6 +14,7 @@
  */
 
 import type { PackageJson } from 'read-pkg-up';
+import type { JsonObject } from 'type-fest';
 
 /** a graph representing the dependency of all preset assets */
 export type PresetGraph = PresetNode[];
@@ -29,11 +30,11 @@ export type PresetNode = {
 };
 
 /** data structure for .presetterrc */
-export interface PresetterConfig {
+export type PresetterConfig = {
   /** preset name */
   preset: string | string[];
   /** configuration for customization to be passed to the preset */
-  config?: Record<string, Record<string, unknown> | string[]>;
+  config?: Record<string, JsonObject | string[]>;
   /** extra scripts available */
   scripts?: Record<string, string>;
   /** variables to be substituted in templates */
@@ -42,7 +43,7 @@ export interface PresetterConfig {
   ignores?: IgnoreRule[];
   /** list of templates that should not be created as symlinks */
   noSymlinks?: string[];
-}
+};
 
 /** expected return from the configuration function from the preset */
 export interface PresetAsset {
@@ -67,7 +68,7 @@ export interface PresetAsset {
 /** realized PresetAsset that doesn't need any further processing */
 export interface ResolvedPresetAsset extends Omit<PresetAsset, 'extends'> {
   /** mapping of files to be generated to its configuration template files (key: file path relative to the target project's root, value: content to be written to file) */
-  template?: Record<string, Record<string, unknown>>;
+  template?: Record<string, Template>;
   /** list of templates that should not be created as symlinks */
   noSymlinks?: string[];
   /** path to the scripts template */
@@ -117,7 +118,7 @@ export interface ResolvedPresetContext<
 /** an auxiliary type for representing a file path */
 type Path = string;
 /** an auxiliary type for representing a template (either path to the template file or its content) */
-export type Template = string | Record<string, unknown>;
+export type Template = string | JsonObject;
 /** an auxiliary type for representing a dynamic template generator */
 export type TemplateGenerator = Generator<Template>;
 /** an auxiliary type for representing a collection of template (key: output path, value: template definition) */
@@ -125,7 +126,7 @@ export type TemplateMap = Record<string, Path | Template | TemplateGenerator>;
 /** an auxiliary type for representing a dynamic template map generator */
 export type TemplateMapGenerator = Generator<TemplateMap>;
 /** an auxiliary type for representing a config */
-export type Config = string[] | Record<string, unknown>;
+export type Config = string[] | JsonObject;
 /** an auxiliary type for representing a dynamic config generator */
 export type ConfigGenerator = Generator<Config>;
 /** an auxiliary type for representing a map containing multiple configs */

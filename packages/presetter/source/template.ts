@@ -13,12 +13,25 @@
  * -------------------------------------------------------------------------
  */
 
-import { extname } from 'path';
+import { basename, extname } from 'path';
 import pupa from 'pupa';
 
-import type { IgnorePath, IgnoreRule, Template } from './types';
+import type { IgnorePath, IgnoreRule } from './types';
+import type { JsonObject, JsonValue } from 'type-fest';
 
-export type MergeMode = 'addition' | 'overwrite';
+type MergedType<A, B> = A extends JsonObject
+  ? B extends JsonObject
+    ? A & B
+    : MergedArray<A, B>
+  : MergedArray<A, B>;
+
+type MergedArray<A, B> = A extends JsonValue[]
+  ? B extends JsonValue[]
+    ? Array<A[number] | B[number]>
+    : keyof B extends `${number}`
+    ? JsonValue[]
+    : B
+  : B;
 
 /**
  * remove part of the template content according to the given rules
@@ -94,7 +107,7 @@ function filterByPath(value: unknown, path?: IgnorePath): unknown {
  * @param subject the subject to be tested
  * @returns true if the subject is a JSON object
  */
-export function isJSON(subject: unknown): subject is Record<string, any> {
+export function isJSON(subject: unknown): subject is JsonObject {
   return [
     typeof subject === 'object',
     !Array.isArray(subject),
@@ -107,151 +120,159 @@ export function isJSON(subject: unknown): subject is Record<string, any> {
 /**
  * deep merge an object
  * @param source default object if no additional property is supplied
- * @param replacement properties to be merged with the default
- * @param options options for the merge operation
- * @param options.mode indicate how to merge the properties
+ * @param target properties to be merged with the default
  * @returns merged object
  */
-export function merge<S extends string | Record<string, any> | unknown[]>(
+export function merge<S extends JsonValue, T extends JsonValue>(
   source: S,
-  replacement?: string | Record<string, any> | unknown[],
-  options?: {
-    mode?: MergeMode;
-  },
-): S {
-  const { mode = 'addition' } = options ?? {};
-
-  if (Array.isArray(source)) {
-    return replace(source, replacement, { mode });
-  } else if (typeof source === 'string' || typeof replacement === 'string') {
-    return mergeText(source, replacement, { mode });
-  }
-
-  const keys = [...Object.keys(source), ...Object.keys(replacement ?? {})];
-
-  const entries: Array<[string, any]> = keys.map((key) => [
-    key,
-    replace(source[key], replacement?.[key], { mode }),
-  ]);
-
-  return Object.assign(
-    {},
-    ...entries.map(([key, value]) => ({
-      [key]: value,
-    })),
-  );
-}
-
-/**
- * merge templates
- * @param current current template
- * @param candidate new template content
- * @param options collection of options
- * @param options.mode merge mode
- * @returns customized configuration
- */
-export function mergeTemplate(
-  current: Record<string, Template>,
-  candidate: Record<string, Template>,
-  options: { mode: MergeMode },
-): Record<string, Template> {
-  const resolvedMerge = Object.fromEntries(
-    Object.entries(current).map(([path, template]) => {
-      const isIgnoreFile = !extname(path) && typeof template === 'string';
-
-      // NOTE
-      // for JSON content, merge with the specified mode
-      // for string content, there are two scenarios:
-      // 1. if the content is a list such as an ignore file, merge as appendion
-      // 2. for others such as a typescript file, merge as override
-      const modeForText = isIgnoreFile ? 'addition' : 'overwrite';
-      const mode = typeof template === 'string' ? modeForText : options.mode;
-
-      return [path, merge(template, candidate[path], { mode })];
-    }),
-  );
-
-  return { ...candidate, ...resolvedMerge };
-}
-
-/**
- * merge content of two templates
- * @param current current template
- * @param candidate new template content
- * @param options collection of options
- * @param options.mode merge mode
- * @returns merged template
- */
-function mergeText<S extends string | Record<string, any>>(
-  current: S,
-  candidate: string | string[] | Record<string, any> | undefined,
-  options: { mode: MergeMode },
-): S {
-  if (
-    typeof current === 'string' &&
-    typeof candidate === 'string' &&
-    options.mode === 'addition'
-  ) {
-    return [...new Set(`${current}\n${candidate}`.split('\n'))].join('\n') as S;
-  }
-
-  // keep the current content since it cannot be merged
-  return typeof current === typeof candidate ? (candidate as S) : current;
-}
-
-/**
- * replace source according to the replacement instruction
- * @param source source value if there's no replacement
- * @param replacement value to be merged with the default
- * @param options options for the merge operation
- * @param options.mode indicate how to merge the properties
- * @returns merged value
- */
-function replace(
-  source: unknown,
-  replacement: unknown,
-  options: {
-    mode: MergeMode;
-  },
-): any {
-  const { mode } = options;
-
+  target?: T,
+): MergedType<S, T> {
   // LOGIC
   //       S\R | Array   | Object  | Primitive
   // Array     | EXTEND  | AMEND   | replace
   // Object    | replace | MERGE   | replace
   // Primitive | replace | replace | replace
 
-  if (mode === 'addition' && Array.isArray(source)) {
-    return replaceArray(source, replacement);
-  } else if (isJSON(source) && isJSON(replacement)) {
-    // deep merge any objects
-    return merge(source, replacement, options);
+  if (Array.isArray(source)) {
+    return mergeArray(source, target) as MergedType<S, T>;
+  } else if (isJSON(source)) {
+    return mergeObject(source, target) as MergedType<S, T>;
   }
 
-  // primitive values or mode === 'overwrite'
-  return replacement === undefined ? source : replacement;
+  return (target ?? source) as MergedType<S, T>;
 }
 
 /**
- * replace an array source according to the replacement instruction
- * @param source source value if there's no replacement
- * @param replacement value to be merged with the default
+ * merge an array with any value
+ * @param source the source array to be merged
+ * @param target new replacement
  * @returns merged value
  */
-function replaceArray(source: unknown[], replacement: unknown): any {
-  if (isJSON(replacement)) {
-    // overwrite a list
-    return source.map((value, index) =>
-      replace(value, replacement[index], { mode: 'addition' }),
-    );
-  } else if (Array.isArray(replacement)) {
-    // extend a list uniquely
-    return [...new Set([...source, ...replacement]).values()];
-  } else {
-    // primitive values
-    return replacement ?? source;
+export function mergeArray<S extends JsonValue, T extends JsonValue>(
+  source: S[],
+  target?: T,
+): MergedArray<S[], T> {
+  // NOTE
+  // merging can only be done in two ways:
+  // 1. the target is also an array, then merge the two arrays
+  // 2. the target is an object with numeric keys representing the index of the value to be merged
+
+  if (Array.isArray(target)) {
+    return mergeArrays(source, target) as MergedArray<S[], T>;
+  } else if (
+    isJSON(target) &&
+    [...Object.keys(target)].every((key) => parseInt(key) >= 0)
+  ) {
+    return [...source].map((value, key) =>
+      merge(value, target[key]),
+    ) as MergedArray<S[], any>;
   }
+
+  // if a merge isn't possible return the replacement or the original if no replacement is found
+  return (target ?? source) as MergedArray<S[], T>;
+}
+
+/**
+ * merge two arrays
+ * @param source the source array to be merged
+ * @param target new replacement
+ * @returns merged array
+ */
+export function mergeArrays<S extends JsonValue, T extends JsonValue>(
+  source: S[],
+  target: T[],
+): MergedArray<S[], T[]> {
+  const isPrimitive =
+    source.every((value) => !isJSON(value)) &&
+    target.every((value) => !isJSON(value));
+
+  // if there is no object in both list, perform an union
+  // (['a'], ['a']) => ['a']
+  // (['a'], ['b']) => ['a', 'b']
+  // (['a'], ['a', 'b']) => ['a', 'b']
+
+  if (isPrimitive) {
+    return [...new Set([...source, ...target])] as MergedArray<S[], T[]>;
+  }
+
+  // if there is an object in any of the list, perform a replacement
+  // (['a', 'b'], [{ c: 1 }]) => [{ c: 1 }]
+  // ([{ a: 1 }], [{ b: 2 }]) => [{ b: 2 }]
+  // ([{ a: 1 }, 'c'], [{ b: 2 }]) => [{ b: 2 }]
+  // (['a'], ['b', { c: 1 }]) => ['b', { c: 1 }]
+  // (['a', { c: 1 }], ['b', { d: 2 }]) => ['b', { d: 2 }]
+
+  // if a merge isn't possible return the replacement
+  return target as MergedArray<S[], T[]>;
+}
+
+/**
+ * merge an object with any value
+ * @param source the source object to be merged
+ * @param target new replacement
+ * @returns merged value
+ */
+export function mergeObject<S extends JsonObject, T extends JsonValue>(
+  source: S,
+  target?: T,
+): MergedType<S, T> {
+  if (isJSON(target)) {
+    // merge two objects together
+    const mergedSource = Object.fromEntries(
+      Object.entries(source).map(([key, value]) => [
+        key,
+        merge(value!, target[key]),
+      ]),
+    );
+
+    return { ...(target as object), ...mergedSource } as MergedType<S, T>;
+  }
+
+  // otherwise replace the source with target
+  return (target ?? source) as MergedType<S, T>;
+}
+
+/**
+ * merge templates
+ * @param source current template
+ * @param target new template content
+ * @returns customized configuration
+ */
+export function mergeTemplate(
+  source: Record<string, JsonObject | string>,
+  target: Record<string, JsonObject | string>,
+): Record<string, JsonObject | string> {
+  const mergedSource = Object.fromEntries(
+    Object.entries(source).map(([path, template]) => {
+      const replacement = target[path] as Partial<typeof target>[string];
+      const isIgnoreFile =
+        !extname(path) &&
+        basename(path).startsWith('.') &&
+        typeof template === 'string' &&
+        typeof replacement === 'string';
+
+      // NOTE
+      // for JSON content, merge with the specified mode
+      // for string content, there are two scenarios:
+      // 1. if the content is a list such as an ignore file, merge as appendion
+      // 2. for others such as a typescript file, merge as override
+
+      if (isIgnoreFile) {
+        const mergedSet = new Set([
+          ...template.split('\n'),
+          ...replacement.split('\n'),
+        ]);
+
+        return [path, [...mergedSet].join('\n')];
+      } else if (isJSON(template) && isJSON(replacement)) {
+        return [path, merge(template, replacement)];
+      }
+
+      return [path, replacement ?? template];
+    }),
+  );
+
+  return { ...mergedSource, ...target, ...mergedSource };
 }
 
 /**

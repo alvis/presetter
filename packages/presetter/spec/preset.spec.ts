@@ -35,7 +35,6 @@ import {
 import { linkFiles, unlinkFiles, writeFiles } from '#io';
 
 import type { ResolvedPresetContext } from '#types';
-import { isContext } from 'vm';
 
 jest.mock('console', () => ({
   __esModule: true,

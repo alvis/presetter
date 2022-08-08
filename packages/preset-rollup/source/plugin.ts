@@ -16,6 +16,7 @@
 import { isDirective } from 'presetter';
 
 import type { ApplyDirective, ImportDirective } from 'presetter';
+import type { JsonObject } from 'type-fest';
 
 /** full configuration about a plugin */
 export type PluginConfiguration =
@@ -26,10 +27,7 @@ export type PluginConfiguration =
 export type PluginHeader = string | ApplyDirective;
 
 /** options for a plugin */
-export type PluginOptions =
-  | Record<string, unknown>
-  | ApplyDirective
-  | ImportDirective;
+export type PluginOptions = JsonObject | ApplyDirective | ImportDirective;
 
 /** plugin configuration as an object */
 export type PluginObject = Record<PluginHeader, PluginOptions | null>;
