@@ -36,7 +36,6 @@
     "autoprefixer": "^10.0.0",
     "eslint-plugin-tailwindcss": "^3.0.0",
     "eslint-plugin-testing-library": "^5.0.0",
-    "graphql": "^16.0.0",
     "postcss": "^8.3.0",
     "presetter": "^3.4.0",
     "tailwindcss": "^3.0.0"
