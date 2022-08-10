@@ -225,7 +225,11 @@ export function mergeObject<S extends JsonObject, T extends JsonValue>(
       ]),
     );
 
-    return { ...(target as object), ...mergedSource } as MergedType<S, T>;
+    return {
+      ...mergedSource,
+      ...(target as object),
+      ...mergedSource,
+    } as MergedType<S, T>;
   }
 
   // otherwise replace the source with target
@@ -272,7 +276,7 @@ export function mergeTemplate(
     }),
   );
 
-  return { ...mergedSource, ...target, ...mergedSource };
+  return { ...target, ...mergedSource };
 }
 
 /**
