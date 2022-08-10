@@ -2,6 +2,15 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [3.4.1](https://github.com/alvis/presetter/compare/v3.4.0...v3.4.1) (2022-08-10)
+
+
+### 🐛 Bug Fixes
+
+* **preset-esm:** correct filenames in source maps ([7867971](https://github.com/alvis/presetter/commit/78679712c61ee89fbd20d9a823e3b3c10d4253be))
+
+
+
 # [3.4.0](https://github.com/alvis/presetter/compare/v3.3.0...v3.4.0) (2022-08-02)
 
 

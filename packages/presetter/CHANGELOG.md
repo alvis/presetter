@@ -2,6 +2,22 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [3.4.1](https://github.com/alvis/presetter/compare/v3.4.0...v3.4.1) (2022-08-10)
+
+
+### 🐛 Bug Fixes
+
+* **presetter:** make new keys merged in the end of an object ([9832af0](https://github.com/alvis/presetter/commit/9832af049c9a1da199b3f907122d214f04ea5106))
+* **presetter:** merge arrays only if the values are all primitive ([961f30c](https://github.com/alvis/presetter/commit/961f30c8fcbf9ba6f6fbf9e4d90cf0cb8c5a1069))
+* update packages ([ec8307d](https://github.com/alvis/presetter/commit/ec8307d79468f8529b29a0f7b356b4368c03302c))
+
+
+### 📦 Code Refactoring
+
+* **presetter:** move mergeTemplate to template.ts ([9e46132](https://github.com/alvis/presetter/commit/9e46132d0ce70ec9f57c6b76a339a05231c40b1a))
+
+
+
 # [3.4.0](https://github.com/alvis/presetter/compare/v3.3.0...v3.4.0) (2022-08-02)
 
 

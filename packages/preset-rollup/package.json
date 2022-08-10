@@ -1,6 +1,6 @@
 {
   "name": "presetter-preset-rollup",
-  "version": "3.4.0",
+  "version": "3.4.1",
   "description": "An opinionated presetter preset for using rollup as a bundler",
   "keywords": [
     "presetter",
@@ -39,7 +39,7 @@
     "@rollup/plugin-json": "^4.0.0",
     "@rollup/plugin-node-resolve": "^13.0.0",
     "@rollup/plugin-yaml": "^3.0.0",
-    "presetter": "^3.4.0",
+    "presetter": "^3.4.1",
     "rollup": "^2.0.0",
     "rollup-plugin-postcss": "^4.0.0",
     "rollup-plugin-ts": "^3.0.0",
