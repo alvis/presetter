@@ -47,16 +47,16 @@ export const DEFAULT_VARIABLE: Variable = {
  * get the list of templates provided by this preset
  * @returns list of preset templates
  */
-export default async function (): Promise<PresetAsset> {
+export default function (): PresetAsset {
   return {
     template: {
       /* eslint-disable @typescript-eslint/naming-convention */
-      'rollup.config.ts': async (context) => {
+      'rollup.config.ts': (context) => {
         const content = loadFile(
           resolve(TEMPLATES, 'rollup.config.ts'),
           'text',
         );
-        const variable = await getRollupParameter(context);
+        const variable = getRollupParameter(context);
 
         return template(content, variable);
         /* eslint-enable @typescript-eslint/naming-convention */

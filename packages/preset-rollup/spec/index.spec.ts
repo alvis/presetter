@@ -27,7 +27,7 @@ jest.mock('path', () => ({
 
 describe('fn:getPresetAsset', () => {
   it('use all templates', async () => {
-    const asset = await getPresetAsset();
+    const asset = getPresetAsset();
     const context = await resolveContext({
       graph: [{ name: 'preset', asset, nodes: [] }],
       context: {
@@ -41,9 +41,9 @@ describe('fn:getPresetAsset', () => {
     await loadDynamicMap(asset.template, context);
 
     const TEMPLATES = resolve(__dirname, '..', 'templates');
-    const allTemplates = await readdirSync(TEMPLATES);
+    const allTemplates = readdirSync(TEMPLATES);
     const CONFIGS = resolve(__dirname, '..', 'configs');
-    const supplementaryConfig = await readdirSync(CONFIGS);
+    const supplementaryConfig = readdirSync(CONFIGS);
 
     for (const path of allTemplates) {
       expect(resolve).toBeCalledWith(TEMPLATES, path);

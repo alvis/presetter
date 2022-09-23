@@ -61,9 +61,9 @@ interface IntermediateRollupConfig {
  * @param context context about the build environment
  * @returns template parameter related to rollup
  */
-export async function getRollupParameter(
+export function getRollupParameter(
   context: ResolvedPresetContext,
-): Promise<Record<'rollupImport' | 'rollupExport', string>> {
+): Record<'rollupImport' | 'rollupExport', string> {
   const { config, variable } = context.custom;
 
   const normalizedConfig = template(
