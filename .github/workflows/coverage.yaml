@@ -3,27 +3,22 @@ name: code coverage
 on:
   push:
     branches:
-      - '**'
+      - master
+  pull_request_target:
+    branches:
+      - master
+
 jobs:
   coverage:
     runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        node: [16]
     steps:
       - name: checkout
-        uses: actions/checkout@v2
-      - name: use node ${{ matrix.node }}
-        uses: actions/setup-node@v2
+        uses: actions/checkout@v3
+      - name: use node lts
+        uses: actions/setup-node@v3
         with:
-          node-version: ${{ matrix.node }}
-      - name: install npm@7 for workspace
-        run: npm i -g npm@7
-      - name: cache node_modules
-        uses: actions/cache@v1
-        with:
-          path: node_modules
-          key: ${{ runner.os }}-node-${{ matrix.node }}-dependencies-${{ hashFiles('package-lock.json') }}
+          node-version: lts/*
+          cache: npm
       - name: install code climate reporter
         run: |
           curl -L https://codeclimate.com/downloads/test-reporter/test-reporter-latest-linux-amd64 > /tmp/cc-test-reporter
