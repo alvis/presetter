@@ -14,7 +14,7 @@
  */
 
 import { info } from 'console';
-import { pathExists, writeJSON } from 'fs-extra';
+import { existsSync, writeFileSync } from 'fs';
 import { defaultsDeep } from 'lodash';
 import { dirname, resolve } from 'path';
 import readPackage from 'read-pkg';
@@ -68,9 +68,9 @@ export async function getPresetterRC(root: string): Promise<PresetterConfig> {
   );
 
   for (const path of potentialConfigFiles) {
-    if (await pathExists(path)) {
+    if (existsSync(path)) {
       // return the first customization file found
-      const custom = await loadFile(path, 'json');
+      const custom = loadFile(path, 'json');
       assertPresetterRC(custom);
 
       return custom;
@@ -91,10 +91,9 @@ export async function updatePresetterRC(
 ): Promise<void> {
   const existingPresetterRC = await getPresetterRC(root).catch(() => ({}));
 
-  await writeJSON(
+  writeFileSync(
     resolve(root, `${PRESETTERRC}.json`),
-    merge(existingPresetterRC, config),
-    { spaces: JSON_INDENT },
+    JSON.stringify(merge(existingPresetterRC, config), null, JSON_INDENT),
   );
 }
 
@@ -256,8 +255,8 @@ export async function bootstrapContent(context: PresetContext): Promise<void> {
 
   const destinationMap = await getDestinationMap(content, resolvedContext);
 
-  await writeFiles(context.target.root, content, destinationMap);
-  await linkFiles(context.target.root, destinationMap);
+  writeFiles(context.target.root, content, destinationMap);
+  linkFiles(context.target.root, destinationMap);
 }
 
 /**
@@ -270,7 +269,7 @@ export async function unsetPreset(): Promise<void> {
   const content = await resolveTemplate({ graph, context: resolvedContext });
   const configurationLink = await getDestinationMap(content, resolvedContext);
 
-  await unlinkFiles(context.target.root, configurationLink);
+  unlinkFiles(context.target.root, configurationLink);
 }
 
 /**

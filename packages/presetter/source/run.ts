@@ -14,11 +14,10 @@
  */
 
 import execa from 'execa';
-import { move, pathExistsSync, unlink, writeFile } from 'fs-extra';
+import { existsSync, renameSync, unlinkSync, writeFileSync } from 'fs';
 import { once } from 'lodash';
 import { basename, dirname, resolve } from 'path';
 
-import { wrap } from './error';
 import { getPackage } from './package';
 import { getScripts } from './preset';
 import { composeScripts } from './scripts';
@@ -43,7 +42,7 @@ class TemporaryPackageJSONManager {
     );
 
     this.package = packageDetail;
-    this.shouldRestore = !pathExistsSync(this.path);
+    this.shouldRestore = !existsSync(this.path);
   }
 
   /**
@@ -65,19 +64,23 @@ class TemporaryPackageJSONManager {
 
     // move the existing package.json to a safe place
     if (this.shouldRestore) {
-      await wrap(
-        move(this.package.path, this.path),
-        `failed to backup package.json`,
-      );
+      try {
+        renameSync(this.package.path, this.path);
+      } catch {
+        /* istanbul ignore next */
+        throw new Error('failed to backup package.json');
+      }
     }
 
     // generate a temporary package.json in order to let npm to see all the definitions
     const PADDING = 2;
     const content = JSON.stringify(this.package.json, null, PADDING);
-    await wrap(
-      writeFile(this.package.path, content),
-      'failed to write to package.json',
-    );
+    try {
+      writeFileSync(this.package.path, content);
+    } catch {
+      /* istanbul ignore next */
+      throw new Error('failed to write to package.json');
+    }
   }
 
   /**
@@ -85,12 +88,13 @@ class TemporaryPackageJSONManager {
    */
   public async restore(): Promise<void> {
     if (this.shouldRestore) {
-      await wrap(
-        unlink(this.package.path).then(async () =>
-          move(this.path, this.package.path),
-        ),
-        `failed to restore package.json`,
-      );
+      try {
+        unlinkSync(this.package.path);
+        renameSync(this.path, this.package.path);
+      } catch {
+        /* istanbul ignore next */
+        throw new Error('failed to restore package.json');
+      }
     }
   }
 }

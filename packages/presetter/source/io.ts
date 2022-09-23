@@ -15,16 +15,15 @@
 
 import { info } from 'console';
 import {
-  ensureFile,
-  lstat,
-  mkdir,
-  pathExists,
-  readFile,
-  readlink,
-  symlink,
-  unlink,
-  writeFile,
-} from 'fs-extra';
+  existsSync,
+  lstatSync,
+  mkdirSync,
+  readFileSync,
+  readlinkSync,
+  symlinkSync,
+  unlinkSync,
+  writeFileSync,
+} from 'fs';
 import { dump, load } from 'js-yaml';
 import { basename, dirname, extname, relative, resolve } from 'path';
 
@@ -39,19 +38,16 @@ const INDENT = 2;
  * @param defaultFormat default format of the file
  * @returns content of the file
  */
-export async function loadFile(
+export function loadFile(
   path: string,
   defaultFormat?: 'json' | 'yaml',
-): Promise<Record<string, unknown>>;
-export async function loadFile(
-  path: string,
-  defaultFormat?: 'text',
-): Promise<string>;
-export async function loadFile(
+): Record<string, unknown>;
+export function loadFile(path: string, defaultFormat?: 'text'): string;
+export function loadFile(
   path: string,
   defaultFormat: 'json' | 'yaml' | 'text' = 'text',
-): Promise<string | Record<string, unknown>> {
-  const content = (await readFile(path)).toString();
+): string | Record<string, unknown> {
+  const content = readFileSync(path).toString();
 
   // parse the content depending on the extension
   switch (extname(path) || `.${defaultFormat}`) {
@@ -95,28 +91,28 @@ export function serializeContent(
  * @param config a map of configuration content and its path to be written
  * @param pathMap a map of keys in the config map and their destination path
  */
-export async function writeFiles(
+export function writeFiles(
   root: string,
   config: Record<string, Template>,
   pathMap: Record<string, string>,
-): Promise<void> {
+): void {
   for (const [key, content] of Object.entries(config)) {
     const destination = pathMap[key];
 
     // write content to the destination path
     if (
       // file don't exist
-      !(await pathExists(destination)) ||
+      !existsSync(destination) ||
       // content to be written under the configurations folder
       destination !== resolve(root, key)
     ) {
       info(`Generating ${key}`);
 
       // ensure that all parent folders exist to avoid errors from writeFile
-      await ensureFile(destination);
+      mkdirSync(dirname(destination), { recursive: true });
 
       // write content to the destination path
-      await writeFile(destination, serializeContent(destination, content));
+      writeFileSync(destination, serializeContent(destination, content));
     } else {
       info(`Skipping ${key}`);
     }
@@ -128,24 +124,24 @@ export async function writeFiles(
  * @param root path to the target project root
  * @param configurationLink map of symlinks to its real path
  */
-export async function linkFiles(
+export function linkFiles(
   root: string,
   configurationLink: Record<string, string>,
-): Promise<void> {
+): void {
   for (const [file, destination] of Object.entries(configurationLink)) {
     const link = resolve(root, file);
     const to = relative(dirname(link), destination);
 
     // create links only if the path really doesn't exist
     if (
-      !(await linkExists(link)) &&
-      !(await pathExists(link)) &&
+      !linkExists(link) &&
+      !existsSync(link) &&
       // for files that mean to be created directly on the target project root, not via symlink
       to !== basename(to)
     ) {
       info(`Linking ${relative(root, link)} => ${to}`);
-      await mkdir(dirname(link), { recursive: true });
-      await symlink(to, link);
+      mkdirSync(dirname(link), { recursive: true });
+      symlinkSync(to, link);
     } else if (to !== basename(to)) {
       info(`Skipping ${relative(root, link)} => ${to}`);
     }
@@ -157,18 +153,18 @@ export async function linkFiles(
  * @param root path to the target project root
  * @param configurationLink map of symlinks to its real path
  */
-export async function unlinkFiles(
+export function unlinkFiles(
   root: string,
   configurationLink: Record<string, string>,
-): Promise<void> {
+): void {
   for (const [name, destination] of Object.entries(configurationLink)) {
     try {
-      const link = await readlink(resolve(root, name));
+      const link = readlinkSync(resolve(root, name));
       const to = relative(root, destination);
 
       if (link === to) {
         info(`Removing ${name}`);
-        await unlink(resolve(root, name));
+        unlinkSync(resolve(root, name));
         continue;
       }
     } catch {
@@ -184,10 +180,10 @@ export async function unlinkFiles(
  * @param path file path to be checked
  * @returns true if it is a symlink
  */
-async function linkExists(path: string): Promise<boolean> {
+function linkExists(path: string): boolean {
   try {
     // NOTE use lstat instead of pathExists as it checks the link not the linked path
-    await lstat(path);
+    lstatSync(path);
 
     return true;
   } catch {

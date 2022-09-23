@@ -13,7 +13,7 @@
  * -------------------------------------------------------------------------
  */
 
-import { pathExists } from 'fs-extra';
+import { existsSync } from 'fs';
 import { basename, extname } from 'path';
 
 import { loadFile } from './io';
@@ -86,8 +86,8 @@ export async function loadDynamic<
 ): Promise<R> {
   if (typeof value === 'function') {
     return value(context);
-  } else if (typeof value === 'string' && (await pathExists(value))) {
-    return (await loadFile(value)) as R;
+  } else if (typeof value === 'string' && existsSync(value)) {
+    return loadFile(value) as R;
   } else {
     return value as R;
   }

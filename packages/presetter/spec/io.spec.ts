@@ -14,7 +14,7 @@
  */
 
 import { info } from 'console';
-import { ensureFile, mkdir, symlink, unlink, writeFile } from 'fs-extra';
+import { mkdirSync, symlinkSync, unlinkSync, writeFileSync } from 'fs';
 import { posix, relative, resolve, sep } from 'path';
 
 import {
@@ -32,10 +32,9 @@ jest.mock('console', () => ({
   info: jest.fn(),
 }));
 
-jest.mock('fs-extra', () => ({
+jest.mock('fs', () => ({
   __esModule: true,
-  ensureFile: jest.fn(),
-  lstat: jest.fn(async (path: string): Promise<{}> => {
+  lstatSync: jest.fn((path: string): {} => {
     // ensure that the paths below is compatible with windows
     const { posix, relative, resolve, sep } = jest.requireActual('path');
     const posixPath = relative(resolve('/'), path).split(sep).join(posix.sep);
@@ -47,8 +46,8 @@ jest.mock('fs-extra', () => ({
         throw new Error();
     }
   }),
-  mkdir: jest.fn(),
-  pathExists: jest.fn(async (path: string): Promise<boolean> => {
+  mkdirSync: jest.fn(),
+  existsSync: jest.fn((path: string): boolean => {
     // ensure that the paths below is compatible with windows
     const { posix, relative, resolve, sep } = jest.requireActual('path');
     const posixPath = relative(resolve('/'), path).split(sep).join(posix.sep);
@@ -65,7 +64,7 @@ jest.mock('fs-extra', () => ({
         return false;
     }
   }),
-  readFile: jest.fn(async (path: string) => {
+  readFileSync: jest.fn((path: string) => {
     // ensure that the paths below is compatible with windows
     const { posix, relative, resolve, sep } = jest.requireActual('path');
     const posixPath = relative(resolve('/'), path).split(sep).join(posix.sep);
@@ -85,7 +84,7 @@ jest.mock('fs-extra', () => ({
         throw new Error(`readFile: missing ${path}`);
     }
   }),
-  readlink: jest.fn(async (path: string): Promise<string> => {
+  readlinkSync: jest.fn((path: string): string => {
     // ensure that the paths below is compatible with windows
     const { posix, relative, resolve, sep } = jest.requireActual('path');
     const posixPath = relative(resolve('/'), path).split(sep).join(posix.sep);
@@ -98,9 +97,9 @@ jest.mock('fs-extra', () => ({
         throw new Error();
     }
   }),
-  symlink: jest.fn(),
-  unlink: jest.fn(),
-  writeFile: jest.fn(),
+  symlinkSync: jest.fn(),
+  unlinkSync: jest.fn(),
+  writeFileSync: jest.fn(),
 }));
 
 describe('fn:loadFile', () => {
@@ -157,8 +156,8 @@ describe('fn:writeFiles', () => {
       { 'new.yaml': '/path/to/new.yaml' },
     );
 
-    expect(ensureFile).toBeCalledWith('/path/to/new.yaml');
-    expect(writeFile).toBeCalledWith('/path/to/new.yaml', 'yaml: true\n');
+    expect(mkdirSync).toBeCalledWith('/path/to', { recursive: true });
+    expect(writeFileSync).toBeCalledWith('/path/to/new.yaml', 'yaml: true\n');
   });
 
   it('write content to the disk for symlinked templates', async () => {
@@ -168,8 +167,8 @@ describe('fn:writeFiles', () => {
       { 'config.yaml': '/config.yaml' },
     );
 
-    expect(ensureFile).toBeCalledWith('/config.yaml');
-    expect(writeFile).toBeCalledWith('/config.yaml', 'yaml: true\n');
+    expect(mkdirSync).toBeCalledWith('/', { recursive: true });
+    expect(writeFileSync).toBeCalledWith('/config.yaml', 'yaml: true\n');
   });
 
   it('skip content to the disk if the destination already exist on the project root', async () => {
@@ -179,8 +178,8 @@ describe('fn:writeFiles', () => {
       { 'config.yaml': resolve('/path/to/config.yaml') },
     );
 
-    expect(ensureFile).toBeCalledTimes(0);
-    expect(writeFile).toBeCalledTimes(0);
+    expect(mkdirSync).toBeCalledTimes(0);
+    expect(writeFileSync).toBeCalledTimes(0);
   });
 });
 
@@ -193,12 +192,12 @@ describe('fn:linkFiles', () => {
       'old/symlink/by/presetter': resolve('/project/relative/path/to/config'),
     });
 
-    expect(mkdir).toHaveBeenCalledTimes(1);
-    expect(mkdir).toHaveBeenCalledWith(resolve('/project/new/symlink'), {
+    expect(mkdirSync).toHaveBeenCalledTimes(1);
+    expect(mkdirSync).toHaveBeenCalledWith(resolve('/project/new/symlink'), {
       recursive: true,
     });
-    expect(symlink).toHaveBeenCalledTimes(1);
-    expect(symlink).toHaveBeenCalledWith(
+    expect(symlinkSync).toHaveBeenCalledTimes(1);
+    expect(symlinkSync).toHaveBeenCalledWith(
       '../../relative/path/to/config'.split(posix.sep).join(sep),
       resolve('/project/new/symlink/config.json'),
     );
@@ -208,8 +207,8 @@ describe('fn:linkFiles', () => {
     await linkFiles('/project', {
       'on/project/root': resolve('/project/on/project/root'),
     });
-    expect(mkdir).toHaveBeenCalledTimes(0);
-    expect(symlink).toHaveBeenCalledTimes(0);
+    expect(mkdirSync).toHaveBeenCalledTimes(0);
+    expect(symlinkSync).toHaveBeenCalledTimes(0);
   });
 });
 
@@ -231,8 +230,8 @@ describe('fn:unlinkFiles', () => {
     expect(info).toHaveBeenCalledWith('Removing old/symlink/by/presetter');
     expect(info).toHaveBeenCalledWith('Skipping old/symlink/pointed/to/other');
     expect(info).toHaveBeenCalledWith('Skipping old/symlink/rewritten/by/user');
-    expect(unlink).toHaveBeenCalledTimes(1);
-    expect(unlink).toHaveBeenCalledWith(
+    expect(unlinkSync).toHaveBeenCalledTimes(1);
+    expect(unlinkSync).toHaveBeenCalledWith(
       resolve('/project/old/symlink/by/presetter'),
     );
   });
@@ -243,6 +242,6 @@ describe('fn:unlinkFiles', () => {
     });
     expect(info).toHaveBeenCalledTimes(1);
     expect(info).toHaveBeenCalledWith('Skipping on/project/root');
-    expect(unlink).toHaveBeenCalledTimes(0);
+    expect(unlinkSync).toHaveBeenCalledTimes(0);
   });
 });

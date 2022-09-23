@@ -18,9 +18,9 @@ import { reifyDependencies } from '#package';
 import { bootstrapPreset, setupPreset, unsetPreset } from '#preset';
 import { run } from '#run';
 
-jest.mock('fs-extra', () => ({
+jest.mock('fs', () => ({
   __esModule: true,
-  pathExists: jest.fn(async (path: string) => path === 'exist'),
+  existsSync: jest.fn((path: string) => path === 'exist'),
 }));
 
 jest.mock('#package', () => ({

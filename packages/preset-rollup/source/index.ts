@@ -52,7 +52,7 @@ export default async function (): Promise<PresetAsset> {
     template: {
       /* eslint-disable @typescript-eslint/naming-convention */
       'rollup.config.ts': async (context) => {
-        const content = await loadFile(
+        const content = loadFile(
           resolve(TEMPLATES, 'rollup.config.ts'),
           'text',
         );

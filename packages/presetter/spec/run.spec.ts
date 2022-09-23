@@ -14,7 +14,7 @@
  */
 
 import execa from 'execa';
-import { move, unlink, writeFile } from 'fs-extra';
+import { renameSync, unlinkSync, writeFileSync } from 'fs';
 import { resolve } from 'path';
 
 import { run } from '#run';
@@ -55,12 +55,12 @@ jest.mock('execa', () => ({
   }),
 }));
 
-jest.mock('fs-extra', () => ({
+jest.mock('fs', () => ({
   __esModule: true,
-  pathExistsSync: jest.fn(() => mockTemporaryPackageJSONExists),
-  move: jest.fn().mockResolvedValue(undefined),
-  unlink: jest.fn().mockResolvedValue(undefined),
-  writeFile: jest.fn().mockResolvedValue(undefined),
+  existsSync: jest.fn(() => mockTemporaryPackageJSONExists),
+  renameSync: jest.fn().mockResolvedValue(undefined),
+  unlinkSync: jest.fn().mockResolvedValue(undefined),
+  writeFileSync: jest.fn().mockResolvedValue(undefined),
 }));
 
 jest.mock('yargs', () => ({
@@ -101,20 +101,20 @@ jest.mock('#preset', () => ({
 function expectCompleteSetupAndTeardown() {
   // setup and restore
   if (mockTemporaryPackageJSONExists) {
-    expect(move).toHaveBeenCalledTimes(0);
-    expect(unlink).toHaveBeenCalledTimes(0);
+    expect(renameSync).toHaveBeenCalledTimes(0);
+    expect(unlinkSync).toHaveBeenCalledTimes(0);
   } else {
-    expect(move).toHaveBeenCalledTimes(2);
-    expect(move).toHaveBeenCalledWith(
+    expect(renameSync).toHaveBeenCalledTimes(2);
+    expect(renameSync).toHaveBeenCalledWith(
       MOCK_PACKAGE_PATH,
       MOCK_TEMPORARY_PACKAGE_PATH,
     );
-    expect(move).toHaveBeenCalledWith(
+    expect(renameSync).toHaveBeenCalledWith(
       MOCK_TEMPORARY_PACKAGE_PATH,
       MOCK_PACKAGE_PATH,
     );
-    expect(unlink).toHaveBeenCalledTimes(1);
-    expect(unlink).toHaveBeenCalledWith(MOCK_PACKAGE_PATH);
+    expect(unlinkSync).toHaveBeenCalledTimes(1);
+    expect(unlinkSync).toHaveBeenCalledWith(MOCK_PACKAGE_PATH);
   }
 }
 
@@ -140,7 +140,7 @@ describe('fn:run', () => {
             stdio: 'inherit',
           },
         );
-        expect(writeFile).toHaveBeenCalledWith(
+        expect(writeFileSync).toHaveBeenCalledWith(
           MOCK_PACKAGE_PATH,
           JSON.stringify(
             {

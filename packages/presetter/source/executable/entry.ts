@@ -13,7 +13,7 @@
  * -------------------------------------------------------------------------
  */
 
-import { pathExists } from 'fs-extra';
+import { existsSync } from 'fs';
 import yargs from 'yargs';
 
 import { bootstrapPreset, setupPreset, unsetPreset } from '#preset';
@@ -52,7 +52,7 @@ const bootstrapCommand: CommandModule<
     const { only } = argv;
 
     // only proceed if the specified file exists
-    if (!only || (await pathExists(only))) {
+    if (!only || existsSync(only)) {
       await bootstrapPreset();
     }
   },

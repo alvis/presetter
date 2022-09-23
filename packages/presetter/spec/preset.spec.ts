@@ -13,7 +13,7 @@
  * -------------------------------------------------------------------------
  */
 
-import { writeJSON } from 'fs-extra';
+import { writeFileSync } from 'fs';
 import { resolve } from 'path';
 import writePackage from 'write-pkg';
 
@@ -41,9 +41,9 @@ jest.mock('console', () => ({
   info: jest.fn(),
 }));
 
-jest.mock('fs-extra', () => ({
+jest.mock('fs', () => ({
   __esModule: true,
-  pathExists: jest.fn(async (path: string): Promise<boolean> => {
+  existsSync: jest.fn((path: string): boolean => {
     // ensure that the paths below is compatible with windows
     const { posix, relative, resolve, sep } = jest.requireActual('path');
     const posixPath = relative(resolve('/'), path).split(sep).join(posix.sep);
@@ -59,7 +59,7 @@ jest.mock('fs-extra', () => ({
         return false;
     }
   }),
-  writeJSON: jest.fn(),
+  writeFileSync: jest.fn(),
 }));
 
 jest.mock('path', () => ({
@@ -257,25 +257,25 @@ describe('fn:updatePresetterRC', () => {
   it('create a new .presetterrc if it is inexistent', async () => {
     await updatePresetterRC('/missing-presetterrc', { preset: ['new-preset'] });
 
-    expect(writeJSON).toBeCalledWith(
+    expect(writeFileSync).toBeCalledWith(
       resolve('/missing-presetterrc/.presetterrc.json'),
-      {
-        preset: ['new-preset'],
-      },
-      { spaces: 2 },
+      JSON.stringify({ preset: ['new-preset'] }, null, 2),
     );
   });
 
   it('merge with the existing .presetterrc', async () => {
     await updatePresetterRC('/project', { preset: ['new-preset'] });
 
-    expect(writeJSON).toBeCalledWith(
+    expect(writeFileSync).toBeCalledWith(
       resolve('/project/.presetterrc.json'),
-      {
-        preset: ['no-symlink-preset', 'symlink-only-preset', 'new-preset'],
-        noSymlinks: ['path/to/file'],
-      },
-      { spaces: 2 },
+      JSON.stringify(
+        {
+          preset: ['no-symlink-preset', 'symlink-only-preset', 'new-preset'],
+          noSymlinks: ['path/to/file'],
+        },
+        null,
+        2,
+      ),
     );
   });
 });
@@ -322,18 +322,21 @@ describe('fn:setupPreset', () => {
   });
 
   it('write to .presetter', async () => {
-    expect(writeJSON).toBeCalledWith(
+    expect(writeFileSync).toBeCalledWith(
       resolve('/project/.presetterrc.json'),
-      {
-        preset: [
-          'no-symlink-preset',
-          'symlink-only-preset',
-          'preset1',
-          'preset2',
-        ],
-        noSymlinks: ['path/to/file'],
-      },
-      { spaces: 2 },
+      JSON.stringify(
+        {
+          preset: [
+            'no-symlink-preset',
+            'symlink-only-preset',
+            'preset1',
+            'preset2',
+          ],
+          noSymlinks: ['path/to/file'],
+        },
+        null,
+        2,
+      ),
     );
   });
 
