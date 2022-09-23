@@ -18,6 +18,7 @@ import { existsSync, writeFileSync } from 'fs';
 import { defaultsDeep } from 'lodash';
 import { dirname, resolve } from 'path';
 import readPackage from 'read-pkg';
+import readPackageUp from 'read-pkg-up';
 import resolvePackage from 'resolve-pkg';
 import writePackage from 'write-pkg';
 
@@ -58,23 +59,43 @@ const JSON_INDENT = 2;
 // STEP 3 resolve script content from resolved variables
 
 /**
+ * get presetter configuration files recursively from the current base up to the monorepo root, if there is one
+ * @param base the base directory to start searching for the configuration file
+ * @returns list of presetter configuration files
+ */
+export async function getPresetterRCPaths(base: string): Promise<string[]> {
+  const filesFromBase = ['', '.json']
+    .map((ext) => resolve(base, `${PRESETTERRC}${ext}`))
+    .filter(existsSync);
+
+  const parent = await readPackageUp({ cwd: dirname(base) });
+
+  // if the base is the root of a monorepo, stop searching
+  const filesFromParent = parent?.path
+    ? await getPresetterRCPaths(dirname(parent.path))
+    : [];
+
+  return [...filesFromParent, ...filesFromBase];
+}
+
+/**
  * get the .presetterrc configuration file content
  * @param root the base directory in which the configuration file should be located
  * @returns content of the configuration file
  */
 export async function getPresetterRC(root: string): Promise<PresetterConfig> {
-  const potentialConfigFiles = ['', '.json'].map((ext) =>
-    resolve(root, `${PRESETTERRC}${ext}`),
-  );
+  // locate all possible configuration files
+  const paths = await getPresetterRCPaths(root);
 
-  for (const path of potentialConfigFiles) {
-    if (existsSync(path)) {
-      // return the first customization file found
-      const custom = loadFile(path, 'json');
-      assertPresetterRC(custom);
+  // load the configuration file closest to the project base only, no merging
+  const path = paths.pop();
 
-      return custom;
-    }
+  if (path) {
+    // return the first customization file found
+    const custom = loadFile(path, 'json');
+    assertPresetterRC(custom);
+
+    return custom;
   }
 
   throw new Error('Missing preset defined in .presetterrc');

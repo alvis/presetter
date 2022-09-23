@@ -27,6 +27,7 @@ import {
   getScripts,
   getPresetGraph,
   getPresetterRC,
+  getPresetterRCPaths,
   setupPreset,
   unsetPreset,
   updatePresetterRC,
@@ -52,6 +53,8 @@ jest.mock('fs', () => ({
       case 'path/to/no-symlink-preset/scripts.yaml':
       case 'path/to/symlink-only-preset/scripts.yaml':
       case `missing-preset/.presetterrc`:
+      case `monorepo/.presetterrc`:
+      case `monorepo/packages/package1/.presetterrc`:
       case `project/.presetterrc`:
       case 'link/rewritten/by/project':
         return true;
@@ -152,6 +155,21 @@ jest.mock('read-pkg', () => ({
     }),
 }));
 
+jest.mock('read-pkg-up', () => ({
+  __esModule: true,
+  default: jest.fn(({ cwd }: { cwd?: string }) => {
+    // ensure that the paths below is compatible with windows
+    const { posix, relative, resolve, sep } = jest.requireActual('path');
+    const posixPath = relative(resolve('/'), cwd).split(sep).join(posix.sep);
+    switch (posixPath) {
+      case `monorepo/packages`:
+        return { path: '/monorepo/package.json' };
+      default:
+        return undefined;
+    }
+  }),
+}));
+
 jest.mock('resolve-pkg', () => ({
   __esModule: true,
   default: (name: string): string => name,
@@ -250,6 +268,21 @@ describe('fn:getPresetterRC', () => {
 
   it('throw an error if no configuration file is found', async () => {
     expect(() => getPresetterRC('/missing-presetterrc')).rejects.toThrow();
+  });
+});
+
+describe('fn:getPresetterRCPaths', () => {
+  it('return the path to the configuration file in a single project repo', async () => {
+    expect(await getPresetterRCPaths('/project')).toEqual([
+      resolve('/project/.presetterrc'),
+    ]);
+  });
+
+  it('return paths to the configuration files in a monorepo', async () => {
+    expect(await getPresetterRCPaths('/monorepo/packages/package1')).toEqual([
+      resolve('/monorepo/.presetterrc'),
+      resolve('/monorepo/packages/package1/.presetterrc'),
+    ]);
   });
 });
 
