@@ -1,3 +1,10 @@
+overrides:
+  - files:
+      - '{source}/**/*.tsx'
+    rules:
+      max-lines-per-function:
+        - error
+        - max: 90
 rules:
   '@typescript-eslint/naming-convention':
     - error
