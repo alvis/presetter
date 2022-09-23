@@ -2,6 +2,36 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+# [3.5.0](https://github.com/alvis/presetter/compare/v3.4.1...v3.5.0) (2022-09-23)
+
+
+### ✨ Features
+
+* **presetter:** take .presetterrc from any of the parent node ([723c139](https://github.com/alvis/presetter/commit/723c13964beaa61fad6e1d0ae4a66cf32d10ea9f))
+
+
+### 🐛 Bug Fixes
+
+* **preset-react:** increase the line limit of a react comonpent ([1ea89a2](https://github.com/alvis/presetter/commit/1ea89a2b85fe9de2a89218d58c8e3c19d93d2129))
+
+
+### 🛠 Builds
+
+* move .presetterrc to the root ([0eb17a0](https://github.com/alvis/presetter/commit/0eb17a058fa245faae96dcb017184460dae08b46))
+
+
+### 📦 Code Refactoring
+
+* **presetter:** remove dependency on fs-extra ([8810c56](https://github.com/alvis/presetter/commit/8810c568d1cf1de275b055916b6aeac450b43403))
+* **rollup:** remove unnecessary async waits ([9d9c4c3](https://github.com/alvis/presetter/commit/9d9c4c3b5131548512574634414214380cb501f2))
+
+
+### ⚙️ Continuous Integrations
+
+* update github actions files ([555c854](https://github.com/alvis/presetter/commit/555c8548c129eb6c8afa2aa40aae65f03933cbca))
+
+
+
 ## [3.4.1](https://github.com/alvis/presetter/compare/v3.4.0...v3.4.1) (2022-08-10)
 
 
