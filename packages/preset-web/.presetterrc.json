@@ -1,9 +1,0 @@
-{
-  "preset": "presetter-preset-strict",
-  "config": {
-    "npmignore": ["!/configs/**", "!/templates/**"]
-  },
-  "variable": {
-    "root": "../.."
-  }
-}
