@@ -2,6 +2,15 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [3.5.1](https://github.com/alvis/presetter/compare/v3.5.0...v3.5.1) (2023-03-18)
+
+
+### 🐛 Bug Fixes
+
+* **preset-essentials:** remove deprecated typescript configs ([0dc6cf7](https://github.com/alvis/presetter/commit/0dc6cf7c74544b95f6d53fce1531e3f206ed423d))
+
+
+
 # [3.5.0](https://github.com/alvis/presetter/compare/v3.4.1...v3.5.0) (2022-09-23)
 
 
