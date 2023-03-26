@@ -2,6 +2,15 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [3.5.2](https://github.com/alvis/presetter/compare/v3.5.1...v3.5.2) (2023-03-26)
+
+
+### 🐛 Bug Fixes
+
+* **presetter:** restore package.json upon SIGTERM ([33b8c51](https://github.com/alvis/presetter/commit/33b8c5131ff10b2394908ee6f8fee1c702d4a804))
+
+
+
 ## [3.5.1](https://github.com/alvis/presetter/compare/v3.5.0...v3.5.1) (2023-03-18)
 
 
