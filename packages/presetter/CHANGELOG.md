@@ -2,6 +2,15 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [3.5.3](https://github.com/alvis/presetter/compare/v3.5.2...v3.5.3) (2023-03-26)
+
+
+### 🐛 Bug Fixes
+
+* **presetter:** make it compatible with other package managers ([4bc27a9](https://github.com/alvis/presetter/commit/4bc27a973d02d9da71b8e9aec102278b53c59fcd))
+
+
+
 ## [3.5.2](https://github.com/alvis/presetter/compare/v3.5.1...v3.5.2) (2023-03-26)
 
 

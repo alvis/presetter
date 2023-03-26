@@ -1,6 +1,6 @@
 {
   "name": "presetter-preset-essentials",
-  "version": "3.5.2",
+  "version": "3.5.3",
   "description": "A collection of opinionated preset configurations for typescript projects",
   "keywords": [
     "presetter",
@@ -63,7 +63,7 @@
     "jest": "^28.0.0",
     "leasot": "^13.0.0",
     "npm-run-all": "^4.0.0",
-    "presetter": "^3.5.2",
+    "presetter": "^3.5.3",
     "prettier": "^2.4.0",
     "shx": "^0.3.0",
     "standard-version": "^9.0.0",

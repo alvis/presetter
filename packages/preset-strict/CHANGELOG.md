@@ -2,6 +2,15 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [3.5.3](https://github.com/alvis/presetter/compare/v3.5.2...v3.5.3) (2023-03-26)
+
+
+### 🛠 Builds
+
+* **preset-strict:** remove source files from the final build ([8e99425](https://github.com/alvis/presetter/commit/8e99425619ef1d686d81dac3d57bb55a858a1521))
+
+
+
 ## [3.5.2](https://github.com/alvis/presetter/compare/v3.5.1...v3.5.2) (2023-03-26)
 
 
