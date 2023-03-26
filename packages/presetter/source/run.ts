@@ -124,6 +124,7 @@ export async function run(task: string, argv: string[] = []): Promise<void> {
     }
   });
   process.on('SIGINT', restore.bind(run, true));
+  process.on('SIGTERM', restore.bind(run, false));
 
   // run the task
   const { exitCode } = await execa('npm', ['run', task, '--', ...argv], {
