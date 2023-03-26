@@ -58,9 +58,9 @@ jest.mock('@npmcli/arborist', () => ({
 
 describe('fn:arePeerPackagesAutoInstalled', () => {
   it('return false for unknown npm agent', () => {
-    process.env['npm_config_user_agent'] = undefined;
+    process.env['npm_config_user_agent'] = 'pnpm/1.0.0 node/v15.0.0 darwin x64';
 
-    expect(arePeerPackagesAutoInstalled()).toEqual(false);
+    expect(arePeerPackagesAutoInstalled()).toEqual(true);
   });
 
   it('return false for npm before v7', () => {

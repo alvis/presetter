@@ -49,10 +49,15 @@ export function arePeerPackagesAutoInstalled(): boolean {
   /* istanbul ignore next */
   const [major] = version?.split('.') ?? ([] as undefined[]);
 
+  const isNPM = name === 'npm';
+  const isNonNPM = name !== 'npm';
+
   return (
-    name === 'npm' &&
-    major !== undefined &&
-    parseInt(major) >= NPM_VERSION_FOR_PEER_INSTALLATION
+    // assume peer packages would be installed automatically if the client is not npm
+    isNonNPM ||
+    (isNPM &&
+      major !== undefined &&
+      parseInt(major) >= NPM_VERSION_FOR_PEER_INSTALLATION)
   );
 }
 
