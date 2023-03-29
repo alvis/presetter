@@ -26,29 +26,21 @@ export type PresetConfig = {
   jest?: Record<string, unknown>;
 };
 
-/** List of configurable variables */
-export type Variable = {
-  /** the directory containing all source code (default: source) */
-  source: string;
-};
-
-/** detail of linked/created configuration files and script templates  */
-export interface PresetAsset {
-  /** list of presets to extend from */
-  extends?: string[];
-  /** mapping of files to be generated to its configuration template files (key: file path relative to the target project's root, value: template path) */
-  template?: Record<string, string>;
-  /** path to the scripts template */
-  scripts?: string;
-  /** default variables */
-  variable?: Variable;
-  /** supplementary configuration applied to .presetterrc for enriching other presets */
-  supplementaryConfig?: Record<string, string[] | Record<string, unknown>>;
-}
-
-export const DEFAULT_VARIABLE: Variable = {
+export const DEFAULT_VARIABLE = {
   source: 'source',
 };
+
+/** expected return from the configuration function from the preset */
+export interface PresetAsset {
+  /** list of presets to extend from */
+  extends: string[];
+  /** mapping of files to be generated to its configuration template files (key: file path relative to the target project's root, value: template path) */
+  template: Record<string, string>;
+  /** path to the scripts template */
+  scripts: string;
+  /** variables to be substituted in templates */
+  variable: Record<string, string>;
+}
 
 /**
  * get the list of templates provided by this preset

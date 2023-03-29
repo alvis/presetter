@@ -9,7 +9,6 @@ coverageReporters:
 globals:
   ignoreCoverageForAllDecorators: true
   ts-jest:
-    isolatedModules: true
     tsconfig:
       allowJs: true
 moduleNameMapper:

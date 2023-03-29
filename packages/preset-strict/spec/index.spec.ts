@@ -37,7 +37,6 @@ describe('fn:getPresetAsset', () => {
     });
 
     // load all potential dynamic content
-    await loadDynamicMap(asset.supplementaryConfig, context);
     await loadDynamicMap(asset.template, context);
 
     const TEMPLATES = resolve(__dirname, '..', 'templates');
