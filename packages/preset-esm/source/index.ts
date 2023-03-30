@@ -34,6 +34,7 @@ export default async function (): Promise<PresetAsset> {
   return {
     extends: ['presetter-preset-essentials'],
     supplementaryConfig: {
+      jest: resolve(CONFIGS, 'jest.yaml'),
       tsconfig: resolve(CONFIGS, 'tsconfig.yaml'),
     },
     supplementaryScripts: resolve(CONFIGS, 'scripts.yaml'),
