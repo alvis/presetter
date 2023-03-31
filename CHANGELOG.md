@@ -2,6 +2,15 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [3.5.5](https://github.com/alvis/presetter/compare/v3.5.4...v3.5.5) (2023-03-31)
+
+
+### 🐛 Bug Fixes
+
+* **preset-esm:** correct the configuration format for jest ([14abda7](https://github.com/alvis/presetter/commit/14abda712ee624fff762c4fb9434e7897695e4fd))
+
+
+
 ## [3.5.4](https://github.com/alvis/presetter/compare/v3.5.3...v3.5.4) (2023-03-30)
 
 

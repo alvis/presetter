@@ -1,6 +1,6 @@
 {
   "name": "presetter-preset-esm",
-  "version": "3.5.4",
+  "version": "3.5.5",
   "description": "An opinionated presetter preset for an ESM package",
   "keywords": [
     "presetter",
@@ -31,8 +31,8 @@
     "watch": "run watch"
   },
   "peerDependencies": {
-    "presetter": "^3.5.4",
-    "presetter-preset-essentials": "^3.5.4",
+    "presetter": "^3.5.5",
+    "presetter-preset-essentials": "^3.5.5",
     "tsc-esm-fix": "^2.0.0"
   },
   "devDependencies": {
