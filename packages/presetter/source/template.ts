@@ -283,6 +283,7 @@ export function mergeTemplate(
  * replace parameters in the template
  * @param content template content
  * @param parameter variables to be substituted in the template
+ * @returns customized configuration
  */
 export function template(
   content: string,
