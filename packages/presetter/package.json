@@ -2,7 +2,7 @@
   "name": "presetter",
   "version": "3.5.5",
   "engines": {
-    "node": ">=12.10.0"
+    "node": ">=16.0.0"
   },
   "description": "Make project configurations clean with presets",
   "keywords": [
