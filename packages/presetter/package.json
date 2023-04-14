@@ -42,7 +42,7 @@
     "bootstrap": "npm run ts-node -- --eval \"require('./source/preset.ts').bootstrapPreset()\" && npm run script -- prepare",
     "build": "npm run script -- build",
     "clean": "npm run script -- clean",
-    "coverage": "npm run script -- coverage",
+    "coverage": "npm run script -- coverage --",
     "lint": "npm run script -- lint",
     "prepublishOnly": "npm run bootstrap && npm run script -- prepublishOnly",
     "script": "npm run ts-node -- --eval \"process.argv = [...process.argv.slice(0, 2), 'run', ...process.argv.slice(2)]; require('./source/executable');\" -- run ",
