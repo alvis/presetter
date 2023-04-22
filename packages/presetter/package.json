@@ -22,7 +22,9 @@
   "author": "Alvis HT Tang <alvis@hilbert.space>",
   "bin": {
     "presetter": "./bin/cli",
-    "run": "./bin/run"
+    "run": "./bin/run",
+    "run-s": "./bin/run-s",
+    "run-p": "./bin/run-p"
   },
   "main": "lib/index.js",
   "module": "lib/index.mjs",
@@ -65,10 +67,12 @@
   "dependencies": {
     "@npmcli/arborist": "^6.0.0",
     "@npmcli/config": "^6.0.0",
+    "@npmcli/run-script": "^6.0.0",
     "callsite-record": "^4.0.0",
     "chalk": "^4.0.0",
     "execa": "^5.0.0",
     "js-yaml": "^4.0.0",
+    "listr2": "^6.2.0",
     "lodash": "^4.0.0",
     "mvdan-sh": "^0.10.0",
     "pupa": "^2.0.0",
@@ -77,6 +81,7 @@
     "resolve-pkg": "^2.0.0",
     "source-map-support": "^0.5.0",
     "write-pkg": "^4.0.0",
-    "yargs": "^17.0.0"
+    "yargs": "^17.0.0",
+    "yargs-parser": "^21.0.0"
   }
 }

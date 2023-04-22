@@ -13,132 +13,199 @@
  * -------------------------------------------------------------------------
  */
 
-import execa from 'execa';
-import { existsSync, renameSync, unlinkSync, writeFileSync } from 'fs';
-import { once } from 'lodash';
-import { basename, dirname, resolve } from 'path';
+import npmRunScript from '@npmcli/run-script';
+import { Listr } from 'listr2';
+import { dirname } from 'node:path';
+
+import parse from 'yargs-parser';
 
 import { getPackage } from './package';
 import { getScripts } from './preset';
 import { composeScripts } from './scripts';
+import { parseGlobalArgs, parseTaskSpec, selectTasks } from './task';
+
+import type { ListrTask, SimpleRenderer } from 'listr2';
 
 import type { Package } from './package';
+import type { Task } from './task';
 
-/** manage ~package.json */
-class TemporaryPackageJSONManager {
-  private package: Package;
-  private path: string;
+/**
+ * create an array of Listr tasks based on the provided inputs
+ * @param _ collection of arguments
+ * @param _.composed composed script object containing script definitions
+ * @param _.template template object containing script definitions
+ * @param _.pkg detail of package.json
+ * @param _.task task name
+ * @param _.args array of arguments
+ * @returns array of Listr tasks
+ */
+function createListrTask(_: {
+  composed: Record<string, string>;
+  template: Record<string, string>;
+  pkg: Package;
+  task: string;
+  args: string[];
+}): ListrTask<never, typeof SimpleRenderer> {
+  const { composed, template, task, args, pkg } = _;
 
-  private shouldRestore: boolean;
+  return {
+    title: `Running ${task}...`,
+    task: async (_, taskControl) => {
+      const command = composed[task];
 
-  /**
-   * create a temporary package.json manager
-   * @param packageDetail the content of the target project's package.json
-   */
-  constructor(packageDetail: Package) {
-    this.path = resolve(
-      dirname(packageDetail.path),
-      '~' + basename(packageDetail.path),
-    );
+      // parse the command and extract the executable and task specifications
+      const argv = parse(command);
+      const [executable, ...taskSpecs] = argv._.map((arg) => arg.toString());
 
-    this.package = packageDetail;
-    this.shouldRestore = !existsSync(this.path);
-  }
+      // check if the executable is 'run-s' or 'run-p'
+      if (['run-s', 'run-p'].includes(executable)) {
+        const globalArgs = [...parseGlobalArgs(argv), ...args];
 
-  /**
-   * setup an environment for running a task with presetter
-   * @param task name of the task to be replaced by the template
-   */
-  public async replace(task: string): Promise<void> {
-    // delete the current task to avoid duplicated task running
-    delete this.package.json.scripts[task];
+        // get subtasks based on the task specifications and global arguments
+        const subTasks = taskSpecs.flatMap((taskSpec) =>
+          getListrTasksBySpec({ template, pkg, taskSpec, globalArgs }),
+        );
 
-    // get the merged script definitions
-    const template = await getScripts();
-    this.package.json.scripts = composeScripts({
-      template,
-      target: {
-        ...this.package.json.scripts,
-      },
-    });
+        const concurrent = executable === 'run-p';
 
-    // move the existing package.json to a safe place
-    if (this.shouldRestore) {
-      try {
-        renameSync(this.package.path, this.path);
-      } catch {
-        /* istanbul ignore next */
-        throw new Error('failed to backup package.json');
+        return taskControl.newListr(subTasks, { concurrent });
+      } else {
+        // run the npm script with the provided arguments and package information
+        return runWithNPM({ task, args, pkg, composedScript: composed });
       }
-    }
-
-    // generate a temporary package.json in order to let npm to see all the definitions
-    const PADDING = 2;
-    const content = JSON.stringify(this.package.json, null, PADDING);
-    try {
-      writeFileSync(this.package.path, content);
-    } catch {
-      /* istanbul ignore next */
-      throw new Error('failed to write to package.json');
-    }
-  }
-
-  /**
-   * clean up the temporary artifacts
-   */
-  public async restore(): Promise<void> {
-    if (this.shouldRestore) {
-      try {
-        unlinkSync(this.package.path);
-        renameSync(this.path, this.package.path);
-      } catch {
-        /* istanbul ignore next */
-        throw new Error('failed to restore package.json');
-      }
-    }
-  }
+    },
+  };
 }
 
 /**
- * run a task defined in the combined script definitions
- * @param task the name of the task to be run
- * @param argv parameters supplied for the task
+ * get Listr tasks based on the task specification and global arguments
+ * @param _ collection of arguments
+ * @param _.template template object containing script definitions
+ * @param _.pkg detail of package.json
+ * @param _.taskSpec task specification string
+ * @param _.globalArgs array of global arguments
+ * @returns array of Listr tasks
  */
-export async function run(task: string, argv: string[] = []): Promise<void> {
-  // try to find the target project's package.json
-  const packageDetail = await getPackage();
-  const manager = new TemporaryPackageJSONManager(packageDetail);
+function getListrTasksBySpec(_: {
+  template: Record<string, string>;
+  pkg: Package;
+  taskSpec: string;
+  globalArgs: string[];
+}): Array<ListrTask<never, typeof SimpleRenderer>> {
+  const { template, pkg, taskSpec, globalArgs } = _;
 
-  // setup
-  await manager.replace(task);
-  const restore = once(async (isInterrupted: boolean): Promise<void> => {
-    // stop listening to SIGINT in order to avoid double handling during the restoration process
-    process.removeListener('SIGINT', restore);
+  // parse the task specification and remove any quotes
+  const task = parseTaskSpec(
+    taskSpec.toString().replace(/^(['"])([^]*?)\1$/, '$2'),
+    globalArgs,
+  );
 
-    // restore package.json
-    await manager.restore();
-
-    if (isInterrupted) {
-      const SIGINT = 130;
-      process.exit(SIGINT);
-    }
+  // get Listr tasks based on the provided inputs
+  return getListrTasks({
+    template,
+    pkg,
+    selector: task.selector,
+    args: task.args,
   });
-  process.on('SIGINT', restore.bind(run, true));
-  process.on('SIGTERM', restore.bind(run, false));
+}
 
-  // run the task
-  const { exitCode } = await execa('npm', ['run', task, '--', ...argv], {
-    cwd: dirname(packageDetail.path),
+/**
+ * create an array of Listr tasks based on the provided inputs
+ * @param _ collection of arguments
+ * @param _.template template object containing script definitions
+ * @param _.pkg detail of package.json
+ * @param _.selector task selector string
+ * @param _.args array of arguments
+ * @returns array of Listr tasks
+ */
+function getListrTasks(_: {
+  template: Record<string, string>;
+  pkg: Package;
+  selector: string;
+  args: string[];
+}): Array<ListrTask<never, typeof SimpleRenderer>> {
+  const { template, pkg, selector, args } = _;
+
+  // clone the content for immutability
+  const target = { ...pkg.json.scripts };
+
+  // remove the selected task from the target
+  if (template[selector]) {
+    delete target[selector];
+  }
+
+  // compose the script using the provided template and target
+  const composed = composeScripts({ template, target });
+
+  // select tasks based on the composed script and selector
+  const tasks = selectTasks(Object.keys(composed), selector);
+
+  // create Listr tasks based on the selected tasks
+  return tasks.map((task) =>
+    createListrTask({ composed, template, pkg, task, args }),
+  );
+}
+
+/**
+ * run a task defined in the combined script definitions using npm-run-script
+ * @param _ collection of arguments
+ * @param _.task task name
+ * @param _.args array of arguments
+ * @param _.pkg detail of package.json
+ * @param _.composedScript combined script definitions
+ */
+async function runWithNPM(_: {
+  task: string;
+  args: string[];
+  pkg: Package;
+  composedScript: Record<string, string>;
+}): Promise<void> {
+  const { task, args, pkg, composedScript } = _;
+
+  // eslint-disable-next-line @typescript-eslint/no-unsafe-call
+  return npmRunScript({
+    event: task,
+    args,
+    pkg: { scripts: composedScript },
+    path: dirname(pkg.path),
     stdio: 'inherit',
-    reject: false,
-    shell: true,
+  }) as Promise<void>;
+}
+
+/**
+ * run a task defined in the combined script definitions.
+ * @param tasks array of objects containing the selector and args for the task
+ * @param options collection of options
+ * @param options.parallel whether to run tasks concurrently
+ */
+export async function run(
+  tasks: Task[],
+  options?: { parallel?: boolean },
+): Promise<void> {
+  const { parallel = false } = { ...options };
+
+  // find the target project's package.json information
+  const pkg = await getPackage();
+
+  // get the merged script definitions
+  const template = await getScripts();
+
+  // get Listr tasks based on the provided tasks and package information
+  const listTasks = tasks.flatMap((task) =>
+    getListrTasks({ template, pkg, ...task }),
+  );
+
+  // create a Listr instance with the list of tasks and configuration options
+  const listr = new Listr<never, 'simple'>(listTasks, {
+    concurrent: parallel,
+    exitOnError: true,
+    renderer: 'simple',
   });
 
-  // restore package.json
-  await restore(false);
-
-  // set the exit code as the same as the returned
-  if (exitCode > 0) {
-    process.exit(exitCode);
+  // run the Listr tasks
+  try {
+    await listr.run();
+  } catch {
+    process.exit(1);
   }
 }

@@ -1,0 +1,4 @@
+#!/usr/bin/env node
+require('source-map-support').install();
+process.argv = [...process.argv.slice(0, 2), 'run-s', ...process.argv.slice(2)];
+require('../lib/executable');

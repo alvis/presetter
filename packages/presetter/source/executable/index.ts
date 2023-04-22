@@ -18,4 +18,6 @@
 import { entry } from './entry';
 import { handleError } from './error';
 
-entry().catch(handleError);
+const [, , ...args] = process.argv;
+
+entry(args).catch(handleError);

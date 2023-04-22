@@ -148,11 +148,11 @@ export async function getPresetAsset(
       cwd: context.target.root,
     });
 
-    const { default: presetPresetAsset } = (await import(module!)) as {
+    const { default: getPresetAsset } = (await import(module!)) as {
       default: (args: PresetContext) => Promise<PresetAsset>;
     };
 
-    return await presetPresetAsset(context);
+    return await getPresetAsset(context);
   } catch {
     throw new Error(`cannot resolve preset ${name}`);
   }

@@ -56,6 +56,6 @@
     "presetter-preset-essentials": "^3.5.5"
   },
   "devDependencies": {
-    "@types/node": "*"
+    "npm-run-all": "^4.0.0"
   }
 }

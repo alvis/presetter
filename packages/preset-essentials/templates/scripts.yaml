@@ -16,9 +16,7 @@ lint:fixme: leasot --skip-unsupported --exit-nicely package.json
 lint:prettier: prettier --write --no-error-on-unmatched-pattern
 prepare: run-s setup build
 prepublishOnly: run-s coverage lint
-prerelease: shx mv package.json ~~package.json && shx mv ~package.json package.json
 release: standard-version --preset metahub
-postrelease: shx mv package.json ~package.json && shx mv ~~package.json package.json
 setup: run-s setup:*
 setup:husky: (husky install && husky set .husky/pre-commit "npx lint-staged --concurrent=false") || true
 stage: run-p "stage:* -- {@}" --
