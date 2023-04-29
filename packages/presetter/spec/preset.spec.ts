@@ -162,6 +162,7 @@ jest.mock('read-pkg-up', () => ({
     const { posix, relative, resolve, sep } = jest.requireActual('path');
     const posixPath = relative(resolve('/'), cwd).split(sep).join(posix.sep);
     switch (posixPath) {
+      case `monorepo`:
       case `monorepo/packages`:
         return { path: '/monorepo/package.json' };
       default:

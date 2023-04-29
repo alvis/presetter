@@ -72,7 +72,7 @@ export async function getPresetterRCPaths(base: string): Promise<string[]> {
 
   // if the base is the root of a monorepo, stop searching
   const filesFromParent = parent?.path
-    ? await getPresetterRCPaths(dirname(parent.path))
+    ? await getPresetterRCPaths(dirname(base))
     : [];
 
   return [...filesFromParent, ...filesFromBase];
