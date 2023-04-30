@@ -129,21 +129,17 @@ export function linkFiles(
   configurationLink: Record<string, string>,
 ): void {
   for (const [file, destination] of Object.entries(configurationLink)) {
-    const link = resolve(root, file);
-    const to = relative(dirname(link), destination);
+    const path = resolve(root, file);
+    const to = relative(dirname(path), destination);
 
-    // create links only if the path really doesn't exist
     if (
-      !linkExists(link) &&
-      !existsSync(link) &&
       // for files that mean to be created directly on the target project root, not via symlink
-      to !== basename(to)
+      to !== basename(to) &&
+      // do not replace any user created files
+      (!existsSync(path) || linkExists(path))
     ) {
-      info(`Linking ${relative(root, link)} => ${to}`);
-      mkdirSync(dirname(link), { recursive: true });
-      symlinkSync(to, link);
-    } else if (to !== basename(to)) {
-      info(`Skipping ${relative(root, link)} => ${to}`);
+      info(`Linking ${relative(root, path)} => ${to}`);
+      ensureLink(path, to);
     }
   }
 }
@@ -189,4 +185,22 @@ function linkExists(path: string): boolean {
   } catch {
     return false;
   }
+}
+
+/**
+ * ensures that there is a symlink at the given path pointing to the target.
+ * @param path path where the symlink should be created
+ * @param to target of the symlink
+ */
+function ensureLink(path: string, to: string): void {
+  // create the parent directory if it doesn't exist
+  mkdirSync(dirname(path), { recursive: true });
+
+  // remove the existing symlink if it exists
+  if (existsSync(path)) {
+    unlinkSync(path);
+  }
+
+  // create a new symlink pointing to the target
+  symlinkSync(to, path);
 }

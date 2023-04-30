@@ -188,15 +188,23 @@ describe('fn:linkFiles', () => {
 
   it('link generated files to the project', async () => {
     await linkFiles('/project', {
-      'new/symlink/config.json': resolve('/project/relative/path/to/config'),
+      'old/symlink/rewritten/by/user': resolve(
+        '/project/relative/path/to/config',
+      ),
       'old/symlink/by/presetter': resolve('/project/relative/path/to/config'),
+      'new/symlink/config.json': resolve('/project/relative/path/to/config'),
     });
 
-    expect(mkdirSync).toHaveBeenCalledTimes(1);
+    expect(mkdirSync).toHaveBeenCalledTimes(2);
     expect(mkdirSync).toHaveBeenCalledWith(resolve('/project/new/symlink'), {
       recursive: true,
     });
-    expect(symlinkSync).toHaveBeenCalledTimes(1);
+    expect(unlinkSync).toHaveBeenCalledTimes(1);
+    expect(symlinkSync).toHaveBeenCalledTimes(2);
+    expect(symlinkSync).toHaveBeenCalledWith(
+      '../../../relative/path/to/config'.split(posix.sep).join(sep),
+      resolve('/project/old/symlink/by/presetter'),
+    );
     expect(symlinkSync).toHaveBeenCalledWith(
       '../../relative/path/to/config'.split(posix.sep).join(sep),
       resolve('/project/new/symlink/config.json'),
