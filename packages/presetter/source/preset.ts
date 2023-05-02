@@ -41,6 +41,7 @@ import type {
   Template,
 } from './types';
 import type { PackageJson } from 'read-pkg';
+import type { JsonValue } from 'type-fest';
 
 /** presetter configuration filename */
 const PRESETTERRC = '.presetterrc';
@@ -87,18 +88,20 @@ export async function getPresetterRC(root: string): Promise<PresetterConfig> {
   // locate all possible configuration files
   const paths = await getPresetterRCPaths(root);
 
-  // load the configuration file closest to the project base only, no merging
-  const path = paths.pop();
-
-  if (path) {
-    // return the first customization file found
-    const custom = loadFile(path, 'json');
-    assertPresetterRC(custom);
-
-    return custom;
+  if (!paths.length) {
+    throw new Error('missing presetter configuration file');
   }
 
-  throw new Error('Missing preset defined in .presetterrc');
+  const configs = paths.map((path) => loadFile(path, 'json') as JsonValue);
+
+  const mergedConfig = configs.reduce(
+    (mergedConfig, config) => merge(mergedConfig, config),
+    {},
+  );
+
+  assertPresetterRC(mergedConfig);
+
+  return mergedConfig;
 }
 
 /**
