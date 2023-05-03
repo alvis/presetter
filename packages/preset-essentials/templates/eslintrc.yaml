@@ -128,8 +128,8 @@ rules:
         order: asc
         caseInsensitive: true
       groups: # group imports
-        - - builtin
-          - external
+        - builtin
+        - external
         - - index
           - internal
           - parent
