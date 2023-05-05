@@ -15,7 +15,6 @@
 
 import { info } from 'node:console';
 import {
-  existsSync,
   lstatSync,
   mkdirSync,
   readFileSync,
@@ -103,7 +102,7 @@ export function writeFiles(
     // write content to the destination path
     if (
       // file don't exist
-      !existsSync(destination) ||
+      !lstatSync(destination, { throwIfNoEntry: false }) ||
       // content to be written under the configurations folder
       destination !== resolve(root, key)
     ) {
@@ -133,11 +132,12 @@ export function linkFiles(
     const path = resolve(root, file);
     const to = relative(dirname(path), destination);
 
+    const pathStat = lstatSync(path, { throwIfNoEntry: false });
     if (
       // for files that mean to be created directly on the target project root, not via symlink
       to !== basename(to) &&
       // do not replace any user created files
-      (!existsSync(path) || linkExists(path))
+      (!pathStat || pathStat.isSymbolicLink())
     ) {
       info(`Linking ${relative(root, path)} => ${to}`);
       ensureLink(path, to);
@@ -173,22 +173,6 @@ export function unlinkFiles(
 }
 
 /**
- * check if path is a symlink
- * @param path file path to be checked
- * @returns true if it is a symlink
- */
-function linkExists(path: string): boolean {
-  try {
-    // NOTE use lstat instead of pathExists as it checks the link not the linked path
-    lstatSync(path);
-
-    return true;
-  } catch {
-    return false;
-  }
-}
-
-/**
  * ensures that there is a symlink at the given path pointing to the target.
  * @param path path where the symlink should be created
  * @param to target of the symlink
@@ -198,7 +182,7 @@ function ensureLink(path: string, to: string): void {
   mkdirSync(dirname(path), { recursive: true });
 
   // remove the existing symlink if it exists
-  if (existsSync(path)) {
+  if (lstatSync(path, { throwIfNoEntry: false })) {
     unlinkSync(path);
   }
 

@@ -15,7 +15,7 @@
 
 import { info } from 'node:console';
 import { mkdirSync, symlinkSync, unlinkSync, writeFileSync } from 'node:fs';
-import { posix, relative, resolve, sep } from 'node:path';
+import { posix, resolve, sep } from 'node:path';
 
 import {
   loadFile,
@@ -25,7 +25,7 @@ import {
   unlinkFiles,
 } from '#io';
 
-import type { ResolvedPresetContext } from '#types';
+import type { Stats } from 'node:fs';
 
 jest.mock('node:console', () => ({
   __esModule: true,
@@ -34,18 +34,33 @@ jest.mock('node:console', () => ({
 
 jest.mock('node:fs', () => ({
   __esModule: true,
-  lstatSync: jest.fn((path: string): {} => {
-    // ensure that the paths below is compatible with windows
-    const { posix, relative, resolve, sep } = jest.requireActual('node:path');
-    const posixPath = relative(resolve('/'), path).split(sep).join(posix.sep);
-    switch (posixPath) {
-      case 'project/old/symlink/by/presetter':
-      case 'project/old/symlink/pointed/to/other':
-        return {};
-      default:
-        throw new Error();
-    }
-  }),
+  lstatSync: jest.fn(
+    (
+      path: string,
+      options: { throwIfNoEntry: boolean },
+    ): Partial<Stats> | void => {
+      const { throwIfNoEntry } = options;
+
+      // ensure that the paths below is compatible with windows
+      const { posix, relative, resolve, sep } = jest.requireActual('node:path');
+      const posixPath = relative(resolve('/'), path).split(sep).join(posix.sep);
+      switch (posixPath) {
+        case 'path/to/config.json':
+        case 'path/to/config.yaml':
+        case 'path/to/list1':
+        case 'path/to/list2':
+        case 'project/old/symlink/rewritten/by/user':
+          return { isSymbolicLink: () => false };
+        case 'project/old/symlink/by/presetter':
+        case 'project/old/symlink/pointed/to/other':
+          return { isSymbolicLink: () => true };
+        default:
+          if (throwIfNoEntry) {
+            throw new Error();
+          }
+      }
+    },
+  ),
   mkdirSync: jest.fn(),
   existsSync: jest.fn((path: string): boolean => {
     // ensure that the paths below is compatible with windows
