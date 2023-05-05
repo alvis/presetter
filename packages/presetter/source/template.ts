@@ -13,7 +13,8 @@
  * -------------------------------------------------------------------------
  */
 
-import { basename, extname } from 'path';
+import { basename, extname } from 'node:path';
+
 import pupa from 'pupa';
 
 import type { IgnorePath, IgnoreRule } from './types';

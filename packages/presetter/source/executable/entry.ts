@@ -13,7 +13,8 @@
  * -------------------------------------------------------------------------
  */
 
-import { existsSync } from 'fs';
+import { existsSync } from 'node:fs';
+
 import yargs from 'yargs';
 
 import { bootstrapPreset, setupPreset, unsetPreset } from '#preset';

@@ -13,10 +13,11 @@
  * -------------------------------------------------------------------------
  */
 
-import { info } from 'console';
-import { existsSync, writeFileSync } from 'fs';
+import { info } from 'node:console';
+import { existsSync, writeFileSync } from 'node:fs';
+import { dirname, resolve } from 'node:path';
+
 import { defaultsDeep } from 'lodash';
-import { dirname, resolve } from 'path';
 import readPackage from 'read-pkg';
 import readPackageUp from 'read-pkg-up';
 import resolvePackage from 'resolve-pkg';

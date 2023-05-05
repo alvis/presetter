@@ -13,11 +13,13 @@
  * -------------------------------------------------------------------------
  */
 
+import { homedir } from 'node:os';
+import { resolve } from 'node:path';
+
 import { Arborist } from '@npmcli/arborist';
 import Config from '@npmcli/config';
 import { defaultsDeep } from 'lodash';
-import { homedir } from 'os';
-import { resolve } from 'path';
+
 import readPackageDetail from 'read-pkg-up';
 
 import type { NormalizedPackageJson } from 'read-pkg-up';

@@ -13,7 +13,7 @@
  * -------------------------------------------------------------------------
  */
 
-import { info } from 'console';
+import { info } from 'node:console';
 import {
   existsSync,
   lstatSync,
@@ -23,9 +23,10 @@ import {
   symlinkSync,
   unlinkSync,
   writeFileSync,
-} from 'fs';
+} from 'node:fs';
+import { basename, dirname, extname, relative, resolve } from 'node:path';
+
 import { dump, load } from 'js-yaml';
-import { basename, dirname, extname, relative, resolve } from 'path';
 
 import type { Template } from './types';
 

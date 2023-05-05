@@ -13,7 +13,7 @@
  * -------------------------------------------------------------------------
  */
 
-import { resolve } from 'path';
+import { resolve } from 'node:path';
 
 /** detail of linked/created configuration files and script templates  */
 import type { PresetAsset } from 'presetter';

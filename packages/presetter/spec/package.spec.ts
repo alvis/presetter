@@ -19,7 +19,7 @@ import {
   reifyDependencies,
 } from '#package';
 
-jest.mock('console', () => ({
+jest.mock('node:console', () => ({
   __esModule: true,
   info: jest.fn(),
 }));

@@ -13,9 +13,10 @@
  * -------------------------------------------------------------------------
  */
 
+import { basename } from 'node:path';
+
 import { mapValues } from 'lodash';
 import { syntax } from 'mvdan-sh';
-import { basename } from 'path';
 
 import type { CallExpr, Node, Stmt, Subshell } from 'mvdan-sh';
 

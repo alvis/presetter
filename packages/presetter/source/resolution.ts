@@ -13,8 +13,8 @@
  * -------------------------------------------------------------------------
  */
 
-import { existsSync } from 'fs';
-import { basename, extname } from 'path';
+import { existsSync } from 'node:fs';
+import { basename, extname } from 'node:path';
 
 import { loadFile } from './io';
 

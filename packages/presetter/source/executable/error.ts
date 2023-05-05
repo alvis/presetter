@@ -15,9 +15,10 @@
 
 /* istanbul ignore file */
 
+import { warn } from 'node:console';
+
 import createCallsiteRecord from 'callsite-record';
 import chalk from 'chalk';
-import { warn } from 'console';
 
 /**
  * print error nicely on console

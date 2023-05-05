@@ -13,7 +13,7 @@
  * -------------------------------------------------------------------------
  */
 
-import { resolve } from 'path';
+import { resolve } from 'node:path';
 
 // paths to the template directory
 const TEMPLATES = resolve(__dirname, '..', 'templates');

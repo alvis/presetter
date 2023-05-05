@@ -13,15 +13,15 @@
  * -------------------------------------------------------------------------
  */
 
-import { readdirSync } from 'fs';
-import { resolve } from 'path';
+import { readdirSync } from 'node:fs';
+import { resolve } from 'node:path';
 
 import getPresetAsset from '#index';
 
-jest.mock('path', () => ({
+jest.mock('node:path', () => ({
   __esModule: true,
-  ...jest.requireActual('path'),
-  resolve: jest.fn(jest.requireActual('path').resolve),
+  ...jest.requireActual('node:path'),
+  resolve: jest.fn(jest.requireActual('node:path').resolve),
 }));
 
 describe('fn:getPresetAsset', () => {

@@ -28,7 +28,7 @@ import type { PresetGraph, ResolvedPresetContext } from '#types';
 jest.mock('#resolution', () => {
   const getFileContext = (path) => {
     // ensure that the paths below is compatible with windows
-    const { posix, relative, resolve, sep } = jest.requireActual('path');
+    const { posix, relative, resolve, sep } = jest.requireActual('node:path');
     const posixPath = relative(resolve('/'), path).split(sep).join(posix.sep);
     switch (posixPath) {
       case 'path/to/config.json':

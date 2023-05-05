@@ -13,7 +13,8 @@
  * -------------------------------------------------------------------------
  */
 
-import { resolve } from 'path';
+import { resolve } from 'node:path';
+
 import { loadFile, template } from 'presetter';
 
 import { getRollupParameter } from './rollup';

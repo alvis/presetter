@@ -13,9 +13,10 @@
  * -------------------------------------------------------------------------
  */
 
+import { dirname } from 'node:path';
+
 import npmRunScript from '@npmcli/run-script';
 import { Listr } from 'listr2';
-import { dirname } from 'node:path';
 
 import parse from 'yargs-parser';
 

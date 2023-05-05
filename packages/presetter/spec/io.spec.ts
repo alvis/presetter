@@ -13,9 +13,9 @@
  * -------------------------------------------------------------------------
  */
 
-import { info } from 'console';
-import { mkdirSync, symlinkSync, unlinkSync, writeFileSync } from 'fs';
-import { posix, relative, resolve, sep } from 'path';
+import { info } from 'node:console';
+import { mkdirSync, symlinkSync, unlinkSync, writeFileSync } from 'node:fs';
+import { posix, relative, resolve, sep } from 'node:path';
 
 import {
   loadFile,
@@ -27,16 +27,16 @@ import {
 
 import type { ResolvedPresetContext } from '#types';
 
-jest.mock('console', () => ({
+jest.mock('node:console', () => ({
   __esModule: true,
   info: jest.fn(),
 }));
 
-jest.mock('fs', () => ({
+jest.mock('node:fs', () => ({
   __esModule: true,
   lstatSync: jest.fn((path: string): {} => {
     // ensure that the paths below is compatible with windows
-    const { posix, relative, resolve, sep } = jest.requireActual('path');
+    const { posix, relative, resolve, sep } = jest.requireActual('node:path');
     const posixPath = relative(resolve('/'), path).split(sep).join(posix.sep);
     switch (posixPath) {
       case 'project/old/symlink/by/presetter':
@@ -49,7 +49,7 @@ jest.mock('fs', () => ({
   mkdirSync: jest.fn(),
   existsSync: jest.fn((path: string): boolean => {
     // ensure that the paths below is compatible with windows
-    const { posix, relative, resolve, sep } = jest.requireActual('path');
+    const { posix, relative, resolve, sep } = jest.requireActual('node:path');
     const posixPath = relative(resolve('/'), path).split(sep).join(posix.sep);
     switch (posixPath) {
       case 'path/to/config.json':
@@ -66,7 +66,7 @@ jest.mock('fs', () => ({
   }),
   readFileSync: jest.fn((path: string) => {
     // ensure that the paths below is compatible with windows
-    const { posix, relative, resolve, sep } = jest.requireActual('path');
+    const { posix, relative, resolve, sep } = jest.requireActual('node:path');
     const posixPath = relative(resolve('/'), path).split(sep).join(posix.sep);
     switch (posixPath) {
       case 'path/to/config.json':
@@ -86,7 +86,7 @@ jest.mock('fs', () => ({
   }),
   readlinkSync: jest.fn((path: string): string => {
     // ensure that the paths below is compatible with windows
-    const { posix, relative, resolve, sep } = jest.requireActual('path');
+    const { posix, relative, resolve, sep } = jest.requireActual('node:path');
     const posixPath = relative(resolve('/'), path).split(sep).join(posix.sep);
     switch (posixPath) {
       case 'project/old/symlink/by/presetter':

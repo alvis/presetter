@@ -13,8 +13,8 @@
  * -------------------------------------------------------------------------
  */
 
-import { writeFileSync } from 'fs';
-import { resolve } from 'path';
+import { writeFileSync } from 'node:fs';
+import { resolve } from 'node:path';
 import writePackage from 'write-pkg';
 
 import { reifyDependencies } from '#package';
@@ -37,16 +37,16 @@ import { linkFiles, unlinkFiles, writeFiles } from '#io';
 
 import type { ResolvedPresetContext } from '#types';
 
-jest.mock('console', () => ({
+jest.mock('node:console', () => ({
   __esModule: true,
   info: jest.fn(),
 }));
 
-jest.mock('fs', () => ({
+jest.mock('node:fs', () => ({
   __esModule: true,
   existsSync: jest.fn((path: string): boolean => {
     // ensure that the paths below is compatible with windows
-    const { posix, relative, resolve, sep } = jest.requireActual('path');
+    const { posix, relative, resolve, sep } = jest.requireActual('node:path');
     const posixPath = relative(resolve('/'), path).split(sep).join(posix.sep);
     switch (posixPath) {
       case 'path/to/template':
@@ -65,7 +65,7 @@ jest.mock('fs', () => ({
   writeFileSync: jest.fn(),
 }));
 
-jest.mock('path', () => ({
+jest.mock('node:path', () => ({
   __esModule: true,
   ...jest.requireActual<object>('path'),
   resolve: jest.fn((...pathSegments: string[]): string => {
@@ -159,7 +159,7 @@ jest.mock('read-pkg-up', () => ({
   __esModule: true,
   default: jest.fn(({ cwd }: { cwd?: string }) => {
     // ensure that the paths below is compatible with windows
-    const { posix, relative, resolve, sep } = jest.requireActual('path');
+    const { posix, relative, resolve, sep } = jest.requireActual('node:path');
     const posixPath = relative(resolve('/'), cwd).split(sep).join(posix.sep);
     switch (posixPath) {
       case `monorepo`:
@@ -187,7 +187,7 @@ jest.mock('#io', () => ({
   linkFiles: jest.fn(),
   loadFile: jest.fn((path: string) => {
     // ensure that the paths below is compatible with windows
-    const { posix, relative, resolve, sep } = jest.requireActual('path');
+    const { posix, relative, resolve, sep } = jest.requireActual('node:path');
     const posixPath = relative(resolve('/'), path).split(sep).join(posix.sep);
     switch (posixPath) {
       case 'path/to/template':
