@@ -269,11 +269,11 @@ export function mergeTemplate(
         ]);
 
         return [path, [...mergedSet].join('\n')];
-      } else if (isJSON(template) && isJSON(replacement)) {
+      } else if (typeof template === typeof replacement) {
         return [path, merge(template, replacement)];
       }
 
-      return [path, replacement ?? template];
+      return [path, template];
     }),
   );
 
