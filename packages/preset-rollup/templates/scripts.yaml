@@ -1,5 +1,5 @@
 # replace the `prepare` template from presetter-preset
 # so that the build procedure will not be triggered upon package installation
-build: run-s clean build:rollup
-build:rollup: cross-env NODE_ENV=production rollup --config rollup.config.ts --configPlugin rollup-plugin-ts
-develop: run-s "build:rollup -- --watch {@}" --
+build: cross-env NODE_ENV=production run-s clean build:rollup
+build:rollup: rollup --config rollup.config.ts --configPlugin rollup-plugin-ts
+develop: cross-env NODE_ENV=development run-s "build:rollup -- --watch {@}" --
