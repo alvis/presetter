@@ -36,6 +36,7 @@
     "autoprefixer": "^10.0.0",
     "eslint-plugin-tailwindcss": "^3.0.0",
     "eslint-plugin-testing-library": "^5.0.0",
+    "jest-environment-jsdom": "^29.0.0",
     "postcss": "^8.3.0",
     "presetter": "^3.5.5",
     "tailwindcss": "^3.0.0"

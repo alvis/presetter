@@ -8,9 +8,6 @@ coverageReporters:
     - projectRoot: '{root}'
 globals:
   ignoreCoverageForAllDecorators: true
-  ts-jest:
-    tsconfig:
-      allowJs: true
 moduleNameMapper:
   '#(.*)': '<rootDir>/{source}/$1'
 preset: ts-jest
@@ -21,3 +18,8 @@ testMatch:
 testPathIgnorePatterns:
   - /node_modules/
   - <rootDir>/{output}/
+transform:
+  '^.+\\.[jt]sx?$':
+    - ts-jest
+    - tsconfig:
+        allowJs: true
