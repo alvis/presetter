@@ -44,6 +44,7 @@ compilerOptions:
     '#*':
       - '{source}/*'
     '*':
+      - '*'
       - '{types}/*'
 
   # libraries
