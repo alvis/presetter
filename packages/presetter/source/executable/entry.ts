@@ -31,7 +31,7 @@ const useCommand: CommandModule<Record<string, unknown>, { preset: string }> = {
       .positional('preset', {
         required: true as const,
         type: 'string',
-        description: 'proceed only if the specified file exists',
+        description: 'the name of the preset to be used',
       })
       .help(),
   handler: async (argv) => setupPreset(...argv.preset),
