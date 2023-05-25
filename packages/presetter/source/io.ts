@@ -29,6 +29,12 @@ import { dump, load } from 'js-yaml';
 
 import type { Template } from './types';
 
+/** collection of options for file ios */
+interface IOOptions {
+  /** whether to overwrite existing files */
+  force?: boolean;
+}
+
 // JSON format
 const INDENT = 2;
 
@@ -90,17 +96,23 @@ export function serializeContent(
  * @param root path to the target project root
  * @param config a map of configuration content and its path to be written
  * @param pathMap a map of keys in the config map and their destination path
+ * @param options collection of options
  */
 export function writeFiles(
   root: string,
   config: Record<string, Template>,
   pathMap: Record<string, string>,
+  options?: IOOptions,
 ): void {
+  const { force = false } = { ...options };
+
   for (const [key, content] of Object.entries(config)) {
     const destination = pathMap[key];
 
     // write content to the destination path
     if (
+      // force overwrite
+      force ||
       // file don't exist
       !lstatSync(destination, { throwIfNoEntry: false }) ||
       // content to be written under the configurations folder
@@ -108,11 +120,7 @@ export function writeFiles(
     ) {
       info(`Generating ${key}`);
 
-      // ensure that all parent folders exist to avoid errors from writeFile
-      mkdirSync(dirname(destination), { recursive: true });
-
-      // write content to the destination path
-      writeFileSync(destination, serializeContent(destination, content));
+      ensureFile(destination, serializeContent(destination, content));
     } else {
       info(`Skipping ${key}`);
     }
@@ -123,11 +131,15 @@ export function writeFiles(
  * link generated files to the project root
  * @param root path to the target project root
  * @param configurationLink map of symlinks to its real path
+ * @param options collection of options
  */
 export function linkFiles(
   root: string,
   configurationLink: Record<string, string>,
+  options?: IOOptions,
 ): void {
+  const { force = false } = { ...options };
+
   for (const [file, destination] of Object.entries(configurationLink)) {
     const path = resolve(root, file);
     const to = relative(dirname(path), destination);
@@ -136,8 +148,8 @@ export function linkFiles(
     if (
       // for files that mean to be created directly on the target project root, not via symlink
       to !== basename(to) &&
-      // do not replace any user created files
-      (!pathStat || pathStat.isSymbolicLink())
+      // do not replace any user created files unless overwrite is set
+      (!pathStat || pathStat.isSymbolicLink() || force)
     ) {
       info(`Linking ${relative(root, path)} => ${to}`);
       ensureLink(path, to);
@@ -149,23 +161,23 @@ export function linkFiles(
  * unlink generated files from the project root
  * @param root path to the target project root
  * @param configurationLink map of symlinks to its real path
+ * @param options collection of options
  */
 export function unlinkFiles(
   root: string,
   configurationLink: Record<string, string>,
+  options?: IOOptions,
 ): void {
-  for (const [name, destination] of Object.entries(configurationLink)) {
-    try {
-      const link = readlinkSync(resolve(root, name));
-      const to = relative(root, destination);
+  const { force = false } = { ...options };
 
-      if (link === to) {
-        info(`Removing ${name}`);
-        unlinkSync(resolve(root, name));
-        continue;
-      }
-    } catch {
-      // do nothing
+  for (const [name, destination] of Object.entries(configurationLink)) {
+    const link = resolveLink(resolve(root, name));
+    const to = relative(root, destination);
+
+    if (link === to || force) {
+      info(`Removing ${name}`);
+      unlinkSync(resolve(root, name));
+      continue;
     }
 
     info(`Skipping ${name}`);
@@ -173,7 +185,18 @@ export function unlinkFiles(
 }
 
 /**
- * ensures that there is a symlink at the given path pointing to the target.
+ * resolve the symlink at the given path
+ * @param path path to the symlink
+ * @returns the target of the symlink or null if the path is not a symlink
+ */
+function resolveLink(path: string): string | null {
+  const pathStat = lstatSync(path, { throwIfNoEntry: false });
+
+  return pathStat?.isSymbolicLink() ? readlinkSync(path) : null;
+}
+
+/**
+ * ensure that there is a symlink at the given path pointing to the target
  * @param path path where the symlink should be created
  * @param to target of the symlink
  */
@@ -181,11 +204,29 @@ function ensureLink(path: string, to: string): void {
   // create the parent directory if it doesn't exist
   mkdirSync(dirname(path), { recursive: true });
 
-  // remove the existing symlink if it exists
+  // remove any existing files or symlinks
   if (lstatSync(path, { throwIfNoEntry: false })) {
     unlinkSync(path);
   }
 
   // create a new symlink pointing to the target
   symlinkSync(to, path);
+}
+
+/**
+ * ensure that there is a file at the given path with the given content
+ * @param path path where the file should be created
+ * @param content content of the file
+ */
+function ensureFile(path: string, content: string): void {
+  // ensure that all parent folders exist to avoid errors from writeFile
+  mkdirSync(dirname(path), { recursive: true });
+
+  // remove any existing files or symlinks
+  if (lstatSync(path, { throwIfNoEntry: false })) {
+    unlinkSync(path);
+  }
+
+  // write content to the destination path
+  writeFileSync(path, content);
 }

@@ -196,6 +196,21 @@ describe('fn:writeFiles', () => {
     expect(mkdirSync).toBeCalledTimes(0);
     expect(writeFileSync).toBeCalledTimes(0);
   });
+
+  it('write content to the disk if force is set', async () => {
+    await writeFiles(
+      '/path/to',
+      { 'config.yaml': { yaml: true } },
+      { 'config.yaml': '/path/to/config.yaml' },
+      { force: true },
+    );
+
+    expect(mkdirSync).toBeCalledWith('/path/to', { recursive: true });
+    expect(writeFileSync).toBeCalledWith(
+      '/path/to/config.yaml',
+      'yaml: true\n',
+    );
+  });
 });
 
 describe('fn:linkFiles', () => {
@@ -232,6 +247,29 @@ describe('fn:linkFiles', () => {
     });
     expect(mkdirSync).toHaveBeenCalledTimes(0);
     expect(symlinkSync).toHaveBeenCalledTimes(0);
+  });
+
+  it('replace existing files if force is set', async () => {
+    await linkFiles(
+      '/',
+      {
+        'path/to/config.json': resolve('/relative/path/to/config'),
+      },
+      { force: true },
+    );
+
+    expect(mkdirSync).toHaveBeenCalledTimes(1);
+    expect(mkdirSync).toHaveBeenCalledWith(resolve('/path/to'), {
+      recursive: true,
+    });
+
+    expect(unlinkSync).toHaveBeenCalledTimes(1);
+
+    expect(symlinkSync).toHaveBeenCalledTimes(1);
+    expect(symlinkSync).toHaveBeenCalledWith(
+      '../../relative/path/to/config'.split(posix.sep).join(sep),
+      resolve('/path/to/config.json'),
+    );
   });
 });
 

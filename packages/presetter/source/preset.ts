@@ -44,6 +44,12 @@ import type {
 import type { PackageJson } from 'read-pkg';
 import type { JsonValue } from 'type-fest';
 
+/** collection of options for bootstrapping */
+interface BootstrapOptions {
+  /** whether to skip all checks */
+  force?: boolean;
+}
+
 /** presetter configuration filename */
 const PRESETTERRC = '.presetterrc';
 
@@ -256,8 +262,11 @@ export async function setupPreset(...uris: string[]): Promise<void> {
 
 /**
  * bootstrap the preset to the current project root
+ * @param options collection of options
  */
-export async function bootstrapPreset(): Promise<void> {
+export async function bootstrapPreset(
+  options?: BootstrapOptions,
+): Promise<void> {
   const context = await getContext();
 
   // install all related packages first
@@ -266,22 +275,26 @@ export async function bootstrapPreset(): Promise<void> {
   }
 
   // generate configurations
-  await bootstrapContent(context);
+  await bootstrapContent(context, options);
 }
 
 /**
  * generate files from templates and link them to the target project root
  * @param context context about the target project and any customization in .presetterrc
+ * @param options collection of options
  */
-export async function bootstrapContent(context: PresetContext): Promise<void> {
+export async function bootstrapContent(
+  context: PresetContext,
+  options?: BootstrapOptions,
+): Promise<void> {
   const graph = await getPresetGraph(context);
   const resolvedContext = await resolveContext({ graph, context });
   const content = await resolveTemplate({ graph, context: resolvedContext });
 
   const destinationMap = await getDestinationMap(content, resolvedContext);
 
-  writeFiles(context.target.root, content, destinationMap);
-  linkFiles(context.target.root, destinationMap);
+  writeFiles(context.target.root, content, destinationMap, options);
+  linkFiles(context.target.root, destinationMap, options);
 }
 
 /**

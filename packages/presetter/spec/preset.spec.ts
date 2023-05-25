@@ -426,10 +426,13 @@ describe('fn:bootstrapPreset', () => {
 
 describe('fn:bootstrapContent', () => {
   it('write configuration and link symlinks', async () => {
-    await bootstrapContent({
-      ...defaultContext,
-      custom: { ...defaultContext.custom, noSymlinks: ['path/to/file'] },
-    });
+    await bootstrapContent(
+      {
+        ...defaultContext,
+        custom: { ...defaultContext.custom, noSymlinks: ['path/to/file'] },
+      },
+      { force: false },
+    );
 
     expect(writeFiles).toBeCalledWith(
       '/project',
@@ -451,66 +454,87 @@ describe('fn:bootstrapContent', () => {
         ),
         'path/to/file': resolve('/project/path/to/file'),
       },
+      { force: false },
     );
-    expect(linkFiles).toBeCalledWith('/project', {
-      'path/to/file': resolve('/project/path/to/file'),
-      'link/pointed/to/preset': resolve(
-        '/presetter/generated/client/link/pointed/to/preset',
-      ),
-      'link/pointed/to/other': resolve(
-        '/presetter/generated/client/link/pointed/to/other',
-      ),
-      'link/rewritten/by/project': resolve(
-        '/presetter/generated/client/link/rewritten/by/project',
-      ),
-    });
+    expect(linkFiles).toBeCalledWith(
+      '/project',
+      {
+        'path/to/file': resolve('/project/path/to/file'),
+        'link/pointed/to/preset': resolve(
+          '/presetter/generated/client/link/pointed/to/preset',
+        ),
+        'link/pointed/to/other': resolve(
+          '/presetter/generated/client/link/pointed/to/other',
+        ),
+        'link/rewritten/by/project': resolve(
+          '/presetter/generated/client/link/rewritten/by/project',
+        ),
+      },
+      { force: false },
+    );
   });
 
   it('ignore configuration', async () => {
-    await bootstrapContent({
-      ...defaultContext,
-      custom: {
-        ...defaultContext.custom,
-        config: {
-          'path/to/file': { name: 'path/to/file' },
-          'link/pointed/to/preset': { name: 'link/pointed/to/preset' },
-          'link/pointed/to/other': { name: 'link/pointed/to/other' },
-          'link/rewritten/by/project': { name: 'link/rewritten/by/project' },
+    await bootstrapContent(
+      {
+        ...defaultContext,
+        custom: {
+          ...defaultContext.custom,
+          config: {
+            'path/to/file': { name: 'path/to/file' },
+            'link/pointed/to/preset': { name: 'link/pointed/to/preset' },
+            'link/pointed/to/other': { name: 'link/pointed/to/other' },
+            'link/rewritten/by/project': { name: 'link/rewritten/by/project' },
+          },
+          noSymlinks: ['path/to/file'],
+          ignores: [
+            'link/pointed/to/preset',
+            'link/pointed/to/other',
+            'link/rewritten/by/project',
+            { 'path/to/file': ['name'] },
+          ],
         },
-        noSymlinks: ['path/to/file'],
-        ignores: [
-          'link/pointed/to/preset',
-          'link/pointed/to/other',
-          'link/rewritten/by/project',
-          { 'path/to/file': ['name'] },
-        ],
       },
-    });
+      { force: false },
+    );
 
     expect(writeFiles).toBeCalledWith(
       '/project',
       { 'path/to/file': { template: true } },
       { 'path/to/file': resolve('/project/path/to/file') },
+      { force: false },
     );
-    expect(linkFiles).toBeCalledWith('/project', {
-      'path/to/file': resolve('/project/path/to/file'),
-    });
+    expect(linkFiles).toBeCalledWith(
+      '/project',
+      {
+        'path/to/file': resolve('/project/path/to/file'),
+      },
+      { force: false },
+    );
   });
 
   it('honours ignore rules supplied by presets', async () => {
-    await bootstrapContent({
-      ...defaultContext,
-      custom: { ...defaultContext.custom, preset: 'extension-preset' },
-    });
+    await bootstrapContent(
+      {
+        ...defaultContext,
+        custom: { ...defaultContext.custom, preset: 'extension-preset' },
+      },
+      { force: false },
+    );
 
     expect(writeFiles).toBeCalledWith(
       '/project',
       { 'path/to/file': { template: true } },
       { 'path/to/file': resolve('/presetter/generated/client/path/to/file') },
+      { force: false },
     );
-    expect(linkFiles).toBeCalledWith('/project', {
-      'path/to/file': resolve('/presetter/generated/client/path/to/file'),
-    });
+    expect(linkFiles).toBeCalledWith(
+      '/project',
+      {
+        'path/to/file': resolve('/presetter/generated/client/path/to/file'),
+      },
+      { force: false },
+    );
   });
 });
 

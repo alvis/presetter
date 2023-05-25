@@ -65,13 +65,19 @@ describe('fn:entry', () => {
     it('bootstrap by default', async () => {
       await entry(['bootstrap']);
 
-      expect(bootstrapPreset).toBeCalledWith();
+      expect(bootstrapPreset).toBeCalledWith({ force: false });
     });
 
     it('bootstrap if the specified file exists', async () => {
       await entry(['bootstrap', '--only', 'exist']);
 
-      expect(bootstrapPreset).toBeCalledWith();
+      expect(bootstrapPreset).toBeCalledWith({ force: false });
+    });
+
+    it('bootstrap with force', async () => {
+      await entry(['bootstrap', '--force']);
+
+      expect(bootstrapPreset).toBeCalledWith({ force: true });
     });
 
     it('skip bootstrap if the specified file is missing', async () => {

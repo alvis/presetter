@@ -39,23 +39,28 @@ const useCommand: CommandModule<Record<string, unknown>, { preset: string }> = {
 
 const bootstrapCommand: CommandModule<
   Record<string, unknown>,
-  { only?: string }
+  { force?: boolean; only?: string }
 > = {
   command: 'bootstrap',
   describe: 'setup the project according to the specified preset',
   builder: (yargs) =>
     yargs
+      .option('force', {
+        type: 'boolean',
+        default: false,
+        description: 'overwrite existing files',
+      })
       .option('only', {
         type: 'string',
         description: 'proceed only if the specified file exists',
       })
       .help(),
   handler: async (argv) => {
-    const { only } = argv;
+    const { force, only } = argv;
 
     // only proceed if the specified file exists
     if (!only || existsSync(only)) {
-      await bootstrapPreset();
+      await bootstrapPreset({ force });
     }
   },
 };
