@@ -27,4 +27,4 @@ jobs:
         env:
           NPM_AUTH_TOKEN: ${{ secrets.NPM_AUTH_TOKEN }}
       - name: publish the package
-        run: npm publish --workspaces --verbose
+        run: npm publish --provenance --workspaces --verbose
