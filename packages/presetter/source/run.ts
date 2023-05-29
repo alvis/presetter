@@ -130,11 +130,6 @@ function getListrTasks(_: {
   // clone the content for immutability
   const target = { ...pkg.json.scripts };
 
-  // remove the selected task from the target
-  if (template[selector]) {
-    delete target[selector];
-  }
-
   // compose the script using the provided template and target
   const composed = composeScripts({ template, target });
 
@@ -178,15 +173,20 @@ async function runWithNPM(_: {
  * @param tasks array of objects containing the selector and args for the task
  * @param options collection of options
  * @param options.parallel whether to run tasks concurrently
+ * @param options.templateOnly whether to resolve the task from the template only
  */
 export async function run(
   tasks: Task[],
-  options?: { parallel?: boolean },
+  options?: { parallel?: boolean; templateOnly?: boolean },
 ): Promise<void> {
-  const { parallel = false } = { ...options };
+  const { parallel = false, templateOnly = false } = { ...options };
 
   // find the target project's package.json information
   const pkg = await getPackage();
+  if (templateOnly) {
+    // remove all scripts from the package.json
+    pkg.json.scripts = {};
+  }
 
   // get the merged script definitions
   const template = await getScripts();

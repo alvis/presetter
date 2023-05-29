@@ -47,7 +47,7 @@
     "coverage": "npm run script -- coverage --",
     "lint": "npm run script -- lint",
     "prepublishOnly": "npm run bootstrap && npm run script -- prepublishOnly",
-    "script": "npm run ts-node -- --eval \"process.argv = [...process.argv.slice(0, 2), 'run', ...process.argv.slice(2)]; require('./source/executable');\" -- run ",
+    "script": "npm run ts-node -- --eval \"process.argv = [...process.argv.slice(0, 2), 'run', ...process.argv.slice(2)]; require('./source/executable');\" -- run --template",
     "stage": "npm run script -- stage --",
     "ts-node": "ts-node --cwd-mode --compiler-options=\"{\\\"esModuleInterop\\\":true,\\\"target\\\":\\\"es6\\\"}\" --transpile-only --require tsconfig-paths/register",
     "test": "npm run script -- test --",

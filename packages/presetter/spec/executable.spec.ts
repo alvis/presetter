@@ -91,12 +91,15 @@ describe('fn:entry', () => {
     it('should run a single task with provided arguments', async () => {
       await entry(['run', 'task', '--', '"arg 1"', "'arg 2'"]);
 
-      expect(run).toBeCalledWith([
-        {
-          selector: 'task',
-          args: ['arg 1', 'arg 2'],
-        },
-      ]);
+      expect(run).toBeCalledWith(
+        [
+          {
+            selector: 'task',
+            args: ['arg 1', 'arg 2'],
+          },
+        ],
+        { templateOnly: false },
+      );
     });
   });
 

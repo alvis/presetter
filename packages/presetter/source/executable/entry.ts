@@ -65,16 +65,27 @@ const bootstrapCommand: CommandModule<
   },
 };
 
-const runCommand: CommandModule = {
+const runCommand: CommandModule<
+  Record<string, unknown>,
+  { template?: boolean }
+> = {
   command: 'run',
   describe: 'run a template script',
-  builder: (yargs) => yargs.usage('run <task>').demandCommand(),
+  builder: (yargs) =>
+    yargs
+      .option('template', {
+        type: 'boolean',
+        default: false,
+        description: 'use script from the template',
+      })
+      .usage('run <task>')
+      .demandCommand(),
   handler: async (argv) => {
     // get the options
     const [, selector] = argv._.map((arg) => arg.toString());
     const args = parseGlobalArgs(argv);
 
-    await run([{ selector, args }]);
+    await run([{ selector, args }], { templateOnly: argv.template });
   },
 };
 

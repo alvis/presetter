@@ -34,6 +34,7 @@ jest.mock('#package', () => ({
     path: '/fake/path/package.json',
     json: {
       scripts: {
+        custom: 'custom command',
         task: 'run task --arg-package',
         other: 'run other -- --arg-package',
         subtask: 'run subtask',
@@ -46,6 +47,7 @@ jest.mock('#package', () => ({
 jest.mock('#preset', () => ({
   esModule: true,
   getScripts: jest.fn(async () => ({
+    'custom': 'template command',
     'task': 'command --arg-template',
     'other': 'other --arg-template',
     'subtask': 'run-s subtask:*',
@@ -114,5 +116,39 @@ describe('fn:run', () => {
     await run([{ selector: 'error', args: [] }]);
 
     expect(process.exit).toHaveBeenCalledWith(1);
+  });
+
+  describe('opt:templateOnly', () => {
+    it('should run custom scripts by default', async () => {
+      const selectors = [{ selector: 'custom', args: [] }];
+
+      await run(selectors);
+
+      expect(npmRunScript).toHaveBeenCalledTimes(1);
+      expect(npmRunScript).toHaveBeenCalledWith(
+        expect.objectContaining({
+          event: 'custom',
+          pkg: expect.objectContaining({
+            scripts: expect.objectContaining({ custom: 'custom command' }),
+          }),
+        }),
+      );
+    });
+
+    it('should run template scripts if templateOnly is true', async () => {
+      const selectors = [{ selector: 'custom', args: [] }];
+
+      await run(selectors, { templateOnly: true });
+
+      expect(npmRunScript).toHaveBeenCalledTimes(1);
+      expect(npmRunScript).toHaveBeenCalledWith(
+        expect.objectContaining({
+          event: 'custom',
+          pkg: expect.objectContaining({
+            scripts: expect.objectContaining({ custom: 'template command' }),
+          }),
+        }),
+      );
+    });
   });
 });

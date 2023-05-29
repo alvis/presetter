@@ -150,6 +150,9 @@ function replaceRunnerNode(node: Node, context: ScriptContext): boolean {
 
       // replace the task definition with its expanded statement
       node.Cmd = parser.Parse(`(${resolvedCommand})`).Stmts[0].Cmd;
+
+      // recursively replace any runner call in the expanded statement
+      replaceRunnerNode(node.Cmd, context);
     }
   }
 
