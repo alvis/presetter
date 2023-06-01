@@ -76,7 +76,6 @@ const supplementaryConfig: PresetAsset['supplementaryConfig'] = {
   }) => [join('/', types, IMAGE_TYPE), join('/', types, STYLE_TYPE)],
   jest: resolve(CONFIGS, 'jest.yaml'),
   lintstaged: resolve(CONFIGS, 'lintstaged.yaml'),
-  rollup: resolve(CONFIGS, 'rollup.yaml'),
 };
 
 /**
