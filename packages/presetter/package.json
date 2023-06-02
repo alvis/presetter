@@ -55,7 +55,6 @@
   },
   "devDependencies": {
     "@types/js-yaml": "^4.0.0",
-    "@types/lodash": "^4.0.0",
     "@types/node": "*",
     "@types/yargs": "^17.0.0",
     "presetter-preset-strict": "file:../preset-strict",
@@ -73,7 +72,6 @@
     "execa": "^5.0.0",
     "js-yaml": "^4.0.0",
     "listr2": "^6.2.0",
-    "lodash": "^4.0.0",
     "mvdan-sh": "^0.10.0",
     "pupa": "^2.0.0",
     "read-pkg": "^5.0.0",

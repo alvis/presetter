@@ -88,7 +88,6 @@ describe('fn:getPackage', () => {
       path: 'path',
       json: {
         name: 'name',
-        scripts: {},
       },
     });
   });

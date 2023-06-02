@@ -15,8 +15,9 @@
 
 import { basename } from 'node:path';
 
-import { mapValues } from 'lodash';
 import { syntax } from 'mvdan-sh';
+
+import { mapValues } from './utilities';
 
 import type { CallExpr, Node, Stmt, Subshell } from 'mvdan-sh';
 

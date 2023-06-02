@@ -18,7 +18,6 @@ import { resolve } from 'node:path';
 
 import { Arborist } from '@npmcli/arborist';
 import Config from '@npmcli/config';
-import { defaultsDeep } from 'lodash';
 
 import readPackageDetail from 'read-pkg-up';
 
@@ -31,7 +30,7 @@ export type Package = {
   /** path to the package.json */
   path: string;
   /** content of package.json */
-  json: NormalizedPackageJson & { scripts: Record<string, string> };
+  json: NormalizedPackageJson;
 };
 
 /**
@@ -78,9 +77,7 @@ export async function getPackage(root?: string): Promise<Package> {
   }
 
   const path = detail.path;
-  const json = defaultsDeep(detail.packageJson, {
-    scripts: {},
-  }) as Package['json'];
+  const json = detail.packageJson;
 
   return { path, json };
 }

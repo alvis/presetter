@@ -17,7 +17,6 @@ import { info } from 'node:console';
 import { existsSync, writeFileSync } from 'node:fs';
 import { dirname, resolve } from 'node:path';
 
-import { defaultsDeep } from 'lodash';
 import readPackage from 'read-pkg';
 import readPackageUp from 'read-pkg-up';
 import resolvePackage from 'resolve-pkg';
@@ -250,12 +249,10 @@ export async function setupPreset(...uris: string[]): Promise<void> {
   await bootstrapContent(context);
 
   // insert post install script if not preset
-  await writePackage(
-    root,
-    defaultsDeep(context.target.package, {
-      scripts: { prepare: 'presetter bootstrap' },
-    }) as PackageJson & Record<string, string>,
-  );
+  const json = context.target.package;
+  const scripts = { prepare: 'presetter bootstrap', ...json.scripts };
+  const patched = { ...json, scripts };
+  await writePackage(root, patched as PackageJson & Record<string, string>);
 
   info('Done. Enjoy coding!');
 }
