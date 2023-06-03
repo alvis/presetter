@@ -24,13 +24,13 @@
   "scripts": {
     "bootstrap": "presetter bootstrap && run prepare",
     "build": "run build",
-    "coverage": "run coverage",
-    "lint": "run lint",
+    "coverage": "run coverage --",
+    "lint": "run lint --",
     "prepublishOnly": "run prepare && run prepublishOnly",
     "release": "run-s release:peer:*",
     "release:peer:presetter": "npm pkg set peerDependencies.presetter=^$(npx -c 'echo $npm_package_version')",
-    "test": "run test",
-    "watch": "run watch"
+    "test": "run test --",
+    "watch": "run watch --"
   },
   "peerDependencies": {
     "@rollup/plugin-commonjs": "^22.0.0",
