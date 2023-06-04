@@ -19,33 +19,16 @@
     "url": "git+https://github.com/alvis/presetter.git"
   },
   "scripts": {
-    "bootstrap": "run-s build",
-    "build": "run-s clean setup build:*",
-    "build:typescript": "run-s build:typescript:*",
-    "build:typescript:tsc": "tsc -p tsconfig.build.json",
-    "build:typescript:path": "tsc-alias",
-    "clean": "run-p clean:**",
-    "clean:lib": "shx rm -rf lib",
-    "coverage": "npm run test -- --coverage",
-    "lint": "run-s \"lint:* -- source spec\"",
-    "lint:prettier": "prettier --write --no-error-on-unmatched-pattern",
-    "lint:fixme": "leasot --skip-unsupported --exit-nicely package.json",
-    "lint:eslint": "eslint --fix --format stylish --max-warnings 0 --no-error-on-unmatched-pattern",
-    "prepublishOnly": "run-s --npm-path npm bootstrap coverage lint",
+    "prebootstrap": "tsc --declaration --moduleResolution node --module commonjs --target es2017 --outdir lib source/index.ts",
+    "bootstrap": "presetter bootstrap",
+    "build": "run build",
+    "coverage": "run coverage --",
+    "lint": "run lint --",
+    "prepublishOnly": "run prepare && run prepublishOnly",
     "release": "run-s release:peer:*",
     "release:peer:presetter": "npm pkg set peerDependencies.presetter=^$(npx -c 'echo $npm_package_version')",
-    "setup": "run-p setup:**",
-    "setup:eslint": "js-yaml templates/eslintrc.yaml | pupa --test=spec --output=lib > .eslintrc.json",
-    "setup:gitignore": "cat templates/gitignore | pupa --output=lib > .gitignore",
-    "setup:jest": "js-yaml templates/jestrc.yaml | pupa --root=../.. --source=source --output=lib > .jestrc.json",
-    "setup:lintstaged": "js-yaml templates/lintstagedrc.yaml | pupa --source=source > .lintstagedrc.json",
-    "setup:prettier": "js-yaml templates/prettierrc.yaml > .prettierrc.json",
-    "setup:tsconfig:base": "js-yaml templates/tsconfig.yaml | pupa --source=source --types=types --output=lib > tsconfig.json",
-    "setup:tsconfig:build": "js-yaml templates/tsconfig.build.yaml | pupa --source=source > tsconfig.build.json",
-    "stage": "run-s \"stage:* -- {@}\" --",
-    "stage:lint": "run-s \"lint:* -- {@}\" --",
-    "stage:coverage": "run-s \"test -- --maxWorkers=50% --coverage --collectCoverageFrom {@} --findRelatedTests {@}\" --",
-    "test": "jest --config .jestrc.json --no-cache --passWithNoTests --verbose"
+    "test": "run test --",
+    "watch": "run watch --"
   },
   "peerDependencies": {
     "@types/jest": "^28.0.0",
@@ -73,10 +56,5 @@
     "tsc-alias": "^1.0.0",
     "tsconfig-paths": "^4.0.0",
     "typescript": ">=4.7.0"
-  },
-  "devDependencies": {
-    "js-yaml": "^4.0.0",
-    "npm-run-all": "^4.0.0",
-    "pupa-cli": "^2.0.0"
   }
 }
