@@ -19,6 +19,7 @@ import { dirname, resolve } from 'node:path';
 
 import readPackage from 'read-pkg';
 import readPackageUp from 'read-pkg-up';
+import resolveFrom from 'resolve-from';
 import resolvePackage from 'resolve-pkg';
 import writePackage from 'write-pkg';
 
@@ -153,11 +154,9 @@ export async function getPresetAsset(
 ): Promise<PresetAsset> {
   try {
     // get the preset
-    const module = resolvePackage(name, {
-      cwd: context.target.root,
-    });
+    const module = resolveFrom(context.target.root, name);
 
-    const { default: getPresetAsset } = (await import(module!)) as {
+    const { default: getPresetAsset } = (await import(module)) as {
       default: (args: PresetContext) => Promise<PresetAsset>;
     };
 

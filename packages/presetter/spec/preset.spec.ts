@@ -176,6 +176,11 @@ jest.mock('resolve-pkg', () => ({
   default: (name: string): string => name,
 }));
 
+jest.mock('resolve-from', () => ({
+  __esModule: true,
+  default: (_from: string, name: string): string => name,
+}));
+
 jest.mock('write-pkg', () => ({
   __esModule: true,
   default: jest.fn(),
