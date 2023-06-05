@@ -23,7 +23,7 @@ import {
   resolveTemplate,
 } from '#content';
 
-import type { PresetGraph, ResolvedPresetContext } from '#types';
+import type { PresetGraph, ResolvedPresetContext } from 'presetter-types';
 
 jest.mock('#resolution', () => {
   const getFileContext = (path) => {

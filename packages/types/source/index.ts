@@ -13,8 +13,7 @@
  * -------------------------------------------------------------------------
  */
 
-import type { PackageJson } from 'read-pkg-up';
-import type { JsonObject } from 'type-fest';
+import type { JsonObject, PackageJson } from 'type-fest';
 
 /** a graph representing the dependency of all preset assets */
 export type PresetGraph = PresetNode[];

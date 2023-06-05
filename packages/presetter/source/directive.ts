@@ -13,7 +13,7 @@
  * -------------------------------------------------------------------------
  */
 
-import type { PresetContext } from './types';
+import type { PresetContext } from 'presetter-types';
 
 /** syntax for an apply directive */
 export type ApplyDirective = `@apply ${string}` | `@apply ${string}[${string}]`;

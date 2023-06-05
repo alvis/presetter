@@ -20,7 +20,7 @@ import {
   resolveDirective,
 } from '#directive';
 
-import type { PresetContext } from '#types';
+import type { PresetContext } from 'presetter-types';
 
 describe('fn:isApplyDirective', () => {
   it('return true for a simple package', () => {

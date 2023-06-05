@@ -23,17 +23,15 @@ import {
 
 import { assertPluginManifest } from './plugin';
 
+import type { ApplyDirective, ImportDirective } from 'presetter';
+import type { ResolvedPresetContext } from 'presetter-types';
+
 import type {
   PluginConfiguration,
   PluginList,
   PluginManifest,
   PluginObject,
 } from './plugin';
-import type {
-  ApplyDirective,
-  ImportDirective,
-  ResolvedPresetContext,
-} from 'presetter';
 
 /** preset configuration for rollup */
 export interface RollupConfig {

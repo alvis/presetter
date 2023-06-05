@@ -24,7 +24,7 @@ import type {
   PresetterConfig,
   ResolvedPresetContext,
   Template,
-} from './types';
+} from 'presetter-types';
 
 /**
  * enrich the context with the resolved supplementary assets

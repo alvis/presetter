@@ -15,17 +15,12 @@
 
 import { resolve } from 'node:path';
 
-/** detail of linked/created configuration files and script templates  */
-import type { PresetAsset } from 'presetter';
+import type { PresetAsset } from 'presetter-types';
 
 // paths to the template directory
 const CONFIGS = resolve(__dirname, '..', 'configs');
 const TEMPLATES = resolve(__dirname, '..', 'templates');
-export type {
-  PresetAsset,
-  PresetConfig,
-  Variable,
-} from 'presetter-preset-essentials';
+export type { PresetConfig, Variable } from 'presetter-preset-essentials';
 
 /**
  * get the list of templates provided by this preset

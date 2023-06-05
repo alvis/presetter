@@ -15,7 +15,7 @@
 
 import { getConfigKey, loadDynamic, loadDynamicMap } from '#resolution';
 
-import type { ResolvedPresetContext } from '#types';
+import type { ResolvedPresetContext } from 'presetter-types';
 
 jest.mock('node:fs', () => ({
   __esModule: true,

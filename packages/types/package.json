@@ -1,0 +1,33 @@
+{
+  "name": "presetter-types",
+  "version": "0.0.0",
+  "description": "TypeScript definitions for presetter",
+  "keywords": [
+    "presetter",
+    "types"
+  ],
+  "homepage": "https://github.com/alvis/presetter#readme",
+  "bugs": {
+    "url": "https://github.com/alvis/presetter/issues"
+  },
+  "license": "MIT",
+  "author": "Alvis HT Tang <alvis@hilbert.space>",
+  "main": "lib/index.js",
+  "types": "lib/index.d.ts",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/alvis/presetter.git"
+  },
+  "scripts": {
+    "prebootstrap": "tsc --declaration --moduleResolution node --module commonjs --target es2017 --outdir lib source/index.ts",
+    "bootstrap": "presetter bootstrap",
+    "build": "run build",
+    "lint": "run lint --",
+    "prepublishOnly": "run prepare && run prepublishOnly",
+    "release": "run-s release:peer:*",
+    "release:peer:presetter": "npm pkg set peerDependencies.presetter=^$(npx -c 'echo $npm_package_version')"
+  },
+  "dependencies": {
+    "type-fest": "^2.0.0"
+  }
+}

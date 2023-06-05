@@ -39,7 +39,7 @@ import type {
   PresetterConfig,
   ResolvedPresetContext,
   Template,
-} from './types';
+} from 'presetter-types';
 import type { PackageJson } from 'read-pkg';
 import type { JsonValue } from 'type-fest';
 

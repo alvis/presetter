@@ -17,7 +17,7 @@ import { basename, extname } from 'node:path';
 
 import pupa from 'pupa';
 
-import type { IgnorePath, IgnoreRule } from './types';
+import type { IgnorePath, IgnoreRule } from 'presetter-types';
 import type { JsonObject, JsonValue } from 'type-fest';
 
 type MergedType<A, B> = A extends JsonObject

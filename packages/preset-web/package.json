@@ -44,5 +44,8 @@
   "devDependencies": {
     "presetter": "file:../presetter",
     "presetter-preset-strict": "file:../preset-strict"
+  },
+  "dependencies": {
+    "presetter-types": "file:../types"
   }
 }

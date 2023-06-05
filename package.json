@@ -25,10 +25,11 @@
     "packages/*"
   ],
   "scripts": {
-    "preprepare": "run-s preprepare:preset-essentials preprepare:preset-strict",
+    "preprepare": "run-s preprepare:types preprepare:preset-essentials preprepare:preset-strict",
     "preprepare:preset-essentials": "npm run prebootstrap --workspace=presetter-preset-essentials",
     "preprepare:preset-strict": "npm run prebootstrap --workspace=presetter-preset-strict",
-    "prepare": "run-s prepare:husky prepare:presetter prepare:preset-essentials prepare:preset-strict prepare:preset-react prepare:preset-web prepare:preset-rollup prepare:preset-esm prepare:preset-hybrid",
+    "preprepare:types": "npm run prebootstrap --workspace=presetter-types",
+    "prepare": "run-s prepare:husky prepare:presetter prepare:types prepare:preset-essentials prepare:preset-strict prepare:preset-react prepare:preset-web prepare:preset-rollup prepare:preset-esm prepare:preset-hybrid",
     "prepare:husky": "husky install && husky set .husky/pre-commit \"npm run stage\"",
     "prepare:preset-esm": "npm run bootstrap --workspace=presetter-preset-esm",
     "prepare:preset-essentials": "npm run bootstrap --workspace=presetter-preset-essentials",
@@ -38,6 +39,7 @@
     "prepare:preset-strict": "npm run bootstrap --workspace=presetter-preset-strict",
     "prepare:preset-web": "npm run bootstrap --workspace=presetter-preset-web",
     "prepare:presetter": "npm run bootstrap --workspace=presetter",
+    "prepare:types": "npm run bootstrap --workspace=presetter-types",
     "update": "npm install --ignore-script --package-lock-only",
     "build": "npm run --workspaces build",
     "coverage": "npm run --workspaces coverage",

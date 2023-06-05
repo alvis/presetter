@@ -27,7 +27,7 @@ import { basename, dirname, extname, relative, resolve } from 'node:path';
 
 import { dump, load } from 'js-yaml';
 
-import type { Template } from './types';
+import type { Template } from 'presetter-types';
 
 /** collection of options for file ios */
 interface IOOptions {

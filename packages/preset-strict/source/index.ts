@@ -15,6 +15,8 @@
 
 import { resolve } from 'node:path';
 
+import type { PresetAsset } from 'presetter-types';
+
 // paths to the template directory
 const TEMPLATES = resolve(__dirname, '..', 'templates');
 
@@ -29,18 +31,6 @@ export type PresetConfig = {
 export const DEFAULT_VARIABLE = {
   source: 'source',
 };
-
-/** expected return from the configuration function from the preset */
-export interface PresetAsset {
-  /** list of presets to extend from */
-  extends: string[];
-  /** mapping of files to be generated to its configuration template files (key: file path relative to the target project's root, value: template path) */
-  template: Record<string, string>;
-  /** path to the scripts template */
-  scripts: string;
-  /** variables to be substituted in templates */
-  variable: Record<string, string>;
-}
 
 /**
  * get the list of templates provided by this preset

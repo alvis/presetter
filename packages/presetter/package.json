@@ -74,6 +74,7 @@
     "listr2": "^6.2.0",
     "mvdan-sh": "^0.10.0",
     "pupa": "^2.0.0",
+    "presetter-types": "file:../types",
     "read-pkg": "^5.0.0",
     "read-pkg-up": "^7.0.0",
     "resolve-pkg": "^2.0.0",

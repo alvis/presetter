@@ -27,7 +27,7 @@ import type {
   RequiredResolution,
   ResolvedPresetContext,
   Template,
-} from './types';
+} from 'presetter-types';
 
 /**
  * compute the corresponding field within the config field of .presetterrc

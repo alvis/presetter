@@ -15,7 +15,7 @@
 
 import { getRollupParameter } from '#rollup';
 
-import type { Config, ResolvedPresetContext } from 'presetter';
+import type { Config, ResolvedPresetContext } from 'presetter-types';
 
 describe('fn:getRollupParameter', () => {
   const generateContext = (config?: Config): ResolvedPresetContext => ({

@@ -15,7 +15,7 @@
 
 import { join, resolve } from 'node:path';
 
-import type { PresetAsset } from 'presetter';
+import type { PresetAsset } from 'presetter-types';
 
 // paths to the template directory
 const TEMPLATES = resolve(__dirname, '..', 'templates');

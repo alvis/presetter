@@ -15,6 +15,8 @@
 
 import { resolve } from 'node:path';
 
+import type { PresetAsset } from 'presetter-types';
+
 // paths to the template directory
 const TEMPLATES = resolve(__dirname, '..', 'templates');
 
@@ -49,18 +51,6 @@ export type Variable = {
   /** the directory containing all test files (default: spec) */
   test: string;
 };
-
-/** detail of linked/created configuration files and script templates  */
-export interface PresetAsset {
-  /** mapping of files to be generated to its configuration template files (key: file path relative to the target project's root, value: template path) */
-  template?: Record<string, string>;
-  /** list of templates that should not be created as symlinks */
-  noSymlinks?: string[];
-  /** path to the scripts template */
-  scripts?: string;
-  /** default variables */
-  variable?: Variable;
-}
 
 export const DEFAULT_VARIABLE: Variable = {
   root: '.',

@@ -50,5 +50,8 @@
     "presetter": "file:../presetter",
     "presetter-preset-strict": "file:../preset-strict",
     "type-fest": "^2.0.0"
+  },
+  "dependencies": {
+    "presetter-types": "file:../types"
   }
 }

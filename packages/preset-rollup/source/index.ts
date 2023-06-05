@@ -19,8 +19,9 @@ import { loadFile, template } from 'presetter';
 
 import { getRollupParameter } from './rollup';
 
+import type { PresetAsset } from 'presetter-types';
+
 import type { RollupConfig } from './rollup';
-import type { PresetAsset } from 'presetter';
 
 // paths to the template directory
 const TEMPLATES = resolve(__dirname, '..', 'templates');
