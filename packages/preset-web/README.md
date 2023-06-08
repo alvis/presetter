@@ -28,7 +28,7 @@
 
 [**FULL DOCUMENTATION IS AVAILABLE HERE**](https://github.com/alvis/presetter/blob/master/README.md)
 
-1. Bootstrap your project with `presetter-preset-essentials` & `presetter-preset-web`
+1. Bootstrap your project with `presetter-preset-esm` & `presetter-preset-web`
 
 ```shell
 npx presetter use presetter-preset presetter-preset-web
@@ -45,9 +45,9 @@ and now you can try to run some example life cycle scripts (e.g. run prepare).
 
 ## Project Structure
 
-After installation, your project file structure should resemble the following or with more configuration files if you also installed other presets such as [`presetter-preset-essentials`](https://github.com/alvis/presetter/blob/master/packages/preset-essentials).
+After installation, your project file structure should resemble the following or with more configuration files if you also installed other presets such as [`presetter-preset-esm`](https://github.com/alvis/presetter/blob/master/packages/preset-essentials).
 
-**NOTE** You will notice there's no additional configuration file on your root folder like other presets such as [`presetter-preset-essentials`](https://github.com/alvis/presetter/blob/master/packages/preset-essentials).
+**NOTE** You will notice there's no additional configuration file on your root folder like other presets such as [`presetter-preset-esm`](https://github.com/alvis/presetter/blob/master/packages/preset-essentials).
 It's because `presetter-preset-web` is a bundle only preset, meaning it only helps you to install the development packages specified in this preset only.
 
 ```
@@ -68,7 +68,7 @@ However, you are still required to specify the preset name in `.presetterrc` or 
 
 ```ts
 interface PresetterRC {
-  /** name(s) of the preset e.g. "presetter-preset-web" or ["presetter-preset-essentials", "presetter-preset-web", "presetter-preset-react"] */
+  /** name(s) of the preset e.g. "presetter-preset-web" or ["presetter-preset-esm", "presetter-preset-web", "presetter-preset-react"] */
   name: string | string[];
 }
 ```

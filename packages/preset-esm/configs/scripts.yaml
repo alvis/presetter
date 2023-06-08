@@ -1,6 +1,0 @@
-build:typescript: run-s build:typescript:mjs
-build:typescript:mjs: run-s build:typescript:mjs:*
-build:typescript:mjs:tsc: tsc -p tsconfig.build.json
-build:typescript:mjs:path: tsc-alias
-build:typescript:mjs:fix: tsc-esm-fix --sourceMap --target {output}
-test: NODE_OPTIONS=--experimental-vm-modules jest --config .jestrc.json --no-cache --passWithNoTests --verbose --logHeapUsage

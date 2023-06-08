@@ -29,7 +29,7 @@ What's more, what if you want to update configs for all projects? :man_facepalmi
 
 [**FULL DOCUMENTATION IS AVAILABLE HERE**](https://github.com/alvis/presetter/blob/master/README.md)
 
-1. Bootstrap your project with a preset (e.g. [presetter-preset-essentials](https://github.com/alvis/presetter/tree/master/packages/preset-essentials))
+1. Bootstrap your project with a preset (e.g. [presetter-preset-esm](https://github.com/alvis/presetter/tree/master/packages/preset-essentials))
 
 ```shell
 npx presetter use <preset package name>
@@ -135,11 +135,11 @@ Presetter support customization in two ways.
 #### Preset Customization
 
 If your preset support customization, you can supply the customization parameter via the `config` field in `.presetterrc`.
-e.g. For [presetter-preset-essentials](https://github.com/alvis/presetter/tree/master/packages/preset-essentials), you can adding an expression to `.gitignore` with the following in `.presetterrc`:
+e.g. For [presetter-preset-esm](https://github.com/alvis/presetter/tree/master/packages/preset-essentials), you can adding an expression to `.gitignore` with the following in `.presetterrc`:
 
 ```json
 {
-  "preset": "presetter-preset-essentials",
+  "preset": "presetter-preset-esm",
   "config": {
     "gitignore": ["<pattern to ignore>"]
   }

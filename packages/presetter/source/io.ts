@@ -30,7 +30,7 @@ import { dump, load } from 'js-yaml';
 import type { Template } from 'presetter-types';
 
 /** collection of options for file ios */
-interface IOOptions {
+export interface IOOptions {
   /** whether to overwrite existing files */
   force?: boolean;
 }

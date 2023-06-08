@@ -1,0 +1,26 @@
+bail: true
+collectCoverage: false
+collectCoverageFrom:
+  - '{source}/**/*.[jt]s'
+coverageReporters:
+  - text
+  - - lcov
+    - projectRoot: '{root}'
+globals:
+  ignoreCoverageForAllDecorators: true
+moduleNameMapper:
+  '#(.*)': '<rootDir>/{source}/$1'
+preset: ts-jest/presets/default-esm
+resetModules: false
+testEnvironment: node
+testMatch:
+  - '**/?(*.)+(spec).[jt]s'
+testPathIgnorePatterns:
+  - /node_modules/
+  - <rootDir>/{output}/
+transform:
+  '^.+\\.[jt]sx?$':
+    - ts-jest
+    - useESM: true
+      tsconfig:
+        allowJs: true

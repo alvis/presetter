@@ -19,7 +19,7 @@ What's more, what if you want to update configs for all projects? :man_facepalmi
 
 ## Quick Start
 
-1. Bootstrap your project with a preset (e.g. [presetter-preset-essentials](packages/preset-essentials))
+1. Bootstrap your project with a preset (e.g. [presetter-preset-esm](packages/preset-essentials))
 
 ```shell
 npx presetter use <preset package name>
@@ -107,7 +107,7 @@ presetter will generate a `package.json` with the content below before running t
 ### preset
 
 A preset is a collection of configuration to be shared.
-An example can be found in [presetter-preset-essentials](/packages/preset-essentials) which is also used for developing presetter and [other demo presets below](#demo-presets).
+An example can be found in [presetter-preset-esm](/packages/preset-essentials) which is also used for developing presetter and [other demo presets below](#demo-presets).
 
 A preset contains three parts:
 
@@ -220,12 +220,12 @@ There are many ways to create a preset. Checkout our example presets to learn mo
 
 | Preset                                                         | Description                                                                                                                                                                                                    |
 |----------------------------------------------------------------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| [presetter-preset-esm](/packages/preset-esm)                   | An extension of `presetter-preset-essentials` but loaded with tools to help you to develop an ESM application with ease.                                                                                       |
-| [presetter-preset-essentials](/packages/preset-essentials)     | A starter preset with lots of useful dev tools (e.g. eslint, jest etc.) bundled and configuration following the best practices.                                                                                |
-| [presetter-preset-hybrid](/packages/preset-hybrid)             | Another extension of `presetter-preset-essentials` aiming to help you to create a dual CommonJS/ESM package without all the pains.                                                                             |
+| [presetter-preset-cjs](/packages/preset-esm)                   | An extension of `presetter-preset-esm` but loaded with tools to help you to develop an commonjs project with ease.                                                                                       |
+| [presetter-preset-esm](/packages/preset-essentials)     | A starter preset with lots of useful dev tools (e.g. eslint, jest etc.) bundled and configuration following the best practices for a modern ESM project.                                                                                |
+| [presetter-preset-hybrid](/packages/preset-hybrid)             | Another extension of `presetter-preset-esm` aiming to help you to create a dual CommonJS/ESM package without all the pains.                                                                             |
 | [presetter-preset-react](/packages/preset-react)               | Want to control the output path of the generated files? or which template to use based on the context? `presetter-preset-react` is an example showing you how to generate your manifest programmatically.      |
 | [presetter-preset-rollup](/packages/preset-rollup)             | An advanced preset showing you how to generate a content based on consolidated configs.                                                                                                                        |
-| [presetter-preset-strict](/packages/preset-strict)             | Want to build a preset on top of an existing one? Check this out, it extends `presetter-preset-essentials` with extra rules.                                                                                   |
+| [presetter-preset-strict](/packages/preset-strict)             | Want to build a preset on top of an existing one? Check this out, it extends `presetter-preset-esm` with extra rules.                                                                                   |
 | [presetter-preset-web](/packages/preset-web)                   | Just want a preset with tools bundled? This one has only GraphQL, PostCSS and TailwindCSS bundled, with nothing extra.                                                                                         |
 | [@alvis/preset-gatsby](https://github.com/alvis/preset-gatsby) | How to make a preset without publishing it? Check out my personal preset. For my case, I can just use `presetter use https://github.com/alvis/preset-gatsby` to setup my dev environment for a Gatsby project. |
 

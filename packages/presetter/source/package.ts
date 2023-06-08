@@ -19,9 +19,9 @@ import { resolve } from 'node:path';
 import { Arborist } from '@npmcli/arborist';
 import Config from '@npmcli/config';
 
-import readPackageDetail from 'read-pkg-up';
+import readPackageUp from 'read-pkg-up';
 
-import type { NormalizedPackageJson } from 'read-pkg-up';
+import type { PackageJson } from 'type-fest';
 
 const NPM_VERSION_FOR_PEER_INSTALLATION = 7;
 
@@ -30,7 +30,7 @@ export type Package = {
   /** path to the package.json */
   path: string;
   /** content of package.json */
-  json: NormalizedPackageJson;
+  json: PackageJson;
 };
 
 /**
@@ -69,7 +69,7 @@ export function arePeerPackagesAutoInstalled(): boolean {
  */
 export async function getPackage(root?: string): Promise<Package> {
   // try to find the target project's package.json
-  const detail = await readPackageDetail({ cwd: root, normalize: true });
+  const detail = await readPackageUp({ cwd: root, normalize: true });
 
   // throw an error if there's no package.json found
   if (!detail) {
@@ -77,7 +77,7 @@ export async function getPackage(root?: string): Promise<Package> {
   }
 
   const path = detail.path;
-  const json = detail.packageJson;
+  const json = detail.packageJson as PackageJson;
 
   return { path, json };
 }

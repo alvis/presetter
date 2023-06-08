@@ -13,14 +13,18 @@
  * -------------------------------------------------------------------------
  */
 
-import { resolve } from 'node:path';
+import { dirname, resolve } from 'node:path';
+import { fileURLToPath } from 'node:url';
 
 import type { PresetAsset } from 'presetter-types';
 
+export type { PresetConfig, Variable } from 'presetter-preset-esm';
+
+const DIR = fileURLToPath(dirname(import.meta.url));
+
 // paths to the template directory
-const CONFIGS = resolve(__dirname, '..', 'configs');
-const TEMPLATES = resolve(__dirname, '..', 'templates');
-export type { PresetConfig, Variable } from 'presetter-preset-essentials';
+const CONFIGS = resolve(DIR, '..', 'configs');
+const TEMPLATES = resolve(DIR, '..', 'templates');
 
 /**
  * get the list of templates provided by this preset
@@ -28,7 +32,7 @@ export type { PresetConfig, Variable } from 'presetter-preset-essentials';
  */
 export default async function (): Promise<PresetAsset> {
   return {
-    extends: ['presetter-preset-essentials'],
+    extends: ['presetter-preset-esm'],
     supplementaryScripts: resolve(CONFIGS, 'scripts.yaml'),
     template: {
       /* eslint-disable @typescript-eslint/naming-convention */

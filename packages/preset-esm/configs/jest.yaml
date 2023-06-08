@@ -1,5 +1,0 @@
-preset: ts-jest/presets/default-esm
-transform:
-  '^.+\\.[jt]sx?$':
-    - ts-jest
-    - useESM: true

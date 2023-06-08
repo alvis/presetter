@@ -13,12 +13,15 @@
  * -------------------------------------------------------------------------
  */
 
-import { resolve } from 'node:path';
+import { dirname, resolve } from 'node:path';
+import { fileURLToPath } from 'node:url';
 
 import type { PresetAsset } from 'presetter-types';
 
+const DIR = dirname(fileURLToPath(import.meta.url));
+
 // paths to the template directory
-const TEMPLATES = resolve(__dirname, '..', 'templates');
+const TEMPLATES = resolve(DIR, '..', 'templates');
 
 /** config for this preset */
 export type PresetConfig = {
@@ -38,7 +41,7 @@ export const DEFAULT_VARIABLE = {
  */
 export default async function (): Promise<PresetAsset> {
   return {
-    extends: ['presetter-preset-essentials'],
+    extends: ['presetter-preset-esm'],
     template: {
       /* eslint-disable @typescript-eslint/naming-convention */
       '.eslintrc.json': resolve(TEMPLATES, 'eslintrc.yaml'),

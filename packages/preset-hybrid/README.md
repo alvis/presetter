@@ -16,9 +16,9 @@
 
 </div>
 
-**presetter-preset-hybrid** is an opinionated extension of [**presetter-preset-essentials**](https://github.com/alvis/presetter/tree/master/packages/preset-essentials) but aims to help you to create a dual CommonJS/ESM package without all the pains. As the same as presetter-preset-essentials, it's designed to help you get started with a typescript project in a fraction of time you usually take via [**presetter**](https://github.com/alvis/presetter).
+**presetter-preset-hybrid** is an opinionated extension of [**presetter-preset-esm**](https://github.com/alvis/presetter/tree/master/packages/preset-essentials) but aims to help you to create a dual CommonJS/ESM package without all the pains. As the same as presetter-preset-esm, it's designed to help you get started with a typescript project in a fraction of time you usually take via [**presetter**](https://github.com/alvis/presetter).
 
-With `presetter-preset-hybrid`, it provides everything bundled from presetter-preset-essentials, plus the ease of writing a hybrid CommonJS/ESM package.
+With `presetter-preset-hybrid`, it provides everything bundled from presetter-preset-esm, plus the ease of writing a hybrid CommonJS/ESM package.
 
 ## Features
 

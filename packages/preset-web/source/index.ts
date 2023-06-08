@@ -13,12 +13,15 @@
  * -------------------------------------------------------------------------
  */
 
-import { resolve } from 'node:path';
+import { dirname, resolve } from 'node:path';
+import { fileURLToPath } from 'node:url';
 
 import type { PresetAsset } from 'presetter-types';
 
+const DIR = fileURLToPath(dirname(import.meta.url));
+
 // paths to the template directory
-const CONFIGS = resolve(__dirname, '..', 'configs');
+const CONFIGS = resolve(DIR, '..', 'configs');
 
 /**
  * get the list of templates provided by this preset

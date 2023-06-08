@@ -15,7 +15,7 @@
 
 import { basename } from 'node:path';
 
-import { syntax } from 'mvdan-sh';
+import mvdan from 'mvdan-sh';
 
 import { mapValues } from './utilities';
 
@@ -29,6 +29,8 @@ type Command = string;
 
 /** collection of scripts */
 export type Script = Record<ScriptName, Command>;
+
+const { syntax } = mvdan;
 
 // shell command parser
 const parser = syntax.NewParser();

@@ -13,18 +13,25 @@
  * -------------------------------------------------------------------------
  */
 
-import { readdirSync } from 'node:fs';
-import { resolve } from 'node:path';
-import { loadDynamicMap, resolveContext } from 'presetter';
+import { existsSync, readdirSync } from 'node:fs';
+import { dirname, resolve } from 'node:path';
+import * as pathNode from 'node:path';
+import { fileURLToPath } from 'node:url';
 
-import getPresetAsset from '#index';
+import { jest } from '@jest/globals';
 
-jest.mock('node:path', () => ({
-  __esModule: true,
-  ...jest.requireActual('node:path'),
-  resolve: jest.fn(jest.requireActual('node:path').resolve),
+const __dir = fileURLToPath(dirname(import.meta.url));
+
+jest.unstable_mockModule('node:path', () => ({
+  ...pathNode,
+  // spy on resolve to check if a template is referenced
+  resolve: jest.fn(resolve),
 }));
 
+const { resolve: resolveSpyed } = await import('node:path');
+const { loadDynamicMap, resolveContext } = await import('presetter');
+
+const { default: getPresetAsset } = await import('#index');
 describe('fn:getPresetAsset', () => {
   it('use all templates', async () => {
     const asset = await getPresetAsset();
@@ -40,11 +47,16 @@ describe('fn:getPresetAsset', () => {
     await loadDynamicMap(asset.supplementaryConfig, context);
     await loadDynamicMap(asset.template, context);
 
-    const CONFIGS = resolve(__dirname, '..', 'configs');
-    const supplementaryConfig = await readdirSync(CONFIGS);
+    const CONFIGS = resolve(__dir, '..', 'configs');
+    const configs = (existsSync(CONFIGS) && readdirSync(CONFIGS)) || [];
+    const TEMPLATES = resolve(__dir, '..', 'templates');
+    const templates = (existsSync(TEMPLATES) && readdirSync(TEMPLATES)) || [];
 
-    for (const path of supplementaryConfig) {
-      expect(resolve).toBeCalledWith(CONFIGS, path);
+    for (const path of configs) {
+      expect(resolveSpyed).toBeCalledWith(CONFIGS, path);
+    }
+    for (const path of templates) {
+      expect(resolveSpyed).toBeCalledWith(TEMPLATES, path);
     }
   });
 });

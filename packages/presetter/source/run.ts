@@ -128,7 +128,7 @@ function getListrTasks(_: {
   const { template, pkg, selector, args } = _;
 
   // clone the content for immutability
-  const target = { ...pkg.json.scripts };
+  const target = { ...pkg.json.scripts } as Record<string, string>;
 
   // compose the script using the provided template and target
   const composed = composeScripts({ template, target });

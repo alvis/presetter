@@ -1,0 +1,60 @@
+compilerOptions:
+  # emittance
+  outDir: '{output}'
+  module: ESNext
+  target: ESNext
+  declaration: true
+  inlineSourceMap: true
+  noEmit: true
+  noImplicitUseStrict: false
+  preserveConstEnums: true
+  removeComments: true
+
+  # compatibility
+  allowSyntheticDefaultImports: true
+  esModuleInterop: true
+  experimentalDecorators: true
+  emitDecoratorMetadata: true
+  isolatedModules: false
+
+  # strict type check
+  alwaysStrict: true
+  noImplicitAny: false
+  noImplicitThis: false
+  strictBindCallApply: true
+  strictFunctionTypes: true
+  strictNullChecks: true
+  strictPropertyInitialization: true
+
+  # lint
+  allowUnreachableCode: false
+  allowUnusedLabels: false
+  forceConsistentCasingInFileNames: true
+  noImplicitReturns: true
+  noUnusedLocals: false
+  noUnusedParameters: false
+  noFallthroughCasesInSwitch: false
+  skipLibCheck: true
+
+  # module resolution
+  moduleResolution: node
+  resolveJsonModule: true
+  baseUrl: .
+  paths:
+    '#*':
+      - '{source}/*'
+    '*':
+      - '*'
+      - '{types}/*'
+
+  # libraries
+  lib:
+    - ES2020
+include:
+  - '**/*.json'
+  - '**/*.ts'
+  - '**/*.cts'
+  - '**/*.mts'
+exclude:
+  - '**/node_modules'
+  - '{output}'

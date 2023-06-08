@@ -13,7 +13,8 @@
  * -------------------------------------------------------------------------
  */
 
-import { resolve } from 'node:path';
+import { dirname, resolve } from 'node:path';
+import { fileURLToPath } from 'node:url';
 
 import { loadFile, template } from 'presetter';
 
@@ -23,9 +24,11 @@ import type { PresetAsset } from 'presetter-types';
 
 import type { RollupConfig } from './rollup';
 
+const DIR = fileURLToPath(dirname(import.meta.url));
+
 // paths to the template directory
-const TEMPLATES = resolve(__dirname, '..', 'templates');
-const CONFIGS = resolve(__dirname, '..', 'configs');
+const TEMPLATES = resolve(DIR, '..', 'templates');
+const CONFIGS = resolve(DIR, '..', 'configs');
 
 /** config for this preset */
 export type PresetConfig = {

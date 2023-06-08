@@ -17,6 +17,7 @@
   },
   "main": "lib/index.js",
   "types": "lib/index.d.ts",
+  "type": "module",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/alvis/presetter.git"
@@ -48,7 +49,6 @@
   },
   "devDependencies": {
     "presetter": "file:../presetter",
-    "presetter-preset-strict": "file:../preset-strict",
     "type-fest": "^2.0.0"
   },
   "dependencies": {

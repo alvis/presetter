@@ -28,7 +28,7 @@
 
 [**FULL DOCUMENTATION IS AVAILABLE HERE**](https://github.com/alvis/presetter/blob/master/README.md)
 
-1. Bootstrap your project with `presetter-preset-essentials` & `presetter-preset-react`
+1. Bootstrap your project with `presetter-preset-esm` & `presetter-preset-react`
 
 ```shell
 npx presetter use presetter-preset presetter-preset-react
@@ -45,7 +45,7 @@ and now you can try to run some example life cycle scripts (e.g. run prepare).
 
 ## Project Structure
 
-After installation, your project file structure should resemble the following or with more configuration files if you also installed other presets such as [`presetter-preset-essentials`](https://github.com/alvis/presetter/blob/master/packages/preset-essentials).
+After installation, your project file structure should resemble the following or with more configuration files if you also installed other presets such as [`presetter-preset-esm`](https://github.com/alvis/presetter/blob/master/packages/preset-essentials).
 
 Implement your business logic under `source` and prepare tests under `spec`. The `.d.ts` files are handy type definitions for you to import `.css` or image files in typescript.
 
@@ -86,7 +86,7 @@ interface PresetterRC {
   name: string | string[];
   /** additional configuration passed to the preset for generating the configuration files */
   config?: {
-    //  ┌─ configuration for other tools via other presets (e.g. presetter-preset-essentials)
+    //  ┌─ configuration for other tools via other presets (e.g. presetter-preset-esm)
     // ...
 
     /** configuration to be merged with .eslintrc */

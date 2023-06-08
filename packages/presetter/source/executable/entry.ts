@@ -17,9 +17,9 @@ import { existsSync } from 'node:fs';
 
 import yargs from 'yargs';
 
-import { bootstrapPreset, setupPreset, unsetPreset } from '#preset';
-import { run } from '#run';
-import { parseGlobalArgs, parseTaskSpec } from '#task';
+import { bootstrapPreset, setupPreset, unsetPreset } from '../preset';
+import { run } from '../run';
+import { parseGlobalArgs, parseTaskSpec } from '../task';
 
 import type { CommandModule } from 'yargs';
 
@@ -131,7 +131,7 @@ const unsetCommand: CommandModule = {
  * @returns the command entered together with its options
  */
 export async function entry(args: string[]): Promise<void> {
-  await yargs
+  await yargs()
     .parserConfiguration({
       // make sure flags after end-of-options flag `--` are stored under `--`, not `_`
       // eslint-disable-next-line @typescript-eslint/naming-convention

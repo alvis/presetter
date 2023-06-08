@@ -14,6 +14,7 @@
   "author": "Alvis HT Tang <alvis@hilbert.space>",
   "main": "lib/index.js",
   "types": "lib/index.d.ts",
+  "type": "module",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/alvis/presetter.git"
@@ -37,8 +38,7 @@
     "presetter": "^3.5.5"
   },
   "devDependencies": {
-    "presetter": "file:../presetter",
-    "presetter-preset-strict": "file:../preset-strict"
+    "presetter": "file:../presetter"
   },
   "dependencies": {
     "presetter-types": "file:../types"

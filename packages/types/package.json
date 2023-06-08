@@ -14,12 +14,13 @@
   "author": "Alvis HT Tang <alvis@hilbert.space>",
   "main": "lib/index.js",
   "types": "lib/index.d.ts",
+  "type": "module",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/alvis/presetter.git"
   },
   "scripts": {
-    "prebootstrap": "tsc --declaration --moduleResolution node --module commonjs --target es2017 --outdir lib source/index.ts",
+    "prebootstrap": "tsc --declaration --moduleResolution node --module esnext --target esnext --outdir lib source/index.ts",
     "bootstrap": "presetter bootstrap",
     "build": "run build",
     "lint": "run lint --",

@@ -38,7 +38,7 @@
 
 [**FULL DOCUMENTATION IS AVAILABLE HERE**](https://github.com/alvis/presetter/blob/master/README.md)
 
-1. Bootstrap your project with `presetter-preset-essentials` & `presetter-preset-rollup`
+1. Bootstrap your project with `presetter-preset-esm` & `presetter-preset-rollup`
 
 ```shell
 npx presetter use presetter-preset presetter-preset-rollup
@@ -72,7 +72,7 @@ For NodeJS to import the correct export, remember to specify the following in yo
 
 ## Project Structure
 
-After installation, your project file structure should resemble the following or with more configuration files if you also installed other presets such as [`presetter-preset-essentials`](https://github.com/alvis/presetter/blob/master/packages/preset-essentials).
+After installation, your project file structure should resemble the following or with more configuration files if you also installed other presets such as [`presetter-preset-esm`](https://github.com/alvis/presetter/blob/master/packages/preset-essentials).
 
 Implement your business logic under `source` and prepare tests under `spec`.
 
@@ -108,7 +108,7 @@ interface PresetterRC {
   name: string | string[];
   /** additional configuration passed to the preset for generating the configuration files */
   config?: {
-    //  ┌─ configuration for other tools via other presets (e.g. presetter-preset-essentials)
+    //  ┌─ configuration for other tools via other presets (e.g. presetter-preset-esm)
     // ...
 
     /** additional configuration for rollup */
