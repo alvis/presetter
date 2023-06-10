@@ -28,8 +28,6 @@
     "coverage": "run coverage --",
     "lint": "run lint --",
     "prepublishOnly": "run prepare && run prepublishOnly",
-    "release": "run-s release:peer:*",
-    "release:peer:presetter": "npm pkg set peerDependencies.presetter=^$(npx -c 'echo $npm_package_version')",
     "test": "run test --",
     "watch": "run watch --"
   },
@@ -40,7 +38,7 @@
     "@rollup/plugin-json": "^4.0.0",
     "@rollup/plugin-node-resolve": "^13.0.0",
     "@rollup/plugin-yaml": "^3.0.0",
-    "presetter": "^3.5.5",
+    "presetter": "workspace:*",
     "rollup": "^2.0.0",
     "rollup-plugin-postcss": "^4.0.0",
     "rollup-plugin-ts": "^3.0.0",
@@ -48,10 +46,10 @@
     "rollup-plugin-visualizer": "^5.0.0"
   },
   "devDependencies": {
-    "presetter": "file:../presetter",
-    "type-fest": "^2.0.0"
+    "presetter": "workspace:*"
   },
   "dependencies": {
-    "presetter-types": "file:../types"
+    "presetter-types": "workspace:*",
+    "type-fest": "^2.0.0"
   }
 }

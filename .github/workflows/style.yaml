@@ -14,9 +14,16 @@ jobs:
         uses: actions/setup-node@v3
         with:
           node-version: lts/*
+      - name: cache node_modules
+        uses: actions/cache@v3
+        with:
+          path: node_modules
+          key: ${{ runner.os }}-dependencies-${{ hashFiles('pnpm-lock.yaml') }}
+      - name: enable corepack
+        run: corepack enable
       - name: install dependencies
-        run: npm ci
+        run: pnpm install
       - name: run code style check
-        run: npm run lint --if-present
+        run: pnpm run lint 
         env:
           CI: true

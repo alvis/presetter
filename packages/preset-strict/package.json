@@ -20,15 +20,12 @@
     "url": "git+https://github.com/alvis/presetter.git"
   },
   "scripts": {
-    "prebootstrap": "tsc --declaration --moduleResolution node --module esnext --target esnext --outdir lib source/index.ts",
-    "bootstrap": "presetter bootstrap",
+    "bootstrap": "tsc --declaration --moduleResolution node --module esnext --target esnext --outdir lib source/index.ts",
+    "postbootstrap": "presetter bootstrap",
     "build": "run build",
     "coverage": "run coverage --",
     "lint": "run lint --",
     "prepublishOnly": "run prepare && run prepublishOnly",
-    "release": "run-s release:peer:*",
-    "release:peer:presetter": "npm pkg set peerDependencies.presetter=^$(npx -c 'echo $npm_package_version')",
-    "release:peer:preset-esm": "npm pkg set peerDependencies.presetter-preset-esm=^$(npx -c 'echo $npm_package_version')",
     "test": "run test --",
     "watch": "run watch --"
   },
@@ -36,7 +33,9 @@
     "eslint-plugin-header": "^3.0.0",
     "eslint-plugin-no-secrets": "^0.8.0",
     "eslint-plugin-sonarjs": "^0.14.0",
-    "presetter": "^3.5.5",
-    "presetter-preset-esm": "^3.5.5"
+    "presetter-preset-esm": "workspace:*"
+  },
+  "dependencies": {
+    "presetter-types": "workspace:*"
   }
 }

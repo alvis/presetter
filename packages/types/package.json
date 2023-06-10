@@ -20,13 +20,11 @@
     "url": "git+https://github.com/alvis/presetter.git"
   },
   "scripts": {
-    "prebootstrap": "tsc --declaration --moduleResolution node --module esnext --target esnext --outdir lib source/index.ts",
-    "bootstrap": "presetter bootstrap",
+    "bootstrap": "tsc --declaration --moduleResolution node --module esnext --target esnext --outdir lib source/index.ts",
+    "postbootstrap": "presetter bootstrap",
     "build": "run build",
     "lint": "run lint --",
-    "prepublishOnly": "run prepare && run prepublishOnly",
-    "release": "run-s release:peer:*",
-    "release:peer:presetter": "npm pkg set peerDependencies.presetter=^$(npx -c 'echo $npm_package_version')"
+    "prepublishOnly": "run prepare && run prepublishOnly"
   },
   "dependencies": {
     "type-fest": "^2.0.0"

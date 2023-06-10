@@ -25,17 +25,17 @@
     "coverage": "run coverage",
     "lint": "run lint",
     "prepublishOnly": "run prepare && run prepublishOnly",
-    "release": "run-s release:peer:*",
-    "release:peer:presetter": "npm pkg set peerDependencies.presetter=^$(npx -c 'echo $npm_package_version')",
-    "release:peer:preset-esm": "npm pkg set peerDependencies.presetter-preset-esm=^$(npx -c 'echo $npm_package_version')",
     "test": "run test",
     "watch": "run watch"
   },
   "peerDependencies": {
-    "presetter": "^3.5.5",
-    "presetter-preset-esm": "^3.5.5"
+    "presetter": "workspace:*",
+    "presetter-preset-esm": "workspace:*"
+  },
+  "devDependencies": {
+    "presetter": "workspace:*"
   },
   "dependencies": {
-    "presetter-types": "file:../types"
+    "presetter-types": "workspace:*"
   }
 }

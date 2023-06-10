@@ -18,15 +18,21 @@ jobs:
         uses: actions/setup-node@v3
         with:
           node-version: lts/*
-          cache: npm
       - name: install code climate reporter
         run: |
           curl -L https://codeclimate.com/downloads/test-reporter/test-reporter-latest-linux-amd64 > /tmp/cc-test-reporter
           chmod +x /tmp/cc-test-reporter
+      - name: cache node_modules
+        uses: actions/cache@v3
+        with:
+          path: node_modules
+          key: ${{ runner.os }}-dependencies-${{ hashFiles('pnpm-lock.yaml') }}
+      - name: enable corepack
+        run: corepack enable
       - name: install dependencies
-        run: npm ci
+        run: pnpm install
       - name: run coverage
-        run: npm run coverage
+        run: pnpm run coverage
         env:
           CI: true
       - name: upload coverage

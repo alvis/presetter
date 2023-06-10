@@ -15,9 +15,15 @@ jobs:
         uses: actions/setup-node@v3
         with:
           node-version: lts/*
-          cache: npm
+      - name: enable corepack
+        run: corepack enable
+      - name: cache node_modules
+        uses: actions/cache@v3
+        with:
+          path: node_modules
+          key: ${{ runner.os }}-dependencies-${{ hashFiles('pnpm-lock.yaml') }}
       - name: install dependencies
-        run: npm ci
+        run: pnpm install
       - name: publish the release note
         run: npx github-release-from-changelog
         env:
@@ -27,4 +33,4 @@ jobs:
         env:
           NPM_AUTH_TOKEN: ${{ secrets.NPM_AUTH_TOKEN }}
       - name: publish the package
-        run: npm publish --provenance --workspaces --verbose
+        run: pnpm --recursive publish
