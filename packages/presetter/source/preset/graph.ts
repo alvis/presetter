@@ -24,6 +24,7 @@ import type {
  * get assets from a preset
  * @param name name of the preset
  * @param context context about the target project and customization in .presetterrc
+ * @returns assets from the preset
  */
 export async function getPresetAsset(
   name: string,

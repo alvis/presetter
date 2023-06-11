@@ -149,6 +149,7 @@ function getListrTasks(_: {
  * @param _.args array of arguments
  * @param _.pkg detail of package.json
  * @param _.composedScript combined script definitions
+ * @returns a promise that will be resolved when the task is completed
  */
 async function runWithNPM(_: {
   task: string;
