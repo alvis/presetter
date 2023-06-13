@@ -180,20 +180,15 @@ function transformConfigValue(key: string, value: unknown): unknown {
 function objectifyPlugins(
   plugins: PluginManifest,
 ): IntermediateRollupConfig['plugins'] {
-  const normalizedPlugin: PluginObject = {};
-
   const pluginList: PluginConfiguration[] = Array.isArray(plugins)
     ? arrayToPluginConfiguration(plugins)
     : objectToPluginConfiguration(plugins);
 
-  for (const [name, options] of pluginList) {
-    Object.assign(
-      normalizedPlugin,
+  return pluginList.reduce(
+    (normalizedPlugin, [name, options]) =>
       merge(normalizedPlugin, { [name]: options }),
-    );
-  }
-
-  return normalizedPlugin;
+    {},
+  );
 }
 
 /**
