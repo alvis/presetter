@@ -17,7 +17,7 @@ import { basename, extname } from 'node:path';
 
 import pupa from 'pupa';
 
-import type { IgnorePath, IgnoreRule } from 'presetter-types';
+import type { IgnorePath, IgnoreRule, PrimitiveEntity } from 'presetter-types';
 import type { JsonObject, JsonValue } from 'type-fest';
 
 type MergedType<A, B> = A extends JsonObject
@@ -124,7 +124,7 @@ export function isJSON(subject: unknown): subject is JsonObject {
  * @param target properties to be merged with the default
  * @returns merged object
  */
-export function merge<S extends JsonValue, T extends JsonValue>(
+export function merge<S extends JsonValue, T extends PrimitiveEntity>(
   source: S,
   target?: T,
 ): MergedType<S, T> {
@@ -149,7 +149,7 @@ export function merge<S extends JsonValue, T extends JsonValue>(
  * @param target new replacement
  * @returns merged value
  */
-export function mergeArray<S extends JsonValue, T extends JsonValue>(
+export function mergeArray<S extends JsonValue, T extends PrimitiveEntity>(
   source: S[],
   target?: T,
 ): MergedArray<S[], T> {
@@ -213,7 +213,7 @@ export function mergeArrays<S extends JsonValue, T extends JsonValue>(
  * @param target new replacement
  * @returns merged value
  */
-export function mergeObject<S extends JsonObject, T extends JsonValue>(
+export function mergeObject<S extends JsonObject, T extends PrimitiveEntity>(
   source: S,
   target?: T,
 ): MergedType<S, T> {
