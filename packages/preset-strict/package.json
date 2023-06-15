@@ -32,7 +32,7 @@
   "peerDependencies": {
     "eslint-plugin-header": "^3.0.0",
     "eslint-plugin-no-secrets": "^0.8.0",
-    "eslint-plugin-sonarjs": "^0.14.0",
+    "eslint-plugin-sonarjs": "^0.19.0",
     "presetter-preset-esm": "workspace:*"
   },
   "dependencies": {

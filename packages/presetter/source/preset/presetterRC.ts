@@ -16,7 +16,7 @@
 import { existsSync, writeFileSync } from 'node:fs';
 import { dirname, resolve } from 'node:path';
 
-import readPackageUp from 'read-pkg-up';
+import { readPackageUp } from 'read-pkg-up';
 
 import { loadFile } from '../io';
 import { isJSON, merge } from '../template';

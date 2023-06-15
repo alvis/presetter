@@ -16,8 +16,8 @@
 import { info } from 'node:console';
 import { dirname } from 'node:path';
 
-import readPackage from 'read-pkg';
-import writePackage from 'write-pkg';
+import { readPackage } from 'read-pkg';
+import { writePackage } from 'write-pkg';
 
 import {
   arePeerPackagesAutoInstalled,

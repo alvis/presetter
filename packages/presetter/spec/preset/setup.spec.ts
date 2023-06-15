@@ -26,7 +26,7 @@ jest.unstable_mockModule('node:console', () => ({
 }));
 
 jest.unstable_mockModule('read-pkg', () => ({
-  default: jest
+  readPackage: jest
     .fn()
     .mockReturnValueOnce({
       devDependencies: {
@@ -44,7 +44,7 @@ jest.unstable_mockModule('read-pkg', () => ({
 }));
 
 jest.unstable_mockModule('write-pkg', () => ({
-  default: jest.fn(),
+  writePackage: jest.fn(),
 }));
 
 jest.unstable_mockModule('#package', () => ({
@@ -77,7 +77,7 @@ mockContext();
 mockIO();
 mockModuleResolution();
 
-const { default: writePackage } = await import('write-pkg');
+const { writePackage } = await import('write-pkg');
 const { arePeerPackagesAutoInstalled, reifyDependencies } = await import(
   '#package'
 );

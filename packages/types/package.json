@@ -27,6 +27,6 @@
     "prepublishOnly": "run prepare && run prepublishOnly"
   },
   "dependencies": {
-    "type-fest": "^2.0.0"
+    "type-fest": "^3.12.0"
   }
 }

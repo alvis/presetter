@@ -16,10 +16,10 @@
 import { jest } from '@jest/globals';
 
 jest.unstable_mockModule('read-pkg-up', () => ({
-  default: jest.fn(),
+  readPackageUp: jest.fn(),
 }));
 
-const { default: readPackageUp } = await import('read-pkg-up');
+const { readPackageUp } = await import('read-pkg-up');
 
 const { getPackage } = await import('#package');
 describe('fn:getPackage', () => {

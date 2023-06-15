@@ -29,7 +29,7 @@ ignorePatterns:
   - '**/*.js'
 rules:
   # Documentation
-  jsdoc/newline-after-description: # doesn't need a new line after description
+  jsdoc/tag-lines: # doesn't need a new line after each description
     - error
     - never
   jsdoc/require-description: # a description is a must

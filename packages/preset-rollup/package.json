@@ -32,14 +32,14 @@
     "watch": "run watch --"
   },
   "peerDependencies": {
-    "@rollup/plugin-commonjs": "^22.0.0",
-    "@rollup/plugin-graphql": "^1.0.0",
-    "@rollup/plugin-image": "^2.0.0",
-    "@rollup/plugin-json": "^4.0.0",
-    "@rollup/plugin-node-resolve": "^13.0.0",
-    "@rollup/plugin-yaml": "^3.0.0",
+    "@rollup/plugin-commonjs": "^25.0.0",
+    "@rollup/plugin-graphql": "^2.0.0",
+    "@rollup/plugin-image": "^3.0.0",
+    "@rollup/plugin-json": "^6.0.0",
+    "@rollup/plugin-node-resolve": "^15.0.0",
+    "@rollup/plugin-yaml": "^4.0.0",
     "presetter": "workspace:*",
-    "rollup": "^2.0.0",
+    "rollup": "^3.0.0",
     "rollup-plugin-postcss": "^4.0.0",
     "rollup-plugin-ts": "^3.0.0",
     "rollup-plugin-tsconfig-paths": "^1.0.0",
@@ -50,6 +50,6 @@
   },
   "dependencies": {
     "presetter-types": "workspace:*",
-    "type-fest": "^2.0.0"
+    "type-fest": "^3.12.0"
   }
 }

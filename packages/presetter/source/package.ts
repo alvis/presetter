@@ -19,7 +19,7 @@ import { resolve } from 'node:path';
 import { Arborist } from '@npmcli/arborist';
 import Config from '@npmcli/config';
 
-import readPackageUp from 'read-pkg-up';
+import { readPackageUp } from 'read-pkg-up';
 
 import type { PackageJson } from 'type-fest';
 

@@ -20,7 +20,7 @@ import { posix, relative, resolve, sep } from 'node:path';
 import { mockIO } from './mock';
 
 jest.unstable_mockModule('read-pkg-up', () => ({
-  default: jest.fn(({ cwd }: { cwd: string }) => {
+  readPackageUp: jest.fn(({ cwd }: { cwd: string }) => {
     // ensure that the paths below is compatible with windows
     const posixPath = relative(resolve('/'), cwd).split(sep).join(posix.sep);
     switch (posixPath) {
