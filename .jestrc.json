@@ -1,0 +1,6 @@
+{
+  "coverageReporters": ["lcov", "text"],
+  "projects": [
+    "<rootDir>/packages/*/.jestrc.json"
+  ]
+}
