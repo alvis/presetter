@@ -1,6 +1,17 @@
 {
   "preset": "presetter-preset-strict",
   "config": {
+    "jest": {
+      "coverageReporters": [
+        "text",
+        [
+          "lcov",
+          {
+            "projectRoot": "{root}"
+          }
+        ]
+      ]
+    },
     "npmignore": ["!/configs/**", "!/templates/**"]
   },
   "variable": {

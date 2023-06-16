@@ -1,11 +1,3 @@
-bail: true
-collectCoverage: false
-collectCoverageFrom:
-  - '{source}/**/*.[jt]s'
-coverageReporters:
-  - text
-  - - lcov
-    - projectRoot: '{root}'
 globals:
   ignoreCoverageForAllDecorators: true
 moduleNameMapper:
