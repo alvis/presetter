@@ -23,4 +23,4 @@ plugins:
   - - '@apply rollup-plugin-postcss[default]'
     - inject:
         insertAt: top
-  - '@apply rollup-plugin-visualizer[default]'
+  - '@apply rollup-plugin-visualizer[visualizer]'
