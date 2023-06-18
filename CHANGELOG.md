@@ -2,6 +2,74 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+# [4.0.0](https://github.com/alvis/presetter/compare/v3.5.5...v4.0.0) (2023-06-18)
+
+
+### ✨ Features
+
+* convert the whole project into ESM ([381c84f](https://github.com/alvis/presetter/commit/381c84f59605faf9ce6c2b3f81c2eea81bfebc61))
+* drop support for node 12, 14 ([ee5c261](https://github.com/alvis/presetter/commit/ee5c26193a50a66c24c0b86e32f5f6f7984dc04f))
+* **preset-essentials:** make build-in modules imported first ([aa2aedd](https://github.com/alvis/presetter/commit/aa2aeddbf328c89d9707a0e388995b5d3bfc7fba))
+* **preset-essentials:** update jest and ts-jest to v29 ([b0f215b](https://github.com/alvis/presetter/commit/b0f215b70e15512d3e842669e9e23f8046196659))
+* **presetter:** add a force flag to the CLI ([b065fa6](https://github.com/alvis/presetter/commit/b065fa6e6a86ea7157fa93f9960c964a0fed42b6))
+* **presetter:** load presetterrc.json recursively ([c6b3eb2](https://github.com/alvis/presetter/commit/c6b3eb2bc721584c70862d395c17f09023b1f13b))
+* **presetter:** load presetterrc.json recursively ([4725620](https://github.com/alvis/presetter/commit/47256203824c37a39eac707bfb84a75cd36c6f1a))
+* **presetter:** run tasks without a temporary package.json ([6c404b3](https://github.com/alvis/presetter/commit/6c404b3d3ac4b7463961ac8898c7c4803c6ebe7c))
+* **types:** separate types from presetter ([4ff3626](https://github.com/alvis/presetter/commit/4ff3626d915649208067b2235645e8534508f341))
+
+
+### 🐛 Bug Fixes
+
+* **preset-esm:** remove unnecessary jest configs ([c1b2ee5](https://github.com/alvis/presetter/commit/c1b2ee5eedfcef4b11c230e6dba402be4c6e51bd))
+* **preset-esm:** run parent tasks only when they are available ([1f0b1db](https://github.com/alvis/presetter/commit/1f0b1db19d5207085e52c6dba12335360da5bb6f))
+* **preset-essentials:** ensure the exact path is also searched ([ca08946](https://github.com/alvis/presetter/commit/ca08946117ed11eef5844411ae4279a13e91cb39))
+* **preset-react:** remove react exclusion from rollup ([8f1d565](https://github.com/alvis/presetter/commit/8f1d5658d01917e6f1216c8f9e74bb97ef1fec11))
+* **preset-rollup:** inject NODE_ENV for build and develop stages ([b09ade5](https://github.com/alvis/presetter/commit/b09ade516250b8b5256d7f3d52ab1a30102607b5))
+* **preset-rollup:** make the rollup preset compatible with ESM ([86154b8](https://github.com/alvis/presetter/commit/86154b8daaf7e3f97c1a93753416263fe7b086dc))
+* **presetter:** add primitive types that allow undefined values ([915cf07](https://github.com/alvis/presetter/commit/915cf0708b320fc57754156eef4d6baf696c4a60))
+* **presetter:** avoid infinite script running loop ([99d5a58](https://github.com/alvis/presetter/commit/99d5a5844fb08b613bb4305dde0e94cf0c6cebff))
+* **presetter:** correct the wording for `use` ([ee32c69](https://github.com/alvis/presetter/commit/ee32c6951e0d41ff34f5dadf737caaf8b441a412))
+* **presetter:** import preset's entry file instead of directory ([de6b818](https://github.com/alvis/presetter/commit/de6b818b007b6f3cbeb916dacec084933fbef7c0))
+* **presetter:** remove all insecure lodash usages ([92b6f5b](https://github.com/alvis/presetter/commit/92b6f5b6700635605dcdf771fcd4c67456aace43))
+* **presetter:** stop any generated text templates being merged ([449a41d](https://github.com/alvis/presetter/commit/449a41df65dc6dc89ccbf92c5677faa374270101))
+* **presetter:** update [@npm](https://github.com/npm) packages ([2110af0](https://github.com/alvis/presetter/commit/2110af0bf476806faded9f3c6649fc6ad943c091))
+* **presetter:** update existing symlinks upon bootstraping ([03b928f](https://github.com/alvis/presetter/commit/03b928f38d83e78e452350eb3f0e4b48b5187b5d))
+* **presetter:** update existing symlinks upon bootstraping ([ace88a8](https://github.com/alvis/presetter/commit/ace88a83ee0986f893a3a04b6bbfc5e2e8a5f2b1))
+* update outdated packages ([bbaf33f](https://github.com/alvis/presetter/commit/bbaf33f0eaeaeca2c296cfc68207b4ff4632674f))
+
+
+### 🛠 Builds
+
+* **presetter:** fix the coverage command to accept extra agruments ([5be8431](https://github.com/alvis/presetter/commit/5be8431c1496881cb418a09e3a6c8bdea0810a1f))
+* release with provenance statements ([f1a58fc](https://github.com/alvis/presetter/commit/f1a58fcb565f3b391ae1757d3e71df4ec789f570))
+
+
+### 📦 Code Refactoring
+
+* **preset-rollup:** normalize config in functional way ([f6b3815](https://github.com/alvis/presetter/commit/f6b3815a13309791852ba2442e0a48e6531f8d45))
+
+
+### ♻️ Chores
+
+* allow tests can be done individually ([b86f6ee](https://github.com/alvis/presetter/commit/b86f6eef689f7783a2a19841eaadf6e581dbb649))
+* make essential presets available before presetter ([9feb4ac](https://github.com/alvis/presetter/commit/9feb4acf20ef1f1745ec037c29b261250ab53853))
+* setup jest for this monorepo ([26dbe54](https://github.com/alvis/presetter/commit/26dbe54e33a8c6c133627fdf1df8b20d131c155f))
+* use pnpm for workspace management ([358d0d7](https://github.com/alvis/presetter/commit/358d0d77cdc2b37affb36931f13568464f1a46ab))
+
+
+### 💎 Styles
+
+* make any node build-in modules explicitly imported first ([90730f2](https://github.com/alvis/presetter/commit/90730f2dfd27a6a6f1fbceb26ac5fb974e11508e))
+
+
+### Breaking changes
+
+* - by default, client project emit ESM and for clarity preset-essentials has been renamed to preset-esm
+- ts-node is removed in favor of a more powerful and less buggy tsx
+* Node 12 and 14 are no longer supported as they have approached EOF
+
+
+
 ## [3.5.5](https://github.com/alvis/presetter/compare/v3.5.4...v3.5.5) (2023-03-31)
 
 

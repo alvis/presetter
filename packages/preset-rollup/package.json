@@ -1,6 +1,6 @@
 {
   "name": "presetter-preset-rollup",
-  "version": "3.5.5",
+  "version": "4.0.0",
   "description": "An opinionated presetter preset for using rollup as a bundler",
   "keywords": [
     "presetter",

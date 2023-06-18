@@ -1,6 +1,6 @@
 {
   "name": "presetter-preset-cjs",
-  "version": "3.5.5",
+  "version": "4.0.0",
   "description": "An opinionated presetter preset for an commonjs package",
   "keywords": [
     "presetter",

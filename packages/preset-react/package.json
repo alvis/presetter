@@ -1,6 +1,6 @@
 {
   "name": "presetter-preset-react",
-  "version": "3.5.5",
+  "version": "4.0.0",
   "description": "An opinionated presetter preset for a React project",
   "keywords": [
     "presetter",
