@@ -2,6 +2,15 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [4.0.1](https://github.com/alvis/presetter/compare/v4.0.0...v4.0.1) (2023-06-21)
+
+
+### 🐛 Bug Fixes
+
+* **preset-esm:** make staging file path after -- ([62ae558](https://github.com/alvis/presetter/commit/62ae558bcd343d74f996f3007485133f2a47c13d))
+
+
+
 # [4.0.0](https://github.com/alvis/presetter/compare/v3.5.5...v4.0.0) (2023-06-18)
 
 
