@@ -1,2 +1,2 @@
 '{source}/**/*.[tj]s':
-  - presetter run stage
+  - presetter run stage --
