@@ -1,5 +1,3 @@
-collectCoverageFrom:
-  - '{source}/**/*.[jt]sx'
 testEnvironment: jsdom
 testMatch:
   - '**/?(*.)+(spec).[jt]sx'

@@ -87,6 +87,7 @@ const supplementaryConfig: PresetAsset['supplementaryConfig'] = {
  */
 export default async function (): Promise<PresetAsset> {
   return {
+    scripts: resolve(TEMPLATES, 'scripts.yaml'),
     template,
     noSymlinks,
     supplementaryConfig,
