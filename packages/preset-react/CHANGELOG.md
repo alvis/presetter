@@ -2,6 +2,20 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+# [4.1.0](https://github.com/alvis/presetter/compare/v4.0.1...v4.1.0) (2023-07-13)
+
+
+### ✨ Features
+
+* **preset-esm:** make bootstrap part of the setup procedure ([313c0d1](https://github.com/alvis/presetter/commit/313c0d1df0ba41318a8b3f68e6a50dc1f2dc04fa))
+
+
+### 🐛 Bug Fixes
+
+* **preset-react:** remove monorepo incompatible jest configuration ([c554eb2](https://github.com/alvis/presetter/commit/c554eb2afdec35d5c1728de3b5065042b3b4b386))
+
+
+
 ## [4.0.1](https://github.com/alvis/presetter/compare/v4.0.0...v4.0.1) (2023-06-21)
 
 
