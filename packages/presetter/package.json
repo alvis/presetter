@@ -39,7 +39,7 @@
     "clean": "npm run script -- clean",
     "coverage": "npm run script -- coverage --",
     "lint": "npm run script -- lint",
-    "prepare": "npm run script -- prepare",
+    "prepare": "npm run script -- build",
     "prepublishOnly": "npm run prepare && npm run script -- prepublishOnly",
     "script": "tsx --eval \"process.argv = [...process.argv.slice(0, 2), 'run', ...process.argv.slice(2)]; require('./source/executable');\" -- run --template",
     "stage": "npm run script -- stage --",

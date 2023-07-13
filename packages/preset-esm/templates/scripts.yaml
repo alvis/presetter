@@ -20,6 +20,7 @@ prepublishOnly: run-s coverage lint
 release: standard-version --preset metahub
 setup: run-s setup:*
 setup:husky: (husky install && husky set .husky/pre-commit "npx lint-staged --concurrent=false") || true
+setup:presetter: presetter bootstrap
 stage: run-p "stage:* -- {@}" --
 stage:lint: run-s "lint:prettier -- {@}" --
 start: run-p "build:typescript -- -w" "build:types:* -- -w"

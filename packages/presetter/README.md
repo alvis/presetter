@@ -112,7 +112,7 @@ you can set life cycle scripts in `package.json` to something like
     "build": "run build",
     "coverage": "run coverage",
     "lint": "run lint",
-    "prepare": "presetter bootstrap && run prepare",
+    "prepare": "run prepare",
     "prepublishOnly": "run prepublishOnly",
     "release": "run release --",
     "test": "run test --",
