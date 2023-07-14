@@ -16,6 +16,7 @@
 import { basename } from 'node:path';
 
 import mvdan from 'mvdan-sh';
+import parse from 'yargs-parser';
 
 import { mapValues } from './utilities';
 
@@ -108,13 +109,14 @@ function isNodeType(node: Node, type: string): boolean {
  * @returns the resolved command
  */
 function resolveRunner(command: string, context: ScriptContext): string {
-  const parts = command.split(' ');
+  const arg = parse(command, {
+    // eslint-disable-next-line @typescript-eslint/naming-convention
+    configuration: { 'populate--': true, 'unknown-options-as-args': true },
+  });
 
   // extract tasks and their arguments
-  const destinations = parts.slice(1).filter((task) => !task.startsWith('-'));
-  const destinationArgs = parts.filter(
-    (part) => part !== '--' && part.startsWith('-'),
-  );
+  const destinations = arg['_'].slice(1);
+  const destinationArgs = arg['--'] ?? [];
 
   // resolve tasks into its full form e.g. task1 task2
   return destinations
@@ -144,7 +146,7 @@ function replaceRunnerNode(node: Node, context: ScriptContext): boolean {
   // replace only it's a runner call, not anything else
   if (isNodeType(node, 'Stmt') && isNodeType(node.Cmd, 'CallExpr')) {
     // parse assigned arguments e.g. task1 args --help
-    const parts: string[] = node.Cmd.Args.map((part) => part.Parts[0].Value);
+    const parts: string[] = node.Cmd.Args.map((part) => part.Lit());
 
     // only resolve if the `run` cli shipped in this package is invoke
     if (basename(parts[0]) === 'run') {

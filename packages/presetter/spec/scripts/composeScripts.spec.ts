@@ -50,7 +50,7 @@ function should(
 ): void {
   const { template, target, result } = detail;
 
-  it(`description`, () => {
+  it(description, () => {
     const compute = () =>
       composeScripts({
         template,
@@ -136,34 +136,18 @@ describe('fn:composeScript', () => {
       },
     });
 
-    should('attach arguments (ordinary)', {
+    should('attach arguments', {
       template: {
         self: 'self --arg-template',
         other: 'other --arg-template',
       },
       target: {
         // replace itself with additional arguments
-        self: 'run self --arg-package',
-        other: 'run other --arg-package',
-      },
-      result: {
-        self: 'self --arg-template --arg-package',
-        other: 'other --arg-template --arg-package',
-      },
-    });
-
-    should('attach arguments (delimited)', {
-      template: {
-        self: 'self --arg-template',
-        other: 'other --arg-template',
-      },
-      target: {
-        // replace itself with additional arguments
-        self: 'run self -- --arg-package',
+        self: 'run self -- --arg-package --extra=value custom',
         other: 'run other -- --arg-package',
       },
       result: {
-        self: 'self --arg-template --arg-package',
+        self: 'self --arg-template --arg-package --extra=value custom',
         other: 'other --arg-template --arg-package',
       },
     });

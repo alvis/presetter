@@ -55,7 +55,10 @@ function createListrTask(_: {
       const command = composed[task];
 
       // parse the command and extract the executable and task specifications
-      const argv = parse(command);
+      const argv = parse(command, {
+        // eslint-disable-next-line @typescript-eslint/naming-convention
+        configuration: { 'populate--': true, 'unknown-options-as-args': true },
+      });
       const [executable, ...taskSpecs] = argv._.map((arg) => arg.toString());
 
       // check if the executable is 'run-s' or 'run-p'

@@ -31,7 +31,7 @@ jest.unstable_mockModule('#package', () => ({
     json: {
       scripts: {
         custom: 'custom command',
-        task: 'run task --arg-package',
+        task: 'run task -- --arg-package',
         other: 'run other -- --arg-package',
         subtask: 'run subtask',
         error: 'erroneous command',

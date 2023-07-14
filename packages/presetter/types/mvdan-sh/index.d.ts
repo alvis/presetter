@@ -34,6 +34,7 @@ export interface CallExpr {
 
 interface Word {
   Parts: WordPart[];
+  Lit(): string;
 }
 
 interface WordPart {
