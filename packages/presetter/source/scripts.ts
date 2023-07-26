@@ -149,7 +149,7 @@ function replaceRunnerNode(node: Node, context: ScriptContext): boolean {
     const parts: string[] = node.Cmd.Args.map((part) => part.Lit());
 
     // only resolve if the `run` cli shipped in this package is invoke
-    if (basename(parts[0]) === 'run') {
+    if (parts.length && basename(parts[0]) === 'run') {
       // resolve tasks into its full form e.g. task1 task2
       const resolvedCommand = resolveRunner(parts.join(' '), context);
 
