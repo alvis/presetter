@@ -2,6 +2,15 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [4.1.2](https://github.com/alvis/presetter/compare/v4.1.1...v4.1.2) (2023-07-26)
+
+
+### 🐛 Bug Fixes
+
+* **presetter:** ignore empty command ([77344b3](https://github.com/alvis/presetter/commit/77344b3efaf2aa47d304c60dd869d080d80d836e))
+
+
+
 ## [4.1.1](https://github.com/alvis/presetter/compare/v4.1.0...v4.1.1) (2023-07-14)
 
 
