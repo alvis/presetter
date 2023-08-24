@@ -13,8 +13,6 @@ compilerOptions:
   # compatibility
   allowSyntheticDefaultImports: true
   esModuleInterop: true
-  experimentalDecorators: true
-  emitDecoratorMetadata: true
   isolatedModules: false
 
   # strict type check
