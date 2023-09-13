@@ -2,6 +2,20 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+# [4.2.0](https://github.com/alvis/presetter/compare/v4.1.2...v4.2.0) (2023-09-13)
+
+
+### ✨ Features
+
+* **preset-esm:** support official decorators ([1980d8d](https://github.com/alvis/presetter/commit/1980d8d324db9688dd489c5ed3d5b85763d561c0))
+
+
+### 📦 Code Refactoring
+
+* **preset-esm:** enable multiple husky setups ([99b4807](https://github.com/alvis/presetter/commit/99b4807fea962640f07cf0fb6d9f94da881fa0e5))
+
+
+
 ## [4.1.2](https://github.com/alvis/presetter/compare/v4.1.1...v4.1.2) (2023-07-26)
 
 
