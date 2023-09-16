@@ -16,7 +16,7 @@
 import { isDirective } from 'presetter';
 
 import type { ApplyDirective, ImportDirective } from 'presetter';
-import type { JsonObject } from 'type-fest';
+import type { JsonObject, LiteralUnion } from 'type-fest';
 
 /** full configuration about a plugin */
 export type PluginConfiguration =
@@ -24,7 +24,7 @@ export type PluginConfiguration =
   | [name: PluginHeader, options: PluginOptions | null];
 
 /** specification of a plugin name and its handling direction (e.g. by invoking the function or just simply specify the name) */
-export type PluginHeader = string | ApplyDirective;
+export type PluginHeader = LiteralUnion<ApplyDirective, string>;
 
 /** options for a plugin */
 export type PluginOptions = JsonObject | ApplyDirective | ImportDirective;

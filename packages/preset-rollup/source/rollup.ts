@@ -35,21 +35,21 @@ import type {
 
 /** preset configuration for rollup */
 export interface RollupConfig {
-  [index: string]: unknown | RollupConfig;
+  [index: string]: unknown;
   /** list of plugin and its options */
   plugins?: PluginManifest | ApplyDirective | ImportDirective;
 }
 
 /** genuine configuration that rollup would take, making sure all plugins are a list */
 interface TrueRollupConfig {
-  [index: string]: unknown | TrueRollupConfig;
+  [index: string]: unknown;
   /** list of plugin and its options */
   plugins?: PluginConfiguration[];
 }
 
 /** transformed configuration for rollup, with all plugins represented by an object */
 interface IntermediateRollupConfig {
-  [index: string]: unknown | IntermediateRollupConfig;
+  [index: string]: unknown;
   /** list of plugin and its options */
   plugins?: PluginObject;
 }

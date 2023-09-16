@@ -299,9 +299,9 @@ export function template(
   parameter: Record<string, string>,
 ): unknown;
 export function template(
-  content: string | Record<string, unknown> | unknown | unknown[],
+  content: unknown,
   parameter: Record<string, string>,
-): string | Record<string, unknown> | unknown | unknown[] {
+): unknown {
   if (typeof content === 'string') {
     return pupa(content, parameter);
   } else if (Array.isArray(content)) {
