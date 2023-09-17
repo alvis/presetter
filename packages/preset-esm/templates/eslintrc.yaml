@@ -1,7 +1,7 @@
 root: true
 extends:
   - eslint:recommended
-  - plugin:@typescript-eslint/recommended # typescript specific rules
+  - plugin:@typescript-eslint/recommended-type-checked # typescript specific rules
   - plugin:eslint-comments/recommended # ESLint rules for ESLint directive comments
   - plugin:jsdoc/recommended # documentation
   - plugin:import/typescript # support linting import/export statements in typescript
@@ -12,7 +12,7 @@ env:
   jest: true
 parser: '@typescript-eslint/parser'
 parserOptions:
-  project: tsconfig.json
+  project: true
   sourceType: module
 plugins:
   - '@typescript-eslint' # typescript support
@@ -116,7 +116,6 @@ rules:
       ignoreReadonlyClassProperties: true
       ignoreEnums: true
       ignoreTypeIndexes: true
-  '@typescript-eslint/no-parameter-properties': warn # no private, readonly etc in functional arguments
   '@typescript-eslint/require-await': off # sometimes you need an async function to fulfil the signature inherited from an abstract class
   import/first: warn # ensure that all import statements are on the top of a file
   import/no-deprecated: warn # use no deprecated method
