@@ -2,6 +2,20 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+# [4.3.0](https://github.com/alvis/presetter/compare/v4.2.0...v4.3.0) (2023-09-20)
+
+
+### ✨ Features
+
+* **preset-esm:** upgrade [@typescript-eslint](https://github.com/typescript-eslint) to v6 ([cd12de0](https://github.com/alvis/presetter/commit/cd12de0a634cc5f7a1e09079111f07c8aefcda68))
+
+
+### 🐛 Bug Fixes
+
+* **preset-esm:** correct type imports order ([6f8fa98](https://github.com/alvis/presetter/commit/6f8fa9887401f2354b365974ef05cf02d68e3cf3))
+
+
+
 # [4.2.0](https://github.com/alvis/presetter/compare/v4.1.2...v4.2.0) (2023-09-13)
 
 

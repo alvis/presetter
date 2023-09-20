@@ -1,6 +1,6 @@
 {
   "name": "presetter-preset-web",
-  "version": "4.2.0",
+  "version": "4.3.0",
   "description": "An opinionated presetter preset for a web project",
   "keywords": [
     "presetter",
