@@ -2,7 +2,7 @@ compilerOptions:
   # emittance
   outDir: '{output}'
   module: ESNext
-  target: ESNext
+  target: ES2022
   declaration: true
   inlineSourceMap: true
   noEmit: true
