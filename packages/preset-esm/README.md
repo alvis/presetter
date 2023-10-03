@@ -98,6 +98,10 @@ interface PresetterRC {
     eslint?: Record<string, unknown>;
     /** configuration to be merged with .jestrc */
     jest?: Record<string, unknown>;
+    /** configuration to be merged with .lintstagedrc */
+    lintstaged?: Record<string, unknown>;
+    /** patterns to be added to .gitignore */
+    gitignore?: string[];
     /** patterns to be added to .npmignore */
     npmignore?: string[];
     /** configuration to be merged with .presetterrc */
