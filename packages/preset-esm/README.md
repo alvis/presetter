@@ -115,6 +115,8 @@ interface PresetterRC {
   variable?: {
     /** the directory containing the whole repository (default: .) */
     root?: string;
+    /** the directory containing all generated code (default: generated) */
+    generated?: string;
     /** the directory containing all source code (default: source) */
     source?: string;
     /** the directory containing all typing files (default: types) */

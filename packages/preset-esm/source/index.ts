@@ -45,6 +45,8 @@ export type PresetConfig = {
 export type Variable = {
   /** the directory containing the whole repository (default: .) */
   root: string;
+  /** the directory containing all source code (default: generated) */
+  generated: string;
   /** the directory containing all source code (default: source) */
   source: string;
   /** the directory containing all extra typing files (default: types) */
@@ -57,6 +59,7 @@ export type Variable = {
 
 export const DEFAULT_VARIABLE: Variable = {
   root: '.',
+  generated: 'generated',
   source: 'source',
   types: 'types',
   output: 'lib',

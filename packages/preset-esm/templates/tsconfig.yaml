@@ -41,6 +41,7 @@ compilerOptions:
   paths:
     '#*':
       - '{source}/*'
+      - '{generated}/*'
     '*':
       - '*'
       - '{types}/*'
