@@ -2,6 +2,21 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+# [4.4.0](https://github.com/alvis/presetter/compare/v4.3.1...v4.4.0) (2023-10-03)
+
+
+### ✨ Features
+
+* **preset-esm:** add a shortcut path for generated content ([43cab95](https://github.com/alvis/presetter/commit/43cab9578750f9cce463877067d6fd8230d731d9))
+* **preset-esm:** gitignore any dynamically generated content ([b2bc235](https://github.com/alvis/presetter/commit/b2bc235e9e6d9647e637435796d6e6c1436ff9ee))
+
+
+### 🐛 Bug Fixes
+
+* **preset-esm:** resolve path under root directoy ([7648af5](https://github.com/alvis/presetter/commit/7648af579eb81c35c7897f369df94812d4e3c8ba))
+
+
+
 ## [4.3.1](https://github.com/alvis/presetter/compare/v4.3.0...v4.3.1) (2023-10-03)
 
 

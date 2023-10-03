@@ -1,6 +1,6 @@
 {
   "name": "presetter-preset-esm",
-  "version": "4.3.1",
+  "version": "4.4.0",
   "description": "A collection of opinionated preset configurations for typescript projects",
   "keywords": [
     "presetter",
