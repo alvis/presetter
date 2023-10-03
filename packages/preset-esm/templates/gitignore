@@ -1,5 +1,6 @@
 /{output}
 /coverage
+/generated
 node_modules
 /.eslintrc.json
 /.husky
