@@ -1,4 +1,4 @@
-lockfileVersion: '6.1'
+lockfileVersion: '6.0'
 
 settings:
   autoInstallPeers: true
@@ -22,7 +22,7 @@ importers:
         specifier: '*'
         version: 20.6.3
       typescript:
-        specifier: ~5.0.0
+        specifier: ^5.0.0
         version: 5.0.4
 
   packages/preset-cjs:

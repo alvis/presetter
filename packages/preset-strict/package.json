@@ -1,6 +1,6 @@
 {
   "name": "presetter-preset-strict",
-  "version": "4.3.0",
+  "version": "4.3.1",
   "description": "An extension of the cjs/esm preset to provide stricter lint rules for typescript projects",
   "keywords": [
     "presetter",
