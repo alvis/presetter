@@ -303,7 +303,7 @@ export function template(
   parameter: Record<string, string>,
 ): unknown {
   if (typeof content === 'string') {
-    return pupa(content, parameter);
+    return pupa(content, parameter, { ignoreMissing: true });
   } else if (Array.isArray(content)) {
     return content.map((value) => template(value, parameter));
   } else if (isJSON(content)) {
