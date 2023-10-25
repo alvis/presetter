@@ -25,7 +25,7 @@
     "build": "pnpm --recursive run build",
     "coverage": "pnpm run test --coverage --collectCoverageFrom='source/**/*.ts'",
     "lint": "pnpm --recursive run lint",
-    "test": "cross-env NODE_OPTIONS=--experimental-vm-modules jest --config .jestrc.json --no-cache --passWithNoTests --verbose --logHeapUsage",
+    "test": "cross-env NODE_OPTIONS=\"${NODE_OPTIONS} --experimental-vm-modules\" jest --config .jestrc.json --no-cache --passWithNoTests --verbose --logHeapUsage",
     "stage": "pnpm --recursive exec lint-staged -- --concurrent=false",
     "next": "pnpm run release -- --prerelease next",
     "release": "run-s \"release:root -- {@}\" release:packages release:lock release:git --",
