@@ -39,6 +39,8 @@ compilerOptions:
   resolveJsonModule: true
   baseUrl: .
   paths:
+    '#':
+      - '{source}'
     '#*':
       - '{source}/*'
       - '{generated}/*'
