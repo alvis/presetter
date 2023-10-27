@@ -2,6 +2,15 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [4.4.2](https://github.com/alvis/presetter/compare/v4.4.1...v4.4.2) (2023-10-27)
+
+
+### 🐛 Bug Fixes
+
+* **presetter:** ignore any {unknown} variable in template script ([3a6f54a](https://github.com/alvis/presetter/commit/3a6f54a13c83dc7b90878c5aa986622c926b36f0))
+
+
+
 ## [4.4.1](https://github.com/alvis/presetter/compare/v4.4.0...v4.4.1) (2023-10-06)
 
 

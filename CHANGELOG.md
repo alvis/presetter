@@ -2,6 +2,22 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [4.4.2](https://github.com/alvis/presetter/compare/v4.4.1...v4.4.2) (2023-10-27)
+
+
+### 🐛 Bug Fixes
+
+* **preset-esm:** map # to source root ([f452aa8](https://github.com/alvis/presetter/commit/f452aa85088e30ddf6113ec162801347ed80f52a))
+* **preset-esm:** prepend any NODE_OPTIONS to jest ([695e624](https://github.com/alvis/presetter/commit/695e62430bf09a2ca9888abbf95d7c63028c8048))
+* **presetter:** ignore any {unknown} variable in template script ([3a6f54a](https://github.com/alvis/presetter/commit/3a6f54a13c83dc7b90878c5aa986622c926b36f0))
+
+
+### ⚙️ Continuous Integrations
+
+* release with provenance statements ([f85e58a](https://github.com/alvis/presetter/commit/f85e58acf63815bbb16ec65391e993b4f5952050))
+
+
+
 ## [4.4.1](https://github.com/alvis/presetter/compare/v4.4.0...v4.4.1) (2023-10-06)
 
 
