@@ -8,10 +8,13 @@ on:
 jobs:
   release:
     runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      id-token: write
     steps:
       - name: checkout
         uses: actions/checkout@v3
-      - name: use node ${{ matrix.node-version }}
+      - name: use node LTS
         uses: actions/setup-node@v3
         with:
           node-version: lts/*
@@ -34,3 +37,5 @@ jobs:
           NPM_AUTH_TOKEN: ${{ secrets.NPM_AUTH_TOKEN }}
       - name: publish the package
         run: pnpm --recursive publish --no-git-checks
+        env:
+          NPM_CONFIG_PROVENANCE: true
