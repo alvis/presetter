@@ -1,7 +1,10 @@
 globals:
   ignoreCoverageForAllDecorators: true
 moduleNameMapper:
-  '#(.*)': '<rootDir>/{source}/$1'
+  '#(.*)':
+    - '<rootDir>/{source}/$1'
+    - '<rootDir>/{generated}/$1'
+    - '$0'
 preset: ts-jest/presets/default-esm
 resetModules: false
 testEnvironment: node
