@@ -139,6 +139,9 @@ rules:
       newlines-between: always-and-inside-groups # enable a space line between import type statements for different module types
       pathGroups: # make type import ordered as the same as the other groups
         - group: type
+          pattern: node:*
+          position: before
+        - group: type
           pattern: '{#*,#*/**,../{,..,../..,../../..,../../../..,../../../../..}/**,./**}'
           position: after
           patternOptions:
