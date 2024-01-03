@@ -3,3 +3,5 @@ include:
   - '{source}'
 compilerOptions:
   noEmit: false
+  composite: true
+  rootDir: source

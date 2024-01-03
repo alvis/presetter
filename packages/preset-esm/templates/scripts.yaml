@@ -9,6 +9,7 @@ build:typescript:mjs:fix: tsc-esm-fix --sourceMap --target {output}
 clean: run-p clean:**
 clean:lib: shx rm -rf {output}
 clean:coverage: shx rm -rf coverage
+clean:tsc: shx rm -f tsconfig.build.tsbuildinfo
 develop:
   cross-env-shell NODE_ENV=local ts-node-dev --transpile-only --require tsconfig-paths/register
   --debounce 250 --respawn --clear --no-notify --tree-kill --dedupe --ignore-watch
