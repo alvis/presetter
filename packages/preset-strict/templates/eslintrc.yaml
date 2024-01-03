@@ -26,7 +26,10 @@ rules:
   default-case: error # ensure a default case in any switch
 
   # Code Quality
-  '@typescript-eslint/no-unused-expressions': warn # unused expressions must be at least commented
+  '@typescript-eslint/no-unused-expressions': # unused expressions must be at least commented
+    - warn
+    - allowShortCircuit: true
+      allowTernary: true
   '@typescript-eslint/prefer-function-type': warn # make a function a function instead of an interface
   '@typescript-eslint/unified-signatures': warn # simplify an overloading signature
   no-secrets/no-secrets: error # no sensitive information
