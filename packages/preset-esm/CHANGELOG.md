@@ -2,6 +2,25 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+# [4.5.0](https://github.com/alvis/presetter/compare/v4.4.2...v4.5.0) (2024-01-04)
+
+
+### ✨ Features
+
+* **preset-esm:** add build steps for artifact creation ([ba270fe](https://github.com/alvis/presetter/commit/ba270fe5c63dc1a8db5393d20405276b948748c0))
+* **preset-esm:** add source map to .d.ts files ([ba20774](https://github.com/alvis/presetter/commit/ba207747228d24ed9d3fd7a6e5ccae929ec82059))
+* **preset-esm:** add support to typescript's project reference ([7610425](https://github.com/alvis/presetter/commit/761042536af23a55b1f93539becc19e4e76093a2))
+
+
+### 🐛 Bug Fixes
+
+* **preser-esm:** ignore error from husky ([feff15f](https://github.com/alvis/presetter/commit/feff15f079c1de047be89d775e534095daebb93d))
+* **preset-esm:** add generated source to jest's resolve map ([4c0fb93](https://github.com/alvis/presetter/commit/4c0fb93847a98cee73f5818cba71d47a6f212fcc))
+* **preset-esm:** group types from node:<lib> ([cdb4806](https://github.com/alvis/presetter/commit/cdb48061b894e1c9958d77837bc94ca24549c41d))
+* **preset-esm:** update tsx to v4 ([f11cb3d](https://github.com/alvis/presetter/commit/f11cb3d89424bf9e338a3360235494cb55bbc765))
+
+
+
 ## [4.4.2](https://github.com/alvis/presetter/compare/v4.4.1...v4.4.2) (2023-10-27)
 
 
