@@ -1,4 +1,6 @@
-build: run-s clean build:*
+build: run-s clean build:artifact build:typescript
+build:artifact: run-s build:artifact:*
+build:artifact:package: shx mkdir -p {output}
 build:typescript: run-s build:typescript:mjs
 build:typescript:mjs: run-s build:typescript:mjs:*
 build:typescript:mjs:tsc: tsc -p tsconfig.build.json
