@@ -35,7 +35,7 @@ describe('fn:getDestinationMap', () => {
         createDummyContext(),
       ),
     ).toEqual({
-      config: resolve('/presetter/generated/client/config'),
+      config: resolve('/.presetter/client/config'),
     });
   });
 
@@ -50,7 +50,7 @@ describe('fn:getDestinationMap', () => {
       ),
     ).toEqual({
       noSymlink: resolve('/project/noSymlink'),
-      symlink: resolve('/presetter/generated/client/symlink'),
+      symlink: resolve('/.presetter/client/symlink'),
     });
   });
 });

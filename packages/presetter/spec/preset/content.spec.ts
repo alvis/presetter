@@ -53,13 +53,13 @@ describe('fn:bootstrapContent', () => {
       },
       {
         'link/pointed/to/other': resolve(
-          '/presetter/generated/client/link/pointed/to/other',
+          '/.presetter/client/link/pointed/to/other',
         ),
         'link/pointed/to/preset': resolve(
-          '/presetter/generated/client/link/pointed/to/preset',
+          '/.presetter/client/link/pointed/to/preset',
         ),
         'link/rewritten/by/project': resolve(
-          '/presetter/generated/client/link/rewritten/by/project',
+          '/.presetter/client/link/rewritten/by/project',
         ),
         'path/to/file': resolve('/project/path/to/file'),
       },
@@ -70,13 +70,13 @@ describe('fn:bootstrapContent', () => {
       {
         'path/to/file': resolve('/project/path/to/file'),
         'link/pointed/to/preset': resolve(
-          '/presetter/generated/client/link/pointed/to/preset',
+          '/.presetter/client/link/pointed/to/preset',
         ),
         'link/pointed/to/other': resolve(
-          '/presetter/generated/client/link/pointed/to/other',
+          '/.presetter/client/link/pointed/to/other',
         ),
         'link/rewritten/by/project': resolve(
-          '/presetter/generated/client/link/rewritten/by/project',
+          '/.presetter/client/link/rewritten/by/project',
         ),
       },
       { force: false },
