@@ -31,7 +31,7 @@ import type {
 
 /**
  * compute the corresponding field within the config field of .presetterrc
- * @param filename symlink name
+ * @param filename link name
  * @returns field name in config
  */
 export function getConfigKey(filename: string): string {

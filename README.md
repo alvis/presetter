@@ -44,7 +44,7 @@ Presetter is a utility for two tasks:
 
 1. setting up a development environment for a project by
    - installing development dependencies specified in the preset without polluting package.json
-   - symlinking configuration files (e.g. `.babelrc`) from the preset module to the project root
+   - hardlinking or symlinking configuration files (e.g. `.babelrc`) from the preset module to the project root
 2. merging life-cycle scripts from the template and the local version in package.json
 
 [SEE HERE FOR THE CLI USAGE](packages/presetter#usage)
@@ -114,7 +114,7 @@ A preset contains three parts:
 1. A set of development packages declared as `peerDependencies` in the `package.json`:
    For a project adopting a preset, during its installation these packages will be installed by presetter automatically without making changes to the project's package.json.
 2. A set of configuration files:
-   These configuration files are to be symlinked to the adopting project's root.
+   These configuration files are to be hardlinked (or symlinked if hardlink is not possible) to the adopting project's root.
 3. A set of life cycle script template:
    These scripts provide the base where the `presetter run` command will use for merging.
 
@@ -182,7 +182,7 @@ export interface PresetAsset {
   extends?: string[];
   /** mapping of files to be generated to its configuration template files (key: file path relative to the target project's root, value: template path) */
   template?: TemplateMap | TemplateMapGenerator;
-  /** list of templates that should not be created as symlinks */
+  /** list of templates that should not be created as hardlinks or symlinks */
   noSymlinks?: string[] | Generator<string[]>;
   /** path to the scripts template */
   scripts?: string;

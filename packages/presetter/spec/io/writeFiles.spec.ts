@@ -97,7 +97,6 @@ describe('fn:writeFiles', () => {
     );
 
     expect(mkdirSync).toBeCalledWith('/path/to', { recursive: true });
-    expect(unlinkSync).toBeCalledWith('/path/to/config.yaml');
     expect(writeFileSync).toBeCalledWith(
       '/path/to/config.yaml',
       'yaml: true\n',

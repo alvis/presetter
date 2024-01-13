@@ -84,7 +84,6 @@ export default async function (): Promise<PresetAsset> {
       'tsconfig.build.json': resolve(TEMPLATES, 'tsconfig.build.yaml'),
       /* eslint-enable @typescript-eslint/naming-convention */
     },
-    noSymlinks: ['.gitignore'],
     scripts: resolve(TEMPLATES, 'scripts.yaml'),
     variable: DEFAULT_VARIABLE,
   };

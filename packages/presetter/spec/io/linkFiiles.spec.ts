@@ -37,11 +37,12 @@ jest.unstable_mockModule('node:fs', async () => ({
       const posixPath = relative(resolve('/'), path).split(sep).join(posix.sep);
       switch (posixPath) {
         case 'path/to/config.json':
-        case 'project/old/symlink/rewritten/by/user':
+        case 'project/old/link/rewritten/by/user':
+        case 'relative/path/to/config':
           return { isSymbolicLink: () => false };
-        case 'project/old/symlink/by/presetter':
-        case 'project/old/symlink/pointed/to/other':
+        case 'project/old/link/by/presetter':
           return { isSymbolicLink: () => true };
+
         default:
           if (throwIfNoEntry) {
             throw new Error();
@@ -49,6 +50,28 @@ jest.unstable_mockModule('node:fs', async () => ({
       }
     },
   ),
+  statSync: jest.fn(
+    (
+      path: string,
+      options: { throwIfNoEntry: boolean },
+    ): Partial<Stats> | void => {
+      const { throwIfNoEntry } = options;
+
+      // ensure that the paths below is compatible with windows
+      const posixPath = relative(resolve('/'), path).split(sep).join(posix.sep);
+      switch (posixPath) {
+        case 'project/old/link/rewritten/by/user':
+          return { nlink: 1 };
+        case 'project/old/link/by/presetter':
+          return { nlink: 2 };
+        default:
+          if (throwIfNoEntry) {
+            throw new Error();
+          }
+      }
+    },
+  ),
+  readlinkSync: jest.fn(() => ''),
   mkdirSync: jest.fn(),
   symlinkSync: jest.fn(),
   unlinkSync: jest.fn(),
@@ -61,26 +84,30 @@ describe('fn:linkFiles', () => {
 
   it('link generated files to the project', async () => {
     await linkFiles('/project', {
-      'old/symlink/rewritten/by/user': resolve(
-        '/project/relative/path/to/config',
-      ),
-      'old/symlink/by/presetter': resolve('/project/relative/path/to/config'),
-      'new/symlink/config.json': resolve('/project/relative/path/to/config'),
+      'old/link/rewritten/by/user': resolve('/project/relative/path/to/config'),
+      'old/link/by/presetter': resolve('/project/relative/path/to/config'),
+      'new/link/config.json': resolve('/project/relative/path/to/config'),
     });
 
     expect(mkdirSync).toHaveBeenCalledTimes(2);
-    expect(mkdirSync).toHaveBeenCalledWith(resolve('/project/new/symlink'), {
+    expect(mkdirSync).toHaveBeenCalledWith(resolve('/project/old/link/by'), {
+      recursive: true,
+    });
+    expect(mkdirSync).toHaveBeenCalledWith(resolve('/project/new/link'), {
       recursive: true,
     });
     expect(unlinkSync).toHaveBeenCalledTimes(1);
+    expect(unlinkSync).toHaveBeenCalledWith(
+      resolve('/project/old/link/by/presetter'),
+    );
     expect(symlinkSync).toHaveBeenCalledTimes(2);
     expect(symlinkSync).toHaveBeenCalledWith(
       '../../../relative/path/to/config'.split(posix.sep).join(sep),
-      resolve('/project/old/symlink/by/presetter'),
+      resolve('/project/old/link/by/presetter'),
     );
     expect(symlinkSync).toHaveBeenCalledWith(
       '../../relative/path/to/config'.split(posix.sep).join(sep),
-      resolve('/project/new/symlink/config.json'),
+      resolve('/project/new/link/config.json'),
     );
   });
 
