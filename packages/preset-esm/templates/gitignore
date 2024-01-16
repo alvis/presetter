@@ -1,7 +1,4 @@
-/{output}
-/coverage
-/generated
-node_modules
+# preset generated files
 /.eslintrc.json
 /.husky
 /.jestrc.json
@@ -9,4 +6,37 @@ node_modules
 /.lintstagedrc.json
 /.npmignore
 /.prettierrc.json
-/tsconfig.*
+/tsconfig.json
+/tsconfig.build.json
+
+# dependency
+node_modules
+
+# output
+/{output}
+/{generated}
+
+# coverage
+/coverage
+*.lcov
+
+# diagnostic reports (https://nodejs.org/api/report.html)
+report.[0-9]*.[0-9]*.[0-9]*.[0-9]*.json
+
+# log
+/log
+/logs
+*.log
+*-debug.log*
+.*-debug.log*
+
+# cache
+.DS_Store
+.cache
+.npm
+.pnpm*
+*.tsbuildinfo
+
+# configuration
+.env*
+!.env*.example
