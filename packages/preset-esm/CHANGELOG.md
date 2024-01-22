@@ -2,6 +2,22 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+# [4.6.0](https://github.com/alvis/presetter/compare/v4.5.0...v4.6.0) (2024-01-22)
+
+
+### ✨ Features
+
+* **preset-esm:** update gitignore for better coverage ([cd691a6](https://github.com/alvis/presetter/commit/cd691a66e97ac88a5ebe487604c3ae408edfeefe))
+* **presetter:** use hardlink if possible ([2189d72](https://github.com/alvis/presetter/commit/2189d72059e34841dd05f9e87d23d8b54425f0e6))
+
+
+### 🐛 Bug Fixes
+
+* **preset-esm:** include generated source and bin ([67ac8bc](https://github.com/alvis/presetter/commit/67ac8bc53e4b155dab0cc50a982021651fa2e06a))
+* **preset-esm:** leave comments on the compiled file for clarity ([756dd2c](https://github.com/alvis/presetter/commit/756dd2c640e9ee66a7b5b20b2e9d00225bbedfe8))
+
+
+
 # [4.5.0](https://github.com/alvis/presetter/compare/v4.4.2...v4.5.0) (2024-01-04)
 
 
