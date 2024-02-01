@@ -131,7 +131,7 @@ rules:
         - external
         - - index
           - internal
-          - parent
+        - - parent
           - sibling
         - object
         - unknown
