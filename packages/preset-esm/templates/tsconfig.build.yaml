@@ -4,4 +4,4 @@ include:
 compilerOptions:
   noEmit: false
   composite: true
-  rootDir: source
+  rootDir: '{source}'
