@@ -5,6 +5,7 @@ compilerOptions:
   target: ES2022
   declaration: true
   declarationMap: true
+  incremental: true
   inlineSourceMap: true
   noEmit: true
   noImplicitUseStrict: false
