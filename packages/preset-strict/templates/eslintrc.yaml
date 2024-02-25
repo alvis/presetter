@@ -12,10 +12,7 @@ rules:
   '@typescript-eslint/prefer-nullish-coalescing': warn # simplify a logic by using the nullish coalescing operator
 
   # Stylistic Issues
-  header/header: # need a file header
-    - warn
-    - block
-    - - pattern: summary
+  header/header: off
 
   # Best Practices
   '@typescript-eslint/no-base-to-string': error # disallow Object.toString() which returns the meaningless [object Object]
