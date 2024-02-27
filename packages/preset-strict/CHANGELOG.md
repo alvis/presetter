@@ -2,6 +2,15 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+# [4.7.0](https://github.com/alvis/presetter/compare/v4.6.0...v4.7.0) (2024-02-27)
+
+
+### 🐛 Bug Fixes
+
+* **preset-strict:** remove header rule ([4a56d6c](https://github.com/alvis/presetter/commit/4a56d6ccdedf4626baf0552aa902a70a173c6a22))
+
+
+
 # [4.6.0](https://github.com/alvis/presetter/compare/v4.5.0...v4.6.0) (2024-01-22)
 
 

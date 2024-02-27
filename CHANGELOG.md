@@ -2,6 +2,24 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+# [4.7.0](https://github.com/alvis/presetter/compare/v4.6.0...v4.7.0) (2024-02-27)
+
+
+### ✨ Features
+
+* **preset-esm:** enable typescript incremental build ([7e1d9af](https://github.com/alvis/presetter/commit/7e1d9af48e8cb6568a4fc46ca28f3bed2398298c))
+
+
+### 🐛 Bug Fixes
+
+* **preset-esm:** explicit reference the base tsconfig file ([5a72ff8](https://github.com/alvis/presetter/commit/5a72ff8e637d07a58babc4dcb08a43506f3bac9b))
+* **preset-esm:** replace fixed source path in tsconfig.build.json ([36cc3e7](https://github.com/alvis/presetter/commit/36cc3e712f5255b0b9043e319730656e711d9082))
+* **preset-esm:** separate relative and internal import paths ([35331e3](https://github.com/alvis/presetter/commit/35331e3adfb17e482261e183b7cf885e7d4b5652))
+* **preset-rollup:** update rollup to v4 ([cb01f6b](https://github.com/alvis/presetter/commit/cb01f6b053d3b24b6e44d2eb96cd2f1e8a9a90f0))
+* **preset-strict:** remove header rule ([4a56d6c](https://github.com/alvis/presetter/commit/4a56d6ccdedf4626baf0552aa902a70a173c6a22))
+
+
+
 # [4.6.0](https://github.com/alvis/presetter/compare/v4.5.0...v4.6.0) (2024-01-22)
 
 

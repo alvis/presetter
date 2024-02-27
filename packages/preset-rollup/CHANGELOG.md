@@ -2,6 +2,15 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+# [4.7.0](https://github.com/alvis/presetter/compare/v4.6.0...v4.7.0) (2024-02-27)
+
+
+### 🐛 Bug Fixes
+
+* **preset-rollup:** update rollup to v4 ([cb01f6b](https://github.com/alvis/presetter/commit/cb01f6b053d3b24b6e44d2eb96cd2f1e8a9a90f0))
+
+
+
 # [4.6.0](https://github.com/alvis/presetter/compare/v4.5.0...v4.6.0) (2024-01-22)
 
 
