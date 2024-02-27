@@ -12,19 +12,15 @@ jobs:
       contents: write
       id-token: write
     steps:
-      - name: checkout
-        uses: actions/checkout@v3
-      - name: use node LTS
-        uses: actions/setup-node@v3
-        with:
-          node-version: lts/*
       - name: enable corepack
         run: corepack enable
-      - name: cache node_modules
-        uses: actions/cache@v3
+      - name: checkout
+        uses: actions/checkout@v4
+      - name: use node LTS
+        uses: actions/setup-node@v4
         with:
-          path: node_modules
-          key: ${{ runner.os }}-dependencies-${{ hashFiles('pnpm-lock.yaml') }}
+          node-version: lts/*
+          cache: pnpm
       - name: install dependencies
         run: pnpm install
       - name: publish the release note

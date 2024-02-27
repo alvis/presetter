@@ -12,23 +12,19 @@ jobs:
   coverage:
     runs-on: ubuntu-latest
     steps:
+      - name: enable corepack
+        run: corepack enable
       - name: checkout
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
       - name: use node lts
-        uses: actions/setup-node@v3
+        uses: actions/setup-node@v4
         with:
           node-version: lts/*
+          cache: pnpm
       - name: install code climate reporter
         run: |
           curl -L https://codeclimate.com/downloads/test-reporter/test-reporter-latest-linux-amd64 > /tmp/cc-test-reporter
           chmod +x /tmp/cc-test-reporter
-      - name: cache node_modules
-        uses: actions/cache@v3
-        with:
-          path: node_modules
-          key: ${{ runner.os }}-dependencies-${{ hashFiles('pnpm-lock.yaml') }}
-      - name: enable corepack
-        run: corepack enable
       - name: install dependencies
         run: pnpm install
       - name: run coverage
