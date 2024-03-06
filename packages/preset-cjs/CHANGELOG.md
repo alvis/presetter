@@ -2,6 +2,15 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [4.7.1](https://github.com/alvis/presetter/compare/v4.7.0...v4.7.1) (2024-03-06)
+
+
+### 🐛 Bug Fixes
+
+* **preset-react:** ensure tsx files are transformed before testing ([105f56d](https://github.com/alvis/presetter/commit/105f56d098ce06317d9da5be804fc7a4706de76b))
+
+
+
 # [4.7.0](https://github.com/alvis/presetter/compare/v4.6.0...v4.7.0) (2024-02-27)
 
 
