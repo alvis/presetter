@@ -1,6 +1,6 @@
 preset: ts-jest
 transform:
-  '^.+\\.[jt]sx?$':
+  '^.+\.[jt]sx?$':
     - ts-jest
     - useESM: false
       tsconfig:

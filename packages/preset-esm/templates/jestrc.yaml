@@ -14,7 +14,7 @@ testPathIgnorePatterns:
   - /node_modules/
   - <rootDir>/{output}/
 transform:
-  '^.+\\.[jt]sx?$':
+  '^.+\.[jt]sx?$':
     - ts-jest
     - useESM: true
       tsconfig:
