@@ -2,7 +2,7 @@ testEnvironment: jsdom
 testMatch:
   - '**/?(*.)+(spec).[jt]sx'
 transform:
-  '^.+\\.[jt]sx?$':
+  '^.+\.[jt]sx?$':
     1:
       tsconfig:
         jsx: react-jsx # jsx must be set to react-jsx in order for ts-jest to work
