@@ -2,6 +2,15 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [4.7.2](https://github.com/alvis/presetter/compare/v4.7.1...v4.7.2) (2024-03-07)
+
+
+### 🐛 Bug Fixes
+
+* **preset-react:** correct typo in jest config ([f5fd5aa](https://github.com/alvis/presetter/commit/f5fd5aaaaaea3db96bffa6d743d49afb8bcdb693))
+
+
+
 ## [4.7.1](https://github.com/alvis/presetter/compare/v4.7.0...v4.7.1) (2024-03-06)
 
 
