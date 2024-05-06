@@ -62,8 +62,8 @@ importers:
         specifier: ^8.0.0
         version: 8.49.0
       eslint-config-prettier:
-        specifier: ^8.0.0
-        version: 8.10.0(eslint@8.49.0)
+        specifier: ^9.1.0
+        version: 9.1.0(eslint@8.49.0)
       eslint-plugin-eslint-comments:
         specifier: ^3.0.0
         version: 3.2.0(eslint@8.49.0)
@@ -89,8 +89,8 @@ importers:
         specifier: workspace:*
         version: link:../types
       prettier:
-        specifier: ^2.4.0
-        version: 2.8.8
+        specifier: ^3.2.0
+        version: 3.2.5
       shx:
         specifier: ^0.3.0
         version: 0.3.4
@@ -3876,8 +3876,8 @@ packages:
       source-map: 0.6.1
     dev: false
 
-  /eslint-config-prettier@8.10.0(eslint@8.49.0):
-    resolution: {integrity: sha512-SM8AMJdeQqRYT9O9zguiruQZaN7+z+E4eAP9oiLNGKMtomwaB1E9dcgUD6ZAn/eQAb52USbvezbiljfZUhbJcg==}
+  /eslint-config-prettier@9.1.0(eslint@8.49.0):
+    resolution: {integrity: sha512-NSWl5BFQWEPi1j4TjVNItzYV7dZXZ+wP6I6ZhrBGpChQhZRUaElihE9uRRkcbRnNb76UMKDF3r+WTmNcGPKsqw==}
     hasBin: true
     peerDependencies:
       eslint: '>=7.0.0'
@@ -7506,9 +7506,9 @@ packages:
     engines: {node: '>= 0.8.0'}
     dev: false
 
-  /prettier@2.8.8:
-    resolution: {integrity: sha512-tdN8qQGvNjw4CHbY+XXk0JgCXn9QiF21a55rBe5LJAU+kDyC4WQn4+awm2Xfk2lQMk5fKup9XgzTZtGkjBdP9Q==}
-    engines: {node: '>=10.13.0'}
+  /prettier@3.2.5:
+    resolution: {integrity: sha512-3/GWa9aOC0YeD7LUfvOG2NiDyhOWRvt1k+rcKhOuYnMY24iiCphgneUfJDyFXd6rZCAnuLBv6UeAULtrhT/F4A==}
+    engines: {node: '>=14'}
     hasBin: true
     dev: false
 
