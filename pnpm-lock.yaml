@@ -196,8 +196,8 @@ importers:
         specifier: ^5.0.0
         version: 5.9.2(rollup@4.12.0)
       type-fest:
-        specifier: ^3.12.0
-        version: 3.13.1
+        specifier: ^4.23.0
+        version: 4.23.0
     devDependencies:
       presetter:
         specifier: workspace:*
@@ -328,14 +328,14 @@ importers:
         specifier: workspace:*
         version: link:../preset-strict
       type-fest:
-        specifier: ^3.12.0
-        version: 3.13.1
+        specifier: ^4.23.0
+        version: 4.23.0
 
   packages/types:
     dependencies:
       type-fest:
-        specifier: ^3.12.0
-        version: 3.13.1
+        specifier: ^4.23.0
+        version: 4.23.0
 
 packages:
 
@@ -7752,7 +7752,7 @@ packages:
       '@types/normalize-package-data': 2.4.1
       normalize-package-data: 6.0.0
       parse-json: 7.1.0
-      type-fest: 4.3.1
+      type-fest: 4.23.0
     dev: false
 
   /readable-stream@2.3.8:
@@ -8987,11 +8987,11 @@ packages:
   /type-fest@3.13.1:
     resolution: {integrity: sha512-tLq3bSNx+xSpwvAJnzrK0Ep5CLNWjvFTOp71URMaAEWBfRb9nnJiBoUe0tF8bI4ZFO3omgBR6NvnbzVUT3Ly4g==}
     engines: {node: '>=14.16'}
-
-  /type-fest@4.3.1:
-    resolution: {integrity: sha512-pphNW/msgOUSkJbH58x8sqpq8uQj6b0ZKGxEsLKMUnGorRcDjrUaLS+39+/ub41JNTwrrMyJcUB8+YZs3mbwqw==}
-    engines: {node: '>=16'}
     dev: false
+
+  /type-fest@4.23.0:
+    resolution: {integrity: sha512-ZiBujro2ohr5+Z/hZWHESLz3g08BBdrdLMieYFULJO+tWc437sn8kQsWLJoZErY8alNhxre9K4p3GURAG11n+w==}
+    engines: {node: '>=16'}
 
   /typed-array-buffer@1.0.0:
     resolution: {integrity: sha512-Y8KTSIglk9OZEr8zywiIHG/kmQ7KWyjseXs1CbSo8vC42w7hg2HgYTxSWwP0+is7bWDc1H+Fo026CpHFwm8tkw==}
