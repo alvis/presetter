@@ -19,7 +19,7 @@ What's more, what if you want to update configs for all projects? :man_facepalmi
 
 ## Quick Start
 
-1. Bootstrap your project with a preset (e.g. [presetter-preset-esm](packages/preset-essentials))
+1. Bootstrap your project with a preset (e.g. [presetter-preset-esm](packages/preset-esm))
 
 ```shell
 npx presetter use <preset package name>
@@ -107,7 +107,7 @@ presetter will generate a `package.json` with the content below before running t
 ### preset
 
 A preset is a collection of configuration to be shared.
-An example can be found in [presetter-preset-esm](/packages/preset-essentials) which is also used for developing presetter and [other demo presets below](#demo-presets).
+An example can be found in [presetter-preset-esm](/packages/preset-esm) which is also used for developing presetter and [other demo presets below](#demo-presets).
 
 A preset contains three parts:
 
@@ -119,7 +119,7 @@ A preset contains three parts:
    These scripts provide the base where the `presetter run` command will use for merging.
 
 For 1, the set of development packages to be installed is exported via `package.json`.
-For 2 & 3, the configuration is exported via the default function in the preset package ([example](/packages/preset-essentials/source/index.ts)).
+For 2 & 3, the configuration is exported via the default function in the preset package ([example](/packages/preset-esm/source/index.ts)).
 
 #### Config Extension
 
@@ -129,7 +129,7 @@ you can specify the new configuration under the `config` parameter in the config
 During installation and life cycle script execution,
 the content of this parameter will be passed to the configurator function provided by the preset package.
 With this parameter, the preset can dynamically export customized config files and life cycle scripts.
-You can [checkout the example preset to see how it work](/packages/preset-essentials/source/index.ts).
+You can [checkout the example preset to see how it work](/packages/preset-esm/source/index.ts).
 
 ## Known Limitations
 
@@ -221,7 +221,7 @@ There are many ways to create a preset. Checkout our example presets to learn mo
 | Preset                                                         | Description                                                                                                                                                                                                    |
 |----------------------------------------------------------------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
 | [presetter-preset-cjs](/packages/preset-esm)                   | An extension of `presetter-preset-esm` but loaded with tools to help you to develop an commonjs project with ease.                                                                                       |
-| [presetter-preset-esm](/packages/preset-essentials)     | A starter preset with lots of useful dev tools (e.g. eslint, jest etc.) bundled and configuration following the best practices for a modern ESM project.                                                                                |
+| [presetter-preset-esm](/packages/preset-esm)     | A starter preset with lots of useful dev tools (e.g. eslint, jest etc.) bundled and configuration following the best practices for a modern ESM project.                                                                                |
 | [presetter-preset-hybrid](/packages/preset-hybrid)             | Another extension of `presetter-preset-esm` aiming to help you to create a dual CommonJS/ESM package without all the pains.                                                                             |
 | [presetter-preset-react](/packages/preset-react)               | Want to control the output path of the generated files? or which template to use based on the context? `presetter-preset-react` is an example showing you how to generate your manifest programmatically.      |
 | [presetter-preset-rollup](/packages/preset-rollup)             | An advanced preset showing you how to generate a content based on consolidated configs.                                                                                                                        |
