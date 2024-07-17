@@ -1,6 +1,7 @@
 extends: ./tsconfig.json
 include:
   - '{source}'
+  - '{source}/**/*.json'
 compilerOptions:
   noEmit: false
   composite: true
