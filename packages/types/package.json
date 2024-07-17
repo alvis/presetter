@@ -20,13 +20,13 @@
     "url": "git+https://github.com/alvis/presetter.git"
   },
   "scripts": {
-    "bootstrap": "tsc --declaration --moduleResolution node --module esnext --target esnext --outdir lib source/index.ts",
-    "postbootstrap": "presetter bootstrap",
+    "prepare": "tsc --declaration --moduleResolution node --module esnext --target esnext --outdir lib source/index.ts",
+    "bootstrap": "presetter bootstrap",
     "build": "run build",
     "lint": "run lint --",
     "prepublishOnly": "run prepare && run prepublishOnly"
   },
   "dependencies": {
-    "type-fest": "^4.23.0"
+    "type-fest": "catalog:"
   }
 }

@@ -23,7 +23,7 @@
     "url": "git+https://github.com/alvis/presetter.git"
   },
   "scripts": {
-    "bootstrap": "run prepare",
+    "prepare": "run prepare",
     "build": "run build",
     "coverage": "run coverage --",
     "lint": "run lint --",
@@ -50,6 +50,6 @@
   },
   "dependencies": {
     "presetter-types": "workspace:*",
-    "type-fest": "^4.23.0"
+    "type-fest": "catalog:"
   }
 }

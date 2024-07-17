@@ -2,7 +2,7 @@
   "name": "presetter-monorepo",
   "private": true,
   "version": "4.7.2",
-  "packageManager": "pnpm@8.6.0",
+  "packageManager": "pnpm@9.6.0",
   "engines": {
     "node": ">=20.0.0"
   },
@@ -19,9 +19,8 @@
     "url": "git+https://github.com/alvis/presetter.git"
   },
   "scripts": {
-    "preinstall": "npx -y only-allow pnpm && husky install && husky set .husky/pre-commit \"npm run stage\"",
-    "install": "pnpm run -r bootstrap",
-    "postinstall": "pnpm run -r postbootstrap",
+    "install": "npx -y only-allow pnpm && husky install && husky set .husky/pre-commit \"npm run stage\"",
+    "postinstall": "pnpm run -r bootstrap",
     "build": "pnpm --recursive run build",
     "coverage": "pnpm run test --coverage --collectCoverageFrom='source/**/*.ts'",
     "lint": "pnpm --recursive run lint",
