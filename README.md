@@ -270,8 +270,7 @@ together with the following **40** 😱 development dependencies!!!
 1. shx
 1. standard-version
 1. ts-jest
-1. ts-node
-1. ts-node-dev
+1. tsx
 1. tsc-alias
 1. tsconfig-paths
 1. typescript
