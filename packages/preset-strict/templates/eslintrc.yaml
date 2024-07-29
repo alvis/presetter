@@ -32,7 +32,7 @@ rules:
   no-secrets/no-secrets: error # no sensitive information
   sonarjs/cognitive-complexity: # ensure a function is intuitively understandable
     - warn
-    - 5
+    - 15
   sonarjs/no-small-switch: off # sometimes you prefer switch than if for extension and better readability
   complexity: warn # limit cyclomatic complexity in a function
   max-lines: # it's hard to follow a large file
@@ -42,7 +42,7 @@ rules:
       skipComments: true
   max-lines-per-function: # it's hard to follow a long function
     - warn
-    - max: 30
+    - max: 60
       skipBlankLines: true
       skipComments: true
       IIFEs: true

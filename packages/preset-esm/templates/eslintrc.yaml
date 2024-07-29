@@ -81,7 +81,31 @@ rules:
 
   # Stylistic Issues
   '@typescript-eslint/member-ordering': error # member group in a class should be in order
-  '@typescript-eslint/naming-convention': error # use JS/TS naming convention
+  '@typescript-eslint/naming-convention': # use JS/TS naming convention
+    - error
+    - selector: default
+      format:
+        - camelCase # default
+      leadingUnderscore: allow # default
+      trailingUnderscore: allow # default
+    - selector: import
+      format:
+        - camelCase # default, for functions and variables
+        - PascalCase # default, for classes
+    - selector: objectLiteralMethod
+      format: null # disable as an object literal is likely used for assigning parameters to a third-party library
+    - selector: objectLiteralProperty
+      format: null # disable as an object literal is likely used for assigning parameters to a third-party library
+    - selector: variable
+      format:
+        - camelCase # default
+        - UPPER_CASE # default, for constants
+      leadingUnderscore: allow
+      trailingUnderscore: allow
+    - selector: typeLike
+      format:
+        - PascalCase # default
+
   capitalized-comments: # use lower case in comments
     - warn
     - never
