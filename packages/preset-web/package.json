@@ -34,7 +34,7 @@
     "@testing-library/user-event": "^14.0.0",
     "autoprefixer": "^10.0.0",
     "eslint-plugin-tailwindcss": "^3.0.0",
-    "eslint-plugin-testing-library": "^5.0.0",
+    "eslint-plugin-testing-library": "^6.0.0",
     "postcss": "^8.0.0",
     "presetter": "workspace:*",
     "tailwindcss": "^3.0.0"

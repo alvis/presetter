@@ -20,7 +20,7 @@
     "url": "git+https://github.com/alvis/presetter.git"
   },
   "scripts": {
-    "install": "npx -y only-allow pnpm && husky install && husky set .husky/pre-commit \"npm run stage\"",
+    "install": "npx -y only-allow pnpm && husky",
     "postinstall": "pnpm run -r bootstrap",
     "build": "pnpm --recursive run build",
     "coverage": "pnpm run test --coverage",

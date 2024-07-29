@@ -25,6 +25,10 @@ import getPresetAsset from '#index';
 
 const __dir = fileURLToPath(dirname(import.meta.url));
 
+vi.mock('node:fs', async () => ({
+  existsSync: (path: string) => path === '/.git',
+}));
+
 vi.mock('node:path', async (importActual) => {
   const actual = await importActual<typeof import('node:path')>();
 
@@ -61,5 +65,24 @@ describe('fn:getPresetAsset', () => {
     for (const path of templates) {
       expect(vi.mocked(resolve)).toBeCalledWith(TEMPLATES, path);
     }
+  });
+
+  it('should skip .husky/pre-commit if .git is not present', async () => {
+    const asset = await getPresetAsset();
+    const context = await resolveContext({
+      graph: [{ name: 'preset', asset, nodes: [] }],
+      context: {
+        target: { name: 'preset', root: '/packages/project', package: {} },
+        custom: { preset: 'preset' },
+      },
+    });
+
+    // load all potential dynamic content
+    await loadDynamicMap(asset.supplementaryConfig, context);
+    await loadDynamicMap(asset.template, context);
+
+    const TEMPLATES = resolve(__dir, '..', 'templates');
+
+    expect(vi.mocked(resolve)).not.toBeCalledWith(TEMPLATES, 'pre-commit');
   });
 });

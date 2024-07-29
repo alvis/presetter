@@ -1,4 +1,3 @@
-/.husky
 /coverage
 /node_modules
 .presetter

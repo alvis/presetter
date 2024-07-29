@@ -13,6 +13,7 @@
  * -------------------------------------------------------------------------
  */
 
+import { existsSync } from 'node:fs';
 import { dirname, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
@@ -70,17 +71,24 @@ export const DEFAULT_VARIABLE: Variable = {
  */
 export default async function (): Promise<PresetAsset> {
   return {
-    template: {
-      /* eslint-disable @typescript-eslint/naming-convention */
-      '.eslintrc.json': resolve(TEMPLATES, 'eslintrc.yaml'),
-      '.gitignore': resolve(TEMPLATES, 'gitignore'),
-      '.lintstagedrc.json': resolve(TEMPLATES, 'lintstagedrc.yaml'),
-      '.npmignore': resolve(TEMPLATES, 'npmignore'),
-      '.prettierrc.json': resolve(TEMPLATES, 'prettierrc.yaml'),
-      'tsconfig.json': resolve(TEMPLATES, 'tsconfig.yaml'),
-      'tsconfig.build.json': resolve(TEMPLATES, 'tsconfig.build.yaml'),
-      'vitest.config.ts': resolve(TEMPLATES, 'vitest.config.ts'),
-      /* eslint-enable @typescript-eslint/naming-convention */
+    template: ({ target }) => {
+      const isGitRoot = existsSync(resolve(target.root, '.git'));
+
+      return {
+        /* eslint-disable @typescript-eslint/naming-convention */
+        ...(isGitRoot
+          ? { '.husky/pre-commit': resolve(TEMPLATES, 'pre-commit') }
+          : {}),
+        '.eslintrc.json': resolve(TEMPLATES, 'eslintrc.yaml'),
+        '.gitignore': resolve(TEMPLATES, 'gitignore'),
+        '.lintstagedrc.json': resolve(TEMPLATES, 'lintstagedrc.yaml'),
+        '.npmignore': resolve(TEMPLATES, 'npmignore'),
+        '.prettierrc.json': resolve(TEMPLATES, 'prettierrc.yaml'),
+        'tsconfig.json': resolve(TEMPLATES, 'tsconfig.yaml'),
+        'tsconfig.build.json': resolve(TEMPLATES, 'tsconfig.build.yaml'),
+        'vitest.config.ts': resolve(TEMPLATES, 'vitest.config.ts'),
+        /* eslint-enable @typescript-eslint/naming-convention */
+      };
     },
     scripts: resolve(TEMPLATES, 'scripts.yaml'),
     variable: DEFAULT_VARIABLE,

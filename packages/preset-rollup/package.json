@@ -32,7 +32,7 @@
     "watch": "run watch --"
   },
   "peerDependencies": {
-    "@rollup/plugin-commonjs": "^25.0.0",
+    "@rollup/plugin-commonjs": "^26.0.0",
     "@rollup/plugin-graphql": "^2.0.0",
     "@rollup/plugin-image": "^3.0.0",
     "@rollup/plugin-json": "^6.0.0",
