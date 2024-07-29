@@ -10,7 +10,7 @@
 [![build](https://img.shields.io/github/actions/workflow/status/alvis/presetter/test.yaml?branch=master&style=flat-square)](https://github.com/alvis/presetter/actions)
 [![maintainability](https://img.shields.io/codeclimate/maintainability/alvis/presetter?style=flat-square)](https://codeclimate.com/github/alvis/presetter/maintainability)
 [![coverage](https://img.shields.io/codeclimate/coverage/alvis/presetter?style=flat-square)](https://codeclimate.com/github/alvis/presetter/test_coverage)
-[![security](https://img.shields.io/snyk/vulnerabilities/github/alvis/presetter/packages/preset-essentials/package.json.svg?style=flat-square)](https://snyk.io/test/github/alvis/presetter?targetFile=packages/preset-essentials/package.json&style=flat-square)
+[![security](https://img.shields.io/snyk/vulnerabilities/github/alvis/presetter/packages/preset-esm/package.json.svg?style=flat-square)](https://snyk.io/test/github/alvis/presetter?targetFile=packages/preset-esm/package.json&style=flat-square)
 [![dependencies](https://img.shields.io/librariesio/release/npm/presetter-preset-esm?style=flat-square)](https://libraries.io/npm/presetter-preset-esm)
 [![license](https://img.shields.io/github/license/alvis/presetter.svg?style=flat-square)](https://github.com/alvis/presetter/blob/master/LICENSE)
 
@@ -51,7 +51,7 @@ After installation, your project file structure should resemble the following or
 
 Implement your business logic under `source` and prepare tests under `spec`.
 
-**TIPS** You can always change the source directory to other (e.g. src) by setting the `source` variable in `.presetterrc.json`. See the [customization](https://github.com/alvis/presetter/blob/master/packages/preset-essentials#customization) section below for more details.
+**TIPS** You can always change the source directory to other (e.g. src) by setting the `source` variable in `.presetterrc.json`. See the [customization](https://github.com/alvis/presetter/blob/master/packages/preset-esm#customization) section below for more details.
 
 ```
 (root)

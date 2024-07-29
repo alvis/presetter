@@ -16,7 +16,7 @@
 
 </div>
 
-**presetter-preset-strict** is an opinionated extension of [**presetter-preset-esm**](https://github.com/alvis/presetter/tree/master/packages/preset-essentials) with stricter lint rules. As the same as presetter-preset-esm, it's designed to help you get started with a typescript project in a fraction of time you usually take via [**presetter**](https://github.com/alvis/presetter).
+**presetter-preset-strict** is an opinionated extension of [**presetter-preset-esm**](https://github.com/alvis/presetter/tree/master/packages/preset-esm) with stricter lint rules. As the same as presetter-preset-esm, it's designed to help you get started with a typescript project in a fraction of time you usually take via [**presetter**](https://github.com/alvis/presetter).
 
 With presetter-preset-strict, it provides everything bundled from presetter-preset-esm, plus additional lint rules & 🐶 husky! You can check out the [additional rules here](https://github.com/alvis/presetter/tree/master/packages/preset-strict/templates).
 

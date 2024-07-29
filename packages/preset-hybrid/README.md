@@ -10,13 +10,13 @@
 [![build](https://img.shields.io/github/actions/workflow/status/alvis/presetter/test.yaml?branch=master&style=flat-square)](https://github.com/alvis/presetter/actions)
 [![maintainability](https://img.shields.io/codeclimate/maintainability/alvis/presetter?style=flat-square)](https://codeclimate.com/github/alvis/presetter/maintainability)
 [![coverage](https://img.shields.io/codeclimate/coverage/alvis/presetter?style=flat-square)](https://codeclimate.com/github/alvis/presetter/test_coverage)
-[![security](https://img.shields.io/snyk/vulnerabilities/github/alvis/presetter/packages/preset-hybrid/package.json.svg?style=flat-square)](https://snyk.io/test/github/alvis/presetter?targetFile=packages/preset-hybrid/package.json&style=flat-square)
+[![security](https://img.shields.io/snyk/vulnerabilities/github/alvis/presetter/badge.svg?style=flat-square)](https://snyk.io/test/github/alvis/presetter?targetFile=packages/preset-hybrid/package.json&style=flat-square)
 [![dependencies](https://img.shields.io/librariesio/release/npm/presetter-preset-hybrid?style=flat-square)](https://libraries.io/npm/presetter-preset-hybrid)
 [![license](https://img.shields.io/github/license/alvis/presetter.svg?style=flat-square)](https://github.com/alvis/presetter/blob/master/LICENSE)
 
 </div>
 
-**presetter-preset-hybrid** is an opinionated extension of [**presetter-preset-esm**](https://github.com/alvis/presetter/tree/master/packages/preset-essentials) but aims to help you to create a dual CommonJS/ESM package without all the pains. As the same as presetter-preset-esm, it's designed to help you get started with a typescript project in a fraction of time you usually take via [**presetter**](https://github.com/alvis/presetter).
+**presetter-preset-hybrid** is an opinionated extension of [**presetter-preset-esm**](https://github.com/alvis/presetter/tree/master/packages/preset-esm) but aims to help you to create a dual CommonJS/ESM package without all the pains. As the same as presetter-preset-esm, it's designed to help you get started with a typescript project in a fraction of time you usually take via [**presetter**](https://github.com/alvis/presetter).
 
 With `presetter-preset-hybrid`, it provides everything bundled from presetter-preset-esm, plus the ease of writing a hybrid CommonJS/ESM package.
 

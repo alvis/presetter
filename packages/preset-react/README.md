@@ -45,7 +45,7 @@ and now you can try to run some example life cycle scripts (e.g. run prepare).
 
 ## Project Structure
 
-After installation, your project file structure should resemble the following or with more configuration files if you also installed other presets such as [`presetter-preset-esm`](https://github.com/alvis/presetter/blob/master/packages/preset-essentials).
+After installation, your project file structure should resemble the following or with more configuration files if you also installed other presets such as [`presetter-preset-esm`](https://github.com/alvis/presetter/blob/master/packages/preset-esm).
 
 Implement your business logic under `source` and prepare tests under `spec`. The `.d.ts` files are handy type definitions for you to import `.css` or image files in typescript.
 

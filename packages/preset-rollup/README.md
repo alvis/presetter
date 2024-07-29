@@ -72,7 +72,7 @@ For NodeJS to import the correct export, remember to specify the following in yo
 
 ## Project Structure
 
-After installation, your project file structure should resemble the following or with more configuration files if you also installed other presets such as [`presetter-preset-esm`](https://github.com/alvis/presetter/blob/master/packages/preset-essentials).
+After installation, your project file structure should resemble the following or with more configuration files if you also installed other presets such as [`presetter-preset-esm`](https://github.com/alvis/presetter/blob/master/packages/preset-esm).
 
 Implement your business logic under `source` and prepare tests under `spec`.
 

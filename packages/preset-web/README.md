@@ -45,9 +45,9 @@ and now you can try to run some example life cycle scripts (e.g. run prepare).
 
 ## Project Structure
 
-After installation, your project file structure should resemble the following or with more configuration files if you also installed other presets such as [`presetter-preset-esm`](https://github.com/alvis/presetter/blob/master/packages/preset-essentials).
+After installation, your project file structure should resemble the following or with more configuration files if you also installed other presets such as [`presetter-preset-esm`](https://github.com/alvis/presetter/blob/master/packages/preset-esm).
 
-**NOTE** You will notice there's no additional configuration file on your root folder like other presets such as [`presetter-preset-esm`](https://github.com/alvis/presetter/blob/master/packages/preset-essentials).
+**NOTE** You will notice there's no additional configuration file on your root folder like other presets such as [`presetter-preset-esm`](https://github.com/alvis/presetter/blob/master/packages/preset-esm).
 It's because `presetter-preset-web` is a bundle only preset, meaning it only helps you to install the development packages specified in this preset only.
 
 ```
