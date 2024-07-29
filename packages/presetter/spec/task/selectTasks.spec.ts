@@ -13,6 +13,8 @@
  * -------------------------------------------------------------------------
  */
 
+import { describe, expect, it } from 'vitest';
+
 import { selectTasks } from '#task';
 
 describe('fn:selectTasks', () => {

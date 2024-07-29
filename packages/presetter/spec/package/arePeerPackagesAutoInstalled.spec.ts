@@ -13,6 +13,8 @@
  * -------------------------------------------------------------------------
  */
 
+import { describe, expect, it } from 'vitest';
+
 import { arePeerPackagesAutoInstalled } from '#package';
 
 describe('fn:arePeerPackagesAutoInstalled', () => {

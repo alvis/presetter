@@ -70,16 +70,15 @@ const noSymlinks: PresetAsset['noSymlinks'] = ({
   },
 }) => [join(types, IMAGE_TYPE), join(types, STYLE_TYPE)];
 
-const supplementaryConfig: PresetAsset['supplementaryConfig'] = {
+const supplementaryConfig: PresetAsset['supplementaryConfig'] = () => ({
   eslint: resolve(CONFIGS, 'eslint.yaml'),
   gitignore: ({
     custom: {
       variable: { types },
     },
   }) => [join('/', types, IMAGE_TYPE), join('/', types, STYLE_TYPE)],
-  jest: resolve(CONFIGS, 'jest.yaml'),
   lintstaged: resolve(CONFIGS, 'lintstaged.yaml'),
-};
+});
 
 /**
  * get the list of templates provided by this preset

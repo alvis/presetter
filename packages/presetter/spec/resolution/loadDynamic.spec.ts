@@ -13,14 +13,16 @@
  * -------------------------------------------------------------------------
  */
 
-import { jest } from '@jest/globals';
+import { describe, expect, it, vi } from 'vitest';
 
 import { posix, relative, resolve, sep } from 'node:path';
 
+import { loadDynamic } from '#resolution';
+
 import type { ResolvedPresetContext } from 'presetter-types';
 
-jest.unstable_mockModule('node:fs', () => ({
-  existsSync: jest.fn((path: string): boolean => {
+vi.mock('node:fs', () => ({
+  existsSync: vi.fn((path: string): boolean => {
     // ensure that the paths below is compatible with windows
     const posixPath = relative(resolve('/'), path).split(sep).join(posix.sep);
     switch (posixPath) {
@@ -32,8 +34,8 @@ jest.unstable_mockModule('node:fs', () => ({
   }),
 }));
 
-jest.unstable_mockModule('#io', () => ({
-  loadFile: jest.fn(async (path: string) => {
+vi.mock('#io', () => ({
+  loadFile: vi.fn(async (path: string) => {
     // ensure that the paths below is compatible with windows
     const posixPath = relative(resolve('/'), path).split(sep).join(posix.sep);
 
@@ -46,7 +48,6 @@ jest.unstable_mockModule('#io', () => ({
   }),
 }));
 
-const { loadDynamic } = await import('#resolution');
 describe('fn:loadDynamic', () => {
   const context: ResolvedPresetContext<'variable'> = {
     target: { name: 'name', root: 'root', package: {} },

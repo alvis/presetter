@@ -13,11 +13,13 @@
  * -------------------------------------------------------------------------
  */
 
+import { describe, expect, it } from 'vitest';
+
 import {
   assertPluginList,
   assertPluginListItem,
-  assertPluginObject,
   assertPluginManifest,
+  assertPluginObject,
 } from '#plugin';
 
 describe('fn:assertPluginListItem', () => {

@@ -1,12 +1,12 @@
+import { describe, expect, it, vi } from 'vitest';
+
 import { posix, relative, resolve, sep } from 'node:path';
 
-import { jest } from '@jest/globals';
-
-import * as resolution from '#resolution';
+import { resolveTemplate } from '#content';
 
 import type { PresetGraph } from 'presetter-types';
 
-jest.unstable_mockModule('#resolution', () => {
+vi.mock('#resolution', async (importActual) => {
   const getFileContext = (path) => {
     // ensure that the paths below is compatible with windows
     const posixPath = relative(resolve('/'), path).split(sep).join(posix.sep);
@@ -39,9 +39,9 @@ jest.unstable_mockModule('#resolution', () => {
   };
 
   return {
-    ...resolution,
-    loadDynamic: jest.fn(loadDynamic),
-    loadDynamicMap: jest.fn((map, context) =>
+    ...(await importActual<typeof import('#resolution')>()),
+    loadDynamic: vi.fn(loadDynamic),
+    loadDynamicMap: vi.fn((map, context) =>
       Object.fromEntries(
         Object.entries({ ...(map as any) }).map(
           ([relativePath, value]): [string, any] => [
@@ -102,7 +102,6 @@ const graph: PresetGraph = [
   },
 ];
 
-const { resolveTemplate } = await import('#content');
 describe('fn:resolveTemplate', () => {
   it('give an empty object if no template is given at all', async () => {
     expect(

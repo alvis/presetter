@@ -13,6 +13,8 @@
  * -------------------------------------------------------------------------
  */
 
+import { describe, expect, it } from 'vitest';
+
 import { resolveDirective } from '#directive';
 
 import type { PresetContext } from 'presetter-types';

@@ -13,25 +13,28 @@
  * -------------------------------------------------------------------------
  */
 
+import { describe, expect, it, vi } from 'vitest';
+
 import { existsSync, readdirSync } from 'node:fs';
 import { dirname, resolve } from 'node:path';
-import * as pathNode from 'node:path';
 import { fileURLToPath } from 'node:url';
 
-import { jest } from '@jest/globals';
+import { loadDynamicMap, resolveContext } from 'presetter';
+
+import getPresetAsset from '#index';
 
 const __dir = fileURLToPath(dirname(import.meta.url));
 
-jest.unstable_mockModule('node:path', () => ({
-  ...pathNode,
-  // spy on resolve to check if a template is referenced
-  resolve: jest.fn(resolve),
-}));
+vi.mock('node:path', async (importActual) => {
+  const actual = await importActual<typeof import('node:path')>();
 
-const { resolve: resolveSpyed } = await import('node:path');
-const { loadDynamicMap, resolveContext } = await import('presetter');
+  return {
+    ...actual,
+    // spy on resolve to check if a template is referenced
+    resolve: vi.fn(actual.resolve),
+  };
+});
 
-const { default: getPresetAsset } = await import('#index');
 describe('fn:getPresetAsset', () => {
   it('use all templates', async () => {
     const asset = await getPresetAsset();
@@ -53,10 +56,10 @@ describe('fn:getPresetAsset', () => {
     const templates = (existsSync(TEMPLATES) && readdirSync(TEMPLATES)) || [];
 
     for (const path of configs) {
-      expect(resolveSpyed).toBeCalledWith(CONFIGS, path);
+      expect(vi.mocked(resolve)).toBeCalledWith(CONFIGS, path);
     }
     for (const path of templates) {
-      expect(resolveSpyed).toBeCalledWith(TEMPLATES, path);
+      expect(vi.mocked(resolve)).toBeCalledWith(TEMPLATES, path);
     }
   });
 });

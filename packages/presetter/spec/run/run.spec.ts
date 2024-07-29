@@ -13,20 +13,24 @@
  * -------------------------------------------------------------------------
  */
 
-import { jest } from '@jest/globals';
+import { describe, expect, it, vi } from 'vitest';
 
-jest.spyOn(process, 'exit').mockImplementation((() => {}) as any);
+import npmRunScript from '@npmcli/run-script';
 
-jest.unstable_mockModule('@npmcli/run-script', () => ({
-  default: jest.fn(({ event }: { event: string }) => {
+import { run } from '#run';
+
+vi.spyOn(process, 'exit').mockImplementation((() => {}) as any);
+
+vi.mock('@npmcli/run-script', () => ({
+  default: vi.fn(({ event }: { event: string }) => {
     if (event === 'error') {
       throw new Error();
     }
   }),
 }));
 
-jest.unstable_mockModule('#package', () => ({
-  getPackage: jest.fn(async () => ({
+vi.mock('#package', () => ({
+  getPackage: vi.fn(async () => ({
     path: '/fake/path/package.json',
     json: {
       scripts: {
@@ -40,8 +44,8 @@ jest.unstable_mockModule('#package', () => ({
   })),
 }));
 
-jest.unstable_mockModule('#preset', () => ({
-  getScripts: jest.fn(async () => ({
+vi.mock('#preset', () => ({
+  getScripts: vi.fn(async () => ({
     'custom': 'template command',
     'task': 'command --arg-template',
     'other': 'other --arg-template',
@@ -51,13 +55,7 @@ jest.unstable_mockModule('#preset', () => ({
   })),
 }));
 
-const { run } = await import('#run');
-const { default: npmRunScript } = await import('@npmcli/run-script');
 describe('fn:run', () => {
-  beforeEach(() => {
-    jest.clearAllMocks();
-  });
-
   it('should run tasks via listr', async () => {
     const selectors = [
       { selector: 'task', args: [] },

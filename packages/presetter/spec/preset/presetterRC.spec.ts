@@ -13,14 +13,14 @@
  * -------------------------------------------------------------------------
  */
 
-import { jest } from '@jest/globals';
+import { describe, expect, it, vi } from 'vitest';
 
 import { posix, relative, resolve, sep } from 'node:path';
 
 import { mockIO } from './mock';
 
-jest.unstable_mockModule('read-pkg-up', () => ({
-  readPackageUp: jest.fn(({ cwd }: { cwd: string }) => {
+vi.doMock('read-pkg-up', () => ({
+  readPackageUp: vi.fn(({ cwd }: { cwd: string }) => {
     // ensure that the paths below is compatible with windows
     const posixPath = relative(resolve('/'), cwd).split(sep).join(posix.sep);
     switch (posixPath) {
@@ -40,7 +40,13 @@ mockIO({
 
 const { writeFileSync } = await import('node:fs');
 
-const { assertPresetterRC } = await import('#preset/presetterRC');
+const {
+  assertPresetterRC,
+  getPresetterRC,
+  getPresetterRCPaths,
+  updatePresetterRC,
+} = await import('#preset/presetterRC');
+
 describe('fn:assertPresetterRC', () => {
   it('throw an error if the given value is not an object at all', () => {
     expect(() => assertPresetterRC(null)).toThrow();
@@ -67,11 +73,10 @@ describe('fn:assertPresetterRC', () => {
   });
 });
 
-const { getPresetterRC } = await import('#preset/presetterRC');
 describe('fn:getPresetterRC', () => {
   it('accept an alternative file extension', async () => {
     expect(await getPresetterRC('/project')).toEqual({
-      preset: ['no-symlink-preset', 'symlink-only-preset'],
+      preset: ['virtual:no-symlink-preset', 'virtual:symlink-only-preset'],
       noSymlinks: ['path/to/file'],
     });
   });
@@ -81,7 +86,6 @@ describe('fn:getPresetterRC', () => {
   });
 });
 
-const { getPresetterRCPaths } = await import('#preset/presetterRC');
 describe('fn:getPresetterRCPaths', () => {
   it('return the path to the configuration file in a single project repo', async () => {
     expect(await getPresetterRCPaths('/project')).toEqual([
@@ -97,7 +101,6 @@ describe('fn:getPresetterRCPaths', () => {
   });
 });
 
-const { updatePresetterRC } = await import('#preset/presetterRC');
 describe('fn:updatePresetterRC', () => {
   it('create a new .presetterrc if it is inexistent', async () => {
     await updatePresetterRC('/missing-presetterrc', { preset: ['new-preset'] });
@@ -115,7 +118,11 @@ describe('fn:updatePresetterRC', () => {
       resolve('/project/.presetterrc.json'),
       JSON.stringify(
         {
-          preset: ['no-symlink-preset', 'symlink-only-preset', 'new-preset'],
+          preset: [
+            'virtual:no-symlink-preset',
+            'virtual:symlink-only-preset',
+            'new-preset',
+          ],
           noSymlinks: ['path/to/file'],
         },
         null,

@@ -1,1 +1,1 @@
-coverage: npm run --if-present test -- --coverage --collectCoverageFrom='{source}/**/*.[jt]s?(x)'
+coverage: npm run --if-present test -- --coverage

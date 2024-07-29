@@ -13,6 +13,8 @@
  * -------------------------------------------------------------------------
  */
 
+import { describe, expect, it } from 'vitest';
+
 import { parseGlobalArgs } from '#task';
 
 import type { Arguments } from 'yargs-parser';

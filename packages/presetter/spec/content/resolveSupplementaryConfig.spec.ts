@@ -1,3 +1,5 @@
+import { describe, expect, it } from 'vitest';
+
 import { resolveSupplementaryConfig } from '#content';
 
 describe('fn:resolveSupplementaryConfig', () => {

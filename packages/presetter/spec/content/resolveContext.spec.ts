@@ -1,3 +1,5 @@
+import { describe, expect, it } from 'vitest';
+
 import { resolveContext } from '#content';
 
 describe('fn:resolveContext', () => {

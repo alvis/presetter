@@ -13,15 +13,18 @@
  * -------------------------------------------------------------------------
  */
 
-import { jest } from '@jest/globals';
+import { describe, expect, it, vi } from 'vitest';
+
 import yargs from 'yargs';
+
+import { composeScripts } from '#scripts';
 
 import type { Script } from '#scripts';
 
-jest.unstable_mockModule('yargs', () => ({
+vi.mock('yargs', () => ({
   __esModule: true,
   default: {
-    parse: jest.fn((path: string) =>
+    parse: vi.fn((path: string) =>
       path
         ? yargs.parse(path)
         : {
@@ -65,7 +68,6 @@ function should(
   });
 }
 
-const { composeScripts } = await import('#scripts');
 describe('fn:composeScript', () => {
   describe('detect definition error', () => {
     should('warn an non-existent task', {

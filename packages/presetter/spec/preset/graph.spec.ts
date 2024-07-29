@@ -13,16 +13,21 @@
  * -------------------------------------------------------------------------
  */
 
+import { describe, expect, it } from 'vitest';
+
 import { createDummyContext, mockModuleResolution } from './mock';
 
 mockModuleResolution();
 
 const dummyContext = createDummyContext();
 
-const { getPresetAsset } = await import('#preset/graph');
+const { getPresetAsset, getPresetGraph } = await import('#preset/graph');
+
 describe('fn:getPresetAsset', () => {
   it('return the preset asset', async () => {
-    expect(await getPresetAsset('no-symlink-preset', dummyContext)).toEqual({
+    expect(
+      await getPresetAsset('virtual:no-symlink-preset', dummyContext),
+    ).toEqual({
       template: {
         'path/to/file': '/path/to/template',
       },
@@ -31,12 +36,11 @@ describe('fn:getPresetAsset', () => {
   });
 });
 
-const { getPresetGraph } = await import('#preset/graph');
 describe('fn:getPresetGraph', () => {
   it('compute the preset graph', async () => {
     expect(await getPresetGraph(dummyContext)).toEqual([
       {
-        name: 'no-symlink-preset',
+        name: 'virtual:no-symlink-preset',
         asset: {
           template: {
             'path/to/file': '/path/to/template',
@@ -46,7 +50,7 @@ describe('fn:getPresetGraph', () => {
         nodes: [],
       },
       {
-        name: 'symlink-only-preset',
+        name: 'virtual:symlink-only-preset',
         asset: {
           template: {
             'link/pointed/to/preset': '/path/to/template',
@@ -62,19 +66,19 @@ describe('fn:getPresetGraph', () => {
 
   it('add and merge extended presets', async () => {
     const graph = await getPresetGraph(
-      createDummyContext({ preset: 'extension-preset' }),
+      createDummyContext({ preset: 'virtual:extension-preset' }),
     );
 
     expect(graph.length).toEqual(1);
     expect(graph).toMatchObject([
       {
-        name: 'extension-preset',
+        name: 'virtual:extension-preset',
         asset: {
-          extends: ['no-symlink-preset', 'symlink-only-preset'],
+          extends: ['virtual:no-symlink-preset', 'virtual:symlink-only-preset'],
         },
         nodes: [
           {
-            name: 'no-symlink-preset',
+            name: 'virtual:no-symlink-preset',
             asset: {
               template: {
                 'path/to/file': '/path/to/template',
@@ -84,7 +88,7 @@ describe('fn:getPresetGraph', () => {
             nodes: [],
           },
           {
-            name: 'symlink-only-preset',
+            name: 'virtual:symlink-only-preset',
             asset: {
               template: {
                 'link/pointed/to/preset': '/path/to/template',
@@ -108,7 +112,7 @@ describe('fn:getPresetGraph', () => {
           root: '/missing-preset',
           package: {},
         },
-        custom: { preset: 'missing-preset' },
+        custom: { preset: 'virtual:missing-preset' },
       }),
     ).rejects.toThrow();
   });

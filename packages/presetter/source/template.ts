@@ -30,8 +30,8 @@ type MergedArray<A, B> = A extends JsonValue[]
   ? B extends JsonValue[]
     ? Array<A[number] | B[number]>
     : keyof B extends `${number}`
-    ? JsonValue[]
-    : B
+      ? JsonValue[]
+      : B
   : B;
 
 /**

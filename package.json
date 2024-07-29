@@ -14,6 +14,7 @@
   },
   "license": "MIT",
   "author": "Alvis HT Tang <alvis@hilbert.space>",
+  "type": "module",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/alvis/presetter.git"
@@ -22,9 +23,9 @@
     "install": "npx -y only-allow pnpm && husky install && husky set .husky/pre-commit \"npm run stage\"",
     "postinstall": "pnpm run -r bootstrap",
     "build": "pnpm --recursive run build",
-    "coverage": "pnpm run test --coverage --collectCoverageFrom='source/**/*.ts'",
+    "coverage": "pnpm run test --coverage",
     "lint": "pnpm --recursive run lint",
-    "test": "cross-env NODE_OPTIONS=\"${NODE_OPTIONS} --experimental-vm-modules\" jest --config .jestrc.json --no-cache --passWithNoTests --verbose --logHeapUsage",
+    "test": "vitest",
     "stage": "pnpm --recursive exec lint-staged -- --concurrent=false",
     "next": "pnpm run release -- --prerelease next",
     "release": "run-s \"release:root -- {@}\" release:packages release:lock release:git --",

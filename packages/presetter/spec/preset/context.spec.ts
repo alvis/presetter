@@ -13,10 +13,12 @@
  * -------------------------------------------------------------------------
  */
 
-import { jest } from '@jest/globals';
+import { describe, expect, it, vi } from 'vitest';
 
-jest.unstable_mockModule('#package', () => ({
-  getPackage: jest.fn(async () => ({
+import { getContext } from '#preset/context';
+
+vi.mock('#package', () => ({
+  getPackage: vi.fn(async () => ({
     path: '/project/package.json',
     json: {
       name: 'client',
@@ -28,8 +30,8 @@ jest.unstable_mockModule('#package', () => ({
   })),
 }));
 
-jest.unstable_mockModule('#preset/presetterRC', () => ({
-  getPresetterRC: jest.fn((root: string) => {
+vi.mock('#preset/presetterRC', () => ({
+  getPresetterRC: vi.fn((root: string) => {
     switch (root) {
       case '/project':
         return {
@@ -41,7 +43,6 @@ jest.unstable_mockModule('#preset/presetterRC', () => ({
   }),
 }));
 
-const { getContext } = await import('#preset/context');
 describe('fn:getContext', () => {
   it('compute the current context', async () => {
     expect(await getContext()).toEqual({

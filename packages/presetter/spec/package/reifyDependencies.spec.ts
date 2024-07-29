@@ -12,39 +12,42 @@
  * -------------------------------------------------------------------------
  */
 
-import { jest } from '@jest/globals';
+import { describe, expect, it, vi } from 'vitest';
 
-const mockArborist = jest.fn();
-const mockArboristReify = jest.fn(async () => ({
-  edgesOut: new Map(
-    Object.entries({
-      package: { name: 'package', spec: '*' },
-    }),
-  ),
+import { reifyDependencies } from '#package';
+
+const { Arborist, reify } = vi.hoisted(() => {
+  const reify = vi.fn(async () => ({
+    edgesOut: new Map(
+      Object.entries({
+        package: { name: 'package', spec: '*' },
+      }),
+    ),
+  }));
+
+  const Arborist = vi.fn().mockImplementation(() => ({
+    reify,
+  }));
+
+  return { Arborist, reify };
+});
+
+vi.mock('@npmcli/arborist', () => ({
+  Arborist,
 }));
-jest.unstable_mockModule('@npmcli/arborist', () => ({
-  Arborist: jest.fn((args) => {
-    mockArborist(args);
 
-    return {
-      reify: mockArboristReify,
-    };
-  }),
-}));
-
-const { reifyDependencies } = await import('#package');
 describe('fn:reifyDependencies', () => {
   it('use arborist to reify package dependencies', async () => {
     await reifyDependencies({ root: 'root' });
 
-    expect(mockArborist).toHaveBeenCalledWith(
+    expect(Arborist).toHaveBeenCalledWith(
       expect.objectContaining({
         path: 'root',
         workspacesEnabled: expect.any(Boolean),
       }),
     );
 
-    expect(mockArboristReify).toHaveBeenCalledWith({
+    expect(reify).toHaveBeenCalledWith({
       add: [],
       rm: [],
       save: false,

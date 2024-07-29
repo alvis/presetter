@@ -1,3 +1,5 @@
+/* v8 ignore start */
+
 /*
  *                            *** MIT LICENSE ***
  * -------------------------------------------------------------------------
@@ -12,8 +14,6 @@
  * @copyright Copyright (c) 2019 - All Rights Reserved.
  * -------------------------------------------------------------------------
  */
-
-/* istanbul ignore file */
 
 import { entry } from './entry';
 import { handleError } from './error';

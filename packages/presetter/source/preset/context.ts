@@ -16,6 +16,7 @@
 import { dirname } from 'node:path';
 
 import { getPackage } from '../package';
+
 import { getPresetterRC } from './presetterRC';
 
 import type { PresetContext } from 'presetter-types';

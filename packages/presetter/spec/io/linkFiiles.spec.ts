@@ -13,20 +13,22 @@
  * -------------------------------------------------------------------------
  */
 
-import { jest } from '@jest/globals';
+import { describe, expect, it, vi } from 'vitest';
 
-import * as fs from 'node:fs';
+import { mkdirSync, symlinkSync, unlinkSync } from 'node:fs';
 import { posix, relative, resolve, sep } from 'node:path';
+
+import { linkFiles } from '#io';
 
 import type { Stats } from 'node:fs';
 
-jest.unstable_mockModule('node:console', () => ({
-  info: jest.fn(),
+vi.mock('node:console', () => ({
+  info: vi.fn(),
 }));
 
-jest.unstable_mockModule('node:fs', async () => ({
-  ...fs,
-  lstatSync: jest.fn(
+vi.mock('node:fs', async (importActual) => ({
+  ...(await importActual<typeof import('node:fs')>()),
+  lstatSync: vi.fn(
     (
       path: string,
       options: { throwIfNoEntry: boolean },
@@ -50,7 +52,7 @@ jest.unstable_mockModule('node:fs', async () => ({
       }
     },
   ),
-  statSync: jest.fn(
+  statSync: vi.fn(
     (
       path: string,
       options: { throwIfNoEntry: boolean },
@@ -71,17 +73,13 @@ jest.unstable_mockModule('node:fs', async () => ({
       }
     },
   ),
-  readlinkSync: jest.fn(() => ''),
-  mkdirSync: jest.fn(),
-  symlinkSync: jest.fn(),
-  unlinkSync: jest.fn(),
+  readlinkSync: vi.fn(() => ''),
+  mkdirSync: vi.fn(),
+  symlinkSync: vi.fn(),
+  unlinkSync: vi.fn(),
 }));
 
-const { linkFiles } = await import('#io');
-const { mkdirSync, symlinkSync, unlinkSync } = await import('node:fs');
 describe('fn:linkFiles', () => {
-  beforeEach(jest.clearAllMocks);
-
   it('link generated files to the project', async () => {
     await linkFiles('/project', {
       'old/link/rewritten/by/user': resolve('/project/relative/path/to/config'),

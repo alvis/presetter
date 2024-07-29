@@ -13,6 +13,8 @@
  * -------------------------------------------------------------------------
  */
 
+import { describe, expect, it } from 'vitest';
+
 import { resolve } from 'node:path';
 
 import {
@@ -25,6 +27,7 @@ makeResolveRelative();
 mockModuleResolution();
 
 const { getDestinationMap } = await import('#preset/mapping');
+
 describe('fn:getDestinationMap', () => {
   it('compute the correct output paths', async () => {
     expect(

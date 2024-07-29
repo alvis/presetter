@@ -16,12 +16,12 @@
 
 </div>
 
-Sharing configurations for building tools across projects is painful. How many time you've copied configs for `babel`, `eslint`, `jest`, `typescript` or the life cycle scripts in `package.json`?
+Sharing configurations for building tools across projects is painful. How many time you've copied configs for `babel`, `eslint`, `vitest`, `typescript` or the life cycle scripts in `package.json`?
 How many dev dependencies you have to install before you can kick start a project?
 
 What's more, what if you want to update configs for all projects? :man_facepalming:
 
-**Presetter is a utility for setting up building tools for your project from a template.** This means with just only two dev packages, namely this package and your favorite template preset, all essential development packages, such as typescript, eslint and jest, together with their configuration files provided by the preset, are automatically setup for you upon the project's initialization.
+**Presetter is a utility for setting up building tools for your project from a template.** This means with just only two dev packages, namely this package and your favorite template preset, all essential development packages, such as typescript, eslint and vitest, together with their configuration files provided by the preset, are automatically setup for you upon the project's initialization.
 
 ---
 

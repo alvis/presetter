@@ -27,8 +27,6 @@ const TEMPLATES = resolve(DIR, '..', 'templates');
 export type PresetConfig = {
   /** configuration to be merged with .eslintrc */
   eslint?: Record<string, unknown>;
-  /** configuration to be merged with .jestrc */
-  jest?: Record<string, unknown>;
   /** patterns to be added to .gitignore */
   gitignore?: string[];
   /** configuration to be merged with .lintstagedrc */
@@ -76,12 +74,12 @@ export default async function (): Promise<PresetAsset> {
       /* eslint-disable @typescript-eslint/naming-convention */
       '.eslintrc.json': resolve(TEMPLATES, 'eslintrc.yaml'),
       '.gitignore': resolve(TEMPLATES, 'gitignore'),
-      '.jestrc.json': resolve(TEMPLATES, 'jestrc.yaml'),
       '.lintstagedrc.json': resolve(TEMPLATES, 'lintstagedrc.yaml'),
       '.npmignore': resolve(TEMPLATES, 'npmignore'),
       '.prettierrc.json': resolve(TEMPLATES, 'prettierrc.yaml'),
       'tsconfig.json': resolve(TEMPLATES, 'tsconfig.yaml'),
       'tsconfig.build.json': resolve(TEMPLATES, 'tsconfig.build.yaml'),
+      'vitest.config.ts': resolve(TEMPLATES, 'vitest.config.ts'),
       /* eslint-enable @typescript-eslint/naming-convention */
     },
     scripts: resolve(TEMPLATES, 'scripts.yaml'),

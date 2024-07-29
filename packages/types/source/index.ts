@@ -1,3 +1,5 @@
+/* v8 ignore start */
+
 /*
  *                            *** MIT LICENSE ***
  * -------------------------------------------------------------------------
@@ -13,7 +15,7 @@
  * -------------------------------------------------------------------------
  */
 
-import type { JsonObject, PackageJson } from 'type-fest';
+import type { JsonObject, PackageJson, SetRequired } from 'type-fest';
 
 /** any values that are not a function, array or object */
 export type Primitive = string | number | boolean | null | undefined;
@@ -110,18 +112,11 @@ export interface PresetContext {
 }
 
 /** resolved PresetContext with certain fields resolved and made available */
-export interface ResolvedPresetContext<
+export type ResolvedPresetContext<
   F extends keyof PresetterConfig = 'config' | 'noSymlinks' | 'variable',
-> extends PresetContext {
-  custom: PresetterConfig & {
-    [K in keyof Pick<PresetterConfig, F>]-?: PresetterConfig[K];
-  } & {
-    [K in keyof Pick<
-      PresetterConfig,
-      Exclude<keyof PresetterConfig, F>
-    >]: PresetterConfig[K];
-  };
-}
+> = PresetContext & {
+  custom: SetRequired<PresetContext['custom'], F>;
+};
 
 /** an auxiliary type for representing a file path */
 type Path = string;
@@ -132,7 +127,10 @@ export type TemplateGenerator = Generator<Template>;
 /** an auxiliary type for representing a collection of template (key: output path, value: template definition) */
 export type TemplateMap = Record<string, Path | Template | TemplateGenerator>;
 /** an auxiliary type for representing a dynamic template map generator */
-export type TemplateMapGenerator = Generator<TemplateMap>;
+export type TemplateMapGenerator = Generator<
+  TemplateMap,
+  'config' | 'noSymlinks' | 'variable'
+>;
 /** an auxiliary type for representing a config */
 export type Config = string[] | JsonObject;
 /** an auxiliary type for representing a dynamic config generator */

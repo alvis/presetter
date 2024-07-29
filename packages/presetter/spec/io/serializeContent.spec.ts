@@ -13,6 +13,8 @@
  * -------------------------------------------------------------------------
  */
 
+import { describe, expect, it } from 'vitest';
+
 import { serializeContent } from '#io';
 
 describe('fn:serializeContent', () => {

@@ -1,7 +1,0 @@
-preset: ts-jest
-transform:
-  '^.+\.[jt]sx?$':
-    - ts-jest
-    - useESM: false
-      tsconfig:
-        allowJs: true

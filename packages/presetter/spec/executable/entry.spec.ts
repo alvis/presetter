@@ -13,15 +13,20 @@
  * -------------------------------------------------------------------------
  */
 
-import { jest } from '@jest/globals';
+import { describe, expect, it, vi } from 'vitest';
 
-jest.unstable_mockModule('node:fs', () => ({
-  existsSync: jest.fn((path: string) => path === 'exist'),
+import { entry } from '#executable/entry';
+import { reifyDependencies } from '#package';
+import { bootstrapPreset, setupPreset, unsetPreset } from '#preset';
+import { run } from '#run';
+
+vi.mock('node:fs', () => ({
+  existsSync: vi.fn((path: string) => path === 'exist'),
 }));
 
-jest.unstable_mockModule('#package', () => ({
-  getPackage: jest.fn(() => ({ path: '' })),
-  reifyDependencies: jest.fn(
+vi.mock('#package', () => ({
+  getPackage: vi.fn(() => ({ path: '' })),
+  reifyDependencies: vi.fn(
     async ({
       add,
     }: Parameters<typeof import('#package').reifyDependencies>[0]) =>
@@ -29,23 +34,17 @@ jest.unstable_mockModule('#package', () => ({
   ),
 }));
 
-jest.unstable_mockModule('#preset', () => ({
-  bootstrapPreset: jest.fn(),
-  setupPreset: jest.fn(),
-  unsetPreset: jest.fn(),
+vi.mock('#preset', () => ({
+  bootstrapPreset: vi.fn(),
+  setupPreset: vi.fn(),
+  unsetPreset: vi.fn(),
 }));
 
-jest.unstable_mockModule('#run', () => ({
-  run: jest.fn(),
+vi.mock('#run', () => ({
+  run: vi.fn(),
 }));
 
-const { entry } = await import('#executable/entry');
-const { reifyDependencies } = await import('#package');
-const { bootstrapPreset, setupPreset, unsetPreset } = await import('#preset');
-const { run } = await import('#run');
 describe('fn:entry', () => {
-  beforeEach(jest.clearAllMocks);
-
   describe('use', () => {
     it('use preset', async () => {
       await entry(['use', 'preset']);

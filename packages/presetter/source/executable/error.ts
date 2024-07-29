@@ -13,8 +13,6 @@
  * -------------------------------------------------------------------------
  */
 
-/* istanbul ignore file */
-
 import { warn } from 'node:console';
 
 import createCallsiteRecord from 'callsite-record';

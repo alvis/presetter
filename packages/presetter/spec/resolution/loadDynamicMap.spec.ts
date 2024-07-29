@@ -13,6 +13,8 @@
  * -------------------------------------------------------------------------
  */
 
+import { describe, expect, it } from 'vitest';
+
 import { loadDynamicMap } from '#resolution';
 
 import type { ResolvedPresetContext } from 'presetter-types';

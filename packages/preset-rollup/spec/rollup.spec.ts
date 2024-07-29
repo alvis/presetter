@@ -13,6 +13,8 @@
  * -------------------------------------------------------------------------
  */
 
+import { describe, expect, it } from 'vitest';
+
 import { getRollupParameter } from '#rollup';
 
 import type { Config, ResolvedPresetContext } from 'presetter-types';

@@ -13,20 +13,23 @@
  * -------------------------------------------------------------------------
  */
 
-import { jest } from '@jest/globals';
+import { describe, expect, it, vi } from 'vitest';
 
-import * as fs from 'node:fs';
 import { posix, relative, resolve, sep } from 'node:path';
+
+import { mkdirSync, writeFileSync } from 'node:fs';
+
+import { writeFiles } from '#io';
 
 import type { Stats } from 'node:fs';
 
-jest.unstable_mockModule('node:console', () => ({
-  info: jest.fn(),
+vi.mock('node:console', () => ({
+  info: vi.fn(),
 }));
 
-jest.unstable_mockModule('node:fs', async () => ({
-  ...fs,
-  lstatSync: jest.fn(
+vi.mock('node:fs', async (importActual) => ({
+  ...(await importActual<typeof import('node:fs')>()),
+  lstatSync: vi.fn(
     (
       path: string,
       options: { throwIfNoEntry: boolean },
@@ -45,16 +48,12 @@ jest.unstable_mockModule('node:fs', async () => ({
       }
     },
   ),
-  mkdirSync: jest.fn(),
-  unlinkSync: jest.fn(),
-  writeFileSync: jest.fn(),
+  mkdirSync: vi.fn(),
+  unlinkSync: vi.fn(),
+  writeFileSync: vi.fn(),
 }));
 
-const { writeFiles } = await import('#io');
-const { mkdirSync, unlinkSync, writeFileSync } = await import('node:fs');
 describe('fn:writeFiles', () => {
-  beforeEach(jest.clearAllMocks);
-
   it('write content to the disk if the destination path does not exist', async () => {
     await writeFiles(
       '/path/to',

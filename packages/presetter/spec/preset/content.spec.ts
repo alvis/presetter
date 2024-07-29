@@ -13,7 +13,7 @@
  * -------------------------------------------------------------------------
  */
 
-import { jest } from '@jest/globals';
+import { beforeEach, describe, expect, it, vi } from 'vitest';
 
 import { resolve } from 'node:path';
 
@@ -31,10 +31,11 @@ mockModuleResolution();
 const { linkFiles, writeFiles } = await import('#io');
 
 const { bootstrapContent } = await import('#preset/content');
+
 describe('fn:bootstrapContent', () => {
   beforeEach(() => {
-    jest.mocked(writeFiles).mockReset();
-    jest.mocked(linkFiles).mockReset();
+    vi.mocked(writeFiles).mockReset();
+    vi.mocked(linkFiles).mockReset();
   });
 
   it('write configuration and link symlinks', async () => {
@@ -121,7 +122,7 @@ describe('fn:bootstrapContent', () => {
   it('honours ignore rules supplied by presets', async () => {
     await bootstrapContent(
       createDummyContext({
-        preset: 'extension-preset',
+        preset: 'virtual:extension-preset',
       }),
       { force: false },
     );

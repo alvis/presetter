@@ -40,14 +40,12 @@ export type Package = {
 export function arePeerPackagesAutoInstalled(): boolean {
   // NOTE npm_config_user_agent should be in the form of 'npm/7.3.0 node/v15.5.0 darwin x64'
 
-  /* istanbul ignore next */
-  const [clientID] =
-    process.env['npm_config_user_agent']?.split(' ') ?? ([] as undefined[]);
+  const clientID = process.env['npm_config_user_agent']?.split(' ')[0];
 
-  /* istanbul ignore next */
+  /* v8 ignore next */
   const [name, version] = clientID?.split('/') ?? ([] as undefined[]);
 
-  /* istanbul ignore next */
+  /* v8 ignore next */
   const [major] = version?.split('.') ?? ([] as undefined[]);
 
   const isNPM = name === 'npm';

@@ -1,3 +1,5 @@
+import { describe, expect, it } from 'vitest';
+
 import { resolveNoSymlinks } from '#content';
 
 describe('fn:resolveNoSymlinks', () => {

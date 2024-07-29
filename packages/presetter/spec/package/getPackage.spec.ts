@@ -13,20 +13,19 @@
  * -------------------------------------------------------------------------
  */
 
-import { jest } from '@jest/globals';
+import { describe, expect, it, vi } from 'vitest';
 
-jest.unstable_mockModule('read-pkg-up', () => ({
-  readPackageUp: jest.fn(),
+import { readPackageUp } from 'read-pkg-up';
+
+import { getPackage } from '#package';
+
+vi.mock('read-pkg-up', () => ({
+  readPackageUp: vi.fn(),
 }));
 
-const { readPackageUp } = await import('read-pkg-up');
-
-const { getPackage } = await import('#package');
 describe('fn:getPackage', () => {
-  beforeEach(() => jest.resetModules());
-
   it('resolve the content in package.json', async () => {
-    jest.mocked(readPackageUp).mockResolvedValueOnce({
+    vi.mocked(readPackageUp).mockResolvedValueOnce({
       path: 'path',
       packageJson: {
         name: 'name',
@@ -42,7 +41,7 @@ describe('fn:getPackage', () => {
   });
 
   it('throw an error when no package.json is found', async () => {
-    jest.mocked(readPackageUp).mockResolvedValueOnce(undefined);
+    vi.mocked(readPackageUp).mockResolvedValueOnce(undefined);
 
     await expect(getPackage()).rejects.toThrow();
   });

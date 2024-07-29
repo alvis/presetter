@@ -13,6 +13,8 @@
  * -------------------------------------------------------------------------
  */
 
+import { describe, expect, it } from 'vitest';
+
 import { resolve } from 'node:path';
 
 import {
@@ -30,10 +32,11 @@ mockModuleResolution();
 const { unlinkFiles } = await import('#io');
 
 const { unsetPreset } = await import('#preset/unset');
-describe('fn:unsetPreset', () => {
-  beforeAll(unsetPreset);
 
+describe('fn:unsetPreset', () => {
   it('clean up any artifacts installed on the project root', async () => {
+    await unsetPreset();
+
     expect(unlinkFiles).toHaveBeenCalledWith('/project', {
       'link/pointed/to/other': resolve(
         '/.presetter/client/link/pointed/to/other',

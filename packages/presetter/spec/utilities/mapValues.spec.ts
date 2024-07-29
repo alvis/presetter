@@ -13,6 +13,8 @@
  * -------------------------------------------------------------------------
  */
 
+import { describe, expect, it } from 'vitest';
+
 import { mapValues } from '#utilities/mapValues';
 
 describe('fn:mapValues', () => {

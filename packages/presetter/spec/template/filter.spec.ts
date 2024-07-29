@@ -12,7 +12,9 @@
  * -------------------------------------------------------------------------
  */
 
-import { filter, merge, mergeTemplate, template } from '#template';
+import { describe, expect, it } from 'vitest';
+
+import { filter } from '#template';
 
 describe('fn:filter', () => {
   it('return the subject without filtering', () => {

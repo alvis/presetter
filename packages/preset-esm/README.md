@@ -21,7 +21,7 @@
 **presetter-preset-esm** is a collection of essential dev tools you usually need to setup a typescript project in a fraction of time you usually take via [**presetter**](https://github.com/alvis/presetter). In addition to a set of opinionated configuration files, it also provides a number of essential lifecycle and helper commands.
 
 - 🚿 ESLint
-- 🧪 Jest
+- 🧪 Vitest
 - 💅 Prettier
 - 📤 Standard Version
 - 💯 Typescript
@@ -58,7 +58,6 @@ Implement your business logic under `source` and prepare tests under `spec`.
  ├─ .eslintrc.json
  ├─ .git
  ├─ .husky
- ├─ .jestrc.json
  ├─ .npmignore
  ├─ .prettierrc.json
  ├─ .presetterrc.json
@@ -72,8 +71,7 @@ Implement your business logic under `source` and prepare tests under `spec`.
  ├─ package.json
  ├─ tsconfig.json
  ├─ tsconfig.build.json
- ├─ tsconfig.cjs.json
- └─ tsconfig.mjs.json
+ └─ vitest.config.json
 ```
 
 ## Customization
@@ -96,8 +94,6 @@ interface PresetterRC {
 
     /** configuration to be merged with .eslintrc */
     eslint?: Record<string, unknown>;
-    /** configuration to be merged with .jestrc */
-    jest?: Record<string, unknown>;
     /** configuration to be merged with .lintstagedrc */
     lintstaged?: Record<string, unknown>;
     /** patterns to be added to .gitignore */

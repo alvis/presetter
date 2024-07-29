@@ -27,8 +27,6 @@ const TEMPLATES = resolve(DIR, '..', 'templates');
 export type PresetConfig = {
   /** configuration to be merged with .eslintrc */
   eslint?: Record<string, unknown>;
-  /** configuration to be merged with .jestrc */
-  jest?: Record<string, unknown>;
 };
 
 export const DEFAULT_VARIABLE = {
@@ -45,7 +43,7 @@ export default async function (): Promise<PresetAsset> {
     template: {
       /* eslint-disable @typescript-eslint/naming-convention */
       '.eslintrc.json': resolve(TEMPLATES, 'eslintrc.yaml'),
-      '.jestrc.json': resolve(TEMPLATES, 'jestrc.yaml'),
+      'vitest.config.ts': resolve(TEMPLATES, 'vitest.config.ts'),
       /* eslint-enable @typescript-eslint/naming-convention */
     },
     scripts: resolve(TEMPLATES, 'scripts.yaml'),

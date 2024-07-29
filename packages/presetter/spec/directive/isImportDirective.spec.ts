@@ -13,6 +13,8 @@
  * -------------------------------------------------------------------------
  */
 
+import { describe, expect, it } from 'vitest';
+
 import { isImportDirective } from '#directive';
 
 describe('fn:isImportDirective', () => {

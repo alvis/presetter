@@ -1,13 +1,13 @@
 # preset generated files
 /.eslintrc.json
 /.husky
-/.jestrc.json
 /.gitignore
 /.lintstagedrc.json
 /.npmignore
 /.prettierrc.json
 /tsconfig.json
 /tsconfig.build.json
+/vitest.config.ts
 
 # dependency
 node_modules

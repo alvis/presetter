@@ -26,6 +26,6 @@ setup:presetter: presetter bootstrap
 stage: run-p "stage:* -- {@}" --
 stage:lint: run-s "lint:prettier -- {@}" --
 start: run-p "build:typescript -- -w" "build:types:* -- -w"
-test: cross-env NODE_OPTIONS="${NODE_OPTIONS} --experimental-vm-modules" jest --config .jestrc.json --no-cache --passWithNoTests --verbose --logHeapUsage
-coverage: npm run --if-present test -- --coverage --collectCoverageFrom='{source}/**/*.[jt]s'
+test: vitest
+coverage: npm run --if-present test -- --coverage
 watch: npm run --if-present test -- --watch

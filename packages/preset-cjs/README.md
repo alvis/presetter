@@ -50,7 +50,7 @@ npx presetter use presetter-preset-cjs
 
 That's. One command and you're set.
 
-2. Develop and run life cycle scripts provided by the preset
+1. Develop and run life cycle scripts provided by the preset
 
 At this point, all development packages specified in the preset are installed,
 and now you can try to run some example life cycle scripts (e.g. run prepare).
@@ -65,12 +65,11 @@ Implement your business logic under `source` and prepare tests under `spec`.
 
 **TIPS** You can always change the source directory to other (e.g. src) by setting the `source` variable in `.presetterrc.json`. See the [customization](https://github.com/alvis/presetter/blob/master/packages/preset-esm#customization) section below for more details.
 
-```
+```plain
 (root)
  ├─ .eslintrc.json
  ├─ .git
  ├─ .husky
- ├─ .jestrc.json
  ├─ .lintstagedrc.json
  ├─ .npmignore
  ├─ .prettierrc.json
@@ -84,7 +83,8 @@ Implement your business logic under `source` and prepare tests under `spec`.
  │   ├─ *.spec.ts
  ├─ package.json
  ├─ tsconfig.json
- └─ tsconfig.build.json
+ ├─ tsconfig.build.json
+ └─ vitest.config.json
 ```
 
 ## Customization
@@ -107,8 +107,6 @@ interface PresetterRC {
 
     /** configuration to be merged with .eslintrc */
     eslint?: Record<string, unknown>;
-    /** configuration to be merged with .jestrc */
-    jest?: Record<string, unknown>;
     /** configuration to be merged with .lintstagedrc */
     lintstaged?: Record<string, unknown>;
     /** patterns to be added to .gitignore */

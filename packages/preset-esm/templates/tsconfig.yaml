@@ -37,7 +37,7 @@ compilerOptions:
   skipLibCheck: true
 
   # module resolution
-  moduleResolution: node
+  moduleResolution: bundler
   resolveJsonModule: true
   baseUrl: .
   paths:

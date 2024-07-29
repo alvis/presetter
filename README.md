@@ -8,12 +8,12 @@ _Setup build settings from a template, quick and right!_
 
 </div>
 
-Sharing configurations for building tools across projects is painful. How many time you've copied configs for `babel`, `eslint`, `jest`, `typescript` or the life cycle scripts in `package.json`?
+Sharing configurations for building tools across projects is painful. How many time you've copied configs for `babel`, `eslint`, `vitest`, `typescript` or the life cycle scripts in `package.json`?
 How many dev dependencies you have to install before you can kick start a project?
 
 What's more, what if you want to update configs for all projects? :man_facepalming:
 
-**Presetter is a utility for setting up building tools for your project from a template.** This means with just only two dev packages, namely this package and your favorite template preset, all essential development packages, such as typescript, eslint and jest, together with their configuration files provided by the preset, are automatically setup for you upon the project's initialization.
+**Presetter is a utility for setting up building tools for your project from a template.** This means with just only two dev packages, namely this package and your favorite template preset, all essential development packages, such as typescript, eslint and vitest, together with their configuration files provided by the preset, are automatically setup for you upon the project's initialization.
 
 ![Before and After](assets/before-and-after.jpg)
 
@@ -75,7 +75,7 @@ presetter will generate a `package.json` with the content below before running t
     "build": "tsc",
     "prepare": "npm run lint && npm run build",
     "lint": "eslint **/*.ts",
-    "test": "jest"
+    "test": "vitest"
   }
 }
 ```
@@ -98,8 +98,8 @@ presetter will generate a `package.json` with the content below before running t
     "build": "tsc",
     "prepare": "npm run lint && npm run build",
     "lint": "eslint --fix **/*.ts",
-    "test": "jest",
-    "coverage": "jest --coverage"
+    "test": "vitest",
+    "coverage": "vitest --coverage"
   }
 }
 ```
@@ -221,7 +221,7 @@ There are many ways to create a preset. Checkout our example presets to learn mo
 | Preset                                                         | Description                                                                                                                                                                                                    |
 |----------------------------------------------------------------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
 | [presetter-preset-cjs](/packages/preset-esm)                   | An extension of `presetter-preset-esm` but loaded with tools to help you to develop an commonjs project with ease.                                                                                       |
-| [presetter-preset-esm](/packages/preset-esm)     | A starter preset with lots of useful dev tools (e.g. eslint, jest etc.) bundled and configuration following the best practices for a modern ESM project.                                                                                |
+| [presetter-preset-esm](/packages/preset-esm)     | A starter preset with lots of useful dev tools (e.g. eslint, vitest etc.) bundled and configuration following the best practices for a modern ESM project.                                                                                |
 | [presetter-preset-hybrid](/packages/preset-hybrid)             | Another extension of `presetter-preset-esm` aiming to help you to create a dual CommonJS/ESM package without all the pains.                                                                             |
 | [presetter-preset-react](/packages/preset-react)               | Want to control the output path of the generated files? or which template to use based on the context? `presetter-preset-react` is an example showing you how to generate your manifest programmatically.      |
 | [presetter-preset-rollup](/packages/preset-rollup)             | An advanced preset showing you how to generate a content based on consolidated configs.                                                                                                                        |
@@ -232,7 +232,7 @@ There are many ways to create a preset. Checkout our example presets to learn mo
 ## About
 
 This project originated from my personal pain on maintaining a number of projects with fairly similar structure, having exactly the same build and test procedures, same `.babelrc`, `tsconfig.json` etc.
-Every time when I setup a new project, I have to copy many **identical config files** such as `.babelrc`, `.eslintrc`, `.jestrc`, `.lintstagedrc`, `.npmignore`, `tsconfig.json` to name a few,
+Every time when I setup a new project, I have to copy many **identical config files** such as `.babelrc`, `.eslintrc`, `.lintstagedrc`, `.npmignore`, `tsconfig.json`, `vitest.config.ts` to name a few,
 together with the following **40** 😱 development dependencies!!!
 
 1. @babel/cli
@@ -245,7 +245,6 @@ together with the following **40** 😱 development dependencies!!!
 1. @babel/plugin-proposal-optional-chaining
 1. @babel/preset-env
 1. @babel/preset-typescript
-1. @types/jest
 1. @types/node
 1. @typescript-eslint/eslint-plugin
 1. @typescript-eslint/parser
@@ -261,7 +260,6 @@ together with the following **40** 😱 development dependencies!!!
 1. eslint-plugin-no-secrets
 1. eslint-plugin-sonarjs
 1. husky
-1. jest
 1. leasot
 1. lint-staged
 1. npm-run-all
@@ -269,11 +267,11 @@ together with the following **40** 😱 development dependencies!!!
 1. prettier
 1. shx
 1. standard-version
-1. ts-jest
 1. tsx
 1. tsc-alias
 1. tsconfig-paths
 1. typescript
+1. vitest
 
 So, I imagine, if it is possible to reduce all these 40 packages into 1?
 I tried to look for a solution but no luck.

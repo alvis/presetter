@@ -13,6 +13,8 @@
  * -------------------------------------------------------------------------
  */
 
+import { describe, expect, it } from 'vitest';
+
 import { parseTaskSpec } from '#task';
 
 describe('fn:parseTaskSpec', () => {

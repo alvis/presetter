@@ -1,3 +1,5 @@
+/* v8 ignore start */
+
 /*
  *                            *** MIT LICENSE ***
  * -------------------------------------------------------------------------
@@ -12,7 +14,5 @@
  * @copyright Copyright (c) 2023 - All Rights Reserved.
  * -------------------------------------------------------------------------
  */
-
-/* istanbul ignore file */
 
 export * from './mapValues';

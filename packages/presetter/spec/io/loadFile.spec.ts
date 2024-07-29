@@ -13,14 +13,15 @@
  * -------------------------------------------------------------------------
  */
 
-import { jest } from '@jest/globals';
+import { describe, expect, it, vi } from 'vitest';
 
-import * as fs from 'node:fs';
 import { posix, relative, resolve, sep } from 'node:path';
 
-jest.unstable_mockModule('node:fs', async () => ({
-  ...fs,
-  readFileSync: jest.fn((path: string) => {
+import { loadFile } from '#io';
+
+vi.mock('node:fs', async (importActual) => ({
+  ...(await importActual<typeof import('node:fs')>()),
+  readFileSync: vi.fn((path: string) => {
     // ensure that the paths below is compatible with windows
     const posixPath = relative(resolve('/'), path).split(sep).join(posix.sep);
     switch (posixPath) {
@@ -37,7 +38,6 @@ jest.unstable_mockModule('node:fs', async () => ({
   }),
 }));
 
-const { loadFile } = await import('#io');
 describe('fn:loadFile', () => {
   it('load a json file', async () => {
     expect(await loadFile('/path/to/config.json')).toEqual({

@@ -13,7 +13,14 @@
  * -------------------------------------------------------------------------
  */
 
-import { jest } from '@jest/globals';
+import { beforeEach, describe, expect, it, vi } from 'vitest';
+
+// import { writePackage } from 'write-pkg';
+
+// import { bootstrapContent } from '#preset/content';
+// import { updatePresetterRC } from '#preset/presetterRC';
+
+// import type { setupPreset } from '#preset/setup';
 import {
   defaultDummyContext,
   mockContext,
@@ -21,12 +28,12 @@ import {
   mockModuleResolution,
 } from './mock';
 
-jest.unstable_mockModule('node:console', () => ({
-  info: jest.fn(),
+vi.doMock('node:console', () => ({
+  info: vi.fn(),
 }));
 
-jest.unstable_mockModule('read-pkg', () => ({
-  readPackage: jest
+vi.doMock('read-pkg', () => ({
+  readPackage: vi
     .fn()
     .mockReturnValueOnce({
       devDependencies: {
@@ -43,13 +50,13 @@ jest.unstable_mockModule('read-pkg', () => ({
     }),
 }));
 
-jest.unstable_mockModule('write-pkg', () => ({
-  writePackage: jest.fn(),
+vi.doMock('write-pkg', () => ({
+  writePackage: vi.fn(),
 }));
 
-jest.unstable_mockModule('#package', () => ({
-  arePeerPackagesAutoInstalled: jest.fn(),
-  getPackage: jest.fn(() => ({
+vi.doMock('#package', () => ({
+  arePeerPackagesAutoInstalled: vi.fn(),
+  getPackage: vi.fn(() => ({
     path: '/project/package.json',
     json: {
       name: 'client',
@@ -59,18 +66,18 @@ jest.unstable_mockModule('#package', () => ({
       dependencies: {},
     },
   })),
-  reifyDependencies: jest.fn(
+  reifyDependencies: vi.fn(
     async ({ add }: Parameters<typeof reifyDependencies>[0]) =>
       add?.map((name) => ({ name, version: '*' })),
   ),
 }));
 
-jest.unstable_mockModule('#preset/content', () => ({
-  bootstrapContent: jest.fn(),
+vi.doMock('#preset/content', () => ({
+  bootstrapContent: vi.fn(),
 }));
 
-jest.unstable_mockModule('#preset/presetterRC', () => ({
-  updatePresetterRC: jest.fn(),
+vi.doMock('#preset/presetterRC', async (importActual) => ({
+  updatePresetterRC: vi.fn(),
 }));
 
 mockContext();
@@ -83,23 +90,23 @@ const { arePeerPackagesAutoInstalled, reifyDependencies } = await import(
 );
 const { bootstrapContent } = await import('#preset/content');
 const { updatePresetterRC } = await import('#preset/presetterRC');
+const { bootstrapPreset, setupPreset } = await import('#preset/setup');
 
-const { bootstrapPreset } = await import('#preset');
 describe('fn:bootstrapPreset', () => {
   beforeEach(() => {
-    jest.mocked(reifyDependencies).mockReset();
+    vi.mocked(reifyDependencies).mockReset();
   });
 
-  it('install packages specified by the preset if peer packages are not automatically installed by the package manager', async () => {
-    jest.mocked(arePeerPackagesAutoInstalled).mockReturnValue(false);
+  it('should install packages specified by the preset if peer packages are not automatically installed by the package manager', async () => {
+    vi.mocked(arePeerPackagesAutoInstalled).mockReturnValue(false);
 
     await bootstrapPreset();
 
     expect(reifyDependencies).toHaveBeenCalledTimes(1);
   });
 
-  it('skip installing peer packages manually if auto peers install is supported by package manager', async () => {
-    jest.mocked(arePeerPackagesAutoInstalled).mockReturnValue(true);
+  it('should skip installing peer packages manually if auto peers install is supported by package manager', async () => {
+    vi.mocked(arePeerPackagesAutoInstalled).mockReturnValue(true);
 
     await bootstrapPreset();
 
@@ -107,11 +114,11 @@ describe('fn:bootstrapPreset', () => {
   });
 });
 
-const { setupPreset } = await import('#preset/setup');
 describe('fn:setupPreset', () => {
-  beforeAll(() => setupPreset('preset1', 'preset2'));
+  it('should install presetter and the preset', async () => {
+    await setupPreset('preset1', 'preset2');
 
-  it('install presetter and the preset', async () => {
+    // it should install presetter and the preset
     expect(reifyDependencies).toHaveBeenCalledTimes(1);
     expect(reifyDependencies).toBeCalledWith({
       add: ['presetter', 'preset1', 'preset2'],
@@ -119,19 +126,16 @@ describe('fn:setupPreset', () => {
       saveAs: 'dev',
       lockFile: true,
     });
-  });
 
-  it('write to .presetterrc.json', async () => {
+    // it should write to .presetterrc.json
     expect(updatePresetterRC).toBeCalledWith('/project', {
       preset: ['preset1', 'preset2'],
     });
-  });
 
-  it('bootstrap the client project', async () => {
+    // it should bootstrap the client project
     expect(bootstrapContent).toBeCalledWith(defaultDummyContext);
-  });
 
-  it('merge the bootstrapping script to package.json', async () => {
+    // it should merge the bootstrapping script to package.json
     expect(writePackage).toBeCalledWith(
       '/project',
       expect.objectContaining({

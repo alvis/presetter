@@ -12,6 +12,8 @@
  * -------------------------------------------------------------------------
  */
 
+import { describe, expect, it } from 'vitest';
+
 import { merge } from '#template';
 
 describe('fn:merge', () => {

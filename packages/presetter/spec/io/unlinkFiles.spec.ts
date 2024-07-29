@@ -13,20 +13,23 @@
  * -------------------------------------------------------------------------
  */
 
-import { jest } from '@jest/globals';
+import { describe, expect, it, vi } from 'vitest';
 
-import * as fs from 'node:fs';
+import { info } from 'node:console';
+import { unlinkSync } from 'node:fs';
 import { posix, relative, resolve, sep } from 'node:path';
+
+import { unlinkFiles } from '#io';
 
 import type { Stats } from 'node:fs';
 
-jest.unstable_mockModule('node:console', () => ({
-  info: jest.fn(),
+vi.mock('node:console', () => ({
+  info: vi.fn(),
 }));
 
-jest.unstable_mockModule('node:fs', () => ({
-  ...fs,
-  lstatSync: jest.fn(
+vi.mock('node:fs', async (importActual) => ({
+  ...(await importActual<typeof import('node:fs')>()),
+  lstatSync: vi.fn(
     (
       path: string,
       options: { throwIfNoEntry: boolean },
@@ -52,7 +55,7 @@ jest.unstable_mockModule('node:fs', () => ({
       }
     },
   ),
-  readlinkSync: jest.fn((path: string): string => {
+  readlinkSync: vi.fn((path: string): string => {
     // ensure that the paths below is compatible with windows
     const posixPath = relative(resolve('/'), path).split(sep).join(posix.sep);
     switch (posixPath) {
@@ -64,15 +67,10 @@ jest.unstable_mockModule('node:fs', () => ({
         throw new Error();
     }
   }),
-  unlinkSync: jest.fn(),
+  unlinkSync: vi.fn(),
 }));
 
-const { unlinkFiles } = await import('#io');
-const { info } = await import('node:console');
-const { unlinkSync } = await import('node:fs');
 describe('fn:unlinkFiles', () => {
-  beforeEach(jest.clearAllMocks);
-
   it('clean up any artifacts installed on the project root', async () => {
     await unlinkFiles('/project', {
       'old/symlink/by/presetter': resolve('/project/relative/path/to/config'),

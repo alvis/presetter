@@ -13,6 +13,8 @@
  * -------------------------------------------------------------------------
  */
 
+import { describe, expect, it } from 'vitest';
+
 import { getConfigKey } from '#resolution';
 
 describe('fn:getConfigKey', () => {

@@ -1,3 +1,5 @@
+import { describe, expect, it } from 'vitest';
+
 import { resolveSupplementaryScripts } from '#content';
 
 describe('fn:resolveSupplementaryScripts', () => {

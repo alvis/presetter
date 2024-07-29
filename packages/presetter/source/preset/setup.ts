@@ -24,6 +24,7 @@ import {
   getPackage,
   reifyDependencies,
 } from '../package';
+
 import { bootstrapContent } from './content';
 import { getContext } from './context';
 import { updatePresetterRC } from './presetterRC';

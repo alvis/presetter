@@ -12,6 +12,8 @@
  * -------------------------------------------------------------------------
  */
 
+import { describe, expect, it } from 'vitest';
+
 import { template } from '#template';
 
 describe('fn:template', () => {

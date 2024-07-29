@@ -1,4 +1,0 @@
-coverageThreshold:
-  global:
-    branches: 95
-    lines: 95
