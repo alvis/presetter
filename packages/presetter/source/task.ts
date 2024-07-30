@@ -15,6 +15,8 @@
 
 import parse from 'yargs-parser';
 
+import debug from './debugger';
+
 import type { Arguments } from 'yargs-parser';
 
 /** parsed task object with selector and args */
@@ -89,5 +91,9 @@ export function selectTasks(tasks: string[], pattern: string): string[] {
 
   const regex = new RegExp(`^${regexPattern}$`);
 
-  return tasks.filter((task) => regex.test(task));
+  const selected = tasks.filter((task) => regex.test(task));
+
+  debug('SELECTED TASKS\n%O', { pattern, selected });
+
+  return selected;
 }

@@ -13,6 +13,7 @@
  * -------------------------------------------------------------------------
  */
 
+import debug from './debugger';
 import { getConfigKey, loadDynamic, loadDynamicMap } from './resolution';
 import { filter, merge, mergeTemplate, template } from './template';
 
@@ -52,16 +53,20 @@ export async function resolveContext(_: {
   const noSymlinks = await resolveNoSymlinks({ graph, context });
   const scripts = await resolveSupplementaryScripts({ graph, context });
 
+  const custom = {
+    ...context.custom,
+    preset: context.custom.preset,
+    config,
+    noSymlinks,
+    scripts,
+  };
+
+  debug('RESOLVED CONFIGURATION WITH PRESET\n%O', custom);
+
   // return a new context with everything resolved
   return {
     target: context.target,
-    custom: {
-      ...context.custom,
-      preset: context.custom.preset,
-      config,
-      noSymlinks,
-      scripts,
-    },
+    custom,
   };
 }
 

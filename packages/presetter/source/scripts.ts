@@ -18,6 +18,7 @@ import { basename } from 'node:path';
 import mvdan from 'mvdan-sh';
 import parse from 'yargs-parser';
 
+import debug from './debugger';
 import { mapValues } from './utilities';
 
 import type { CallExpr, Node, Stmt, Subshell } from 'mvdan-sh';
@@ -62,7 +63,9 @@ export function composeScripts(args: {
 }): Script {
   const { template, target } = args;
 
-  return mapValues({ ...template, ...target }, (command): string => {
+  debug('SCRIPT PROVIDED BY PROJECT\n%O', target);
+
+  const script = mapValues({ ...template, ...target }, (command): string => {
     try {
       // parse the shell command into its ast
       const ast = parser.Parse(command);
@@ -87,6 +90,10 @@ export function composeScripts(args: {
       }
     }
   });
+
+  debug('SCRIPT RESOLVED FROM PRESET AND PROJECT\n%O', script);
+
+  return script;
 }
 
 /**

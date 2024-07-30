@@ -18,6 +18,7 @@ import { dirname, resolve } from 'node:path';
 
 import { readPackageUp } from 'read-pkg-up';
 
+import debug from '../debugger';
 import { loadFile } from '../io';
 import { isJSON, merge } from '../template';
 
@@ -70,6 +71,8 @@ export async function getPresetterRC(root: string): Promise<PresetterConfig> {
   );
 
   assertPresetterRC(mergedConfig);
+
+  debug('MERGED CONFIGURATION PROVIDED BY PROJECT\n%O', mergedConfig);
 
   return mergedConfig;
 }

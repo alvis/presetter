@@ -20,6 +20,7 @@ import { Listr } from 'listr2';
 
 import parse from 'yargs-parser';
 
+import debug from './debugger';
 import { getPackage } from './package';
 import { getScripts } from './preset';
 import { composeScripts } from './scripts';
@@ -162,6 +163,8 @@ async function runWithNPM(_: {
 }): Promise<void> {
   const { task, args, pkg, composedScript } = _;
 
+  debug('RUNNING\n%O', { task, command: composedScript[task] });
+
   // eslint-disable-next-line @typescript-eslint/no-unsafe-call
   return npmRunScript({
     event: task,
@@ -184,6 +187,8 @@ export async function run(
   options?: { parallel?: boolean; templateOnly?: boolean },
 ): Promise<void> {
   const { parallel = false, templateOnly = false } = { ...options };
+
+  debug('TASK INSTRUCTION\n%O', { tasks, parallel, templateOnly });
 
   // find the target project's package.json information
   const pkg = await getPackage();

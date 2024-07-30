@@ -17,6 +17,8 @@ import { resolve } from 'node:path';
 
 import resolvePackage from 'resolve-pkg';
 
+import debug from '../debugger';
+
 import type { ResolvedPresetContext, Template } from 'presetter-types';
 
 /**
@@ -39,7 +41,7 @@ export async function getDestinationMap(
 
   const relativePaths = [...Object.keys(template)];
 
-  return Object.fromEntries([
+  const map = Object.fromEntries([
     ...relativePaths.map((relativePath): [string, string] => [
       relativePath,
       resolve(
@@ -49,4 +51,8 @@ export async function getDestinationMap(
       ),
     ]),
   ]);
+
+  debug('DESTINATION MAP\n%O', map);
+
+  return map;
 }
