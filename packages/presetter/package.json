@@ -34,13 +34,14 @@
     "url": "git+https://github.com/alvis/presetter.git"
   },
   "scripts": {
-    "prepare": "tsx --eval \"require('./source/preset').bootstrapPreset()\" && npm run build",
+    "echo": "echo $npm_package_name",
+    "prepare": "tsx --eval \"import('./source/preset/setup.ts').then(({bootstrapPreset})=>bootstrapPreset())\" && npm run build",
     "build": "npm run script -- build",
     "clean": "npm run script -- clean",
     "coverage": "npm run script -- coverage --",
     "lint": "npm run script -- lint",
     "prepublishOnly": "npm run prepare && npm run script -- prepublishOnly",
-    "script": "tsx --eval \"process.argv = [...process.argv.slice(0, 2), 'run', ...process.argv.slice(2)]; require('./source/executable');\" -- run --template",
+    "script": "tsx --eval \"process.argv = [...process.argv.slice(0, 2), 'run', ...process.argv.slice(2)]; import('./source/executable/index.ts');\" -- run --template",
     "stage": "npm run script -- stage --",
     "test": "npm run script -- test --",
     "watch": "npm run script -- watch --"
