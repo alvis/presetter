@@ -1,0 +1,3 @@
+exclude:
+  - '**/*.stories.ts'
+  - '**/*.stories.tsx'

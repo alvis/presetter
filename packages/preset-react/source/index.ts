@@ -59,6 +59,7 @@ const template: PresetAsset['template'] = ({
   /* eslint-disable @typescript-eslint/naming-convention */
   '.eslintrc.json': resolve(TEMPLATES, 'eslintrc.yaml'),
   'tsconfig.json': resolve(TEMPLATES, 'tsconfig.yaml'),
+  'tsconfig.build.json': resolve(TEMPLATES, 'tsconfig.build.yaml'),
   [join(types, IMAGE_TYPE)]: resolve(TEMPLATES, IMAGE_TYPE),
   [join(types, STYLE_TYPE)]: resolve(TEMPLATES, STYLE_TYPE),
   /* eslint-enable @typescript-eslint/naming-convention */
