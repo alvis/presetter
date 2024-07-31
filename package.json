@@ -1,7 +1,7 @@
 {
   "name": "presetter-monorepo",
   "private": true,
-  "version": "4.7.2",
+  "version": "5.0.0",
   "packageManager": "pnpm@9.6.0",
   "engines": {
     "node": ">=20.0.0"
