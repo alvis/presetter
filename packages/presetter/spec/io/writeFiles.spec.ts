@@ -13,11 +13,10 @@
  * -------------------------------------------------------------------------
  */
 
-import { describe, expect, it, vi } from 'vitest';
-
+import { mkdirSync, writeFileSync } from 'node:fs';
 import { posix, relative, resolve, sep } from 'node:path';
 
-import { mkdirSync, writeFileSync } from 'node:fs';
+import { describe, expect, it, vi } from 'vitest';
 
 import { writeFiles } from '#io';
 

@@ -13,29 +13,25 @@
  * -------------------------------------------------------------------------
  */
 
-import { describe, expect, it, vi } from 'vitest';
-
 import { existsSync, readdirSync } from 'node:fs';
-import { dirname, resolve } from 'node:path';
-import { fileURLToPath } from 'node:url';
+import { resolve } from 'node:path';
 
 import { loadDynamicMap, resolveContext } from 'presetter';
+import { describe, expect, it, vi } from 'vitest';
 
-import getPresetAsset from '#index';
+import getPresetAsset from '#';
 
-const __dir = fileURLToPath(dirname(import.meta.url));
-
-vi.mock('node:fs', async () => ({
+vi.mock('node:fs', () => ({
   existsSync: (path: string) => path === '/.git',
 }));
 
 vi.mock('node:path', async (importActual) => {
-  const actual = await importActual<typeof import('node:path')>();
+  const { resolve, ...rest } = await importActual<typeof import('node:path')>();
 
   return {
-    ...actual,
+    ...rest,
     // spy on resolve to check if a template is referenced
-    resolve: vi.fn(actual.resolve),
+    resolve: vi.fn(resolve),
   };
 });
 
@@ -54,10 +50,10 @@ describe('fn:getPresetAsset', () => {
     await loadDynamicMap(asset.supplementaryConfig, context);
     await loadDynamicMap(asset.template, context);
 
-    const CONFIGS = resolve(__dir, '..', 'configs');
-    const configs = (existsSync(CONFIGS) && readdirSync(CONFIGS)) || [];
-    const TEMPLATES = resolve(__dir, '..', 'templates');
-    const templates = (existsSync(TEMPLATES) && readdirSync(TEMPLATES)) || [];
+    const CONFIGS = resolve(import.meta.dirname, '..', 'configs');
+    const configs = existsSync(CONFIGS) ? readdirSync(CONFIGS) : [];
+    const TEMPLATES = resolve(import.meta.dirname, '..', 'templates');
+    const templates = existsSync(TEMPLATES) ? readdirSync(TEMPLATES) : [];
 
     for (const path of configs) {
       expect(vi.mocked(resolve)).toBeCalledWith(CONFIGS, path);
@@ -81,7 +77,7 @@ describe('fn:getPresetAsset', () => {
     await loadDynamicMap(asset.supplementaryConfig, context);
     await loadDynamicMap(asset.template, context);
 
-    const TEMPLATES = resolve(__dir, '..', 'templates');
+    const TEMPLATES = resolve(import.meta.dirname, '..', 'templates');
 
     expect(vi.mocked(resolve)).not.toBeCalledWith(TEMPLATES, 'pre-commit');
   });

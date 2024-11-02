@@ -39,6 +39,9 @@ vi.mock('yargs', () => ({
  * a helper function for generating tests on translation
  * @param description description of the test
  * @param detail input and expected output
+ * @param detail.template
+ * @param detail.target
+ * @param detail.result
  */
 function should(
   description: string,

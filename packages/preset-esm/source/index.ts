@@ -25,7 +25,7 @@ const DIR = dirname(fileURLToPath(import.meta.url));
 const TEMPLATES = resolve(DIR, '..', 'templates');
 
 /** config for this preset */
-export type PresetConfig = {
+export interface PresetConfig {
   /** configuration to be merged with .eslintrc */
   eslint?: Record<string, unknown>;
   /** patterns to be added to .gitignore */
@@ -38,10 +38,10 @@ export type PresetConfig = {
   prettier?: Record<string, unknown>;
   /** configuration to be merged with tsconfig.json */
   tsconfig?: Record<string, unknown>;
-};
+}
 
-/** List of configurable variables */
-export type Variable = {
+/** list of configurable variables */
+export interface Variable {
   /** the directory containing the whole repository (default: .) */
   root: string;
   /** the directory containing all source code (default: generated) */
@@ -54,16 +54,16 @@ export type Variable = {
   output: string;
   /** the directory containing all test files (default: spec) */
   test: string;
-};
+}
 
-export const DEFAULT_VARIABLE: Variable = {
+export const DEFAULT_VARIABLE = {
   root: '.',
   generated: 'generated',
   source: 'source',
   types: 'types',
   output: 'lib',
   test: 'spec',
-};
+} satisfies Variable;
 
 /**
  * get the list of templates provided by this preset
@@ -75,19 +75,17 @@ export default async function (): Promise<PresetAsset> {
       const isGitRoot = existsSync(resolve(target.root, '.git'));
 
       return {
-        /* eslint-disable @typescript-eslint/naming-convention */
         ...(isGitRoot
           ? { '.husky/pre-commit': resolve(TEMPLATES, 'pre-commit') }
           : {}),
-        '.eslintrc.json': resolve(TEMPLATES, 'eslintrc.yaml'),
         '.gitignore': resolve(TEMPLATES, 'gitignore'),
         '.lintstagedrc.json': resolve(TEMPLATES, 'lintstagedrc.yaml'),
         '.npmignore': resolve(TEMPLATES, 'npmignore'),
         '.prettierrc.json': resolve(TEMPLATES, 'prettierrc.yaml'),
+        'eslint.config.ts': resolve(TEMPLATES, 'eslint.config.ts'),
         'tsconfig.json': resolve(TEMPLATES, 'tsconfig.yaml'),
         'tsconfig.build.json': resolve(TEMPLATES, 'tsconfig.build.yaml'),
         'vitest.config.ts': resolve(TEMPLATES, 'vitest.config.ts'),
-        /* eslint-enable @typescript-eslint/naming-convention */
       };
     },
     scripts: resolve(TEMPLATES, 'scripts.yaml'),

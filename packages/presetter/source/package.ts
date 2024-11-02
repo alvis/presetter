@@ -16,22 +16,22 @@
 import { homedir } from 'node:os';
 import { resolve } from 'node:path';
 
+import { readPackageUp } from 'read-pkg-up';
+
 import { Arborist } from '@npmcli/arborist';
 import Config from '@npmcli/config';
-
-import { readPackageUp } from 'read-pkg-up';
 
 import type { PackageJson } from 'type-fest';
 
 const NPM_VERSION_FOR_PEER_INSTALLATION = 7;
 
 /** package detail */
-export type Package = {
+export interface Package {
   /** path to the package.json */
   path: string;
   /** content of package.json */
   json: PackageJson;
-};
+}
 
 /**
  * indicate whether peer packages would be installed automatically
@@ -40,7 +40,7 @@ export type Package = {
 export function arePeerPackagesAutoInstalled(): boolean {
   // NOTE npm_config_user_agent should be in the form of 'npm/7.3.0 node/v15.5.0 darwin x64'
 
-  const clientID = process.env['npm_config_user_agent']?.split(' ')[0];
+  const clientID = process.env.npm_config_user_agent?.split(' ')[0];
 
   /* v8 ignore next */
   const [name, version] = clientID?.split('/') ?? ([] as undefined[]);

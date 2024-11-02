@@ -15,10 +15,11 @@
 
 import { dirname } from 'node:path';
 
-import npmRunScript from '@npmcli/run-script';
 import { Listr } from 'listr2';
 
 import parse from 'yargs-parser';
+
+import npmRunScript from '@npmcli/run-script';
 
 import debug from './debugger';
 import { getPackage } from './package';
@@ -57,7 +58,6 @@ function createListrTask(_: {
 
       // parse the command and extract the executable and task specifications
       const argv = parse(command, {
-        // eslint-disable-next-line @typescript-eslint/naming-convention
         configuration: { 'populate--': true, 'unknown-options-as-args': true },
       });
       const [executable, ...taskSpecs] = argv._.map((arg) => arg.toString());
@@ -165,14 +165,13 @@ async function runWithNPM(_: {
 
   debug('RUNNING\n%O', { task, command: composedScript[task] });
 
-  // eslint-disable-next-line @typescript-eslint/no-unsafe-call
-  return npmRunScript({
+  await npmRunScript({
     event: task,
     args,
     pkg: { scripts: composedScript },
     path: dirname(pkg.path),
     stdio: 'inherit',
-  }) as Promise<void>;
+  });
 }
 
 /**

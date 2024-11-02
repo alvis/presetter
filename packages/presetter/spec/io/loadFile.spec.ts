@@ -13,9 +13,9 @@
  * -------------------------------------------------------------------------
  */
 
-import { describe, expect, it, vi } from 'vitest';
-
 import { posix, relative, resolve, sep } from 'node:path';
+
+import { describe, expect, it, vi } from 'vitest';
 
 import { loadFile } from '#io';
 

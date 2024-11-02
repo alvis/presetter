@@ -1,10 +1,14 @@
+import { dirname, posix, relative, resolve, sep } from 'node:path';
+
 import { vi } from 'vitest';
 
-import * as pathNode from 'node:path';
-import { dirname, posix, relative, resolve, sep } from 'node:path';
+import type * as pathNode from 'node:path';
 
 import type { PresetContext, ResolvedPresetContext } from 'presetter-types';
 
+/**
+ *
+ */
 export function makeResolveRelative() {
   vi.doMock('node:path', async (importActual) => {
     const actual = await importActual<typeof pathNode>();
@@ -23,6 +27,10 @@ export function makeResolveRelative() {
   });
 }
 
+/**
+ *
+ * @param file
+ */
 export function mockIO(file?: Record<string, unknown>) {
   vi.doMock('node:fs', () => ({
     existsSync: vi.fn((path: string): boolean => {
@@ -75,6 +83,9 @@ export function mockIO(file?: Record<string, unknown>) {
   }));
 }
 
+/**
+ *
+ */
 export function mockModuleResolution() {
   vi.doMock('resolve-pkg', () => ({
     default: (name: string): string => name,
@@ -112,6 +123,10 @@ export function mockModuleResolution() {
   }));
 }
 
+/**
+ *
+ * @param custom
+ */
 export function mockContext(custom?: PresetContext['custom']) {
   vi.doMock('#preset/context', () => ({
     getContext: vi.fn(async () => ({
@@ -124,6 +139,10 @@ export function mockContext(custom?: PresetContext['custom']) {
   }));
 }
 
+/**
+ *
+ * @param custom
+ */
 export function createDummyContext(custom?: Partial<PresetContext['custom']>) {
   return {
     ...defaultDummyContext,

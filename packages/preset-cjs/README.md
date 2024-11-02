@@ -67,7 +67,6 @@ Implement your business logic under `source` and prepare tests under `spec`.
 
 ```plain
 (root)
- ├─ .eslintrc.json
  ├─ .git
  ├─ .husky
  ├─ .lintstagedrc.json
@@ -82,9 +81,10 @@ Implement your business logic under `source` and prepare tests under `spec`.
  ├─ spec
  │   ├─ *.spec.ts
  ├─ package.json
+ ├─ eslint.config.ts
  ├─ tsconfig.json
  ├─ tsconfig.build.json
- └─ vitest.config.json
+ └─ vitest.config.ts
 ```
 
 ## Customization

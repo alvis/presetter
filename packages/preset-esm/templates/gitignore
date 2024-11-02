@@ -1,10 +1,10 @@
 # preset generated files
-/.eslintrc.json
 /.husky
 /.gitignore
 /.lintstagedrc.json
 /.npmignore
 /.prettierrc.json
+/eslint.config.ts
 /tsconfig.json
 /tsconfig.build.json
 /vitest.config.ts

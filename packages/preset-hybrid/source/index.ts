@@ -35,10 +35,8 @@ export default async function (): Promise<PresetAsset> {
     extends: ['presetter-preset-esm'],
     supplementaryScripts: resolve(CONFIGS, 'scripts.yaml'),
     template: {
-      /* eslint-disable @typescript-eslint/naming-convention */
       'tsconfig.cjs.json': resolve(TEMPLATES, 'tsconfig.cjs.yaml'),
       'tsconfig.mjs.json': resolve(TEMPLATES, 'tsconfig.mjs.yaml'),
     },
-    /* eslint-enable @typescript-eslint/naming-convention */
   };
 }

@@ -25,28 +25,28 @@ const TEMPLATES = resolve(DIR, '..', 'templates');
 const CONFIGS = resolve(DIR, '..', 'configs');
 
 /** config for this preset */
-export type PresetConfig = {
+export interface PresetConfig {
   /** configuration to be merged with .eslintrc */
   eslint?: Record<string, unknown>;
   /** configuration to be merged with tsconfig.json */
   tsconfig?: Record<string, unknown>;
-};
+}
 
 /** list of configurable variables */
-export type Variable = {
+export interface Variable {
   /** the directory containing all source code (default: source) */
-  source?: string;
+  source: string;
   /** the directory containing all extra typing files (default: types) */
-  types?: string;
+  types: string;
   /** the directory containing all the compiled files (default: lib) */
-  output?: string;
-};
+  output: string;
+}
 
-export const DEFAULT_VARIABLE: Variable = {
+export const DEFAULT_VARIABLE = {
   source: 'source',
   types: 'types',
   output: 'lib',
-};
+} satisfies Variable;
 
 const IMAGE_TYPE = 'image.d.ts';
 const STYLE_TYPE = 'style.d.ts';
@@ -56,13 +56,11 @@ const template: PresetAsset['template'] = ({
     variable: { types },
   },
 }) => ({
-  /* eslint-disable @typescript-eslint/naming-convention */
   '.eslintrc.json': resolve(TEMPLATES, 'eslintrc.yaml'),
   'tsconfig.json': resolve(TEMPLATES, 'tsconfig.yaml'),
   'tsconfig.build.json': resolve(TEMPLATES, 'tsconfig.build.yaml'),
   [join(types, IMAGE_TYPE)]: resolve(TEMPLATES, IMAGE_TYPE),
   [join(types, STYLE_TYPE)]: resolve(TEMPLATES, STYLE_TYPE),
-  /* eslint-enable @typescript-eslint/naming-convention */
 });
 
 const noSymlinks: PresetAsset['noSymlinks'] = ({

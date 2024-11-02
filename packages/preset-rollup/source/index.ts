@@ -31,22 +31,22 @@ const TEMPLATES = resolve(DIR, '..', 'templates');
 const CONFIGS = resolve(DIR, '..', 'configs');
 
 /** config for this preset */
-export type PresetConfig = {
+export interface PresetConfig {
   rollup?: RollupConfig;
-};
+}
 
-/** List of configurable variables */
-export type Variable = {
+/** list of configurable variables */
+export interface Variable {
   /** the directory containing all source code (default: source) */
   source: string;
   /** the directory containing all the compiled files (default: lib) */
   output: string;
-};
+}
 
-export const DEFAULT_VARIABLE: Variable = {
+export const DEFAULT_VARIABLE = {
   source: 'source',
   output: 'lib',
-};
+} satisfies Variable;
 
 /**
  * get the list of templates provided by this preset
@@ -55,7 +55,6 @@ export const DEFAULT_VARIABLE: Variable = {
 export default function (): PresetAsset {
   return {
     template: {
-      /* eslint-disable @typescript-eslint/naming-convention */
       'rollup.config.ts': (context) => {
         const content = loadFile(
           resolve(TEMPLATES, 'rollup.config.ts'),
@@ -64,7 +63,6 @@ export default function (): PresetAsset {
         const variable = getRollupParameter(context);
 
         return template(content, variable);
-        /* eslint-enable @typescript-eslint/naming-convention */
       },
     },
     scripts: resolve(TEMPLATES, 'scripts.yaml'),

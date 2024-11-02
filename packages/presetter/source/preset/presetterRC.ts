@@ -90,7 +90,11 @@ export async function updatePresetterRC(
 
   writeFileSync(
     resolve(root, `${PRESETTERRC}.json`),
-    JSON.stringify(merge(existingPresetterRC, config), null, JSON_INDENT),
+    JSON.stringify(
+      merge(existingPresetterRC as JsonValue, config as unknown as JsonValue),
+      null,
+      JSON_INDENT,
+    ),
   );
 }
 
@@ -103,7 +107,7 @@ export function assertPresetterRC(
 ): asserts value is PresetterConfig {
   if (
     !isJSON(value) ||
-    (typeof value['preset'] !== 'string' && !Array.isArray(value['preset']))
+    (typeof value.preset !== 'string' && !Array.isArray(value.preset))
   ) {
     throw new Error(`invalid presetter configuration file`);
   }

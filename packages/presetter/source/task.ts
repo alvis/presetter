@@ -51,7 +51,6 @@ export function parseGlobalArgs(argv: Arguments): string[] {
  */
 export function parseTaskSpec(spec: string, globalArgs: string[]): Task {
   const argv = parse(spec, {
-    // eslint-disable-next-line @typescript-eslint/naming-convention
     configuration: { 'populate--': true },
   });
 

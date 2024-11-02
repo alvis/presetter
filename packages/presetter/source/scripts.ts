@@ -15,8 +15,9 @@
 
 import { basename } from 'node:path';
 
-import mvdan from 'mvdan-sh';
 import parse from 'yargs-parser';
+
+import mvdan from 'mvdan-sh';
 
 import debug from './debugger';
 import { mapValues } from './utilities';
@@ -117,12 +118,11 @@ function isNodeType(node: Node, type: string): boolean {
  */
 function resolveRunner(command: string, context: ScriptContext): string {
   const arg = parse(command, {
-    // eslint-disable-next-line @typescript-eslint/naming-convention
     configuration: { 'populate--': true, 'unknown-options-as-args': true },
   });
 
   // extract tasks and their arguments
-  const destinations = arg['_'].slice(1);
+  const destinations = arg._.slice(1);
   const destinationArgs = arg['--'] ?? [];
 
   // resolve tasks into its full form e.g. task1 task2

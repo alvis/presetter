@@ -20,6 +20,10 @@
       "default": "./lib/index.js",
       "types": "./lib/index.d.ts"
     },
+    "./eslint.config": {
+      "default": "./lib/eslint.config.js",
+      "types": "./lib/eslint.config.d.ts"
+    },
     "./vitest.config": {
       "default": "./lib/vitest.config.js",
       "types": "./lib/vitest.config.d.ts"
@@ -30,7 +34,7 @@
     "url": "git+https://github.com/alvis/presetter.git"
   },
   "scripts": {
-    "prepare": "tsc --declaration --moduleResolution bundler --module esnext --target esnext --outdir lib source/index.ts source/vitest.config.ts",
+    "prepare": "tsc --declaration --moduleResolution bundler --module esnext --target esnext --skipLibCheck --outdir lib source/index.ts source/eslint.config.ts source/vitest.config.ts",
     "bootstrap": "presetter bootstrap",
     "build": "run build",
     "coverage": "run coverage --",
@@ -40,30 +44,32 @@
     "watch": "run watch --"
   },
   "peerDependencies": {
-    "@typescript-eslint/eslint-plugin": "^7.0.0",
-    "@typescript-eslint/parser": "^7.0.0",
+    "@eslint/js": "^9.0.0",
+    "@eslint-community/eslint-plugin-eslint-comments": "^4.0.0",
     "@vitest/coverage-v8": "^2.0.0",
     "conventional-changelog-metahub": "^4.0.0",
     "cross-env": "^7.0.0",
     "dotenv-cli": "^7.0.0",
-    "eslint": "^8.0.0",
-    "eslint-config-prettier": "^9.1.0",
-    "eslint-plugin-eslint-comments": "^3.0.0",
-    "eslint-plugin-import": "~2.26.0",
-    "eslint-plugin-jsdoc": "^48.0.0",
+    "eslint": "^9.0.0",
+    "eslint-config-prettier": "^9.0.0",
+    "eslint-import-resolver-typescript": "^3.0.0",
+    "eslint-plugin-import": "^2.0.0",
+    "eslint-plugin-jsdoc": "^50.0.0",
     "husky": "^9.0.0",
+    "jiti": "^2.0.0",
     "leasot": "^14.0.0",
     "lint-staged": "^15.0.0",
-    "prettier": "^3.2.0",
+    "prettier": "^3.0.0",
     "shx": "^0.3.0",
     "standard-version": "^9.0.0",
     "tsc-alias": "^1.0.0",
-    "tsc-esm-fix": "^2.0.0",
+    "tsc-esm-fix": "^3.0.0",
     "tsconfig-paths": "^4.0.0",
     "tsx": "^4.0.0",
     "typescript": ">=4.7.0",
+    "typescript-eslint": "^8.0.0",
     "vitest": "^2.0.0",
-    "vite-tsconfig-paths": "^4.3.0"
+    "vite-tsconfig-paths": "^5.0.0"
   },
   "dependencies": {
     "presetter-types": "workspace:*"

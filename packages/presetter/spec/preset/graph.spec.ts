@@ -105,7 +105,7 @@ describe('fn:getPresetGraph', () => {
   });
 
   it('warn about any missing presets', async () => {
-    await expect(() =>
+    await expect(async () =>
       getPresetGraph({
         target: {
           name: 'client',

@@ -6,10 +6,10 @@ import type {
   DynamicAssetField,
   RequiredResolution,
   Template,
-} from '#index';
+} from '#';
 
 describe('ty:DynamicAssetField', () => {
-  it('should resolve the dynamic asset field', async () => {
+  it('should resolve the dynamic asset field', () => {
     type Expected = 'template' | 'supplementaryConfig';
 
     type Result = DynamicAssetField;
@@ -19,7 +19,7 @@ describe('ty:DynamicAssetField', () => {
 });
 
 describe('ty:DynamicAsset', () => {
-  it('should resolve the final output of a dynamic supplementaryConfig asset', async () => {
+  it('should resolve the final output of a dynamic supplementaryConfig asset', () => {
     type Expected = Config;
 
     type Result = DynamicAsset<'supplementaryConfig'>;
@@ -27,7 +27,7 @@ describe('ty:DynamicAsset', () => {
     expectTypeOf<Result>().toEqualTypeOf<Expected>();
   });
 
-  it('should resolve the final output of a dynamic template asset', async () => {
+  it('should resolve the final output of a dynamic template asset', () => {
     type Expected = Template;
 
     type Result = DynamicAsset<'template'>;
@@ -37,7 +37,7 @@ describe('ty:DynamicAsset', () => {
 });
 
 describe('ty:RequiredResolution', () => {
-  it('should resolve the required fields for generating a supplementaryConfig asset', async () => {
+  it('should resolve the required fields for generating a supplementaryConfig asset', () => {
     type Expected = 'variable';
 
     type Result = RequiredResolution<'supplementaryConfig'>;
@@ -45,7 +45,7 @@ describe('ty:RequiredResolution', () => {
     expectTypeOf<Result>().toEqualTypeOf<Expected>();
   });
 
-  it('should resolve the required fields for generating a dynamic template asset', async () => {
+  it('should resolve the required fields for generating a dynamic template asset', () => {
     type Expected = 'config' | 'noSymlinks' | 'variable';
 
     type Result = RequiredResolution<'template'>;

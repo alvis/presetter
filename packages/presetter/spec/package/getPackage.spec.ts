@@ -13,9 +13,8 @@
  * -------------------------------------------------------------------------
  */
 
-import { describe, expect, it, vi } from 'vitest';
-
 import { readPackageUp } from 'read-pkg-up';
+import { describe, expect, it, vi } from 'vitest';
 
 import { getPackage } from '#package';
 

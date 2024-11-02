@@ -15,9 +15,8 @@
 
 import { describe, expect, it, vi } from 'vitest';
 
-import npmRunScript from '@npmcli/run-script';
-
 import { run } from '#run';
+import npmRunScript from '@npmcli/run-script';
 
 vi.spyOn(process, 'exit').mockImplementation((() => {}) as any);
 

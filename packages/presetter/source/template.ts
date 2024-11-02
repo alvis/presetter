@@ -116,7 +116,7 @@ export function isJSON(subject: unknown): subject is JsonObject {
   ].every((value) => value);
 }
 
-/* eslint-disable @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-return */
+/* eslint-disable @typescript-eslint/no-unsafe-return */
 
 /**
  * deep merge an object
@@ -317,4 +317,4 @@ export function template(
   }
 }
 
-/* eslint-enable @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-return */
+/* eslint-enable @typescript-eslint/no-unsafe-return */

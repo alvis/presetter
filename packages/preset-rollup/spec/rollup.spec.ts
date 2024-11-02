@@ -32,7 +32,7 @@ describe('fn:getRollupParameter', () => {
 
   it('add plugins by importing from another config files', async () => {
     expect(
-      await getRollupParameter(
+      getRollupParameter(
         generateContext({
           plugins: '@import config[plugins]',
         }),
@@ -45,7 +45,7 @@ describe('fn:getRollupParameter', () => {
 
   it('add a plugin by adding the plugin in the object form, using the supplied options', async () => {
     expect(
-      await getRollupParameter(
+      getRollupParameter(
         generateContext({
           plugins: { '@apply newPlugin': { name: 'newPlugin' } },
         }),
@@ -59,7 +59,7 @@ describe('fn:getRollupParameter', () => {
 
   it('add a plugin by just the plugin name, using everything default', async () => {
     expect(
-      await getRollupParameter(
+      getRollupParameter(
         generateContext({
           plugins: ['@apply newPlugin'],
         }),
@@ -72,7 +72,7 @@ describe('fn:getRollupParameter', () => {
 
   it('add a plugin by adding the plugin in the array form, using everything default', async () => {
     expect(
-      await getRollupParameter(
+      getRollupParameter(
         generateContext({
           plugins: [['@apply newPlugin']],
         }),
@@ -85,7 +85,7 @@ describe('fn:getRollupParameter', () => {
 
   it('add a plugin by adding the plugin in the array form, using the supplied options', async () => {
     expect(
-      await getRollupParameter(
+      getRollupParameter(
         generateContext({
           plugins: [['@apply newPlugin', { name: 'newPlugin' }]],
         }),
@@ -99,7 +99,7 @@ describe('fn:getRollupParameter', () => {
 
   it('remove a plugin by setting the plugin config as null', async () => {
     expect(
-      await getRollupParameter(
+      getRollupParameter(
         generateContext({
           plugins: {
             '@apply pluginWithOptions': null,
@@ -114,7 +114,7 @@ describe('fn:getRollupParameter', () => {
 
   it('add a plugin from a named import', async () => {
     expect(
-      await getRollupParameter(
+      getRollupParameter(
         generateContext({
           plugins: {
             '@apply pluginWithOptions': null,
@@ -131,7 +131,7 @@ describe('fn:getRollupParameter', () => {
   });
 
   it('generate default parameters if no further config is given', async () => {
-    expect(await getRollupParameter(generateContext())).toEqual({
+    expect(getRollupParameter(generateContext())).toEqual({
       rollupImport: ``,
       rollupExport: 'export default {}',
     });
@@ -139,7 +139,7 @@ describe('fn:getRollupParameter', () => {
 
   it('generate config with extra options other than plugins', async () => {
     expect(
-      await getRollupParameter(
+      getRollupParameter(
         generateContext({
           cache: null,
           extra: { options: true },
@@ -155,7 +155,7 @@ describe('fn:getRollupParameter', () => {
 
   it('generate extra import statements for imports within plugin options', async () => {
     expect(
-      await getRollupParameter(
+      getRollupParameter(
         generateContext({
           plugins: {
             '@apply pluginWithOptions': '@import another',
@@ -169,7 +169,7 @@ describe('fn:getRollupParameter', () => {
     });
 
     expect(
-      await getRollupParameter(
+      getRollupParameter(
         generateContext({
           plugins: [
             ['@apply pluginWithOptions', '@import another'],
@@ -185,7 +185,7 @@ describe('fn:getRollupParameter', () => {
 
   it('generate only one import statement per unique import', async () => {
     expect(
-      await getRollupParameter(
+      getRollupParameter(
         generateContext({
           plugins: {
             '@apply pluginWithOptions': null,
@@ -203,7 +203,7 @@ describe('fn:getRollupParameter', () => {
 
   it('support nested plugin declaration', async () => {
     expect(
-      await getRollupParameter(
+      getRollupParameter(
         generateContext({
           plugins: {
             '@apply pluginWithOptions': null,

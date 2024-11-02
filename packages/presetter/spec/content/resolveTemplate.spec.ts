@@ -1,6 +1,6 @@
-import { describe, expect, it, vi } from 'vitest';
-
 import { posix, relative, resolve, sep } from 'node:path';
+
+import { describe, expect, it, vi } from 'vitest';
 
 import { resolveTemplate } from '#content';
 
@@ -43,7 +43,7 @@ vi.mock('#resolution', async (importActual) => {
     loadDynamic: vi.fn(loadDynamic),
     loadDynamicMap: vi.fn((map, context) =>
       Object.fromEntries(
-        Object.entries({ ...(map as any) }).map(
+        Object.entries({ ...map }).map(
           ([relativePath, value]): [string, any] => [
             relativePath,
             loadDynamic(value, context),

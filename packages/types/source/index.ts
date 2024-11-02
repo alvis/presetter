@@ -30,17 +30,17 @@ export type PrimitiveEntity = Primitive | PrimitiveObject | PrimitiveArray;
 export type PresetGraph = PresetNode[];
 
 /** a node in the preset graph */
-export type PresetNode = {
+export interface PresetNode {
   /** the name of the preset */
   name: string;
   /** assets provided by the preset */
   asset: PresetAsset;
   /** list of assets from extended presets */
   nodes: PresetGraph;
-};
+}
 
 /** data structure for .presetterrc */
-export type PresetterConfig = {
+export interface PresetterConfig {
   /** preset name */
   preset: string | string[];
   /** configuration for customization to be passed to the preset */
@@ -53,7 +53,7 @@ export type PresetterConfig = {
   ignores?: IgnoreRule[];
   /** list of templates that should not be created as symlinks */
   noSymlinks?: string[];
-};
+}
 
 /** expected return from the configuration function from the preset */
 export interface PresetAsset {

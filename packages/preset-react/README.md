@@ -53,7 +53,6 @@ Implement your business logic under `source` and prepare tests under `spec`. The
 
 ```
 (root)
- ├─ .eslintrc.json
  ├─ .git
  ├─ .presetterrc.json
  ├─ node_modules
@@ -67,6 +66,7 @@ Implement your business logic under `source` and prepare tests under `spec`. The
  │   ├─ image.d.ts
  │   ├─ style.d.ts
  │   ├─ (type).d.ts
+ ├─ eslint.config.ts
  ├─ package.json
  └─ tsconfig.json
 ```

@@ -13,11 +13,11 @@
  * -------------------------------------------------------------------------
  */
 
-import { describe, expect, it, vi } from 'vitest';
-
 import { info } from 'node:console';
 import { unlinkSync } from 'node:fs';
 import { posix, relative, resolve, sep } from 'node:path';
+
+import { describe, expect, it, vi } from 'vitest';
 
 import { unlinkFiles } from '#io';
 

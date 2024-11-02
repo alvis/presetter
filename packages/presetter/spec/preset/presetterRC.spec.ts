@@ -13,9 +13,9 @@
  * -------------------------------------------------------------------------
  */
 
-import { describe, expect, it, vi } from 'vitest';
-
 import { posix, relative, resolve, sep } from 'node:path';
+
+import { describe, expect, it, vi } from 'vitest';
 
 import { mockIO } from './mock';
 
@@ -82,7 +82,9 @@ describe('fn:getPresetterRC', () => {
   });
 
   it('throw an error if no configuration file is found', async () => {
-    expect(() => getPresetterRC('/missing-presetterrc')).rejects.toThrow();
+    expect(async () =>
+      getPresetterRC('/missing-presetterrc'),
+    ).rejects.toThrow();
   });
 });
 

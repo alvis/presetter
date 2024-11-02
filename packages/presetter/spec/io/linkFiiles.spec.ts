@@ -13,10 +13,10 @@
  * -------------------------------------------------------------------------
  */
 
-import { describe, expect, it, vi } from 'vitest';
-
 import { mkdirSync, symlinkSync, unlinkSync } from 'node:fs';
 import { posix, relative, resolve, sep } from 'node:path';
+
+import { describe, expect, it, vi } from 'vitest';
 
 import { linkFiles } from '#io';
 

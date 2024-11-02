@@ -54,8 +54,8 @@ Presetter is a utility for two tasks:
 When you run `presetter run <task>` (or its alias `run <task>`), presetter will perform the following:
 
 1. Combine the local scripts and those provided by the preset
-2. Backup `package.json` as `~package.json` 
-3. Place the combined script into a temporary `package.json` 
+2. Backup `package.json` as `~package.json`
+3. Place the combined script into a temporary `package.json`
 4. Run the task via `npm run <task>` as usual
 5. Restore the original `package.json` after running the task
 
@@ -69,6 +69,7 @@ For example, with the following template and local `package.json`,
 presetter will generate a `package.json` with the content below before running the script.
 
 **Template**
+
 ```json
 {
   "scripts": {
@@ -81,6 +82,7 @@ presetter will generate a `package.json` with the content below before running t
 ```
 
 **Local package.json**
+
 ```json
 {
   "scripts": {
@@ -92,6 +94,7 @@ presetter will generate a `package.json` with the content below before running t
 ```
 
 **Output**
+
 ```json
 {
   "scripts": {
@@ -152,7 +155,7 @@ The [auto peer dependencies installation](https://github.blog/2020-10-13-present
 
 ## FAQ
 
-#### Life cycle scripts are broken 
+#### Life cycle scripts are broken
 
 It may be the case when a life cycle script crashed, resulting in `package.json` not be restored to its original version.
 To fix the issue, you can simply replace the temporary `package.json` by its original at `~package.json`.
@@ -160,6 +163,7 @@ To fix the issue, you can simply replace the temporary `package.json` by its ori
 #### How to create a preset?
 
 It's actually rather simple. You just need to prepare an ordinary npm package with a default export with signature `(args: PresetContext) => PresetAsset | Promise<PresetAsset>`, where
+
 ```ts
 /** input for a preset configurator */
 export interface PresetContext {
@@ -232,7 +236,7 @@ There are many ways to create a preset. Checkout our example presets to learn mo
 ## About
 
 This project originated from my personal pain on maintaining a number of projects with fairly similar structure, having exactly the same build and test procedures, same `.babelrc`, `tsconfig.json` etc.
-Every time when I setup a new project, I have to copy many **identical config files** such as `.babelrc`, `.eslintrc`, `.lintstagedrc`, `.npmignore`, `tsconfig.json`, `vitest.config.ts` to name a few,
+Every time when I setup a new project, I have to copy many **identical config files** such as `.babelrc`, `.lintstagedrc`, `.npmignore`,  `eslint.config.ts`, `tsconfig.json`, `vitest.config.ts` to name a few,
 together with the following **40** 😱 development dependencies!!!
 
 1. @babel/cli
@@ -280,6 +284,7 @@ Therefore, I make this tool and make it available to everyone who has a similar 
 ### Philosophy
 
 Every design has a design philosophy and here are those for presetter:
+
 - Presetter should do one and only one job, which is providing building tools for the adopting project.
 - A preset should be made flexible enough to adapt to different project need while maintaining the reusability.
 - For the adopting project, updating only the preset version should be the only thing you need to do for updating the build dev dependencies and configuration files.

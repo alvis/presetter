@@ -31,11 +31,13 @@ interface ConfigResolutionContext extends PresetContext {
 
 /** syntax for an apply directive */
 const applyRegex =
-  /^@apply ((\.+\/|@)?[a-zA-Z]+[a-zA-Z0-9_/.-]*[a-zA-Z0-9_]+)(\[([a-zA-Z]+[a-zA-Z0-9_.]*)\])?$/;
+  // eslint-disable-next-line sonarjs/slow-regex
+  /^@apply ((\.+\/|@)?[a-zA-Z]+[a-zA-Z0-9_/.-]*\w+)(\[([a-zA-Z]+[a-zA-Z0-9_.]*)\])?$/;
 
 /** syntax for an import directive */
 const importRegex =
-  /^@import ((\.+\/|@)?[a-zA-Z]+[a-zA-Z0-9_/.-]*[a-zA-Z0-9_]+)(\[([a-zA-Z]+[a-zA-Z0-9_.]*)\])?$/;
+  // eslint-disable-next-line sonarjs/slow-regex
+  /^@import ((\.+\/|@)?[a-zA-Z]+[a-zA-Z0-9_/.-]*\w+)(\[([a-zA-Z]+[a-zA-Z0-9_.]*)\])?$/;
 
 /**
  * indicate whether the given value is an apply directive

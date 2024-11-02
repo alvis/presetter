@@ -1,6 +1,6 @@
-import { resolveVariable } from '#content';
-
 import { describe, expect, it } from 'vitest';
+
+import { resolveVariable } from '#content';
 
 describe('fn:resolveVariable', () => {
   it('compute the final variables', () => {

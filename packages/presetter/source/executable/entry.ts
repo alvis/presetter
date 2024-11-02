@@ -134,7 +134,7 @@ export async function entry(args: string[]): Promise<void> {
   await yargs()
     .parserConfiguration({
       // make sure flags after end-of-options flag `--` are stored under `--`, not `_`
-      // eslint-disable-next-line @typescript-eslint/naming-convention
+
       'populate--': true,
     })
     .usage('⚙ presetter: your preset configurator')
