@@ -24,7 +24,7 @@
     "postinstall": "pnpm run -r bootstrap",
     "build": "pnpm --recursive run build",
     "coverage": "pnpm run test --coverage",
-    "lint": "pnpm --recursive run lint",
+    "lint": "pnpm --recursive --no-bail run --aggregate-output lint",
     "test": "vitest",
     "stage": "pnpm --recursive exec lint-staged -- --concurrent=false",
     "next": "pnpm run release -- --prerelease next",
