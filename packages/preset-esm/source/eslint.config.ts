@@ -193,6 +193,10 @@ export default tseslint.config(
         },
       ],
       '@typescript-eslint/require-await': 'off', // allow async functions with no await
+      'import/consistent-type-specifier-style': [
+        'warn',
+        'prefer-top-level', // enforce `import type` specifier style
+      ],
       'import/first': 'warn', // ensure all imports are at the top
       'import/no-deprecated': 'warn', // avoid deprecated methods
       'import/no-duplicates': 'warn', // merge multiple imports from the same module
