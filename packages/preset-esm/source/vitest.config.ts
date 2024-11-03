@@ -5,6 +5,7 @@ export default defineConfig({
   esbuild: { target: 'es2022' }, // required for using `using` statement
   plugins: [tsconfigPaths()],
   test: {
+    passWithNoTests: true,
     watch: false,
     // auto clear mocks and stubs
     clearMocks: true,
