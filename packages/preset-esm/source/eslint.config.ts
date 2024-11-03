@@ -210,13 +210,17 @@ export default tseslint.config(
             caseInsensitive: true,
           },
           'groups': [
-            'builtin',
-            'external',
-            ['index', 'internal'],
-            ['parent', 'sibling'],
-            'object',
-            'unknown',
-            'type',
+            'builtin', // e.g. import fs from 'node:fs';
+            'external', // e.g. import foo from 'foo';
+            'internal', // e.g. import { foo } from '#foo';
+            'parent', // e.g. import foo from '../foo';
+            [
+              'index', // e.g. import foo from '.';
+              'sibling', // e.g. import foo from './foo';
+            ],
+            'object', // e.g. import bar = foo.bar;
+            'unknown', // anything else
+            'type', // e.g. import type { Foo } from 'foo';
           ],
           'newlines-between': 'always-and-inside-groups', // enable a newline within import groups
           'pathGroups': [
@@ -228,7 +232,7 @@ export default tseslint.config(
             {
               group: 'type',
               pattern:
-                '{#*,#*/**,../{,..,../..,../../..,../../../..,../../../../..}/**,./**}',
+                '{#*,#*/**,@/**,..,../{,..,../..,../../..,../../../..,../../../../..}/**,.,./**}',
               position: 'after',
               patternOptions: {
                 dot: true, // handle dot-based imports
@@ -238,9 +242,9 @@ export default tseslint.config(
           'pathGroupsExcludedImportTypes': [
             'builtin',
             'external',
-            'index',
             'internal',
             'parent',
+            'index',
             'sibling',
             'object',
             'unknown',
