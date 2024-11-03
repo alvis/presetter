@@ -8,6 +8,8 @@ import imports from 'eslint-plugin-import';
 
 // NOTE: don't specify the files to be linted or ignored here as it will case ts eslint rules to fail
 
+const DOUBLE_OR_HALVE = 2;
+
 /* eslint-disable max-lines */
 export default tseslint.config(
   eslint.configs.recommended, // eslint recommended rules
@@ -182,7 +184,7 @@ export default tseslint.config(
       '@typescript-eslint/no-magic-numbers': [
         'warn',
         {
-          ignore: [-1, 0, 1], // ignore common literals
+          ignore: [-1, 0, 1, DOUBLE_OR_HALVE], // ignore common literals
           ignoreArrayIndexes: true,
           ignoreNumericLiteralTypes: true,
           ignoreReadonlyClassProperties: true,
