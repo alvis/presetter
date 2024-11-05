@@ -5,8 +5,9 @@ import type { PresetAsset } from 'presetter-types';
 
 const DIR = fileURLToPath(dirname(import.meta.url));
 
-// paths to the template directory
+// paths to the template directories
 const CONFIGS = resolve(DIR, '..', 'configs');
+const TEMPLATES = resolve(DIR, '..', 'templates');
 
 /**
  * get the list of templates provided by this preset
@@ -14,9 +15,12 @@ const CONFIGS = resolve(DIR, '..', 'configs');
  */
 export default async function (): Promise<PresetAsset> {
   return {
+    extends: ['presetter-preset-esm'],
     supplementaryConfig: {
-      eslint: resolve(CONFIGS, 'eslint.yaml'),
       tsconfig: resolve(CONFIGS, 'tsconfig.yaml'),
+    },
+    template: {
+      'eslint.config.ts': resolve(TEMPLATES, 'eslint.config.ts'),
     },
   };
 }

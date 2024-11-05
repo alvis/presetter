@@ -15,6 +15,16 @@
   "main": "lib/index.js",
   "types": "lib/index.d.ts",
   "type": "module",
+  "exports": {
+    ".": {
+      "default": "./lib/index.js",
+      "types": "./lib/index.d.ts"
+    },
+    "./eslint.config": {
+      "default": "./lib/eslint.config.js",
+      "types": "./lib/eslint.config.d.ts"
+    }
+  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/alvis/presetter.git"
@@ -35,12 +45,14 @@
     "autoprefixer": "^10.0.0",
     "eslint-plugin-tailwindcss": "^3.0.0",
     "eslint-plugin-testing-library": "^6.0.0",
+    "globals": "^15.0.0",
     "postcss": "^8.0.0",
     "presetter": "workspace:*",
     "tailwindcss": "^3.0.0"
   },
   "devDependencies": {
-    "presetter": "workspace:*"
+    "presetter": "workspace:*",
+    "presetter-preset-esm": "workspace:*"
   },
   "dependencies": {
     "presetter-types": "workspace:*"

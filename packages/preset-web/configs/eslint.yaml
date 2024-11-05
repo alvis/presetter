@@ -1,4 +1,0 @@
-extends:
-  - plugin:tailwindcss/recommended
-plugins:
-  - testing-library
