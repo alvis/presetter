@@ -41,7 +41,7 @@ const template: PresetAsset['template'] = ({
     variable: { types },
   },
 }) => ({
-  '.eslintrc.json': resolve(TEMPLATES, 'eslintrc.yaml'),
+  'eslint.config.ts': resolve(TEMPLATES, 'eslint.config.ts'),
   'tsconfig.json': resolve(TEMPLATES, 'tsconfig.yaml'),
   'tsconfig.build.json': resolve(TEMPLATES, 'tsconfig.build.yaml'),
   [join(types, IMAGE_TYPE)]: resolve(TEMPLATES, IMAGE_TYPE),
@@ -70,6 +70,7 @@ const supplementaryConfig: PresetAsset['supplementaryConfig'] = () => ({
  */
 export default async function (): Promise<PresetAsset> {
   return {
+    extends: ['presetter-preset-web'],
     scripts: resolve(TEMPLATES, 'scripts.yaml'),
     template,
     noSymlinks,

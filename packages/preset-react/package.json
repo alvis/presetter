@@ -15,6 +15,16 @@
   "main": "lib/index.js",
   "types": "lib/index.d.ts",
   "type": "module",
+  "exports": {
+    ".": {
+      "default": "./lib/index.js",
+      "types": "./lib/index.d.ts"
+    },
+    "./eslint.config": {
+      "default": "./lib/eslint.config.js",
+      "types": "./lib/eslint.config.d.ts"
+    }
+  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/alvis/presetter.git"
@@ -33,7 +43,8 @@
     "@types/react": "^18.0.0",
     "eslint-plugin-react": "^7.0.0",
     "eslint-plugin-testing-library": "^6.0.0",
-    "presetter": "workspace:*"
+    "presetter": "workspace:*",
+    "presetter-preset-web": "workspace:*"
   },
   "devDependencies": {
     "presetter": "workspace:*"
