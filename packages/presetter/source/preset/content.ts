@@ -1,18 +1,3 @@
-/*
- *                            *** MIT LICENSE ***
- * -------------------------------------------------------------------------
- * This code may be modified and distributed under the MIT license.
- * See the LICENSE file for details.
- * -------------------------------------------------------------------------
- *
- * @summary   Collection of helpers for content generation
- *
- * @author    Alvis HT Tang <alvis@hilbert.space>
- * @license   MIT
- * @copyright Copyright (c) 2020 - All Rights Reserved.
- * -------------------------------------------------------------------------
- */
-
 import { resolveContext, resolveTemplate } from '../content';
 import { linkFiles, writeFiles } from '../io';
 import { getPresetGraph } from './graph';

@@ -44,7 +44,6 @@
     "watch": "run watch --"
   },
   "peerDependencies": {
-    "eslint-plugin-header": "^3.0.0",
     "eslint-plugin-no-secrets": "^1.0.0",
     "eslint-plugin-sonarjs": "^2.0.0",
     "presetter-preset-esm": "workspace:*"

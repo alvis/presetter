@@ -1,18 +1,3 @@
-/*
- *                            *** MIT LICENSE ***
- * -------------------------------------------------------------------------
- * This code may be modified and distributed under the MIT license.
- * See the LICENSE file for details.
- * -------------------------------------------------------------------------
- *
- * @summary   Preset for a ESM project
- *
- * @author    Alvis HT Tang <alvis@hilbert.space>
- * @license   MIT
- * @copyright Copyright (c) 2022 - All Rights Reserved.
- * -------------------------------------------------------------------------
- */
-
 import { dirname, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
 

@@ -258,7 +258,6 @@ together with the following **40** 😱 development dependencies!!!
 1. eslint
 1. eslint-config-prettier
 1. eslint-plugin-eslint-comments
-1. eslint-plugin-header
 1. eslint-plugin-import
 1. eslint-plugin-jsdoc
 1. eslint-plugin-no-secrets

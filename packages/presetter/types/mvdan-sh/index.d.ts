@@ -1,19 +1,3 @@
-/*
- *                            *** MIT LICENSE ***
- * -------------------------------------------------------------------------
- * This code may be modified and distributed under the MIT license.
- * See the LICENSE file for details.
- * -------------------------------------------------------------------------
- *
- * @summary   Definitions for mvdan-sh
- * @see       https://godoc.org/mvdan.cc/sh/syntax
- *
- * @author    Alvis HT Tang <alvis@hilbert.space>
- * @license   MIT
- * @copyright Copyright (c) 2020 - All Rights Reserved.
- * -------------------------------------------------------------------------
- */
-
 export type Node = CallExpr | File | Subshell | Stmt;
 
 export interface File {

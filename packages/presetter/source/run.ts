@@ -1,18 +1,3 @@
-/*
- *                            *** MIT LICENSE ***
- * -------------------------------------------------------------------------
- * This code may be modified and distributed under the MIT license.
- * See the LICENSE file for details.
- * -------------------------------------------------------------------------
- *
- * @summary   Run a task
- *
- * @author    Alvis HT Tang <alvis@hilbert.space>
- * @license   MIT
- * @copyright Copyright (c) 2019 - All Rights Reserved.
- * -------------------------------------------------------------------------
- */
-
 import { dirname } from 'node:path';
 
 import { Listr } from 'listr2';

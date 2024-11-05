@@ -1,18 +1,3 @@
-/*
- *                            *** MIT LICENSE ***
- * -------------------------------------------------------------------------
- * This code may be modified and distributed under the MIT license.
- * See the LICENSE file for details.
- * -------------------------------------------------------------------------
- *
- * @summary   Tests on io unlinkFiles
- *
- * @author    Alvis HT Tang <alvis@hilbert.space>
- * @license   MIT
- * @copyright Copyright (c) 2021 - All Rights Reserved.
- * -------------------------------------------------------------------------
- */
-
 import { info } from 'node:console';
 import { unlinkSync } from 'node:fs';
 import { posix, relative, resolve, sep } from 'node:path';

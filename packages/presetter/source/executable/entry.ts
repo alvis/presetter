@@ -1,18 +1,3 @@
-/*
- *                            *** MIT LICENSE ***
- * -------------------------------------------------------------------------
- * This code may be modified and distributed under the MIT license.
- * See the LICENSE file for details.
- * -------------------------------------------------------------------------
- *
- * @summary   Entry point for the command line interface (CLI)
- *
- * @author    Alvis HT Tang <alvis@hilbert.space>
- * @license   MIT
- * @copyright Copyright (c) 2019 - All Rights Reserved.
- * -------------------------------------------------------------------------
- */
-
 import { existsSync } from 'node:fs';
 
 import yargs from 'yargs';
