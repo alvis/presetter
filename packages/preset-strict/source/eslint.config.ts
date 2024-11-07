@@ -51,7 +51,7 @@ export default [
             '/', // split a URL from its path
             '#', // split a URL from its fragment
           ],
-          ignoreContent: ['%20'], // ignore encoded URL space character
+          ignoreContent: ['&amp;', '%20'], // ignore encoded URL space character
         },
       ],
       'sonarjs/cognitive-complexity': [
