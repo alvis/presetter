@@ -92,4 +92,4 @@ export default [
       'sonarjs/assertions-in-tests': 'off', // off as it has too many false positives
     },
   },
-] as Linter.Config[];
+] satisfies Linter.Config[] as Linter.Config[];

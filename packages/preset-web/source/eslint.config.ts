@@ -17,4 +17,4 @@ export default [
       globals: globals.browser,
     },
   },
-] as Linter.Config[];
+] satisfies Linter.Config[] as Linter.Config[];

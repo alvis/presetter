@@ -6,6 +6,8 @@ import comments from '@eslint-community/eslint-plugin-eslint-comments/configs';
 import prettier from 'eslint-config-prettier';
 import imports from 'eslint-plugin-import';
 
+import type { Linter } from 'eslint';
+
 // NOTE: don't specify the files to be linted or ignored here as it will case ts eslint rules to fail
 
 const DOUBLE_OR_HALVE = 2;
@@ -292,5 +294,5 @@ export default tseslint.config(
       'no-template-curly-in-string': 'warn', // warn if template literal syntax is misused
     },
   },
-);
+) as Linter.Config[];
 /* eslint-enable max-lines */
