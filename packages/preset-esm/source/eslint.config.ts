@@ -282,12 +282,6 @@ export default tseslint.config(
 
       // Error Prevention //
       '@typescript-eslint/no-non-null-assertion': 'off', // allow non-null assertions
-      '@typescript-eslint/no-use-before-define': [
-        'warn',
-        {
-          functions: false, // allow function hoisting
-        },
-      ],
       'block-scoped-var': 'error', // prevent scoped variable usage outside its scope
       'no-param-reassign': 'error', // prevent parameter reassignment
       'no-sparse-arrays': 'warn', // avoid sparse arrays (e.g., [1,,2])
