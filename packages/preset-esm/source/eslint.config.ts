@@ -183,6 +183,7 @@ export default tseslint.config(
           },
         },
       ],
+      '@typescript-eslint/no-empty-object-type': 'off', // type {} is often used to match an empty object that can't be simply replaced by Record<string, never>
       '@typescript-eslint/no-magic-numbers': [
         'warn',
         {
