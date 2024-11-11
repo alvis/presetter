@@ -13,7 +13,7 @@ clean:lib: shx rm -rf {output}
 clean:coverage: shx rm -rf coverage
 clean:tsc: shx rm -f tsconfig.build.tsbuildinfo
 lint: run-s "lint:* -- {source} {test}"
-lint:eslint: eslint --flag unstable_ts_config --fix --format stylish --no-error-on-unmatched-pattern
+lint:eslint: eslint --flag unstable_ts_config --fix --format stylish --no-error-on-unmatched-pattern --no-warn-ignored
 lint:fixme: leasot --skip-unsupported --exit-nicely package.json
 lint:prettier: prettier --write --no-error-on-unmatched-pattern
 prepare: run-s setup build
