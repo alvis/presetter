@@ -60,6 +60,8 @@ function createListrTask(_: {
 
         return taskControl.newListr(subTasks, { concurrent });
       } else {
+        taskControl.output = `${composed[task]} ${args.join(' ')}`;
+
         // run the npm script with the provided arguments and package information
         return runWithNPM({ task, args, pkg, composedScript: composed });
       }
