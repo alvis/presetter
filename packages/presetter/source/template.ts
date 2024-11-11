@@ -2,20 +2,20 @@ import { basename, extname } from 'node:path';
 
 import pupa from 'pupa';
 
-import type { IgnorePath, IgnoreRule, PrimitiveEntity } from 'presetter-types';
-import type { JsonObject, JsonValue } from 'type-fest';
+import type { IgnorePath, IgnoreRule } from 'presetter-types';
+import type { JsonObject, UnknownRecord } from 'type-fest';
 
-type MergedType<A, B> = A extends JsonObject
-  ? B extends JsonObject
+type MergedType<A, B> = A extends UnknownRecord
+  ? B extends UnknownRecord
     ? A & B
     : MergedArray<A, B>
   : MergedArray<A, B>;
 
-type MergedArray<A, B> = A extends JsonValue[]
-  ? B extends JsonValue[]
-    ? Array<A[number] | B[number]>
-    : keyof B extends `${number}`
-      ? JsonValue[]
+type MergedArray<A, B> = A extends any[]
+  ? B extends any[]
+    ? Array<A[number] | B[number]> // A and B are arrays
+    : keyof B extends `${number}` // B is an object with numeric keys
+      ? Array<A[number] | B[keyof B]>
       : B
   : B;
 
@@ -109,10 +109,7 @@ export function isJSON(subject: unknown): subject is JsonObject {
  * @param target properties to be merged with the default
  * @returns merged object
  */
-export function merge<S extends JsonValue, T extends PrimitiveEntity>(
-  source: S,
-  target?: T,
-): MergedType<S, T> {
+export function merge<S, T>(source: S, target?: T): MergedType<S, T> {
   // LOGIC
   //       S\R | Array   | Object  | Primitive
   // Array     | EXTEND  | AMEND   | replace
@@ -134,10 +131,7 @@ export function merge<S extends JsonValue, T extends PrimitiveEntity>(
  * @param target new replacement
  * @returns merged value
  */
-export function mergeArray<S extends JsonValue, T extends PrimitiveEntity>(
-  source: S[],
-  target?: T,
-): MergedArray<S[], T> {
+export function mergeArray<S, T>(source: S[], target?: T): MergedArray<S[], T> {
   // NOTE
   // merging can only be done in two ways:
   // 1. the target is also an array, then merge the two arrays
@@ -164,7 +158,7 @@ export function mergeArray<S extends JsonValue, T extends PrimitiveEntity>(
  * @param target new replacement
  * @returns merged array
  */
-export function mergeArrays<S extends JsonValue, T extends JsonValue>(
+export function mergeArrays<S, T>(
   source: S[],
   target: T[],
 ): MergedArray<S[], T[]> {
@@ -198,7 +192,7 @@ export function mergeArrays<S extends JsonValue, T extends JsonValue>(
  * @param target new replacement
  * @returns merged value
  */
-export function mergeObject<S extends JsonObject, T extends PrimitiveEntity>(
+export function mergeObject<S extends UnknownRecord, T>(
   source: S,
   target?: T,
 ): MergedType<S, T> {
@@ -207,7 +201,7 @@ export function mergeObject<S extends JsonObject, T extends PrimitiveEntity>(
     const mergedSource = Object.fromEntries(
       Object.entries(source).map(([key, value]) => [
         key,
-        merge(value!, target[key]),
+        merge(value, target[key]),
       ]),
     );
 
