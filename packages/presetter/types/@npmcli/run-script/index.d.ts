@@ -1,10 +1,8 @@
-import { ChildProcess } from 'node:child_process';
-
 import type { PackageJson } from 'type-fest';
 
 export default function runScript<
   T extends 'inherit' | 'pipe' = 'inherit',
-  S extends Boolean = true,
+  S extends boolean = true,
 >(options: {
   event: string;
   args: string[];
@@ -24,4 +22,4 @@ export default function runScript<
   script: string;
   pkgid?: string;
   path: string;
-}> & { process: ChildProcess; stdin: ChildProcess['stdin'] };
+}>;
