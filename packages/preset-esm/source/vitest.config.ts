@@ -6,6 +6,9 @@ export default defineConfig({
   plugins: [tsconfigPaths()],
   test: {
     passWithNoTests: true,
+    typecheck: {
+      enabled: true,
+    },
     watch: false,
     // auto clear mocks and stubs
     clearMocks: true,

@@ -1,0 +1,12 @@
+{
+  "files": [],
+  "references": [
+    { "path": "./packages/presetter/tsconfig.build.json" },
+    { "path": "./packages/types/tsconfig.build.json" }
+  ],
+  "compilerOptions": {
+    "module": "ESNext",
+    "moduleResolution": "bundler",
+    "skipLibCheck": true,
+  }
+}
