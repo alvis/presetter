@@ -6,15 +6,7 @@ import { describe, expect, it, vi } from 'vitest';
 
 import getPresetAsset from '#';
 
-vi.mock('node:path', async (importActual) => {
-  const { resolve, ...rest } = await importActual<typeof import('node:path')>();
-
-  return {
-    ...rest,
-    // spy on resolve to check if a template is referenced
-    resolve: vi.fn(resolve),
-  };
-});
+vi.mock('node:path', { spy: true });
 
 describe('fn:getPresetAsset', () => {
   it('use all templates', async () => {
