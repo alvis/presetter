@@ -1,5 +1,6 @@
 import { resolveContext, resolveScripts } from '../content';
 import debug from '../debugger';
+
 import { getContext } from './context';
 import { getPresetGraph } from './graph';
 
