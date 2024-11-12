@@ -1,3 +1,5 @@
+/* eslint-disable max-lines */
+
 import jsdoc from 'eslint-plugin-jsdoc';
 import tseslint from 'typescript-eslint';
 
@@ -12,7 +14,6 @@ import type { Linter } from 'eslint';
 
 const DOUBLE_OR_HALVE = 2;
 
-/* eslint-disable max-lines */
 export default tseslint.config(
   eslint.configs.recommended, // eslint recommended rules
   ...tseslint.configs.recommendedTypeChecked, // typescript-specific rules
@@ -290,4 +291,5 @@ export default tseslint.config(
     },
   },
 ) as Linter.Config[];
+
 /* eslint-enable max-lines */

@@ -3,7 +3,7 @@ import { fileURLToPath } from 'node:url';
 
 import type { PresetAsset } from 'presetter-types';
 
-export type { PresetConfig, Variable } from 'presetter-preset-esm';
+export type { PresetConfig, Variable } from 'presetter-preset-essentials';
 
 const DIR = fileURLToPath(dirname(import.meta.url));
 
@@ -17,8 +17,11 @@ const TEMPLATES = resolve(DIR, '..', 'templates');
  */
 export default async function (): Promise<PresetAsset> {
   return {
-    extends: ['presetter-preset-esm'],
+    extends: ['presetter-preset-essentials'],
     supplementaryScripts: resolve(CONFIGS, 'scripts.yaml'),
+    supplementaryConfig: {
+      gitignore: ['tsconfig.cjs.json', 'tsconfig.mjs.json'],
+    },
     template: {
       'tsconfig.cjs.json': resolve(TEMPLATES, 'tsconfig.cjs.yaml'),
       'tsconfig.mjs.json': resolve(TEMPLATES, 'tsconfig.mjs.yaml'),

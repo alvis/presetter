@@ -16,17 +16,9 @@
 
 </div>
 
-**presetter-preset-cjs** is an opinionated extension of [**presetter-preset-esm**](https://github.com/alvis/presetter/tree/master/packages/preset-esm) but loaded with tools to help you to develop an common js application with ease. As the same as presetter-preset-esm, it's designed to help you get started with a typescript project in a fraction of time you usually take via [**presetter**](https://github.com/alvis/presetter).
+**presetter-preset-cjs** is an opinionated extension of [**presetter-preset-essentials**](https://github.com/alvis/presetter/tree/master/packages/preset-essentials) but loaded with tools to help you to develop an common js application with ease. As the same as [**presetter-preset-esm**](https://github.com/alvis/presetter/tree/master/packages/preset-esm), it's designed to help you get started with a typescript project in a fraction of time you usually take via [**presetter**](https://github.com/alvis/presetter).
 
-With `presetter-preset-cjs`, it provides everything bundled from presetter-preset-esm, plus the ease of writing an commonjs application.
-
-## Features
-
-- 🔍 Searches and replaces `__dirname` and `__filename` refs with the `import.meta` equivalent
-
-- 🥹 Forget about writing the [`.js`/`.ts` extension pain](https://github.com/microsoft/TypeScript/issues/37582) for each import
-
-  With this preset, estensions are automatically added post tsc. i.e. `import {foo} from './foo'` → `import {foo} from './foo.js'`
+With `presetter-preset-cjs`, it provides everything bundled from presetter-preset-essentials, plus the ease of writing an commonjs application.
 
 ## Quick Start
 

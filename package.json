@@ -40,6 +40,7 @@
   "peerDependencies": {
     "presetter": "workspace:*",
     "presetter-preset-esm": "workspace:*",
+    "presetter-preset-essentials": "workspace:*",
     "presetter-preset-strict": "workspace:*"
   },
   "devDependencies": {

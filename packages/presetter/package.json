@@ -51,6 +51,8 @@
     "@types/js-yaml": "^4.0.0",
     "@types/node": "*",
     "@types/yargs": "^17.0.0",
+    "presetter-preset-esm": "workspace:*",
+    "presetter-preset-essentials": "workspace:*",
     "presetter-preset-strict": "workspace:*",
     "type-fest": "catalog:"
   },

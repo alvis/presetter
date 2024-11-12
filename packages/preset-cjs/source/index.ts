@@ -3,11 +3,12 @@ import { fileURLToPath } from 'node:url';
 
 import type { PresetAsset } from 'presetter-types';
 
+export type { PresetConfig, Variable } from 'presetter-preset-essentials';
+
 const DIR = fileURLToPath(dirname(import.meta.url));
 
 // paths to the template directory
 const CONFIGS = resolve(DIR, '..', 'configs');
-export type { PresetConfig, Variable } from 'presetter-preset-esm';
 
 /**
  * get the list of templates provided by this preset
@@ -15,7 +16,7 @@ export type { PresetConfig, Variable } from 'presetter-preset-esm';
  */
 export default async function (): Promise<PresetAsset> {
   return {
-    extends: ['presetter-preset-esm'],
+    extends: ['presetter-preset-essentials'],
     supplementaryConfig: {
       tsconfig: resolve(CONFIGS, 'tsconfig.yaml'),
     },

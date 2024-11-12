@@ -1,6 +1,6 @@
 import globals from 'globals';
 
-import presetESMConfig from 'presetter-preset-esm/eslint.config';
+import essentialConfig from 'presetter-preset-essentials/eslint.config';
 
 import tailwind from 'eslint-plugin-tailwindcss';
 import testing from 'eslint-plugin-testing-library';
@@ -8,7 +8,7 @@ import testing from 'eslint-plugin-testing-library';
 import type { Linter } from 'eslint';
 
 export default [
-  ...presetESMConfig,
+  ...essentialConfig,
   ...tailwind.configs['flat/recommended'],
   testing.configs['flat/dom'],
   {

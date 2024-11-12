@@ -52,7 +52,7 @@
   },
   "devDependencies": {
     "presetter": "workspace:*",
-    "presetter-preset-esm": "workspace:*"
+    "presetter-preset-essentials": "workspace:*"
   },
   "dependencies": {
     "presetter-types": "workspace:*"

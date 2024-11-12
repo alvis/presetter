@@ -20,7 +20,8 @@
     "url": "git+https://github.com/alvis/presetter.git"
   },
   "scripts": {
-    "prepare": "run prepare",
+    "prepare": "tsc --declaration --moduleResolution bundler --module esnext --target esnext --skipLibCheck --outdir lib source/index.ts",
+    "bootstrap": "presetter bootstrap",
     "build": "run build",
     "coverage": "run coverage",
     "lint": "run lint",
@@ -29,11 +30,7 @@
     "watch": "run watch"
   },
   "peerDependencies": {
-    "presetter": "workspace:*",
-    "presetter-preset-esm": "workspace:*"
-  },
-  "devDependencies": {
-    "presetter": "workspace:*"
+    "presetter-preset-essentials": "workspace:*"
   },
   "dependencies": {
     "presetter-types": "workspace:*"

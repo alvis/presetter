@@ -1,4 +1,1 @@
-build:typescript: run-s build:typescript:cjs
-build:typescript:cjs: run-s build:typescript:cjs:*
-build:typescript:cjs:tsc: tsc -p tsconfig.build.json
-build:typescript:cjs:path: tsc-alias
+build:typescript: run-s build:typescript:tsc build:typescript:alias

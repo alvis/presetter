@@ -1,7 +1,7 @@
 {
   "name": "presetter-preset-esm",
   "version": "5.0.0",
-  "description": "A collection of opinionated preset configurations for typescript projects",
+  "description": "An opinionated presetter preset for an esm package",
   "keywords": [
     "presetter",
     "preset"
@@ -15,61 +15,22 @@
   "main": "lib/index.js",
   "types": "lib/index.d.ts",
   "type": "module",
-  "exports": {
-    ".": {
-      "default": "./lib/index.js",
-      "types": "./lib/index.d.ts"
-    },
-    "./eslint.config": {
-      "default": "./lib/eslint.config.js",
-      "types": "./lib/eslint.config.d.ts"
-    },
-    "./vitest.config": {
-      "default": "./lib/vitest.config.js",
-      "types": "./lib/vitest.config.d.ts"
-    }
-  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/alvis/presetter.git"
   },
   "scripts": {
-    "prepare": "tsc --declaration --moduleResolution bundler --module esnext --target esnext --skipLibCheck --outdir lib source/index.ts source/eslint.config.ts source/vitest.config.ts",
+    "prepare": "tsc --declaration --moduleResolution bundler --module esnext --target esnext --skipLibCheck --outdir lib source/index.ts",
     "bootstrap": "presetter bootstrap",
     "build": "run build",
-    "coverage": "run coverage --",
-    "lint": "run lint --",
+    "coverage": "run coverage",
+    "lint": "run lint",
     "prepublishOnly": "run prepare && run prepublishOnly",
-    "test": "run test --",
-    "watch": "run watch --"
+    "test": "run test",
+    "watch": "run watch"
   },
   "peerDependencies": {
-    "@eslint/js": "^9.0.0",
-    "@eslint-community/eslint-plugin-eslint-comments": "^4.0.0",
-    "@vitest/coverage-v8": "^2.0.0",
-    "conventional-changelog-metahub": "^4.0.0",
-    "cross-env": "^7.0.0",
-    "dotenv-cli": "^7.0.0",
-    "eslint": "^9.0.0",
-    "eslint-config-prettier": "^9.0.0",
-    "eslint-import-resolver-typescript": "^3.0.0",
-    "eslint-plugin-import": "^2.0.0",
-    "eslint-plugin-jsdoc": "^50.0.0",
-    "husky": "^9.0.0",
-    "jiti": "^2.0.0",
-    "leasot": "^14.0.0",
-    "lint-staged": "^15.0.0",
-    "prettier": "^3.0.0",
-    "shx": "^0.3.0",
-    "standard-version": "^9.0.0",
-    "tsc-alias": "^1.0.0",
-    "tsc-esm-fix": "^3.0.0",
-    "tsconfig-paths": "^4.0.0",
-    "tsx": "^4.0.0",
-    "typescript": ">=4.7.0",
-    "typescript-eslint": "^8.0.0",
-    "vitest": "^2.0.0",
-    "vite-tsconfig-paths": "^5.0.0"
+    "presetter-preset-essentials": "workspace:*"
   },
   "dependencies": {
     "presetter-types": "workspace:*"

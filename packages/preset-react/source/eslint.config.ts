@@ -1,5 +1,5 @@
 import sonarjs from 'eslint-plugin-sonarjs';
-import presetESMConfig from 'presetter-preset-esm/eslint.config';
+import presetESMConfig from 'presetter-preset-essentials/eslint.config';
 
 import react from 'eslint-plugin-react';
 import testing from 'eslint-plugin-testing-library';

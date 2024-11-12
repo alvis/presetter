@@ -1,13 +1,11 @@
 build: run-s clean build:artifact build:typescript
 build:artifact: run-s build:artifact:*
 build:artifact:package: shx mkdir -p {output}
-build:typescript: run-s build:typescript:mjs
-build:typescript:mjs: run-s build:typescript:mjs:*
-build:typescript:mjs:tsc: tsc -p tsconfig.build.json
-build:typescript:mjs:alias: run-s build:typescript:mjs:alias:*
-build:typescript:mjs:alias:lib: tsc-alias --resolve-full-paths --dir {output}
-build:typescript:mjs:alias:root: tsc-alias --resolve-full-paths --dir .
-build:typescript:mjs:fix: tsc-esm-fix --sourceMap --target {output}
+build:typescript: echo "You must explicitly define your build target. Try presetter-preset-esm or presetter-preset-cjs to set it up."; exit 1
+build:typescript:tsc: tsc -p tsconfig.build.json
+build:typescript:alias: run-s build:typescript:alias:*
+build:typescript:alias:lib: tsc-alias --resolve-full-paths --dir {output}
+build:typescript:alias:root: tsc-alias --resolve-full-paths --dir .
 clean: run-p clean:**
 clean:lib: shx rm -rf {output}
 clean:coverage: shx rm -rf coverage

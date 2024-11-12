@@ -6,43 +6,31 @@
 
 •   [Quick Start](#quick-start)   •   [Project Structure](#project-structure)   •   [Customization](#customization)   •   [Scripts](#script-template-summary)   •
 
-[![npm](https://img.shields.io/npm/v/presetter-preset-esm?style=flat-square)](https://github.com/alvis/presetter/releases)
+[![npm](https://img.shields.io/npm/v/presetter-preset-essentials?style=flat-square)](https://github.com/alvis/presetter/releases)
 [![build](https://img.shields.io/github/actions/workflow/status/alvis/presetter/test.yaml?branch=master&style=flat-square)](https://github.com/alvis/presetter/actions)
 [![maintainability](https://img.shields.io/codeclimate/maintainability/alvis/presetter?style=flat-square)](https://codeclimate.com/github/alvis/presetter/maintainability)
 [![coverage](https://img.shields.io/codeclimate/coverage/alvis/presetter?style=flat-square)](https://codeclimate.com/github/alvis/presetter/test_coverage)
-[![security](https://img.shields.io/snyk/vulnerabilities/github/alvis/presetter/packages/preset-esm/package.json.svg?style=flat-square)](https://snyk.io/test/github/alvis/presetter?targetFile=packages/preset-esm/package.json&style=flat-square)
-[![dependencies](https://img.shields.io/librariesio/release/npm/presetter-preset-esm?style=flat-square)](https://libraries.io/npm/presetter-preset-esm)
+[![security](https://img.shields.io/snyk/vulnerabilities/github/alvis/presetter/packages/preset-essentials/package.json.svg?style=flat-square)](https://snyk.io/test/github/alvis/presetter?targetFile=packages/preset-essentials/package.json&style=flat-square)
+[![dependencies](https://img.shields.io/librariesio/release/npm/presetter-preset-essentials?style=flat-square)](https://libraries.io/npm/presetter-preset-essentials)
 [![license](https://img.shields.io/github/license/alvis/presetter.svg?style=flat-square)](https://github.com/alvis/presetter/blob/master/LICENSE)
 
 </div>
 
-**presetter-preset-esm** is an opinionated extension of [**presetter-preset-essentials**](https://github.com/alvis/presetter/tree/master/packages/preset-essentials) but loaded with tools to help you to develop an common js application with ease. As the same as presetter-preset-esm, it's designed to help you get started with a typescript project in a fraction of time you usually take via [**presetter**](https://github.com/alvis/presetter).
-
-With `presetter-preset-esm`, it provides everything bundled from presetter-preset-esm, plus the ease of writing an commonjs application.
-
 ## Features
 
-- 🔍 Searches and replaces `__dirname` and `__filename` refs with the `import.meta` equivalent
+**presetter-preset-essentials** is a collection of essential dev tools you usually need to setup a typescript project in a fraction of time you usually take via [**presetter**](https://github.com/alvis/presetter). In addition to a set of opinionated configuration files, it also provides a number of essential lifecycle and helper commands.
 
-- 🥹 Forget about writing the [`.js`/`.ts` extension pain](https://github.com/microsoft/TypeScript/issues/37582) for each import
-
-  With this preset, estensions are automatically added post tsc. i.e. `import {foo} from './foo'` → `import {foo} from './foo.js'`
+- 🚿 ESLint
+- 🧪 Vitest
+- 💅 Prettier
+- 📤 Standard Version
+- 💯 Typescript
 
 ## Quick Start
 
-To kick start a ESM application, what you need is to set the following in your `package.json` and follow the guide below.
-
-```json
-{
-  "type": "module",
-  "main": "lib/index.js",
-  "types": "lib/index.d.ts"
-}
-```
-
 [**FULL DOCUMENTATION IS AVAILABLE HERE**](https://github.com/alvis/presetter/blob/master/README.md)
 
-1. Bootstrap your project with presetter-preset-esm
+1. Bootstrap your project with [presetter-preset-esm](https://github.com/alvis/presetter/tree/master/packages/preset-esm) or [presetter-preset-cjs](https://github.com/alvis/presetter/tree/master/packages/preset-cjs)
 
 ```shell
 npx presetter use presetter-preset-esm
@@ -50,7 +38,7 @@ npx presetter use presetter-preset-esm
 
 That's. One command and you're set.
 
-1. Develop and run life cycle scripts provided by the preset
+2. Develop and run life cycle scripts provided by the preset
 
 At this point, all development packages specified in the preset are installed,
 and now you can try to run some example life cycle scripts (e.g. run prepare).
@@ -63,13 +51,12 @@ After installation, your project file structure should resemble the following or
 
 Implement your business logic under `source` and prepare tests under `spec`.
 
-**TIPS** You can always change the source directory to other (e.g. src) by setting the `source` variable in `.presetterrc.json`. See the [customization](https://github.com/alvis/presetter/blob/master/packages/preset-esm#customization) section below for more details.
+**TIPS** You can always change the source directory to other (e.g. src) by setting the `source` variable in `.presetterrc.json`. See the [customization](https://github.com/alvis/presetter/blob/master/packages/preset-essentials#customization) section below for more details.
 
-```plain
+```
 (root)
  ├─ .git
  ├─ .husky
- ├─ .lintstagedrc.json
  ├─ .npmignore
  ├─ .prettierrc.json
  ├─ .presetterrc.json
@@ -98,7 +85,7 @@ The structure of `.presetterrc` should follow the interface below:
 
 ```ts
 interface PresetterRC {
-  /** name of the preset e.g. presetter-preset-esm */
+  /** name of the preset e.g. presetter-preset-essentials */
   name: string | string[];
   /** additional configuration passed to the preset for generating the configuration files */
   config?: {
@@ -124,6 +111,8 @@ interface PresetterRC {
   variable?: {
     /** the directory containing the whole repository (default: .) */
     root?: string;
+    /** the directory containing all generated code (default: generated) */
+    generated?: string;
     /** the directory containing all source code (default: source) */
     source?: string;
     /** the directory containing all typing files (default: types) */
@@ -146,3 +135,7 @@ interface PresetterRC {
 - **`run coverage`**: Run all test with coverage report
 - **`run release`**: Bump the version and automatically generate a change log
 - **`run release -- --prerelease <tag>`**: Release with a prerelease tag
+
+## Notes
+
+- Since git 2.32 ([released on 2020-06-06](https://lore.kernel.org/lkml/xmqqa6o3xj2e.fsf@gitster.g/T/#u)), git no longer follows `.gitignore` as a symlink. Therefore, the packaged `.gitignore` will no longer symlinked but created on the root directory of the project instead.

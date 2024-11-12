@@ -1,0 +1,2 @@
+build:typescript: run-s build:typescript:tsc build:typescript:alias build:typescript:mjs:fix
+build:typescript:mjs:fix: tsc-esm-fix --sourceMap --target {output}

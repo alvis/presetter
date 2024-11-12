@@ -1,4 +1,4 @@
-import presetConfig from 'presetter-preset-esm/eslint.config';
+import presetConfig from 'presetter-preset-essentials/eslint.config';
 
 export default [
   ...presetConfig,

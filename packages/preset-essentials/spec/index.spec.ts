@@ -6,6 +6,10 @@ import { describe, expect, it, vi } from 'vitest';
 
 import getPresetAsset from '#';
 
+vi.mock('node:fs', () => ({
+  existsSync: (path: string) => path === '/.git',
+}));
+
 vi.mock('node:path', { spy: true });
 
 describe('fn:getPresetAsset', () => {
@@ -34,5 +38,24 @@ describe('fn:getPresetAsset', () => {
     for (const path of templates) {
       expect(vi.mocked(resolve)).toBeCalledWith(TEMPLATES, path);
     }
+  });
+
+  it('should skip .husky/pre-commit if .git is not present', async () => {
+    const asset = await getPresetAsset();
+    const context = await resolveContext({
+      graph: [{ name: 'preset', asset, nodes: [] }],
+      context: {
+        target: { name: 'preset', root: '/packages/project', package: {} },
+        custom: { preset: 'preset' },
+      },
+    });
+
+    // load all potential dynamic content
+    await loadDynamicMap(asset.supplementaryConfig, context);
+    await loadDynamicMap(asset.template, context);
+
+    const TEMPLATES = resolve(import.meta.dirname, '..', 'templates');
+
+    expect(vi.mocked(resolve)).not.toBeCalledWith(TEMPLATES, 'pre-commit');
   });
 });

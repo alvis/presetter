@@ -20,6 +20,9 @@ importers:
       presetter-preset-esm:
         specifier: workspace:*
         version: link:packages/preset-esm
+      presetter-preset-essentials:
+        specifier: workspace:*
+        version: link:packages/preset-essentials
       presetter-preset-strict:
         specifier: workspace:*
         version: link:packages/preset-strict
@@ -33,18 +36,23 @@ importers:
 
   packages/preset-cjs:
     dependencies:
-      presetter-preset-esm:
+      presetter-preset-essentials:
         specifier: workspace:*
-        version: link:../preset-esm
+        version: link:../preset-essentials
       presetter-types:
         specifier: workspace:*
         version: link:../types
-    devDependencies:
-      presetter:
-        specifier: workspace:*
-        version: link:../presetter
 
   packages/preset-esm:
+    dependencies:
+      presetter-preset-essentials:
+        specifier: workspace:*
+        version: link:../preset-essentials
+      presetter-types:
+        specifier: workspace:*
+        version: link:../types
+
+  packages/preset-essentials:
     dependencies:
       '@eslint-community/eslint-plugin-eslint-comments':
         specifier: ^4.0.0
@@ -130,9 +138,9 @@ importers:
 
   packages/preset-hybrid:
     dependencies:
-      presetter-preset-esm:
+      presetter-preset-essentials:
         specifier: workspace:*
-        version: link:../preset-esm
+        version: link:../preset-essentials
       presetter-types:
         specifier: workspace:*
         version: link:../types
@@ -220,9 +228,9 @@ importers:
       eslint-plugin-sonarjs:
         specifier: ^2.0.0
         version: 2.0.4(@typescript-eslint/parser@8.13.0(eslint@9.14.0(jiti@2.4.0))(typescript@5.6.2))(eslint@9.14.0(jiti@2.4.0))
-      presetter-preset-esm:
+      presetter-preset-essentials:
         specifier: workspace:*
-        version: link:../preset-esm
+        version: link:../preset-essentials
       presetter-types:
         specifier: workspace:*
         version: link:../types
@@ -263,9 +271,9 @@ importers:
       presetter:
         specifier: workspace:*
         version: link:../presetter
-      presetter-preset-esm:
+      presetter-preset-essentials:
         specifier: workspace:*
-        version: link:../preset-esm
+        version: link:../preset-essentials
 
   packages/presetter:
     dependencies:
@@ -339,6 +347,12 @@ importers:
       '@types/yargs':
         specifier: ^17.0.0
         version: 17.0.33
+      presetter-preset-esm:
+        specifier: workspace:*
+        version: link:../preset-esm
+      presetter-preset-essentials:
+        specifier: workspace:*
+        version: link:../preset-essentials
       presetter-preset-strict:
         specifier: workspace:*
         version: link:../preset-strict
@@ -7161,7 +7175,7 @@ snapshots:
 
   '@typescript-eslint/eslint-plugin@7.16.1(@typescript-eslint/parser@8.13.0(eslint@9.14.0(jiti@2.4.0))(typescript@5.6.2))(eslint@9.14.0(jiti@2.4.0))(typescript@5.6.2)':
     dependencies:
-      '@eslint-community/regexpp': 4.11.1
+      '@eslint-community/regexpp': 4.12.1
       '@typescript-eslint/parser': 8.13.0(eslint@9.14.0(jiti@2.4.0))(typescript@5.6.2)
       '@typescript-eslint/scope-manager': 7.16.1
       '@typescript-eslint/type-utils': 7.16.1(eslint@9.14.0(jiti@2.4.0))(typescript@5.6.2)
@@ -10554,7 +10568,7 @@ snapshots:
 
   refa@0.12.1:
     dependencies:
-      '@eslint-community/regexpp': 4.11.1
+      '@eslint-community/regexpp': 4.12.1
 
   reflect.getprototypeof@1.0.6:
     dependencies:
@@ -10580,7 +10594,7 @@ snapshots:
 
   regexp-ast-analysis@0.7.1:
     dependencies:
-      '@eslint-community/regexpp': 4.11.1
+      '@eslint-community/regexpp': 4.12.1
       refa: 0.12.1
 
   regexp.prototype.flags@1.5.3:
@@ -10758,7 +10772,7 @@ snapshots:
 
   scslre@0.3.0:
     dependencies:
-      '@eslint-community/regexpp': 4.11.1
+      '@eslint-community/regexpp': 4.12.1
       refa: 0.12.1
       regexp-ast-analysis: 0.7.1
 

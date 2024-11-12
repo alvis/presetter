@@ -1,9 +1,9 @@
-import defaultConfig from 'presetter-preset-esm/vitest.config';
+import essentialConfig from 'presetter-preset-essentials/vitest.config';
 
 import { defineConfig, mergeConfig } from 'vitest/config';
 
 export default mergeConfig(
-  defaultConfig,
+  essentialConfig,
   defineConfig({
     test: {
       coverage: {

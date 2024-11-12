@@ -1,5 +1,5 @@
 import sonarjs from 'eslint-plugin-sonarjs';
-import presetESMConfig from 'presetter-preset-esm/eslint.config';
+import essentialConfig from 'presetter-preset-essentials/eslint.config';
 
 import noSecrets from 'eslint-plugin-no-secrets';
 
@@ -8,7 +8,7 @@ import type { Linter } from 'eslint';
 const COGNITIVE_COMPLEXITY = 15;
 
 export default [
-  ...presetESMConfig,
+  ...essentialConfig,
   sonarjs.configs.recommended,
   {
     name: 'presetter-preset-strict',

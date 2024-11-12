@@ -30,7 +30,7 @@
   },
   "peerDependencies": {
     "presetter": "workspace:*",
-    "presetter-preset-esm": "workspace:*"
+    "presetter-preset-essentials": "workspace:*"
   },
   "devDependencies": {
     "presetter": "workspace:*"
