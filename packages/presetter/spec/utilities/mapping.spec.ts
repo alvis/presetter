@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
 
-import { mapValues } from '#utilities/mapValues';
+import { mapValues } from '#utilities/mapping';
 
 describe('fn:mapValues', () => {
   it('should map object values correctly', () => {

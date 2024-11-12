@@ -1,8 +1,7 @@
 import { basename, extname } from 'node:path';
 
-import pupa from 'pupa';
+import { isJsonObject } from '../utilities';
 
-import type { IgnorePath, IgnoreRule } from 'presetter-types';
 import type { JsonObject, UnknownRecord } from 'type-fest';
 
 type MergedType<A, B> = A extends UnknownRecord
@@ -20,90 +19,6 @@ type MergedArray<A, B> = A extends any[]
   : B;
 
 /**
- * remove part of the template content according to the given rules
- * @param subject an object to be filtered
- * @param ignores a list of ignore rules
- * @returns filtered content
- */
-export function filter<C extends Record<string, unknown>>(
-  subject: C,
-  ...ignores: IgnoreRule[]
-): C;
-export function filter(subject: unknown[], ...ignores: IgnoreRule[]): unknown[];
-export function filter(
-  subject: Record<string, unknown> | unknown[],
-  ...ignores: IgnoreRule[]
-): Record<string, unknown> | unknown[] {
-  // compute the list of fields in config to be ignored
-  const fieldsToIgnore = ignores.filter(
-    (ignore): ignore is string | number => typeof ignore !== 'object',
-  );
-
-  // filter the unwanted item in an array
-  if (Array.isArray(subject)) {
-    return subject.filter((_, key) => !fieldsToIgnore.includes(key));
-  }
-
-  // filter the unwanted fields below
-  const distilled = Object.fromEntries(
-    Object.entries(subject).filter(([key, _]) => !fieldsToIgnore.includes(key)),
-  );
-
-  // compute the left over and process them further below
-  const moreRules = ignores.filter(
-    (ignore): ignore is Record<string, IgnorePath> =>
-      typeof ignore !== 'string',
-  );
-
-  // continue filtering the left over
-  return moreRules.reduce(
-    (furtherDistilled, ignoreTree) =>
-      Object.fromEntries(
-        Object.entries(furtherDistilled).map(
-          ([key, value]): [string, unknown] => [
-            key,
-            filterByPath(value, ignoreTree[key]),
-          ],
-        ),
-      ),
-    distilled,
-  );
-}
-
-/**
- * filter a value according to the supplied ignore rules
- * @param value value to be filtered
- * @param path ignore rule to be applied
- * @returns filtered value
- */
-function filterByPath(value: unknown, path?: IgnorePath): unknown {
-  return path && typeof value === 'object'
-    ? filter(
-        value as Record<string, unknown>,
-        // NOTE
-        // if rule is an array, it means that it contains a list of fields to be ignored
-        // otherwise, it contains rules in a tree form
-        ...(Array.isArray(path) ? path : [path]),
-      )
-    : value;
-}
-
-/**
- * indicate whether the supplied value is a JSON object
- * @param subject the subject to be tested
- * @returns true if the subject is a JSON object
- */
-export function isJSON(subject: unknown): subject is JsonObject {
-  return [
-    typeof subject === 'object',
-    !Array.isArray(subject),
-    subject !== null,
-  ].every((value) => value);
-}
-
-/* eslint-disable @typescript-eslint/no-unsafe-return */
-
-/**
  * deep merge an object
  * @param source default object if no additional property is supplied
  * @param target properties to be merged with the default
@@ -118,7 +33,7 @@ export function merge<S, T>(source: S, target?: T): MergedType<S, T> {
 
   if (Array.isArray(source)) {
     return mergeArray(source, target) as MergedType<S, T>;
-  } else if (isJSON(source)) {
+  } else if (isJsonObject(source)) {
     return mergeObject(source, target) as MergedType<S, T>;
   }
 
@@ -140,12 +55,12 @@ export function mergeArray<S, T>(source: S[], target?: T): MergedArray<S[], T> {
   if (Array.isArray(target)) {
     return mergeArrays(source, target) as MergedArray<S[], T>;
   } else if (
-    isJSON(target) &&
+    isJsonObject(target) &&
     [...Object.keys(target)].every((key) => parseInt(key) >= 0)
   ) {
     return [...source].map((value, key) =>
       merge(value, target[key]),
-    ) as MergedArray<S[], any>;
+    ) as MergedArray<S[], T>;
   }
 
   // if a merge isn't possible return the replacement or the original if no replacement is found
@@ -163,8 +78,8 @@ export function mergeArrays<S, T>(
   target: T[],
 ): MergedArray<S[], T[]> {
   const isPrimitive =
-    source.every((value) => !isJSON(value)) &&
-    target.every((value) => !isJSON(value));
+    source.every((value) => !isJsonObject(value)) &&
+    target.every((value) => !isJsonObject(value));
 
   // if there is no object in both list, perform an union
   // (['a'], ['a']) => ['a']
@@ -196,7 +111,7 @@ export function mergeObject<S extends UnknownRecord, T>(
   source: S,
   target?: T,
 ): MergedType<S, T> {
-  if (isJSON(target)) {
+  if (isJsonObject(target)) {
     // merge two objects together
     const mergedSource = Object.fromEntries(
       Object.entries(source).map(([key, value]) => [
@@ -258,42 +173,3 @@ export function mergeTemplate(
 
   return { ...target, ...mergedSource };
 }
-
-/**
- * replace parameters in the template
- * @param content template content
- * @param parameter variables to be substituted in the template
- * @returns customized configuration
- */
-export function template(
-  content: string,
-  parameter: Record<string, string>,
-): string;
-export function template<Content extends Record<string, unknown> | unknown[]>(
-  content: Content,
-  parameter: Record<string, string>,
-): Content;
-export function template(
-  content: unknown,
-  parameter: Record<string, string>,
-): unknown;
-export function template(
-  content: unknown,
-  parameter: Record<string, string>,
-): unknown {
-  if (typeof content === 'string') {
-    return pupa(content, parameter, { ignoreMissing: true });
-  } else if (Array.isArray(content)) {
-    return content.map((value) => template(value, parameter));
-  } else if (isJSON(content)) {
-    return Object.fromEntries(
-      Object.entries(content).map(([key, value]) => {
-        return [template(key, parameter), template(value, parameter)];
-      }),
-    );
-  } else {
-    return content;
-  }
-}
-
-/* eslint-enable @typescript-eslint/no-unsafe-return */

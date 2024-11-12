@@ -1,7 +1,7 @@
 import { dirname, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
-import { loadFile, template } from 'presetter';
+import { loadFile, substitute } from 'presetter';
 
 import { getRollupParameter } from './rollup';
 
@@ -47,7 +47,7 @@ export default function (): PresetAsset {
         );
         const variable = getRollupParameter(context);
 
-        return template(content, variable);
+        return substitute(content, variable);
       },
     },
     scripts: resolve(TEMPLATES, 'scripts.yaml'),

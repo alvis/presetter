@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
 
-import { filter } from '#template';
+import { filter } from '#utilities/filter';
 
 describe('fn:filter', () => {
   it('return the subject without filtering', () => {

@@ -1,9 +1,9 @@
 import {
   isDirective,
-  isJSON,
+  isJsonObject,
   merge,
   resolveDirective,
-  template,
+  substitute,
 } from 'presetter';
 
 import { assertPluginManifest } from './plugin';
@@ -49,7 +49,7 @@ export function getRollupParameter(
 ): Record<'rollupImport' | 'rollupExport', string> {
   const { config, variable } = context.custom;
 
-  const normalizedConfig = template(
+  const normalizedConfig = substitute(
     normalizeConfig(transformConfig({ ...config.rollup })),
     variable,
   );
@@ -115,7 +115,7 @@ function normalizeConfigValue(key: string, value: unknown): unknown {
           ),
       ];
     default:
-      return isJSON(value)
+      return isJsonObject(value)
         ? normalizeConfig(value as IntermediateRollupConfig)
         : value;
   }
@@ -153,7 +153,7 @@ function transformConfigValue(key: string, value: unknown): unknown {
       return objectifyPlugins(value);
 
     default:
-      return isJSON(value) ? transformConfig(value) : value;
+      return isJsonObject(value) ? transformConfig(value) : value;
   }
 }
 

@@ -5,7 +5,8 @@ import { readPackageUp } from 'read-pkg-up';
 
 import debug from '../debugger';
 import { loadFile } from '../io';
-import { isJSON, merge } from '../template';
+import { merge } from '../template';
+import { isJsonObject } from '../utilities';
 
 import type { PresetterConfig } from 'presetter-types';
 import type { JsonValue } from 'type-fest';
@@ -91,7 +92,7 @@ export function assertPresetterRC(
   value: unknown,
 ): asserts value is PresetterConfig {
   if (
-    !isJSON(value) ||
+    !isJsonObject(value) ||
     (typeof value.preset !== 'string' && !Array.isArray(value.preset))
   ) {
     throw new Error(`invalid presetter configuration file`);

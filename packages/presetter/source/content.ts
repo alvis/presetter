@@ -1,6 +1,7 @@
 import debug from './debugger';
 import { getConfigKey, loadDynamic, loadDynamicMap } from './resolution';
-import { filter, merge, mergeTemplate, template } from './template';
+import { merge, mergeTemplate, substitute } from './template';
+import { filter } from './utilities';
 
 import type {
   Config,
@@ -284,7 +285,7 @@ export async function resolveScripts(_: {
 
   const fromConfig = context.custom.scripts;
 
-  return template(merge(fromPresets, fromConfig), context.custom.variable);
+  return substitute(merge(fromPresets, fromConfig), context.custom.variable);
 }
 
 /**
@@ -350,7 +351,7 @@ export async function resolveTemplate(_: {
 
   const resolvedTemplate = filter(merged, ...(context.custom.ignores ?? []));
 
-  return template(resolvedTemplate, context.custom.variable);
+  return substitute(resolvedTemplate, context.custom.variable);
 }
 
 /**

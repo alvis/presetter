@@ -1,3 +1,5 @@
 /* v8 ignore start */
 
-export * from './mapValues';
+export * from './filter';
+export * from './mapping';
+export * from './object';
