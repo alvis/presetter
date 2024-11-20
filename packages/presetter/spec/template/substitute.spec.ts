@@ -3,23 +3,23 @@ import { describe, expect, it } from 'vitest';
 import { substitute } from '#template/substitute';
 
 describe('fn:substitute', () => {
-  it('replace a simple string', () => {
+  it('should replace a simple string', () => {
     expect(substitute('{value}', { value: 'value' })).toEqual('value');
   });
 
-  it('replace content in an array', () => {
+  it('should replace content in an array', () => {
     expect(
       substitute(['{key}', '{value}'], { key: 'key', value: 'value' }),
     ).toEqual(['key', 'value']);
   });
 
-  it('replace content in an object', () => {
+  it('should replace content in an object', () => {
     expect(
       substitute({ '{key}': '{value}' }, { key: 'key', value: 'value' }),
     ).toEqual({ key: 'value' });
   });
 
-  it('return the original content if not recognized', () => {
+  it('should return the original content if not recognized', () => {
     expect(substitute(null, {})).toEqual(null);
   });
 });

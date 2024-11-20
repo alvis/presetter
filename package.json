@@ -21,7 +21,7 @@
   },
   "scripts": {
     "install": "npx -y only-allow pnpm && husky",
-    "postinstall": "pnpm run -r bootstrap",
+    "postinstall": "presetter bootstrap && pnpm run -r bootstrap",
     "build": "pnpm --recursive run build",
     "coverage": "pnpm run test --coverage",
     "lint": "pnpm --recursive --no-bail run --aggregate-output lint",
@@ -41,7 +41,8 @@
     "presetter": "workspace:*",
     "presetter-preset-esm": "workspace:*",
     "presetter-preset-essentials": "workspace:*",
-    "presetter-preset-strict": "workspace:*"
+    "presetter-preset-strict": "workspace:*",
+    "presetter-types": "workspace:*"
   },
   "devDependencies": {
     "@types/node": "^20.0.0",

@@ -41,6 +41,8 @@ export function isPlainObject(
   return (
     !!subject &&
     typeof subject === 'object' &&
-    (Object.getPrototypeOf(subject) as object | null)?.constructor === Object
+    ((Object.getPrototypeOf(subject) as object | null)?.constructor ===
+      Object ||
+      Object.getPrototypeOf(subject) === null)
   );
 }

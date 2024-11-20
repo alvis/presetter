@@ -1,50 +1,64 @@
-import { posix, relative, resolve, sep } from 'node:path';
+import { existsSync, readFileSync } from 'node:fs';
 
 import { describe, expect, it, vi } from 'vitest';
 
 import { loadFile } from '#io';
 
-vi.mock('node:fs', async (importActual) => ({
-  ...(await importActual<typeof import('node:fs')>()),
-  readFileSync: vi.fn((path: string) => {
-    // ensure that the paths below is compatible with windows
-    const posixPath = relative(resolve('/'), path).split(sep).join(posix.sep);
-    switch (posixPath) {
-      case 'path/to/config.json':
-        return Buffer.from('{ "json": true }');
-      case 'path/to/config.yaml':
-      case 'path/to/config.yml':
-        return Buffer.from('yaml: true');
-      case 'path/to/text':
-        return Buffer.from('{"text": true}');
-      default:
-        throw new Error(`readFile: missing ${path}`);
-    }
-  }),
+vi.mock('node:fs', () => ({
+  existsSync: vi.fn(),
+  readFileSync: vi.fn(),
 }));
 
 describe('fn:loadFile', () => {
-  it('load a json file', async () => {
-    expect(await loadFile('/path/to/config.json')).toEqual({
-      json: true,
-    });
+  it('should load a json file', () => {
+    vi.mocked(existsSync).mockReturnValue(true);
+    vi.mocked(readFileSync).mockReturnValue(Buffer.from('{ "json": true }'));
+
+    const result = loadFile('/path/to/config.json');
+    const expected = { json: true };
+
+    expect(result).toEqual(expected);
   });
 
-  it('load a yaml file', async () => {
-    expect(await loadFile('/path/to/config.yaml')).toEqual({
-      yaml: true,
-    });
+  it('should load a yaml file', () => {
+    vi.mocked(existsSync).mockReturnValue(true);
+    vi.mocked(readFileSync).mockReturnValue(Buffer.from('yaml: true'));
 
-    expect(await loadFile('/path/to/config.yml')).toEqual({
-      yaml: true,
-    });
+    const result = loadFile('/path/to/config.yaml');
+    const expected = { yaml: true };
+
+    expect(result).toEqual(expected);
   });
 
-  it('load a text file', async () => {
-    expect(await loadFile('/path/to/text')).toEqual('{"text": true}');
+  it('should load an ignore file', () => {
+    vi.mocked(existsSync).mockReturnValue(true);
+    vi.mocked(readFileSync).mockReturnValue(
+      Buffer.from('line1\nline2\n#comment\nline3'),
+    );
+
+    const result = loadFile('/path/to/file.ignore');
+    const expected = ['line1', 'line2', 'line3'];
+
+    expect(result).toEqual(expected);
   });
 
-  it('load a text file but assume it as a json', async () => {
-    expect(await loadFile('/path/to/text', 'json')).toEqual({ text: true });
+  it('should load an arbitrary file', () => {
+    const buffer = Buffer.from('file content');
+
+    vi.mocked(existsSync).mockReturnValue(true);
+    vi.mocked(readFileSync).mockReturnValue(buffer);
+
+    const result = loadFile('/path/to/file.txt');
+    const expected = buffer;
+
+    expect(result).toEqual(expected);
+  });
+
+  it('should throw an error if the file does not exist', () => {
+    vi.mocked(existsSync).mockReturnValue(false);
+
+    expect(() => loadFile('/path/to/missing.file')).toThrow(
+      'file not found: /path/to/missing.file',
+    );
   });
 });

@@ -1,16 +1,19 @@
 /* v8 ignore start */
 
-import type { PresetAsset } from './asset';
+import type { PresetDefinition } from './preset';
 
-/** a graph representing the dependency of all preset assets */
+/**
+ * represents a graph of dependencies for all preset assets
+ */
 export type PresetGraph = PresetNode[];
 
-/** a node in the preset graph */
+/**
+ * represents a node within the preset dependency graph
+ */
 export interface PresetNode {
-  /** the name of the preset */
-  name: string;
-  /** assets provided by the preset */
-  asset: PresetAsset;
-  /** list of assets from extended presets */
+  /** the resolved definition provided by this preset */
+  definition: PresetDefinition;
+
+  /** list of asset nodes derived from extended or inherited presets */
   nodes: PresetGraph;
 }

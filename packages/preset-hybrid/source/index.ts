@@ -1,30 +1,29 @@
 import { dirname, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
-import type { PresetAsset } from 'presetter-types';
+import essentials from 'presetter-preset-essentials';
+import { preset } from 'presetter-types';
 
-export type { PresetConfig, Variable } from 'presetter-preset-essentials';
+export { DEFAULT_VARIABLES } from 'presetter-preset-essentials';
+
+export type { Variables } from 'presetter-preset-essentials';
 
 const DIR = fileURLToPath(dirname(import.meta.url));
 
 // paths to the template directory
-const CONFIGS = resolve(DIR, '..', 'configs');
+const OVERRIDES = resolve(DIR, '..', 'overrides');
 const TEMPLATES = resolve(DIR, '..', 'templates');
 
-/**
- * get the list of templates provided by this preset
- * @returns list of preset templates
- */
-export default async function (): Promise<PresetAsset> {
-  return {
-    extends: ['presetter-preset-essentials'],
-    supplementaryScripts: resolve(CONFIGS, 'scripts.yaml'),
-    supplementaryConfig: {
-      gitignore: ['tsconfig.cjs.json', 'tsconfig.mjs.json'],
+export default preset('presetter-preset-hybrid', {
+  extends: [essentials],
+  assets: {
+    'tsconfig.cjs.json': resolve(TEMPLATES, 'tsconfig.cjs.yaml'),
+    'tsconfig.mjs.json': resolve(TEMPLATES, 'tsconfig.mjs.yaml'),
+  },
+  override: {
+    scripts: resolve(OVERRIDES, 'scripts.yaml'),
+    assets: {
+      '.gitignore': ['tsconfig.cjs.json', 'tsconfig.mjs.json'],
     },
-    template: {
-      'tsconfig.cjs.json': resolve(TEMPLATES, 'tsconfig.cjs.yaml'),
-      'tsconfig.mjs.json': resolve(TEMPLATES, 'tsconfig.mjs.yaml'),
-    },
-  };
-}
+  },
+});

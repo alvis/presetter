@@ -1,13 +1,17 @@
-import { dirname, join, resolve } from 'node:path';
+import { dirname, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
-import type { PresetAsset } from 'presetter-types';
+import web from 'presetter-preset-web';
+import { preset } from 'presetter-types';
+
+import eslintOverride from './eslint.override';
+import * as eslint from './eslint.template';
 
 const DIR = fileURLToPath(dirname(import.meta.url));
 
 // paths to the template directory
 const TEMPLATES = resolve(DIR, '..', 'templates');
-const CONFIGS = resolve(DIR, '..', 'configs');
+const OVERRIDES = resolve(DIR, '..', 'overrides');
 
 /** config for this preset */
 export interface PresetConfig {
@@ -18,7 +22,7 @@ export interface PresetConfig {
 }
 
 /** list of configurable variables */
-export interface Variable {
+export interface Variables {
   /** the directory containing all source code (default: source) */
   source: string;
   /** the directory containing all extra typing files (default: types) */
@@ -27,54 +31,41 @@ export interface Variable {
   output: string;
 }
 
-export const DEFAULT_VARIABLE = {
+export const DEFAULT_VARIABLES = {
   source: 'source',
   types: 'types',
   output: 'lib',
-} satisfies Variable;
+} satisfies Variables;
 
 const IMAGE_TYPE = 'image.d.ts';
 const STYLE_TYPE = 'style.d.ts';
 
-const template: PresetAsset['template'] = ({
-  custom: {
-    variable: { types },
-  },
-}) => ({
-  'eslint.config.ts': resolve(TEMPLATES, 'eslint.config.ts'),
-  'tsconfig.json': resolve(TEMPLATES, 'tsconfig.yaml'),
-  'tsconfig.build.json': resolve(TEMPLATES, 'tsconfig.build.yaml'),
-  [join(types, IMAGE_TYPE)]: resolve(TEMPLATES, IMAGE_TYPE),
-  [join(types, STYLE_TYPE)]: resolve(TEMPLATES, STYLE_TYPE),
-});
-
-const noSymlinks: PresetAsset['noSymlinks'] = ({
-  custom: {
-    variable: { types },
-  },
-}) => [join(types, IMAGE_TYPE), join(types, STYLE_TYPE)];
-
-const supplementaryConfig: PresetAsset['supplementaryConfig'] = () => ({
-  eslint: resolve(CONFIGS, 'eslint.yaml'),
-  gitignore: ({
-    custom: {
-      variable: { types },
+export default preset('presetter-preset-react', {
+  extends: [web],
+  variables: DEFAULT_VARIABLES,
+  scripts: resolve(TEMPLATES, 'scripts.yaml'),
+  assets: ({ variables }) => ({
+    '.gitignore': (current, { variables }) => [
+      ...(current ?? []),
+      `/${variables.types!}/${IMAGE_TYPE}`,
+      `/${variables.types!}/${STYLE_TYPE}`,
+    ],
+    'eslint.config.ts': eslint,
+    'tsconfig.json': resolve(TEMPLATES, 'tsconfig.yaml'),
+    'tsconfig.build.json': resolve(TEMPLATES, 'tsconfig.build.yaml'),
+    [`${variables.types!}/${IMAGE_TYPE}` as 'image.d.ts']: resolve(
+      TEMPLATES,
+      IMAGE_TYPE,
+    ),
+    [`${variables.types!}/${STYLE_TYPE}` as 'style.d.ts']: resolve(
+      TEMPLATES,
+      STYLE_TYPE,
+    ),
+  }),
+  override: {
+    assets: {
+      '.lintstagedrc.json': resolve(OVERRIDES, 'lintstaged.yaml'),
+      'eslint.config.ts': eslintOverride,
     },
-  }) => [join('/', types, IMAGE_TYPE), join('/', types, STYLE_TYPE)],
-  lintstaged: resolve(CONFIGS, 'lintstaged.yaml'),
+  },
 });
-
-/**
- * get the list of templates provided by this preset
- * @returns list of preset templates
- */
-export default async function (): Promise<PresetAsset> {
-  return {
-    extends: ['presetter-preset-web'],
-    scripts: resolve(TEMPLATES, 'scripts.yaml'),
-    template,
-    noSymlinks,
-    supplementaryConfig,
-    variable: DEFAULT_VARIABLE,
-  };
-}

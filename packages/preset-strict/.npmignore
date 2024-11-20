@@ -3,5 +3,5 @@
 !/lib/**
 !/generated/**
 
-!/configs/**
+!/overrides/**
 !/templates/**

@@ -1,3 +1,5 @@
+import * as testModule from 'node:assert';
+
 import { describe, expect, it } from 'vitest';
 
 import {
@@ -7,15 +9,15 @@ import {
 } from '#utilities/object';
 
 describe('fn:isJsonObject', () => {
-  it('return true for a valid json object', () => {
+  it('should return true for a valid json object', () => {
     expect(isJsonObject({})).toEqual(true);
   });
 
-  it('return false for an array', () => {
+  it('should return false for an array', () => {
     expect(isJsonObject([])).toEqual(false);
   });
 
-  it('return false for an non json object', () => {
+  it('should return false for an non json object', () => {
     expect(
       isJsonObject({
         foo: Buffer.from('foo'),
@@ -70,6 +72,9 @@ describe('fn:isPlainObject', () => {
     expect(isPlainObject(new Date())).toEqual(false);
     expect(isPlainObject(/foo/)).toEqual(false);
     expect(isPlainObject(() => {})).toEqual(false);
-    expect(isPlainObject(Object.create(null))).toEqual(false);
+    expect(isPlainObject(Object.create(null))).toEqual(true);
+    expect(isPlainObject(Object.create({}))).toEqual(true);
+    expect(isPlainObject(new Map())).toEqual(false);
+    expect(isPlainObject(testModule)).toEqual(true);
   });
 });

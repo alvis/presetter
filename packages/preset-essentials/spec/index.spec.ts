@@ -1,61 +1,67 @@
 import { existsSync, readdirSync } from 'node:fs';
 import { resolve } from 'node:path';
 
-import { loadDynamicMap, resolveContext } from 'presetter';
-import { describe, expect, it, vi } from 'vitest';
+import { listAssetNames, resolveAssets, resolvePreset } from 'presetter';
+import { beforeEach, describe, expect, it, vi } from 'vitest';
 
-import getPresetAsset from '#';
+import preset, { DEFAULT_VARIABLES as variables } from '#';
 
-vi.mock('node:fs', () => ({
-  existsSync: (path: string) => path === '/.git',
-}));
+import type { PresetContext } from 'presetter-types';
+
+vi.mock('node:fs', async (importActual) => {
+  const fs = await importActual<typeof import('node:fs')>();
+
+  return {
+    ...fs,
+    existsSync: (path: string) =>
+      fs.existsSync(path) || path === resolve('/path/to/project/.git'),
+  };
+});
 
 vi.mock('node:path', { spy: true });
 
-describe('fn:getPresetAsset', () => {
-  it('use all templates', async () => {
-    const asset = await getPresetAsset();
-    const context = await resolveContext({
-      graph: [{ name: 'preset', asset, nodes: [] }],
-      context: {
-        target: { name: 'preset', root: '/', package: {} },
-        custom: { preset: 'preset' },
-      },
-    });
+const OVERRIDES = resolve(import.meta.dirname, '..', 'overrides');
+const TEMPLATES = resolve(import.meta.dirname, '..', 'templates');
 
-    // load all potential dynamic content
-    await loadDynamicMap(asset.supplementaryConfig, context);
-    await loadDynamicMap(asset.template, context);
+const context = {
+  root: '/path/to/project',
+  package: {},
+} satisfies PresetContext;
 
-    const CONFIGS = resolve(import.meta.dirname, '..', 'configs');
-    const configs = existsSync(CONFIGS) ? readdirSync(CONFIGS) : [];
-    const TEMPLATES = resolve(import.meta.dirname, '..', 'templates');
+describe('fn:preset', () => {
+  beforeEach(() => vi.clearAllMocks());
+
+  it('should use all templates', async () => {
+    const node = await resolvePreset(preset, context);
+    listAssetNames(node, { ...context, variables });
+
+    const overrides = existsSync(OVERRIDES) ? readdirSync(OVERRIDES) : [];
     const templates = existsSync(TEMPLATES) ? readdirSync(TEMPLATES) : [];
 
-    for (const path of configs) {
-      expect(vi.mocked(resolve)).toBeCalledWith(CONFIGS, path);
+    for (const path of overrides) {
+      expect(vi.mocked(resolve)).toHaveBeenCalledWith(OVERRIDES, path);
     }
     for (const path of templates) {
-      expect(vi.mocked(resolve)).toBeCalledWith(TEMPLATES, path);
+      expect(vi.mocked(resolve)).toHaveBeenCalledWith(TEMPLATES, path);
     }
   });
 
+  it('should be able to resolve all assets', async () => {
+    const node = await resolvePreset(preset, context);
+    const result = resolveAssets(node, context);
+
+    await expect(result).resolves.not.toThrow();
+  });
+
   it('should skip .husky/pre-commit if .git is not present', async () => {
-    const asset = await getPresetAsset();
-    const context = await resolveContext({
-      graph: [{ name: 'preset', asset, nodes: [] }],
-      context: {
-        target: { name: 'preset', root: '/packages/project', package: {} },
-        custom: { preset: 'preset' },
-      },
-    });
+    const context = { root: '/packages/project', package: {} };
 
-    // load all potential dynamic content
-    await loadDynamicMap(asset.supplementaryConfig, context);
-    await loadDynamicMap(asset.template, context);
+    const node = await resolvePreset(preset, context);
+    listAssetNames(node, { ...context, variables });
 
-    const TEMPLATES = resolve(import.meta.dirname, '..', 'templates');
-
-    expect(vi.mocked(resolve)).not.toBeCalledWith(TEMPLATES, 'pre-commit');
+    expect(vi.mocked(resolve)).not.toHaveBeenCalledWith(
+      TEMPLATES,
+      'pre-commit',
+    );
   });
 });

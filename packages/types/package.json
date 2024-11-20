@@ -20,11 +20,14 @@
     "url": "git+https://github.com/alvis/presetter.git"
   },
   "scripts": {
-    "prepare": "tsc --declaration --moduleResolution node --module esnext --target esnext --outdir lib source/index.ts",
+    "prepare": "tsc --declaration --moduleResolution node --module esnext --target esnext --outdir lib source/index.ts && tsc-esm-fix --sourceMap --target lib",
     "bootstrap": "presetter bootstrap",
     "build": "run build",
+    "coverage": "run coverage --",
     "lint": "run lint --",
-    "prepublishOnly": "run prepare && run prepublishOnly"
+    "prepublishOnly": "run prepare && run prepublishOnly",
+    "test": "run test --",
+    "watch": "run watch --"
   },
   "dependencies": {
     "type-fest": "catalog:"

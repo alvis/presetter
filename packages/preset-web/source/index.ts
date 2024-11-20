@@ -1,26 +1,27 @@
 import { dirname, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
-import type { PresetAsset } from 'presetter-types';
+import { preset } from 'presetter-types';
+
+import * as eslint from './eslint.template';
 
 const DIR = fileURLToPath(dirname(import.meta.url));
 
 // paths to the template directories
-const CONFIGS = resolve(DIR, '..', 'configs');
-const TEMPLATES = resolve(DIR, '..', 'templates');
+const OVERRIDES = resolve(DIR, '..', 'overrides');
 
-/**
- * get the list of templates provided by this preset
- * @returns list of preset templates
- */
-export default async function (): Promise<PresetAsset> {
-  return {
-    extends: ['presetter-preset-esm'],
-    supplementaryConfig: {
-      tsconfig: resolve(CONFIGS, 'tsconfig.yaml'),
+/** list of configurable variables */
+export interface Variables {}
+
+export const DEFAULT_VARIABLES = {} satisfies Variables;
+
+export default preset('presetter-preset-web', {
+  assets: {
+    'eslint.config.ts': eslint,
+  },
+  override: {
+    assets: {
+      '.tsconfig.json': resolve(OVERRIDES, 'tsconfig.yaml'),
     },
-    template: {
-      'eslint.config.ts': resolve(TEMPLATES, 'eslint.config.ts'),
-    },
-  };
-}
+  },
+});

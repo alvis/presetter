@@ -2,9 +2,7 @@
 
 export * from 'presetter-types';
 
-export * from './content';
-export * from './directive';
-export * from './io';
-export * from './resolution';
+export * from './preset';
+export * from './resolve';
+export * from './run';
 export * from './template';
-export * from './utilities';

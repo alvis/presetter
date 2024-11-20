@@ -1,8 +1,8 @@
-import { describe, expect, it, vi } from 'vitest';
+import { beforeEach, describe, expect, it, vi } from 'vitest';
 
 import { entry } from '#executable/entry';
 import { reifyDependencies } from '#package';
-import { bootstrapPreset, setupPreset, unsetPreset } from '#preset';
+import { bootstrap } from '#preset';
 import { run } from '#run';
 
 vi.mock('node:fs', () => ({
@@ -20,9 +20,7 @@ vi.mock('#package', () => ({
 }));
 
 vi.mock('#preset', () => ({
-  bootstrapPreset: vi.fn(),
-  setupPreset: vi.fn(),
-  unsetPreset: vi.fn(),
+  bootstrap: vi.fn(),
 }));
 
 vi.mock('#run', () => ({
@@ -30,43 +28,25 @@ vi.mock('#run', () => ({
 }));
 
 describe('fn:entry', () => {
-  describe('use', () => {
-    it('use preset', async () => {
-      await entry(['use', 'preset']);
-
-      expect(setupPreset).toBeCalledWith('preset');
-    });
-
-    it('take multiple presets', async () => {
-      await entry(['use', 'preset1', 'preset2']);
-
-      expect(setupPreset).toBeCalledWith('preset1', 'preset2');
-    });
-  });
+  beforeEach(() => vi.clearAllMocks());
 
   describe('bootstrap', () => {
-    it('bootstrap by default', async () => {
+    it('should bootstrap by default', async () => {
       await entry(['bootstrap']);
 
-      expect(bootstrapPreset).toBeCalledWith({ force: false });
+      expect(bootstrap).toHaveBeenCalled();
     });
 
-    it('bootstrap if the specified file exists', async () => {
+    it('should bootstrap if the specified file exists', async () => {
       await entry(['bootstrap', '--only', 'exist']);
 
-      expect(bootstrapPreset).toBeCalledWith({ force: false });
+      expect(bootstrap).toHaveBeenCalled();
     });
 
-    it('bootstrap with force', async () => {
-      await entry(['bootstrap', '--force']);
-
-      expect(bootstrapPreset).toBeCalledWith({ force: true });
-    });
-
-    it('skip bootstrap if the specified file is missing', async () => {
+    it('should skip bootstrap if the specified file is missing', async () => {
       await entry(['bootstrap', '--only', 'no-such-file']);
 
-      expect(bootstrapPreset).not.toBeCalled();
+      expect(bootstrap).not.toHaveBeenCalled();
     });
   });
 
@@ -74,7 +54,7 @@ describe('fn:entry', () => {
     it('should run a single task with provided arguments', async () => {
       await entry(['run', 'task', '--', '"arg 1"', "'arg 2'"]);
 
-      expect(run).toBeCalledWith(
+      expect(run).toHaveBeenCalledWith(
         [
           {
             selector: 'task',
@@ -90,7 +70,7 @@ describe('fn:entry', () => {
     it('should run a single task without arguments', async () => {
       await entry(['run-s', 'task', '--', 'arg-1', '--arg-2']);
 
-      expect(run).toBeCalledWith([
+      expect(run).toHaveBeenCalledWith([
         {
           selector: 'task',
           args: [],
@@ -101,7 +81,7 @@ describe('fn:entry', () => {
     it('should run multiple tasks without arguments', async () => {
       await entry(['run-s', 'task1', 'task2', '--', 'arg-1', '--arg-2']);
 
-      expect(run).toBeCalledWith([
+      expect(run).toHaveBeenCalledWith([
         {
           selector: 'task1',
           args: [],
@@ -123,7 +103,7 @@ describe('fn:entry', () => {
         '--arg-7',
       ]);
 
-      expect(run).toBeCalledWith([
+      expect(run).toHaveBeenCalledWith([
         {
           selector: 'task1',
           args: ['arg-1', '--arg-2', 'arg 3'],
@@ -140,7 +120,7 @@ describe('fn:entry', () => {
     it('should run multiple tasks in parallel', async () => {
       await entry(['run-p', 'task1', 'task2']);
 
-      expect(run).toBeCalledWith(
+      expect(run).toHaveBeenCalledWith(
         [
           {
             selector: 'task1',
@@ -156,20 +136,11 @@ describe('fn:entry', () => {
     });
   });
 
-  describe('unset', () => {
-    it('unset', async () => {
-      await entry(['unset']);
-
-      expect(unsetPreset).toBeCalledWith();
-    });
-  });
-
-  it('does not do anything if the command cannot be recognized', async () => {
+  it('should not do anything if the command cannot be recognized', async () => {
     await entry(['unknown', '--arg-1']);
 
-    expect(reifyDependencies).toBeCalledTimes(0);
-    expect(bootstrapPreset).toBeCalledTimes(0);
-    expect(unsetPreset).toBeCalledTimes(0);
-    expect(run).toBeCalledTimes(0);
+    expect(reifyDependencies).toHaveBeenCalledTimes(0);
+    expect(bootstrap).toHaveBeenCalledTimes(0);
+    expect(run).toHaveBeenCalledTimes(0);
   });
 });

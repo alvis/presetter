@@ -2,309 +2,479 @@
 
 <div align="center">
 
-_Setup build settings from a template, quick and right!_
+_Set up your build configurations from templates—quickly and accurately!_
 
-•   [Quick Start](#quick-start)   •   [Concept](#concept)   •   [Known Limitations](#known-limitations)   •   [FAQ](#faq)   •   [About](#about)   •
+•   [Quick Start](#quick-start)   •   [Concept](#concept)   •   [FAQ](#faq)   •   [About](#about)   •
 
 </div>
 
-Sharing configurations for building tools across projects is painful. How many time you've copied configs for `babel`, `eslint`, `vitest`, `typescript` or the life cycle scripts in `package.json`?
-How many dev dependencies you have to install before you can kick start a project?
+Managing shared build configurations across projects can be tedious. How often have you copied over settings for `babel`, `eslint`, `vitest`, `typescript`, or the scripts in `package.json`?  
+How many dependencies did you have to install before you could even start a new project?
 
-What's more, what if you want to update configs for all projects? :man_facepalming:
+And when it’s time to update those configurations across multiple projects... 😩
 
-**Presetter is a utility for setting up building tools for your project from a template.** This means with just only two dev packages, namely this package and your favorite template preset, all essential development packages, such as typescript, eslint and vitest, together with their configuration files provided by the preset, are automatically setup for you upon the project's initialization.
+**Presetter simplifies this process by setting up development tools from a template.**  
+With just two packages - Presetter and your preferred preset — all your essential development tools (e.g., TypeScript, ESLint, Vitest) and their configurations are set up automatically during initialization.
 
 ![Before and After](assets/before-and-after.jpg)
 
+---
+
 ## Quick Start
 
-1. Bootstrap your project with a preset (e.g. [presetter-preset-esm](packages/preset-esm))
+### 1. **Add Presetter and a preset to your project**
 
-```shell
-npx presetter use <preset package name>
+Choose a preset, such as [presetter-preset-esm](packages/preset-esm), and add it along with Presetter to your `devDependencies`. Additionally, define a `bootstrap` script in your `package.json` to initialize the preset.
+
+```json
+{
+  "scripts": {
+    "bootstrap": "presetter bootstrap"
+  },
+  "devDependencies": {
+    "presetter": "<version>",
+    "presetter-preset-esm": "<version>"
+  }
+}
 ```
 
-That's. One command and you're set.
+### 2. **Create a preset configuration file**
 
-2. Develop and run life cycle scripts provided by the preset
+Create a `presetter.config.ts` file in the same directory as your `package.json` to specify the preset:
 
-At this point, all development packages specified in the preset are installed,
-and now you can try to run some example life cycle scripts provided by the preset (e.g. try `npx run test`).
+#### Basic Example
+
+```typescript
+// presetter.config.ts
+
+// use a preset as is
+
+// replace `presetter-preset-esm` with your desired preset
+export { default } from 'presetter-preset-esm';
+```
+
+#### With Customization
+
+```typescript
+// presetter.config.ts
+
+// use a preset with customization
+
+import esm from 'presetter-preset-esm';
+import { preset } from 'presetter';
+
+export default preset('<customization name>', {
+  extends: [esm], // extend your chosen preset
+  assets: {
+    'eslint.config.ts': {
+      default: [
+        {
+          rules: {
+            // custom rules to override the preset
+          },
+        },
+      ],
+    },
+  },
+});
+```
+
+> _Note:_ Yes, `presetter.config.ts` itself functions as a preset!
+
+### 3. **Install dependencies**
+
+Run your package manager's installation command (e.g., `npm install`) to install all necessary dependencies.
+
+After installation, all required configuration files will be automatically generated, enabling you to start development immediately.
+
+### 4. **Start developing**
+
+You're all set! Use the lifecycle scripts provided by the preset to begin your development workflow. For instance, try running:
+
+```shell
+npx run test
+```
 
 ![Demo](assets/demo.gif)
 
+---
+
 ## Concept
 
-The concept comprises two part: [**presetter**](packages/presetter) (this package) and a **preset**, which you can easily [create one for your own requirement](#how-to-create-a-preset).
+Presetter revolves around two main components: [**presetter**](packages/presetter) (the utility) and a **preset**. You can even [create your own custom preset](#how-to-create-a-preset).
 
-### presetter
+---
 
-Presetter is a utility for two tasks:
+### **presetter**
 
-1. setting up a development environment for a project by
-   - installing development dependencies specified in the preset without polluting package.json
-   - hardlinking or symlinking configuration files (e.g. `.babelrc`) from the preset module to the project root
-2. merging life-cycle scripts from the template and the local version in package.json
+Presetter handles two core tasks:
 
-[SEE HERE FOR THE CLI USAGE](packages/presetter#usage)
+1. **Setting up your development environment:**
 
-#### Life-Cycle Scripts
+   - Installs development dependencies defined by the preset without modifying your `package.json`.
+   - Generates configuration files (e.g., `.babelrc`) in your project root based on the preset.
 
-When you run `presetter run <task>` (or its alias `run <task>`), presetter will perform the following:
+2. **Merging lifecycle scripts:**
 
-1. Combine the local scripts and those provided by the preset
-2. Backup `package.json` as `~package.json`
-3. Place the combined script into a temporary `package.json`
-4. Run the task via `npm run <task>` as usual
-5. Restore the original `package.json` after running the task
+   - Combines lifecycle scripts from the preset with your local `package.json`.
 
-_PROTIPS_:
-Local scripts always have a higher priority than the template scripts.
-So you can always customize the life cycle script by putting your own version into `package.json`.
+[Learn more about CLI usage](packages/presetter#usage).
 
-Upon running a life-cycle script involving the `run <task>` command in `package.json`, presetter will automatically resolve the task according to the template, so that you can always use the conventional `npm run <task>` as usual.
+#### **Lifecycle Scripts**
 
-For example, with the following template and local `package.json`,
-presetter will generate a `package.json` with the content below before running the script.
+When you run `presetter run <task>` (or its alias `run <task>`), Presetter:
 
-**Template**
+1. Merges lifecycle scripts from the preset with your local `package.json`.
+2. Executes the task using `@npmcli/run-script`.
+
+_Pro Tip:_ Your local scripts always take priority over preset scripts, so you retain full control over customizations.
+
+**Example:** Given the following preset and local `package.json` files:
+
+**Preset**
 
 ```json
 {
   "scripts": {
     "build": "tsc",
     "prepare": "npm run lint && npm run build",
-    "lint": "eslint **/*.ts",
+    "lint": "eslint *_/_.ts",
     "test": "vitest"
   }
 }
 ```
 
-**Local package.json**
+**Local `package.json`**
 
 ```json
 {
   "scripts": {
     "build": "run build",
-    "lint": "eslint --fix **/*.ts",
+    "lint": "eslint --fix *_/_.ts",
     "coverage": "run test -- --coverage"
   }
 }
 ```
 
-**Output**
+**Resulting `package.json` during execution**
 
 ```json
 {
   "scripts": {
     "build": "tsc",
     "prepare": "npm run lint && npm run build",
-    "lint": "eslint --fix **/*.ts",
+    "lint": "eslint --fix *_/_.ts",
     "test": "vitest",
     "coverage": "vitest --coverage"
   }
 }
 ```
 
-### preset
+---
 
-A preset is a collection of configuration to be shared.
-An example can be found in [presetter-preset-esm](/packages/preset-esm) which is also used for developing presetter and [other demo presets below](#demo-presets).
+### **preset**
 
-A preset contains three parts:
+A preset is a reusable bundle of configurations and dependencies. For example, see [presetter-preset-esm](/packages/preset-esm).
 
-1. A set of development packages declared as `peerDependencies` in the `package.json`:
-   For a project adopting a preset, during its installation these packages will be installed by presetter automatically without making changes to the project's package.json.
-2. A set of configuration files:
-   These configuration files are to be hardlinked (or symlinked if hardlink is not possible) to the adopting project's root.
-3. A set of life cycle script template:
-   These scripts provide the base where the `presetter run` command will use for merging.
+A preset typically includes:
 
-For 1, the set of development packages to be installed is exported via `package.json`.
-For 2 & 3, the configuration is exported via the default function in the preset package ([example](/packages/preset-esm/source/index.ts)).
+1. **Development dependencies:** Defined as `peerDependencies` and installed automatically by Presetter.
+2. **Configuration files:** Hardlinked or symlinked to your project root.
+3. **Lifecycle scripts:** Templates that integrate seamlessly with your local scripts.
 
-#### Config Extension
+Presets are highly customizable. Use the `override` field in `presetter.config.ts` to adjust configurations dynamically during installation and execution.  
+[Check out an example preset](#how-to-create-a-preset) for more details.
 
-To overwrite part of the preset configuration (e.g. add a rule to the eslint config file template),
-you can specify the new configuration under the `config` parameter in the configuration file (`.presetterrc` or `.presetterrc.json`).
-
-During installation and life cycle script execution,
-the content of this parameter will be passed to the configurator function provided by the preset package.
-With this parameter, the preset can dynamically export customized config files and life cycle scripts.
-You can [checkout the example preset to see how it work](/packages/preset-esm/source/index.ts).
-
-## Known Limitations
-
-#### Missing dependent development packages after `npm install <package>`
-
-In npm v5 & v6, any subsequent `npm install <package>` command will cause the installed development packages to be removed after installation.
-This is due to a side effect of the introduction of `package-lock.json` in npm v5,
-where the npm dedupe process begins to remove any packages not recorded in `package-lock.json` after package installation.
-
-Since the development packages are only declared as peer dependencies in the preset package, it's not recorded in `package-lock.json` and therefore the problem.
-
-Currently, there are two solutions
-
-1. Run `presetter bootstrap` manually after each additional package installation.
-   This will make sure any missing dependencies will be installed again.
-2. Use `yarn` to install additional packages as it won't remove any packages during the process.
-
-This problem, fortunately, ~~should soon~~ has now become a history when [npm v7](https://blog.npmjs.org/post/186983646370/npm-cli-roadmap-summer-2019) was released.
-The [auto peer dependencies installation](https://github.blog/2020-10-13-presenting-v7-0-0-of-the-npm-cli/) feature will now resolve this issue for good.
+---
 
 ## FAQ
 
-#### Life cycle scripts are broken
+### How to Create a Preset?
 
-It may be the case when a life cycle script crashed, resulting in `package.json` not be restored to its original version.
-To fix the issue, you can simply replace the temporary `package.json` by its original at `~package.json`.
+Creating a preset is straightforward. You write a preset to configure your project, or you can either export a preset as a npm package to share with your team. Follow these steps to write an npm package that exports a default function with the required signature:
 
-#### How to create a preset?
+Creating a preset is straightforward. You can write a preset to configure your project or export it as an npm package to share with your team. Follow these steps to write a preset file that exports a default function with the required signature:
 
-It's actually rather simple. You just need to prepare an ordinary npm package with a default export with signature `(args: PresetContext) => PresetAsset | Promise<PresetAsset>`, where
+```typescript
+// either presetter.config.ts for configuring your project or the entry file (e.g. index.ts) for exporting as a npm package
 
-```ts
-/** input for a preset configurator */
-export interface PresetContext {
-  /** information about the targeted project */
-  target: {
-    /** the package name defined in the targeted project's package.json */
-    name: string;
-    /** the root folder containing the targeted project's .presetterrc.json */
-    root: string;
-    /** normalized package.json from the targeted project's package.json */
-    package: PackageJson;
+import { preset } from 'presetter';
+
+export default preset('preset-name', (context) => {
+  return {
+    extends: [
+      // define any presets to extend here
+    ],
+    variables: {
+      // define your variables here
+    },
+    scripts: {
+      // define your scripts here
+    },
+    assets: {
+      // define your assets here
+    },
+    override: {
+      // define any overrides here
+      variables: {
+        // override variables here
+      },
+      scripts: {
+        // override scripts here
+      },
+      assets: {
+        // override assets here
+      },
+    },
   };
-  /** content of .presetterrc */
-  custom: PresetterConfig;
-}
-
-/** expected return from the configuration function from the preset */
-export interface PresetAsset {
-  /** list of presets to extend from */
-  extends?: string[];
-  /** mapping of files to be generated to its configuration template files (key: file path relative to the target project's root, value: template path) */
-  template?: TemplateMap | TemplateMapGenerator;
-  /** list of templates that should not be created as hardlinks or symlinks */
-  noSymlinks?: string[] | Generator<string[]>;
-  /** path to the scripts template */
-  scripts?: string;
-  /** variables to be substituted in templates */
-  variable?: Record<string, string>;
-  /** supplementary configuration applied to .presetterrc for enriching other presets */
-  supplementaryConfig?: ConfigMap | ConfigMapGenerator;
-}
-
-/** an auxiliary type for representing a file path */
-type Path = string;
-/** an auxiliary type for representing a template (either path to the template file or its content) */
-export type Template = string | Record<string, unknown>;
-/** an auxiliary type for representing a dynamic template generator */
-export type TemplateGenerator = Generator<Template>;
-/** an auxiliary type for representing a collection of template (key: output path, value: template definition) */
-export type TemplateMap = Record<string, Path | Template | TemplateGenerator>;
-/** an auxiliary type for representing a dynamic template map generator */
-export type TemplateMapGenerator = Generator<TemplateMap>;
-/** an auxiliary type for representing a config */
-export type Config = string[] | Record<string, unknown>;
-/** an auxiliary type for representing a dynamic config generator */
-export type ConfigGenerator = Generator<Config>;
-/** an auxiliary type for representing a config map */
-export type ConfigMap = Record<string, Path | Config | ConfigGenerator>;
-/** an auxiliary type for representing a dynamic config map generator */
-export type ConfigMapGenerator = Generator<ConfigMap>;
+});
 ```
 
-This function is a manifest generator which will be used to inform presetter what and how use the template files. For bundling other dev tools, you only need to declare them in `peerDependencies` in the `package.json` of the preset package. Presetter will pick them up and automatically install them on your target project.
+Alternatively, you can export a configuration object if the preset does not require dynamic generation. This approach is more performant for most presets:
+
+```typescript
+// either presetter.config.ts for configuring your project or the entry file (e.g. index.ts) for exporting as an npm package
+
+import { preset } from 'presetter';
+
+export default preset('preset-name', {
+  extends: [
+    // define any presets to extend here
+  ],
+  variables: {
+    // define your variables here
+  },
+  scripts: {
+    // define your scripts here
+  },
+  assets: {
+    // define your assets here
+  },
+  override: {
+    // define any overrides here
+  },
+});
+```
+
+#### Example Preset
+
+Here is an example of a simple preset:
+
+```typescript
+import { preset } from 'presetter-types';
+
+export default preset('my-preset', (context) => {
+  return {
+    variables: {
+      root: '.',
+      source: 'src',
+      output: 'dist',
+    },
+    scripts: {
+      build: 'tsc',
+      test: 'vitest',
+    },
+    assets: {
+      'tsconfig.json': {
+        compilerOptions: {
+          target: 'ES2020',
+          module: 'commonjs',
+          outDir: 'dist',
+          rootDir: 'src',
+        },
+      },
+      '.gitignore': ['node_modules', 'dist'],
+    },
+    override: {
+      assets: {
+        'tsconfig.json': (current, { variables }) => ({
+          ...current,
+          include: [`${variables.source}/**/*`],
+        }),
+      },
+    },
+  };
+});
+```
+
+### How to Configure Presetter for Monorepos?
+
+To create a preset for a monorepo, define a preset that sets up the configurations for the monorepo. Individual projects within the monorepo can then extend this preset to meet their specific needs. Here is an example of a monorepo preset:
+
+```typescript
+import { preset } from 'presetter';
+
+export default preset('monorepo', (context) => {
+  return context.root === import.meta.dirname ? {
+    // configurations for the monorepo
+    ...
+  }: {
+    // configurations for any child projects without a presetter.config.ts
+    ...
+  }
+});
+```
+
+In individual projects, you can extend the monorepo preset and override configurations as needed. Presetter will always look for the nearest presetter.config.ts file in the parent directories. If it does not find one, it will use the configurations defined in the monorepo preset.
+
+```typescript
+// /monorepo/path/to/project/presetter.config.ts
+import { preset } from 'presetter';
+
+import monorepo from '../path/to/root/presetter.config.ts';
+
+export default preset('project', {
+  extends: [monorepo], // extend the monorepo preset
+  override: {
+    // override configurations here
+  },
+});
+```
+
+### How to Ignore Files?
+
+To ignore files provided by a preset, you can override the relevant asset with `null` in the override field. For example, to ignore the `.gitignore` file provided by a preset, here is how you can override it:
+
+```typescript
+// presetter.config.ts
+import { preset } from 'presetter';
+
+import esm from 'presetter-preset-esm';
+
+export default preset('project name', {
+  extends: [esm],
+  override: {
+    assets: {
+      '.gitignore': null,
+    },
+  },
+});
+```
+
+### How to Merge a Preset with Another Preset?
+
+To merge a preset with another preset, you can extend the preset in the `extends` field of the preset configuration. For example, to merge the `presetter-preset-esm` preset with another preset, here is how you can extend it:
+
+```typescript
+// presetter.config.ts
+import { preset } from 'presetter';
+
+import esm from 'presetter-preset-esm';
+import other from 'other-preset';
+
+export default preset('project name', {
+  extends: [esm, other],
+  override: {
+    // override the configuration here
+  },
+});
+```
+
+### What is the difference between `variables`, `scripts`, `assets` and those in `override`?
+
+The `variables`, `scripts`, and `assets` fields in the preset configuration object define the initial resolution. The `override` field, on the other hand, is used to customize or override the initial resolution.
+
+- **Initial Resolution**: The `variables`, `scripts`, and `assets` fields are used to set up the initial configuration.
+- **Override**: The `override` field is applied after the initial resolution, allowing you to customize the configuration provided by the preset. This is useful when you need to make adjustments based on the fully resolved configuration.
+
+If you only need to provide additional configurations, you can define them directly in the preset configuration object. However, be aware that these configurations may be overridden by other presets if the user extends multiple presets. Using the `override` field ensures that your customizations are applied last and are not overridden by other presets.
+
+### How to Customize a Configuration Provided by a Preset?
+
+There are two approaches to customize a configuration (either `assets` or `scripts`) provided by a preset:
+
+1. **Generate the content via a function**: If you provide a function as the value for a configuration file, the function will receive the current content of the file and the variables defined in the preset configuration. You can then return the updated content based on the current content and variables. The content returned by the function will be used as the final content of the configuration file without being merged with the current content.
+
+1. **Provide additional object for merging**: If you want to add additional configurations to the preset, you can provide the additions either in the `assets` or in the `override.assets` field. These additional configurations will be deep merged with the preset configuration.
+
+For example, to add additional files to the `.gitignore` file provided by a preset, you can provide the additional files in the .gitignore of either the `assets` or `override.assets` field:
+
+```typescript
+// presetter.config.ts
+import { preset } from 'presetter';
+
+import esm from 'presetter-preset-esm';
+
+export default preset('project name', {
+  extends: [esm],
+  assets: {
+    '.gitignore': ['additional-file'],
+  },
+});
+```
+
+To add additional rules to the ESLint configuration provided by a preset, you can provide the additional rules like this:
+
+```typescript
+// presetter.config.ts
+import { preset } from 'presetter';
+
+import esm from 'presetter-preset-esm';
+
+export default preset('project name', {
+  extends: [esm],
+  assets: {
+    'eslint.config.ts': {
+      default: [
+        {
+          rules: {
+            'additional-rule': 'error',
+          },
+        },
+      ],
+    },
+  },
+});
+```
+
+Note that for ESLint configuration, if you want to add additional rules with file filters, it is recommended to use the `override` field to ensure that the additional rules are applied last. Otherwise, the additional rules may be overridden by other extended presets.
+
+---
 
 ## Demo Presets
 
-There are many ways to create a preset. Checkout our example presets to learn more:
+Explore these example presets to see **Presetter** in action:
 
-| Preset                                                         | Description                                                                                                                                                                                                    |
-|----------------------------------------------------------------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| [presetter-preset-essentials](/packages/preset-essentials)     | A starter preset with lots of useful dev tools (e.g. eslint, vitest etc.) bundled and configuration following the best practices for a modern ESM project.                                                     |
-| [presetter-preset-cjs](/packages/preset-esm)                   | An extension of `presetter-preset-essentials` but loaded with tools to help you to develop an commonjs project with ease.                                                                                      |
-| [presetter-preset-esm](/packages/preset-esm)                   | An extension of `presetter-preset-essentials` but loaded with tools to help you to develop an esm project with ease.                                                                                           |
-| [presetter-preset-hybrid](/packages/preset-hybrid)             | Another extension of `presetter-preset-esm` aiming to help you to create a dual CommonJS/ESM package without all the pains.                                                                                    |
-| [presetter-preset-react](/packages/preset-react)               | Want to control the output path of the generated files? or which template to use based on the context? `presetter-preset-react` is an example showing you how to generate your manifest programmatically.      |
-| [presetter-preset-rollup](/packages/preset-rollup)             | An advanced preset showing you how to generate a content based on consolidated configs.                                                                                                                        |
-| [presetter-preset-strict](/packages/preset-strict)             | Want to build a preset on top of an existing one? Check this out, it extends `presetter-preset-esm` with extra rules.                                                                                          |
-| [presetter-preset-web](/packages/preset-web)                   | Just want a preset with tools bundled? This one has only GraphQL, PostCSS and TailwindCSS bundled, with nothing extra.                                                                                         |
-| [@alvis/preset-gatsby](https://github.com/alvis/preset-gatsby) | How to make a preset without publishing it? Check out my personal preset. For my case, I can just use `presetter use https://github.com/alvis/preset-gatsby` to setup my dev environment for a Gatsby project. |
+| Preset                                                     | Description                                                                                                              |
+| ---------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------ |
+| [presetter-preset-essentials](/packages/preset-essentials) | A foundational preset for modern ESM projects, bundling tools like ESLint and Vitest, with best-practice configurations. |
+| [presetter-preset-esm](/packages/preset-esm)               | Builds on `essentials`, adding tools optimized for ESM projects.                                                         |
+| [presetter-preset-cjs](/packages/preset-cjs)               | Extends `essentials` with configurations tailored for CommonJS projects.                                                 |
+| [presetter-preset-hybrid](/packages/preset-hybrid)         | Aimed at creating dual CommonJS/ESM packages with minimal hassle.                                                        |
+| [presetter-preset-react](/packages/preset-react)           | An opinionated preset optimized for React development.                                                                   |
+| [presetter-preset-rollup](/packages/preset-rollup)         | An opinionated preset optimized for Rollup development.                                                                  |
+| [presetter-preset-strict](/packages/preset-strict)         | Extends `presetter-preset-esm` with additional strict rules for enhanced development workflows.                          |
+| [presetter-preset-web](/packages/preset-web)               | Extends `presetter-preset-esm` with bundling GraphQL, PostCSS, and TailwindCSS with no extras.                           |
+
+---
 
 ## About
 
-This project originated from my personal pain on maintaining a number of projects with fairly similar structure, having exactly the same build and test procedures, same `.babelrc`, `tsconfig.json` etc.
-Every time when I setup a new project, I have to copy many **identical config files** such as `.babelrc`, `.lintstagedrc`, `.npmignore`,  `eslint.config.ts`, `tsconfig.json`, `vitest.config.ts` to name a few,
-together with the following **40** 😱 development dependencies!!!
+This project was born out of frustration with maintaining identical configurations across multiple projects. Every new project required copying numerous files and installing dozens of dependencies.
 
-1. @babel/cli
-1. @babel/core
-1. @babel/node
-1. @babel/plugin-proposal-class-properties
-1. @babel/plugin-proposal-decorators
-1. @babel/plugin-proposal-nullish-coalescing-operator
-1. @babel/plugin-proposal-object-rest-spread
-1. @babel/plugin-proposal-optional-chaining
-1. @babel/preset-env
-1. @babel/preset-typescript
-1. @types/node
-1. @typescript-eslint/eslint-plugin
-1. @typescript-eslint/parser
-1. babel-plugin-transform-typescript-metadata
-1. conventional-changelog-metahub
-1. cross-env
-1. eslint
-1. eslint-config-prettier
-1. eslint-plugin-eslint-comments
-1. eslint-plugin-import
-1. eslint-plugin-jsdoc
-1. eslint-plugin-no-secrets
-1. eslint-plugin-sonarjs
-1. husky
-1. leasot
-1. lint-staged
-1. npm-run-all
-1. presetter
-1. prettier
-1. shx
-1. standard-version
-1. tsx
-1. tsc-alias
-1. tsconfig-paths
-1. typescript
-1. vitest
-
-So, I imagine, if it is possible to reduce all these 40 packages into 1?
-I tried to look for a solution but no luck.
-Therefore, I make this tool and make it available to everyone who has a similar problem as me.
+With Presetter, I consolidated **40 development dependencies** into just **1 preset**, simplifying project setup and maintenance.
+Let it save you time, too!
 
 ### Philosophy
 
-Every design has a design philosophy and here are those for presetter:
+- Presetter focuses solely on providing build tools for your project.
+- Presets are flexible yet reusable.
+- Updating a preset version is all you need to refresh your tools and configs.
+- Local changes are always preserved.
 
-- Presetter should do one and only one job, which is providing building tools for the adopting project.
-- A preset should be made flexible enough to adapt to different project need while maintaining the reusability.
-- For the adopting project, updating only the preset version should be the only thing you need to do for updating the build dev dependencies and configuration files.
-- Any changes to the local config should be preserved, even during a preset update.
-
-### Related Projects
-
-Let me know if you find any similar projects.
-It would be nice to be included here.
+---
 
 ### Contributing
 
-Any new ideas? or got a bug? We definitely would love to have your contribution!
+We’d love your ideas and contributions!
+Submit issues or suggestions via [GitHub Issues](../../issues).
+See the [Contribution Guide](CONTRIBUTING.md) for more details.
 
-If you have any suggestion or issue, feel free to let the community know via [issues](../../issues).
-
-Further, read the [contribution guide](CONTRIBUTING.md) for the detail of the code structure and useful commands etc.
+---
 
 ### License
 
-Copyright © 2020, [Alvis Tang](https://github.com/alvis). Released under the [MIT License](LICENSE).
+Released under the [MIT License](LICENSE).
+© 2020, [Alvis Tang](https://github.com/alvis).
 
-[![license](https://img.shields.io/github/license/alvis/presetter.svg?style=flat-square)](https://github.com/alvis/presetter/blob/master/LICENSE)
+[![License](https://img.shields.io/github/license/alvis/presetter.svg?style=flat-square)](LICENSE)

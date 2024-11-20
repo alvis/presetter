@@ -3,7 +3,7 @@ import { describe, expect, it } from 'vitest';
 import { parseTaskSpec } from '#task';
 
 describe('fn:parseTaskSpec', () => {
-  it('return the correct selector and empty args if no args provided', () => {
+  it('should return the correct selector and empty args if no args provided', () => {
     const taskString = 'selector';
     const globalArgs: string[] = [];
     const expectedResult: { selector: string; args: string[] } = {
@@ -14,7 +14,7 @@ describe('fn:parseTaskSpec', () => {
     expect(parseTaskSpec(taskString, globalArgs)).toEqual(expectedResult);
   });
 
-  it('return the correct selector and args without globalArgs', () => {
+  it('should return the correct selector and args without globalArgs', () => {
     const taskString = 'selector -- --arg1=value1 --arg2="value with spaces"';
     const globalArgs: string[] = [];
     const expectedResult: { selector: string; args: string[] } = {
@@ -25,7 +25,7 @@ describe('fn:parseTaskSpec', () => {
     expect(parseTaskSpec(taskString, globalArgs)).toEqual(expectedResult);
   });
 
-  it('return the correct selector and args with globalArgs', () => {
+  it('should return the correct selector and args with globalArgs', () => {
     const taskString = 'selector -- {@} --arg1=value1';
     const globalArgs: string[] = ['--globalArg1=value1', '--globalArg2=value2'];
     const expectedResult: { selector: string; args: string[] } = {

@@ -1,53 +1,75 @@
 /* v8 ignore start */
 
-import type { Config } from './config';
-import type {
-  ConfigMap,
-  ConfigMapGenerator,
-  Generator,
-  TemplateMap,
-  TemplateMapGenerator,
-} from './generator';
-import type { IgnorePath, IgnoreRule } from './ignore';
-import type { Template } from './template';
+import type { JsonObject } from 'type-fest';
 
-/** expected return from the configuration function from the preset */
-export interface PresetAsset {
-  /** list of presets to extend from */
-  extends?: string[];
-  /** mapping of files to be generated to its configuration template files (key: file path relative to the target project's root, value: template path) */
-  template?: TemplateMap | TemplateMapGenerator;
-  /** list of templates that should not be created as symlinks */
-  noSymlinks?: string[] | Generator<string[], 'variable'>;
-  /** path to the scripts template */
-  scripts?: Record<string, string> | string;
-  /** variables to be substituted in templates */
-  variable?: Record<string, string>;
-  /** supplementary configuration applied to .presetterrc for enriching other presets */
-  supplementaryConfig?: ConfigMap | ConfigMapGenerator;
-  /** a list of files not to be linked or fields to be ignores */
-  supplementaryIgnores?: IgnoreRule[] | IgnoreRulesGenerator;
-  /** path to the scripts template to be applied at end of preset merging */
-  supplementaryScripts?: Record<string, string> | string;
+import type { Path } from './auxiliaries';
+import type { PresetContent } from './content';
+
+/**
+ * defines the structure for preset assets, including JSON, YAML, JS, TS, or custom file formats
+ */
+export interface PresetAssets {
+  /** defines ignored file patterns */
+  [list: `${Path}ignore`]: PresetContent<string[]>;
+
+  /** defines JSON or YAML content */
+  [json: `${Path}.json` | `${Path}.yaml`]: PresetContent<JsonObject>;
+
+  /** defines ES module content including JS, JSX, TS, and TSX formats */
+  [
+    esm:
+      | `${Path}.js`
+      | `${Path}.cjs`
+      | `${Path}.mjs`
+      | `${Path}.jsx`
+      | `${Path}.ts`
+      | `${Path}.cts`
+      | `${Path}.mts`
+      | `${Path}.tsx`
+  ]: PresetContent<Record<string, any>>;
+
+  /** defines other file contents, including file path, arrays, JSON objects, or arbitrary records */
+  [file: Path]:
+    | PresetContent<Path>
+    | PresetContent<string[]>
+    | PresetContent<JsonObject>
+    | PresetContent<Record<string, any>>;
 }
 
-/** an auxiliary type for representing a dynamic ignore rules generator */
-export type IgnoreRulesGenerator = Generator<IgnoreRule[], 'variable'>;
+/**
+ * defines the resolved structure for preset assets
+ */
+export interface ResolvedPresetAssets {
+  /** defines ignored file patterns */
+  [list: `${Path}ignore`]: string[] | null | undefined;
 
-/** realized PresetAsset that doesn't need any further processing */
-export interface ResolvedPresetAsset extends Omit<PresetAsset, 'extends'> {
-  /** mapping of files to be generated to its configuration template files (key: file path relative to the target project's root, value: content to be written to file) */
-  template?: Record<string, Template>;
-  /** list of templates that should not be created as symlinks */
-  noSymlinks?: string[];
-  /** path to the scripts template */
-  scripts?: Record<string, string>;
-  /** variables to be substituted in templates */
-  variable?: Record<string, string>;
-  /** supplementary configuration applied to .presetterrc for enriching other presets */
-  supplementaryConfig?: Record<string, Config>;
-  /** a list of files not to be linked or fields to be ignores */
-  supplementaryIgnores?: Array<string | Record<string, IgnorePath>>;
-  /** path to the scripts template to be applied at end of preset merging */
-  supplementaryScripts?: Record<string, string>;
+  /** defines JSON or YAML content */
+  [json: `${Path}.json` | `${Path}.yaml`]: JsonObject | null | undefined;
+
+  /** defines ES module content including JS, JSX, TS, and TSX formats */
+  [
+    esm:
+      | `${Path}.js`
+      | `${Path}.cjs`
+      | `${Path}.mjs`
+      | `${Path}.jsx`
+      | `${Path}.ts`
+      | `${Path}.cts`
+      | `${Path}.mts`
+      | `${Path}.tsx`
+  ]: Record<string, any> | undefined;
+
+  /** defines other file contents, including file content, arrays, JSON objects, or arbitrary records */
+  [file: Path]: ResolvedPresetAsset;
 }
+
+/**
+ * union of possible types of a resolved asset
+ */
+export type ResolvedPresetAsset =
+  | Buffer // for binary content
+  | Record<string, any> // for dynamic ts/js content
+  | string[] // for ignore list
+  | JsonObject // for json/yaml content
+  | null // for ignored content
+  | undefined; // for no change

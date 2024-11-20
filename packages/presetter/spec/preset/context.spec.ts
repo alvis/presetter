@@ -1,50 +1,34 @@
-import { describe, expect, it, vi } from 'vitest';
+import { beforeEach, describe, expect, it, vi } from 'vitest';
 
+import { getPackage } from '#package';
 import { getContext } from '#preset/context';
 
-vi.mock('#package', () => ({
-  getPackage: vi.fn(async () => ({
-    path: '/project/package.json',
-    json: {
-      name: 'client',
-      scripts: {
-        test: 'test',
-      },
-      dependencies: {},
-    },
-  })),
-}));
+import type { PresetContext } from 'presetter-types';
 
-vi.mock('#preset/presetterRC', () => ({
-  getPresetterRC: vi.fn((root: string) => {
-    switch (root) {
-      case '/project':
-        return {
-          preset: 'preset',
-        };
-      default:
-        throw new Error(`getPresetterRC: missing ${root}`);
-    }
-  }),
-}));
+vi.mock(
+  '#package',
+  () =>
+    ({
+      getPackage: vi.fn(async () => ({
+        json: { name: 'test-package' },
+        path: '/path/to/project/package.json',
+      })),
+    }) as Partial<typeof import('#package')>,
+);
 
 describe('fn:getContext', () => {
-  it('compute the current context', async () => {
-    expect(await getContext()).toEqual({
-      target: {
-        name: 'client',
-        root: '/project',
-        package: {
-          dependencies: {},
-          name: 'client',
-          scripts: {
-            test: 'test',
-          },
-        },
-      },
-      custom: {
-        preset: 'preset',
-      },
-    });
+  beforeEach(() => vi.clearAllMocks());
+
+  it('should be able to resolve the current context', async () => {
+    const cwd = '/path/to/project';
+
+    const result = await getContext(cwd);
+    const expected: PresetContext = {
+      root: '/path/to/project',
+      package: { name: 'test-package' },
+    };
+
+    expect(result).toEqual(expected);
+    expect(vi.mocked(getPackage)).toHaveBeenCalledWith(cwd);
   });
 });

@@ -39,7 +39,6 @@ compilerOptions:
   # module resolution
   moduleResolution: bundler
   resolveJsonModule: true
-  rootDir: .
   baseUrl: .
   paths:
     '#':

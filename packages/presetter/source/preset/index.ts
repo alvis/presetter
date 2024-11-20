@@ -6,11 +6,13 @@
 //
 // for template resolution
 // STEP 3 resolve template content from resolved variables
-// STEP 4 resolve noSimlinks from resolved variables
 //
 // for script resolution
 // STEP 3 resolve script content from resolved variables
 
+export * from './bootstrap';
+export * from './config';
+export * from './context';
+export * from './project';
+export * from './resolution';
 export * from './scripts';
-export * from './setup';
-export * from './unset';

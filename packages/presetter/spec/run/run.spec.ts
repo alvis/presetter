@@ -1,4 +1,4 @@
-import { describe, expect, it, vi } from 'vitest';
+import { beforeEach, describe, expect, it, vi } from 'vitest';
 
 import { run } from '#run';
 import npmRunScript from '@npmcli/run-script';
@@ -40,6 +40,8 @@ vi.mock('#preset', () => ({
 }));
 
 describe('fn:run', () => {
+  beforeEach(() => vi.clearAllMocks());
+
   it('should run tasks via listr', async () => {
     const selectors = [
       { selector: 'task', args: [] },
@@ -94,6 +96,7 @@ describe('fn:run', () => {
   it('should exit with an error code when any one of the tasks fails', async () => {
     await run([{ selector: 'error', args: [] }]);
 
+    // eslint-disable-next-line @typescript-eslint/unbound-method
     expect(process.exit).toHaveBeenCalledWith(1);
   });
 

@@ -2,25 +2,11 @@ import { existsSync } from 'node:fs';
 
 import yargs from 'yargs';
 
-import { bootstrapPreset, setupPreset, unsetPreset } from '../preset';
+import { bootstrap } from '../preset';
 import { run } from '../run';
 import { parseGlobalArgs, parseTaskSpec } from '../task';
 
 import type { CommandModule } from 'yargs';
-
-const useCommand: CommandModule<Record<string, unknown>, { preset: string }> = {
-  command: 'use <preset..>',
-  describe: 'adopt the specified preset to the project',
-  builder: (yargs) =>
-    yargs
-      .positional('preset', {
-        required: true as const,
-        type: 'string',
-        description: 'the name of the preset to be used',
-      })
-      .help(),
-  handler: async (argv) => setupPreset(...argv.preset),
-};
 
 const bootstrapCommand: CommandModule<
   Record<string, unknown>,
@@ -30,22 +16,17 @@ const bootstrapCommand: CommandModule<
   describe: 'setup the project according to the specified preset',
   builder: (yargs) =>
     yargs
-      .option('force', {
-        type: 'boolean',
-        default: false,
-        description: 'overwrite existing files',
-      })
       .option('only', {
         type: 'string',
         description: 'proceed only if the specified file exists',
       })
       .help(),
   handler: async (argv) => {
-    const { force, only } = argv;
+    const { only } = argv;
 
     // only proceed if the specified file exists
     if (!only || existsSync(only)) {
-      await bootstrapPreset({ force });
+      await bootstrap();
     }
   },
 };
@@ -104,12 +85,6 @@ const runPCommand: CommandModule = {
   },
 };
 
-const unsetCommand: CommandModule = {
-  command: 'unset',
-  describe: 'remove all artifacts created by the preset',
-  handler: async () => unsetPreset(),
-};
-
 /**
  * provide a command line interface
  * @param args command line arguments
@@ -124,12 +99,10 @@ export async function entry(args: string[]): Promise<void> {
     })
     .usage('⚙ presetter: your preset configurator')
     .showHelpOnFail(true)
-    .command(useCommand)
     .command(bootstrapCommand)
     .command(runCommand)
     .command(runSCommand)
     .command(runPCommand)
-    .command(unsetCommand)
     .demandCommand()
     .parse(args);
 }

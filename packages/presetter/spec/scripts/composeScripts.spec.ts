@@ -1,32 +1,33 @@
 import { describe, expect, it, vi } from 'vitest';
 
-import yargs from 'yargs';
-
 import { composeScripts } from '#scripts';
 
 import type { Script } from '#scripts';
 
-vi.mock('yargs', () => ({
-  __esModule: true,
-  default: {
-    parse: vi.fn((path: string) =>
-      path
-        ? yargs.parse(path)
-        : {
-            // mimic the current runner
-            $0: 'run',
-          },
-    ),
-  },
-}));
+vi.mock('yargs', async (importActual) => {
+  const { default: yargs } = await importActual<typeof import('yargs')>();
+
+  return {
+    default: {
+      parse: vi.fn((path: string) =>
+        path
+          ? yargs().parse(path)
+          : {
+              // mimic the current runner
+              $0: 'run',
+            },
+      ),
+    },
+  };
+});
 
 /**
  * a helper function for generating tests on translation
  * @param description description of the test
  * @param detail input and expected output
- * @param detail.template
- * @param detail.target
- * @param detail.result
+ * @param detail.template script definitions from scripts.yaml
+ * @param detail.target script definitions from target project's package.json
+ * @param detail.result expected output, or an error
  */
 function should(
   description: string,
@@ -41,7 +42,7 @@ function should(
 ): void {
   const { template, target, result } = detail;
 
-  it(description, () => {
+  it(`should ${description}`, () => {
     const compute = () =>
       composeScripts({
         template,

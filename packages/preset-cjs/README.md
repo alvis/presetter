@@ -22,27 +22,55 @@ With `presetter-preset-cjs`, it provides everything bundled from presetter-pres
 
 ## Quick Start
 
-To kick start a ESM application, what you need is to set the following in your `package.json` and follow the guide below.
+To kickstart a CommonJS application, set the following in your `package.json` and follow the guide below.
 
 ```json
 {
-  "type": "module",
+  "type": "commonjs",
   "main": "lib/index.js",
-  "types": "lib/index.d.ts"
+  "types": "lib/index.d.ts",
+  "scripts": {
+    "prepare": "run prepare",
+    "build": "run build",
+    "clean": "run clean",
+    "test": "run test",
+    "watch": "run watch",
+    "coverage": "run coverage"
+  }
 }
 ```
 
 [**FULL DOCUMENTATION IS AVAILABLE HERE**](https://github.com/alvis/presetter/blob/master/README.md)
 
-1. Bootstrap your project with presetter-preset-cjs
+### 1. Bootstrap your project with presetter-preset-cjs
 
-```shell
-npx presetter use presetter-preset-cjs
+On your project root, create a `presetter.config.ts` file with the following content:
+
+```typescript
+// presetter.config.ts
+export { default } from 'presetter-preset-cjs';
 ```
 
-That's. One command and you're set.
+or if customization is needed. For example, you can extend the configuration with more presets:
 
-1. Develop and run life cycle scripts provided by the preset
+```typescript
+// presetter.config.ts
+
+import { preset } from 'presetter';
+import cjs from 'presetter-preset-cjs';
+import other from 'other-preset';
+
+export default preset('project name', {
+  extends: [cjs, other],
+  override: {
+    // override the configuration here
+  },
+});
+```
+
+Then, install your project as usual with `npm install` or any package manager you prefer.
+
+### 2. Develop and run life cycle scripts provided by the preset
 
 At this point, all development packages specified in the preset are installed,
 and now you can try to run some example life cycle scripts (e.g. run prepare).
@@ -51,11 +79,11 @@ and now you can try to run some example life cycle scripts (e.g. run prepare).
 
 ## Project Structure
 
-After installation, your project file structure should resemble the following or with more configuration files if you also installed other presets such as [`presetter-preset-rollup`](https://github.com/alvis/presetter/blob/master/packages/preset-rollup).
+After installation, your project file structure should resemble the following, or include more configuration files if you also installed other presets.
 
 Implement your business logic under `source` and prepare tests under `spec`.
 
-**TIPS** You can always change the source directory to other (e.g. src) by setting the `source` variable in `.presetterrc.json`. See the [customization](https://github.com/alvis/presetter/blob/master/packages/preset-esm#customization) section below for more details.
+**TIPS** You can always change the source directory to other (e.g. src) by setting the `source` variable in `presetter.config.ts`. See the [customization](https://github.com/alvis/presetter/blob/master/packages/preset-essentials#customization) section below for more details.
 
 ```plain
 (root)
@@ -64,7 +92,7 @@ Implement your business logic under `source` and prepare tests under `spec`.
  ├─ .lintstagedrc.json
  ├─ .npmignore
  ├─ .prettierrc.json
- ├─ .presetterrc.json
+ ├─ presetter.config.ts
  ├─ node_modules
  ├─ source
  │   ├─ <folders>
@@ -81,52 +109,8 @@ Implement your business logic under `source` and prepare tests under `spec`.
 
 ## Customization
 
-By default, this preset exports a handy configuration for rollup for a typescript project.
-But you can further customize (either extending or replacing) the configuration by specifying the change in the config file (`.presetterrc` or `.presetterrc.json`).
-
-These settings are available in the `config` field in the config file. For directories, the setting is specified in the `variable` field.
-
-The structure of `.presetterrc` should follow the interface below:
-
-```ts
-interface PresetterRC {
-  /** name of the preset e.g. presetter-preset-cjs */
-  name: string | string[];
-  /** additional configuration passed to the preset for generating the configuration files */
-  config?: {
-    //  ┌─ configuration for other tools via other presets (e.g. presetter-preset-rollup)
-    // ...
-
-    /** configuration to be merged with .eslintrc */
-    eslint?: Record<string, unknown>;
-    /** configuration to be merged with .lintstagedrc */
-    lintstaged?: Record<string, unknown>;
-    /** patterns to be added to .gitignore */
-    gitignore?: string[];
-    /** patterns to be added to .npmignore */
-    npmignore?: string[];
-    /** configuration to be merged with .presetterrc */
-    prettier?: Record<string, unknown>;
-    /** configuration to be merged with tsconfig.json */
-    tsconfig?: Record<string, unknown>;
-    /** a list of config files not to be created */
-    ignores?: string[];
-  };
-  /** relative path to root directories for different file types */
-  variable?: {
-    /** the directory containing the whole repository (default: .) */
-    root?: string;
-    /** the directory containing all source code (default: source) */
-    source?: string;
-    /** the directory containing all typing files (default: types) */
-    types?: string;
-    /** the directory containing all output tile (default: source) */
-    output?: string;
-    /** the directory containing all test files (default: spec) */
-    test?: string;
-  };
-}
-```
+By default, this preset exports a handy configuration for a typescript project.
+You can further customize (either extending or replacing) the configuration by specifying the changes in the config file `presetter.config.ts`.
 
 ## Script Template Summary
 

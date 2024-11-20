@@ -5,7 +5,7 @@ import { parseGlobalArgs } from '#task';
 import type { Arguments } from 'yargs-parser';
 
 describe('fn:parseGlobalArgs', () => {
-  it('return an array of cleaned up global arguments as strings', () => {
+  it('should return an array of cleaned up global arguments as strings', () => {
     const argv: Arguments = {
       '_': [],
       '--': ['"hello"', "'world'", 123, 'no-quotes'],
@@ -17,7 +17,7 @@ describe('fn:parseGlobalArgs', () => {
     expect(result).toEqual(expectedResult);
   });
 
-  it('return an empty array when no global arguments are present', () => {
+  it('should return an empty array when no global arguments are present', () => {
     const argv: Arguments = {
       _: [],
     };

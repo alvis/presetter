@@ -1,61 +1,37 @@
 import { dirname, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
-import { loadFile, substitute } from 'presetter';
+import { preset } from 'presetter-types';
 
-import { getRollupParameter } from './rollup';
-
-import type { PresetAsset } from 'presetter-types';
-
-import type { RollupConfig } from './rollup';
+import rollup from './rollup.template';
 
 const DIR = fileURLToPath(dirname(import.meta.url));
 
 // paths to the template directory
 const TEMPLATES = resolve(DIR, '..', 'templates');
-const CONFIGS = resolve(DIR, '..', 'configs');
-
-/** config for this preset */
-export interface PresetConfig {
-  rollup?: RollupConfig;
-}
 
 /** list of configurable variables */
-export interface Variable {
+export interface Variables {
   /** the directory containing all source code (default: source) */
   source: string;
   /** the directory containing all the compiled files (default: lib) */
   output: string;
 }
 
-export const DEFAULT_VARIABLE = {
+export const DEFAULT_VARIABLES = {
   source: 'source',
   output: 'lib',
-} satisfies Variable;
+} satisfies Variables;
 
-/**
- * get the list of templates provided by this preset
- * @returns list of preset templates
- */
-export default function (): PresetAsset {
-  return {
-    template: {
-      'rollup.config.ts': (context) => {
-        const content = loadFile(
-          resolve(TEMPLATES, 'rollup.config.ts'),
-          'text',
-        );
-        const variable = getRollupParameter(context);
-
-        return substitute(content, variable);
-      },
+export default preset('presetter-preset-rollup', {
+  variables: DEFAULT_VARIABLES,
+  scripts: resolve(TEMPLATES, 'scripts.yaml'),
+  assets: {
+    'rollup.config.ts': rollup,
+  },
+  override: {
+    assets: {
+      '.gitignore': ['/rollup.config.ts'],
     },
-    scripts: resolve(TEMPLATES, 'scripts.yaml'),
-    noSymlinks: ['rollup.config.ts'],
-    supplementaryConfig: {
-      gitignore: ['/rollup.config.ts'],
-      rollup: resolve(CONFIGS, 'rollup.yaml'),
-    },
-    variable: DEFAULT_VARIABLE,
-  };
-}
+  },
+});

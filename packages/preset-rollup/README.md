@@ -20,7 +20,7 @@
 
 **presetter-preset-rollup** is an opinionated preset for you to setup rollup in a fraction of time you usually take via [**presetter**](https://github.com/alvis/presetter).
 
-- 🗞️ Rollup 2
+- 🗞️ Rollup 4
 - 2️⃣ Dual CJS and ESM modules export by default
 - 🍄 Common rollup packages included as one single bundle
   - `@rollup/plugin-commonjs`
@@ -36,27 +36,7 @@
 
 ## Quick Start
 
-[**FULL DOCUMENTATION IS AVAILABLE HERE**](https://github.com/alvis/presetter/blob/master/README.md)
-
-1. Bootstrap your project with `presetter-preset-esm` & `presetter-preset-rollup`
-
-```shell
-npx presetter use presetter-preset presetter-preset-rollup
-```
-
-That's. One command and you're set.
-
-After bootstrapping, you would see a lot of configuration files generated, including a `rollup.config.ts` that has all plugins configured properly for you.
-
-2. Develop and run life cycle scripts provided by the preset
-
-At this point, all development packages specified in the preset are installed,
-and now you can try to run some example life cycle scripts (e.g. run prepare).
-
-![Demo](https://raw.githubusercontent.com/alvis/presetter/master/assets/demo.gif)
-
-**IMPORTANT**
-For NodeJS to import the correct export, remember to specify the following in your project's package.json too!
+To kickstart a library, set the following in your `package.json` and follow the guide below.
 
 ```json
 {
@@ -66,9 +46,49 @@ For NodeJS to import the correct export, remember to specify the following in yo
   "exports": {
     "require": "./lib/index.js",
     "import": "./lib/index.mjs"
+  },
+  "scripts": {
+    "prepare": "run prepare",
+    "build": "run build",
+    "clean": "run clean",
+    "test": "run test",
+    "watch": "run watch",
+    "coverage": "run coverage"
   }
 }
 ```
+
+[**FULL DOCUMENTATION IS AVAILABLE HERE**](https://github.com/alvis/presetter/blob/master/README.md)
+
+### 1. Bootstrap your project with presetter-preset-web
+
+On your project root, create a `presetter.config.ts` file with the following content:
+
+```typescript
+// presetter.config.ts
+
+import { preset } from 'presetter';
+import essentials from 'presetter-preset-essentials';
+import rollup from 'presetter-preset-rollup';
+
+export default preset('project name', {
+  // NOTE
+  // you may need an additional preset like presetter-preset-essentials for typescript support and other basic toolings
+  extends: [essentials, rollup],
+  override: {
+    // override the configuration here
+  },
+});
+```
+
+Then, install your project as usual with `npm install` or any package manager you prefer.
+
+### 2. Develop and run life cycle scripts provided by the preset
+
+At this point, all development packages specified in the preset are installed,
+and now you can try to run some example life cycle scripts (e.g. run prepare).
+
+![Demo](https://raw.githubusercontent.com/alvis/presetter/master/assets/demo.gif)
 
 ## Project Structure
 
@@ -76,12 +96,12 @@ After installation, your project file structure should resemble the following or
 
 Implement your business logic under `source` and prepare tests under `spec`.
 
-**TIPS** You can always change the source directory to other (e.g. src) by setting the `source` variable in `.presetterrc.json`. See the [customization](https://github.com/alvis/presetter/blob/master/packages/preset-rollup#customization) section below for more details.
+**TIPS** You can always change the source directory to other (e.g. src) by setting the `source` variable in `presetter.config.ts`. See the [customization](https://github.com/alvis/presetter/blob/master/packages/preset-rollup#customization) section below for more details.
 
 ```
 (root)
  ├─ .git
- ├─ .presetterrc.json
+ ├─ presetter.config.ts
  ├─ node_modules
  ├─ source
  │   ├─ <folders>
@@ -95,98 +115,16 @@ Implement your business logic under `source` and prepare tests under `spec`.
 
 ## Customization
 
-By default, this preset exports a handy configuration for rollup for a typescript project.
-But you can further customize (either extending or replacing) the configuration by specifying the change in the config file (`.presetterrc` or `.presetterrc.json`).
-
-These settings are available in the `config` field in the config file. For directories, the setting is specified in the `variable` field.
-
-The structure of `.presetterrc` should follow the interface below:
-
-```ts
-interface PresetterRC {
-  /** name(s) of the preset e.g. presetter-preset-rollup */
-  name: string | string[];
-  /** additional configuration passed to the preset for generating the configuration files */
-  config?: {
-    //  ┌─ configuration for other tools via other presets (e.g. presetter-preset-esm)
-    // ...
-
-    /** additional configuration for rollup */
-    rollup?: {
-      //  ┌─ any configuration supported by rollup, see https://rollupjs.org/guide/en/#configuration-files
-      // ...
-
-      /** list of plugin and its options */
-      plugins?:
-        | NormalizedRollupConfig['plugins']
-        | Array<
-            | string
-            | [name: string]
-            | [
-                name: string,
-                options:
-                  | Record<string, unknown>
-                  | `@apply ${string}`
-                  | `@import ${string}`
-                  | null,
-              ]
-          >;
-    };
-  };
-  /** variables to be substituted in templates */
-  variable?: {
-    /** the directory containing all source code (default: source) */
-    source?: string;
-    /** the directory containing all output tile (default: source) */
-    output?: string;
-  };
-}
-```
-
-For generating `rollup.config.ts`, this preset also support the `@apply` and `@import` directives such that you can also import configuration from other packages or ts/js files.
-
-The usage of the directives is simple. In any part of the configuration for rollup, you can simply put
-`@apply package_name` or `@import package_name` and the preset will automatically replace the content with an imported variable. For example:
-
-```json
-{
-  "rollup": {
-    "plugins": [
-      [
-        "@apply rollup-plugin-postcss[default]",
-        { "plugins": "@import ./postcss.config[default.plugins]" }
-      ]
-    ]
-  }
-}
-```
-
-will create a `rollup.config.ts` file with the following content:
-
-```ts
-import * as import0 from 'rollup-plugin-postcss';
-import * as import1 from './postcss.config';
-
-export default {
-  plugins: [import0.default(...[{ plugins: import1.default.plugins }])],
-};
-```
-
-The syntax for both the directives is quite similar.
-Use `@apply` in a situation that you have to invoke a function from an imported package,
-such as `rollup-plugin-postcss` in the above example.
-You can also specify the arguments for the invoked function in the form of `["@apply package", options]`
-
-For `@import`, use it if you want to import value from another package or ts/js file.
-For example, `@import ./postcss.config[default.plugins]` would allow you to refer `default.plugins` from `./postcss.config` in the above example.
-
-In addition to the directives, to specify the plugins for rollup, you can write it in three ways similar to babel.
-
-1. A object with plugin name as the key and its options as its value e.g. `{'@apply @rollup/plugin-typescript[default]': {options}}`
-2. Name of a plugin in an array e.g. `['@apply @rollup/plugin-typescript[default]']`
-3. Doublet of `[plugin name, options]` in an array e.g. `[['@apply @rollup/plugin-typescript[default]', {options}]]`
+By default, this preset exports a handy configuration for a typescript project.
+You can further customize (either extending or replacing) the configuration by specifying the changes in the config file `presetter.config.ts`.
 
 ## Script Template Summary
 
-- **`run build`**: Bundle your code via rollup
-- **`run develop`**: Continuous code build and watch
+- **`run build`**: Transpile source code from typescript and replace any mapped paths
+- **`run clean`**: Clean up any previously transpiled code
+- **`run develop -- <file path>`**: Create a service that run the specified file whenever the source has changed
+- **`run test`**: Run all tests
+- **`run watch`**: Rerun all tests whenever the source has change
+- **`run coverage`**: Run all test with coverage report
+- **`run release`**: Bump the version and automatically generate a change log
+- **`run release -- --prerelease <tag>`**: Release with a prerelease tag

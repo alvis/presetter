@@ -1,4 +1,4 @@
-import { describe, expect, it, vi } from 'vitest';
+import { beforeEach, describe, expect, it, vi } from 'vitest';
 
 import { handleError } from '#executable/error';
 
@@ -17,6 +17,8 @@ const ansiPattern = [
 const ansi = new RegExp(ansiPattern, 'g');
 
 describe.sequential('fn:handleError', () => {
+  beforeEach(() => vi.clearAllMocks());
+
   it('should print the error if there is no tty', async () => {
     process.stdout.isTTY = false;
 

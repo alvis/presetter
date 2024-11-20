@@ -2,31 +2,19 @@ import { existsSync } from 'node:fs';
 import { dirname, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
-import type { PresetAsset } from 'presetter-types';
+import { preset } from 'presetter-types';
+
+import eslintOverride from './eslint.override';
+import eslintTemplate from './eslint.template';
+import vitest from './vitest.template';
 
 const DIR = dirname(fileURLToPath(import.meta.url));
 
 // paths to the template directory
 const TEMPLATES = resolve(DIR, '..', 'templates');
 
-/** config for this preset */
-export interface PresetConfig {
-  /** configuration to be merged with .eslintrc */
-  eslint?: Record<string, unknown>;
-  /** patterns to be added to .gitignore */
-  gitignore?: string[];
-  /** configuration to be merged with .lintstagedrc */
-  lintstaged?: Record<string, unknown>;
-  /** patterns to be added to .npmignore */
-  npmignore?: string[];
-  /** configuration to be merged with .presetterrc */
-  prettier?: Record<string, unknown>;
-  /** configuration to be merged with tsconfig.json */
-  tsconfig?: Record<string, unknown>;
-}
-
 /** list of configurable variables */
-export interface Variable {
+export interface Variables {
   /** the directory containing the whole repository (default: .) */
   root: string;
   /** the directory containing all source code (default: generated) */
@@ -41,39 +29,42 @@ export interface Variable {
   test: string;
 }
 
-export const DEFAULT_VARIABLE = {
+export const DEFAULT_VARIABLES = {
   root: '.',
   generated: 'generated',
   source: 'source',
   types: 'types',
   output: 'lib',
   test: 'spec',
-} satisfies Variable;
+} satisfies Variables;
 
 /**
  * get the list of templates provided by this preset
  * @returns list of preset templates
  */
-export default async function (): Promise<PresetAsset> {
-  return {
-    template: ({ target }) => {
-      const isGitRoot = existsSync(resolve(target.root, '.git'));
+export default preset('presetter-preset-essentials', ({ root }) => {
+  const isGitRoot = existsSync(resolve(root, '.git'));
 
-      return {
-        ...(isGitRoot
-          ? { '.husky/pre-commit': resolve(TEMPLATES, 'pre-commit') }
-          : {}),
-        '.gitignore': resolve(TEMPLATES, 'gitignore'),
-        '.lintstagedrc.json': resolve(TEMPLATES, 'lintstagedrc.yaml'),
-        '.npmignore': resolve(TEMPLATES, 'npmignore'),
-        '.prettierrc.json': resolve(TEMPLATES, 'prettierrc.yaml'),
-        'eslint.config.ts': resolve(TEMPLATES, 'eslint.config.ts'),
-        'tsconfig.json': resolve(TEMPLATES, 'tsconfig.yaml'),
-        'tsconfig.build.json': resolve(TEMPLATES, 'tsconfig.build.yaml'),
-        'vitest.config.ts': resolve(TEMPLATES, 'vitest.config.ts'),
-      };
-    },
+  return {
+    variables: DEFAULT_VARIABLES,
     scripts: resolve(TEMPLATES, 'scripts.yaml'),
-    variable: DEFAULT_VARIABLE,
+    assets: {
+      ...(isGitRoot
+        ? { '.husky/pre-commit': resolve(TEMPLATES, 'pre-commit') }
+        : {}),
+      '.gitignore': resolve(TEMPLATES, 'gitignore'),
+      '.lintstagedrc.json': resolve(TEMPLATES, 'lintstagedrc.yaml'),
+      '.npmignore': resolve(TEMPLATES, 'npmignore'),
+      '.prettierrc.json': resolve(TEMPLATES, 'prettierrc.yaml'),
+      'eslint.config.ts': eslintTemplate,
+      'tsconfig.json': resolve(TEMPLATES, 'tsconfig.yaml'),
+      'tsconfig.build.json': resolve(TEMPLATES, 'tsconfig.build.yaml'),
+      'vitest.config.ts': vitest,
+    },
+    override: {
+      assets: {
+        'eslint.config.ts': eslintOverride,
+      },
+    },
   };
-}
+});

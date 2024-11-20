@@ -19,10 +19,6 @@
     ".": {
       "default": "./lib/index.js",
       "types": "./lib/index.d.ts"
-    },
-    "./eslint.config": {
-      "default": "./lib/eslint.config.js",
-      "types": "./lib/eslint.config.d.ts"
     }
   },
   "repository": {

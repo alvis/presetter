@@ -18,7 +18,7 @@
 
 ## Features
 
-**presetter-preset-react** is an opinionated preset for you to setup a React project in a fraction of time you usually take via [**presetter**](https://github.com/alvis/presetter).
+**presetter-preset-react** is an extension of [**presetter-preset-web**](https://github.com/alvis/presetter) with additional tools to help you to develop a React project with ease via [**presetter**](https://github.com/alvis/presetter).
 
 - ✨ TSX support
 - 🧪 @testing-library/react
@@ -28,15 +28,31 @@
 
 [**FULL DOCUMENTATION IS AVAILABLE HERE**](https://github.com/alvis/presetter/blob/master/README.md)
 
-1. Bootstrap your project with `presetter-preset-esm` & `presetter-preset-react`
+### 1. Bootstrap your project with presetter-preset-react
 
-```shell
-npx presetter use presetter-preset presetter-preset-react
+On your project root, create a `presetter.config.ts` file with the following content:
+
+```typescript
+// presetter.config.ts
+
+import { preset } from 'presetter';
+import esm from 'presetter-preset-esm';
+import react from 'presetter-preset-react';
+
+export default preset('project name', {
+  // NOTE
+  // you don't need to extends presetter-preset-web presets here since they are already included in the react preset
+  // however, you may need an additional preset like presetter-preset-esm for ESM support and other basic toolings
+  extends: [esm, react],
+  override: {
+    // override the configuration here
+  },
+});
 ```
 
-That's. One command and you're set.
+Then, install your project as usual with `npm install` or any package manager you prefer.
 
-2. Develop and run life cycle scripts provided by the preset
+### 2. Develop and run life cycle scripts provided by the preset
 
 At this point, all development packages specified in the preset are installed,
 and now you can try to run some example life cycle scripts (e.g. run prepare).
@@ -45,16 +61,20 @@ and now you can try to run some example life cycle scripts (e.g. run prepare).
 
 ## Project Structure
 
-After installation, your project file structure should resemble the following or with more configuration files if you also installed other presets such as [`presetter-preset-esm`](https://github.com/alvis/presetter/blob/master/packages/preset-esm).
+After installation, your project file structure should resemble the following, or include more configuration files if you also installed other presets.
 
-Implement your business logic under `source` and prepare tests under `spec`. The `.d.ts` files are handy type definitions for you to import `.css` or image files in typescript.
+Implement your business logic under `source` and prepare tests under `spec`.
+The `.d.ts` files are handy type definitions for you to import `.css` or image files in typescript.
 
-**TIPS** You can always change the source directory to other (e.g. src) by setting the `source` variable in `.presetterrc.json`. See the [customization](https://github.com/alvis/presetter/blob/master/packages/preset-react#customization) section below for more details.
+**NOTE** You will notice there's no additional configuration file on your root folder like other presets such as [`presetter-preset-esm`](https://github.com/alvis/presetter/blob/master/packages/preset-esm).
+It's because `presetter-preset-react` extends `presetter-preset-web` which is a bundle only preset, meaning it only helps you to install the development packages specified in this preset only.
+
+**TIPS** You can always change the source directory to other (e.g. src) by setting the `source` variable in `presetter.config.ts`. See the [customization](https://github.com/alvis/presetter/blob/master/packages/preset-essentials#customization) section below for more details.
 
 ```
 (root)
  ├─ .git
- ├─ .presetterrc.json
+ ├─ presetter.config.ts
  ├─ node_modules
  ├─ source
  │   ├─ <folders>
@@ -74,34 +94,16 @@ Implement your business logic under `source` and prepare tests under `spec`. The
 ## Customization
 
 By default, this preset exports a handy configuration set for a React project written in typescript.
-But you can further customize (either extending or replacing) the configuration by specifying the change in the config file (`.presetterrc` or `.presetterrc.json`).
 
-These settings are available in the `config` field in the config file. For directories, the setting is specified in the `variable` field.
+You can further customize (either extending or replacing) the configuration by specifying the changes in the config file `presetter.config.ts`.
 
-The structure of `.presetterrc` should follow the interface below:
+## Script Template Summary
 
-```ts
-interface PresetterRC {
-  /** name(s) of the preset e.g. presetter-preset-react */
-  name: string | string[];
-  /** additional configuration passed to the preset for generating the configuration files */
-  config?: {
-    //  ┌─ configuration for other tools via other presets (e.g. presetter-preset-esm)
-    // ...
-
-    /** configuration to be merged with .eslintrc */
-    eslint?: Record<string, unknown>;
-    /** configuration to be merged with tsconfig.json */
-    tsconfig?: Record<string, unknown>;
-    /** variables to be substituted in templates */
-    variable?: {
-      /** the directory containing all source code (default: source) */
-      source?: string;
-      /** the directory containing all typing files (default: types) */
-      types?: string;
-      /** the directory containing all output tile (default: source) */
-      output?: string;
-    };
-  };
-}
-```
+- **`run build`**: Transpile source code from typescript and replace any mapped paths
+- **`run clean`**: Clean up any previously transpiled code
+- **`run develop -- <file path>`**: Create a service that run the specified file whenever the source has changed
+- **`run test`**: Run all tests
+- **`run watch`**: Rerun all tests whenever the source has change
+- **`run coverage`**: Run all test with coverage report
+- **`run release`**: Bump the version and automatically generate a change log
+- **`run release -- --prerelease <tag>`**: Release with a prerelease tag

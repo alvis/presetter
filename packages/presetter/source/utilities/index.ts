@@ -1,5 +1,5 @@
 /* v8 ignore start */
 
-export * from './filter';
+export * from './display';
 export * from './mapping';
 export * from './object';

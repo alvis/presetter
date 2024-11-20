@@ -20,23 +20,37 @@
 
 **presetter-preset-web** is an opinionated preset for you to setup some common tools for a web project in a fraction of time you usually take via [**presetter**](https://github.com/alvis/presetter)
 
-- 🕸️ GraphQL 15
 - 💄 PostCSS 8
-- 💨 TailwindCSS 2
+- 💨 TailwindCSS 3
 
 ## Quick Start
 
 [**FULL DOCUMENTATION IS AVAILABLE HERE**](https://github.com/alvis/presetter/blob/master/README.md)
 
-1. Bootstrap your project with `presetter-preset-esm` & `presetter-preset-web`
+### 1. Bootstrap your project with presetter-preset-web
 
-```shell
-npx presetter use presetter-preset presetter-preset-web
+On your project root, create a `presetter.config.ts` file with the following content:
+
+```typescript
+// presetter.config.ts
+
+import { preset } from 'presetter';
+import essentials from 'presetter-preset-essentials';
+import web from 'presetter-preset-web';
+
+export default preset('project name', {
+  // NOTE
+  // you may need an additional preset like presetter-preset-rollup for typescript support and other basic toolings
+  extends: [essentials, web],
+  override: {
+    // override the configuration here
+  },
+});
 ```
 
-That's. One command and you're set.
+Then, install your project as usual with `npm install` or any package manager you prefer.
 
-2. Develop and run life cycle scripts provided by the preset
+### 2. Develop and run life cycle scripts provided by the preset
 
 At this point, all development packages specified in the preset are installed,
 and now you can try to run some example life cycle scripts (e.g. run prepare).
@@ -45,15 +59,15 @@ and now you can try to run some example life cycle scripts (e.g. run prepare).
 
 ## Project Structure
 
-After installation, your project file structure should resemble the following or with more configuration files if you also installed other presets such as [`presetter-preset-esm`](https://github.com/alvis/presetter/blob/master/packages/preset-esm).
+After installation, your project file structure should resemble the following, or include more configuration files if you also installed other presets.
 
-**NOTE** You will notice there's no additional configuration file on your root folder like other presets such as [`presetter-preset-esm`](https://github.com/alvis/presetter/blob/master/packages/preset-esm).
+**NOTE** You will notice there's no additional configuration file on your root folder like other presets such as [`presetter-preset-essentials`](https://github.com/alvis/presetter/blob/master/packages/preset-essentials).
 It's because `presetter-preset-web` is a bundle only preset, meaning it only helps you to install the development packages specified in this preset only.
 
 ```
 (root)
  ├─ .git
- ├─ .presetterrc.json
+ ├─ presetter.config.ts
  ├─ node_modules
  └─ package.json
 ```
@@ -62,13 +76,6 @@ It's because `presetter-preset-web` is a bundle only preset, meaning it only hel
 
 As a bundle only preset, it offers no further customization.
 
-However, you are still required to specify the preset name in `.presetterrc` or `.presetterrc.json` as the interface below.
+However, you can further customize (either extending or replacing) the configuration by specifying the changes in the config file `presetter.config.ts`.
 
-**NOTE**: You may want to use other presets together with `presetter-preset-web` to setup your project, specify the presets in `.presetterrc` or `.presetterrc.json` as well and checkout their available customization.
-
-```ts
-interface PresetterRC {
-  /** name(s) of the preset e.g. "presetter-preset-web" or ["presetter-preset-esm", "presetter-preset-web", "presetter-preset-react"] */
-  name: string | string[];
-}
-```
+**NOTE**: You may want to use other presets together with `presetter-preset-web` to setup your project.

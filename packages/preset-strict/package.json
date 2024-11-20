@@ -19,14 +19,6 @@
     ".": {
       "default": "./lib/index.js",
       "types": "./lib/index.d.ts"
-    },
-    "./eslint.config": {
-      "default": "./lib/eslint.config.js",
-      "types": "./lib/eslint.config.d.ts"
-    },
-    "./vitest.config": {
-      "default": "./lib/vitest.config.js",
-      "types": "./lib/vitest.config.d.ts"
     }
   },
   "repository": {
@@ -34,7 +26,7 @@
     "url": "git+https://github.com/alvis/presetter.git"
   },
   "scripts": {
-    "prepare": "tsc --declaration --moduleResolution bundler --module esnext --target esnext --skipLibCheck --outdir lib source/index.ts source/eslint.config.ts source/vitest.config.ts",
+    "prepare": "tsc --declaration --moduleResolution bundler --module esnext --target esnext --skipLibCheck --outdir lib source/index.ts && tsc-esm-fix --sourceMap --target lib",
     "bootstrap": "presetter bootstrap",
     "build": "run build",
     "coverage": "run coverage --",
@@ -45,8 +37,7 @@
   },
   "peerDependencies": {
     "eslint-plugin-no-secrets": "^1.0.0",
-    "eslint-plugin-sonarjs": "^2.0.0",
-    "presetter-preset-essentials": "workspace:*"
+    "eslint-plugin-sonarjs": "^2.0.0"
   },
   "dependencies": {
     "presetter-types": "workspace:*"

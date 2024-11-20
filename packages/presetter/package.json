@@ -34,8 +34,7 @@
     "url": "git+https://github.com/alvis/presetter.git"
   },
   "scripts": {
-    "echo": "echo $npm_package_name",
-    "prepare": "tsx --eval \"import('./source/preset/setup.ts').then(({bootstrapPreset})=>bootstrapPreset())\" && npm run build",
+    "prepare": "tsx --eval \"import('./source/preset/bootstrap.ts').then(({ bootstrap }) => bootstrap())\" && npm run build",
     "build": "npm run script -- build",
     "clean": "npm run script -- clean",
     "coverage": "npm run script -- coverage --",
@@ -64,6 +63,7 @@
     "chalk": "^5.3.0",
     "debug": "^4.3.5",
     "execa": "^9.3.0",
+    "jiti": "^2.4.0",
     "js-yaml": "^4.1.0",
     "listr2": "^8.2.0",
     "mvdan-sh": "^0.10.0",
@@ -75,6 +75,7 @@
     "source-map-support": "^0.5.0",
     "write-pkg": "^7.0.0",
     "yargs": "^17.0.0",
-    "yargs-parser": "^21.0.0"
+    "yargs-parser": "^21.0.0",
+    "xception": "^6.0.0"
   }
 }
