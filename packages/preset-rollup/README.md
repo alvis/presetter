@@ -27,10 +27,10 @@
   - `@rollup/plugin-graphql`
   - `@rollup/plugin-image`
   - `@rollup/plugin-json`
+  - `@rollup/plugin-typescript`
   - `@rollup/plugin-yaml`
   - `rollup` <~ of course including rollup itself
   - `rollup-plugin-postcss`
-  - `rollup-plugin-ts`
   - `rollup-plugin-tsconfig-paths`
   - `rollup-plugin-visualizer`
 
