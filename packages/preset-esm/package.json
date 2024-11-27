@@ -1,6 +1,6 @@
 {
   "name": "presetter-preset-esm",
-  "version": "5.0.0",
+  "version": "6.0.0",
   "description": "An opinionated presetter preset for an esm package",
   "keywords": [
     "presetter",
