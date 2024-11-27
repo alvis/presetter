@@ -108,7 +108,7 @@ export default asset<{ default: Linter.Config[] }>((current) => {
           'sonarjs/different-types-comparison': 'off', // rely on TypeScript for type safety and comparison checks
           'sonarjs/function-return-type': 'off', // handled more effectively by @typescript-eslint/explicit-function-return-type
           'sonarjs/no-async-constructor': 'off', // allow async constructors when necessary
-          'sonarjs/no-empty-function': 'off', // prefer @typescript-eslint/no-empty-function for consistency
+          'sonarjs/no-empty-function': 'off', // handled by @typescript-eslint/no-empty-function
           'sonarjs/no-misused-promises': 'off', // handled by @typescript-eslint/no-misused-promises
           'sonarjs/no-nested-assignment': 'off', // permit nested assignments for improved clarity in specific cases
           'sonarjs/no-nested-conditional': 'off', // allow nested conditionals when readability isn't compromised
@@ -116,9 +116,22 @@ export default asset<{ default: Linter.Config[] }>((current) => {
           'sonarjs/no-redeclare': 'off', // leverage TypeScript to detect redeclaration issues
           'sonarjs/no-throw-literal': 'off', // managed by @typescript-eslint/no-throw-literal
           'sonarjs/no-unused-expressions': 'off', // handled by @typescript-eslint/no-unused-expressions
+          'sonarjs/no-redundant-type-constituents': 'off', // handled by @typescript-eslint/no-redundant-type-constituents
           'sonarjs/pseudo-random': 'off', // unnecessary unless dealing with cryptography
           'sonarjs/prefer-nullish-coalescing': 'off', // defer to @typescript-eslint/prefer-nullish-coalescing
           'sonarjs/redundant-type-aliases': 'off', // allow for improved readability
+          'sonarjs/default-param-last': 'off', // handled by @typescript-eslint/default-param-last
+          'sonarjs/max-params': 'off', // handled by @typescript-eslint/max-params
+          'sonarjs/no-array-delete': 'off', // handled by @typescript-eslint/no-array-delete
+          'sonarjs/no-deprecated': 'off', // handled by @typescript-eslint/no-deprecated
+          'sonarjs/no-empty-interface': 'off', // handled by @typescript-eslint/no-empty-interface
+          'sonarjs/no-for-in-array': 'off', // handled by @typescript-eslint/no-for-in-array
+          'sonarjs/no-this-alias': 'off', // handled by @typescript-eslint/no-this-alias
+          'sonarjs/no-useless-constructor': 'off', // handled by @typescript-eslint/no-useless-constructor
+          'sonarjs/prefer-for-of': 'off', // handled by @typescript-eslint/prefer-for-of
+          'sonarjs/prefer-function-type': 'off', // handled by @typescript-eslint/prefer-function-type
+          'sonarjs/prefer-namespace-keyword': 'off', // handled by @typescript-eslint/prefer-namespace-keyword
+          'sonarjs/prefer-string-starts-ends-with': 'off', // handled by @typescript-eslint/prefer-string-starts-ends-with
 
           // Code Quality //
           'sonarjs/cognitive-complexity': [
@@ -127,6 +140,8 @@ export default asset<{ default: Linter.Config[] }>((current) => {
           ],
           'sonarjs/new-cap': 'off', // handled by @typescript-eslint/naming-convention
           'sonarjs/no-small-switch': 'off', // permit small switch cases for concise logic
+          'sonarjs/no-undefined-argument': 'off', // allow undefined arguments for intentional behavior
+          'sonarjs/no-unused-private-class-members': 'off', // use no-unused-private-class-members instead
           'sonarjs/sonar-no-unused-vars': 'off', // defer to @typescript-eslint/no-unused-vars
 
           // Error Prevention //

@@ -123,6 +123,7 @@ export default asset<{ default: Linter.Config[] }>(() => ({
         'symbol-description': 'error', // describe a symbol
 
         // Stylistic Issues //
+        '@typescript-eslint/consistent-type-definitions': 'off', // allow type and interface to be used for their intended purposes
         '@typescript-eslint/member-ordering': [
           // enforce member ordering within classes
           'error',
