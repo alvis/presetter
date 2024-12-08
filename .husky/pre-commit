@@ -1,1 +1,1 @@
-npm run stage
+npx lint-staged --concurrent=false
