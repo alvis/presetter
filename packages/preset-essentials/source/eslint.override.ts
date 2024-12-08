@@ -18,6 +18,14 @@ export default asset<{ default: Linter.Config[] }>(
           ? [includeIgnoreFile(gitignorePath)]
           : []),
         {
+          name: 'presetter-preset-essentials:override:ignore-binary-files',
+          ignores: [`bin`],
+        },
+        {
+          name: 'presetter-preset-essentials:override:ignore-definition-files',
+          ignores: [`**/*.d.ts`],
+        },
+        {
           name: 'presetter-preset-essentials:override:test-files',
           files: [
             `${variables.test!}/**`,
