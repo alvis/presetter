@@ -12,7 +12,6 @@ export default preset('presetter-monorepo', {
       context.root === import.meta.dirname
         ? {
             // for root
-            '.lintstagedrc.json': null,
             '.gitignore': null,
             '.npmignore': null,
             'eslint.config.ts': null,
