@@ -1,16 +1,12 @@
 /* v8 ignore start */
 
 import eslint from '@eslint/js';
-
-import jsdoc from 'eslint-plugin-jsdoc';
-
-import { asset } from 'presetter-types';
-
-import tseslint from 'typescript-eslint';
-
 import comments from '@eslint-community/eslint-plugin-eslint-comments/configs';
 import prettier from 'eslint-config-prettier';
 import imports from 'eslint-plugin-import';
+import jsdoc from 'eslint-plugin-jsdoc';
+import { asset } from 'presetter-types';
+import tseslint from 'typescript-eslint';
 
 import type { Linter } from 'eslint';
 
