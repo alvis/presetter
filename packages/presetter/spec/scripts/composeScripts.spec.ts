@@ -249,7 +249,7 @@ describe('fn:composeScript', () => {
         build: 'run build && other --arg',
       },
       result: {
-        'build': '(run-s build:*) && other --arg',
+        'build': 'run-s build:* && other --arg',
         'build:task': 'task',
       },
     });
@@ -263,7 +263,7 @@ describe('fn:composeScript', () => {
         build: 'other && run build',
       },
       result: {
-        build: 'other && (builder)',
+        build: 'other && builder',
         lint: 'linter',
       },
     });
@@ -288,7 +288,7 @@ describe('fn:composeScript', () => {
         build: 'command1 && run build && command2',
       },
       result: {
-        build: 'command1 && (builder) && command2',
+        build: 'command1 && builder && command2',
       },
     });
 
@@ -300,7 +300,7 @@ describe('fn:composeScript', () => {
         build: '(command1 && run build) || command2',
       },
       result: {
-        build: '(command1 && (builder)) || command2',
+        build: '(command1 && builder) || command2',
       },
     });
 
@@ -313,7 +313,7 @@ describe('fn:composeScript', () => {
         build: 'other --arg && run build lint',
       },
       result: {
-        build: 'other --arg && (builder && linter)',
+        build: 'other --arg && builder && linter',
         lint: 'linter',
       },
     });

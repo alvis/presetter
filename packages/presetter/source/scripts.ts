@@ -59,12 +59,6 @@ export function composeScripts(args: {
       // walk through the tree and replace any call to the runner e.g. preset task1 task2 -- --help
       syntax.Walk(ast, (node) => replaceRunnerNode(node, { template, target }));
 
-      // remove any unnecessary subshell
-      const [statement] = ast.Stmts;
-      if (isNodeType(statement.Cmd, 'Subshell')) {
-        statement.Cmd = statement.Cmd.Stmts[0].Cmd;
-      }
-
       // generate the code from ast
       return printer.Print(ast).trim();
     } catch (error: unknown) {
@@ -146,7 +140,7 @@ function replaceRunnerNode(node: Node, context: ScriptContext): boolean {
       const resolvedCommand = resolveRunner(parts.join(' '), context);
 
       // replace the task definition with its expanded statement
-      node.Cmd = parser.Parse(`(${resolvedCommand})`).Stmts[0].Cmd;
+      node.Cmd = parser.Parse(resolvedCommand).Stmts[0].Cmd;
 
       // recursively replace any runner call in the expanded statement
       replaceRunnerNode(node.Cmd, context);
