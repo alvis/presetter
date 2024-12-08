@@ -1,8 +1,7 @@
 import { basename } from 'node:path';
 
-import parse from 'yargs-parser';
-
 import mvdan from 'mvdan-sh';
+import parse from 'yargs-parser';
 
 import debug from './debugger';
 import { mapValues } from './utilities';

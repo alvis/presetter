@@ -1,10 +1,9 @@
 import { dirname } from 'node:path';
 
+import npmRunScript from '@npmcli/run-script';
 import { Listr } from 'listr2';
 
 import parse from 'yargs-parser';
-
-import npmRunScript from '@npmcli/run-script';
 
 import debug from './debugger';
 import { getPackage } from './package';

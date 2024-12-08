@@ -1,7 +1,7 @@
+import npmRunScript from '@npmcli/run-script';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 
 import { run } from '#run';
-import npmRunScript from '@npmcli/run-script';
 
 vi.spyOn(process, 'exit').mockImplementation((() => {}) as any);
 
@@ -96,7 +96,6 @@ describe('fn:run', () => {
   it('should exit with an error code when any one of the tasks fails', async () => {
     await run([{ selector: 'error', args: [] }]);
 
-    // eslint-disable-next-line @typescript-eslint/unbound-method
     expect(process.exit).toHaveBeenCalledWith(1);
   });
 

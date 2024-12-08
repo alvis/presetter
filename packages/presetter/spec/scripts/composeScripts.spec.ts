@@ -9,7 +9,7 @@ vi.mock('yargs', async (importActual) => {
 
   return {
     default: {
-      parse: vi.fn((path: string) =>
+      parse: vi.fn(async (path: string) =>
         path
           ? yargs().parse(path)
           : {

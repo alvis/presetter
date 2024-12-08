@@ -1,9 +1,8 @@
 /* v8 ignore start */
 
-import globals from 'globals';
-
 import tailwind from 'eslint-plugin-tailwindcss';
 import testing from 'eslint-plugin-testing-library';
+import globals from 'globals';
 
 import type { Linter } from 'eslint';
 

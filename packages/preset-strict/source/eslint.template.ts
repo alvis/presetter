@@ -1,9 +1,8 @@
 /* v8 ignore start */
 
+import noSecrets from 'eslint-plugin-no-secrets';
 import sonarjs from 'eslint-plugin-sonarjs';
 import { asset } from 'presetter-types';
-
-import noSecrets from 'eslint-plugin-no-secrets';
 
 import type { Linter } from 'eslint';
 
