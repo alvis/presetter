@@ -37,7 +37,7 @@
   },
   "peerDependencies": {
     "eslint-plugin-no-secrets": "^1.0.0",
-    "eslint-plugin-sonarjs": "^2.0.0"
+    "eslint-plugin-sonarjs": "^3.0.0"
   },
   "dependencies": {
     "presetter-types": "workspace:*"
