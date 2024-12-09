@@ -46,6 +46,11 @@ compilerOptions:
     '#*':
       - '{source}/*'
       - '{generated}/*'
+    '@':
+      - '{source}'
+    '@/*':
+      - '{source}/*'
+      - '{generated}/*'
     '*':
       - '*'
       - '{types}/*'
