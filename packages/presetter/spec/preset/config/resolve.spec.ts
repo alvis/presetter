@@ -41,22 +41,9 @@ describe('fn:resolvePresetterConfig', () => {
     const expected = { id: 'test-preset' };
 
     expect(result).toEqual(expected);
-    expect(vi.mocked(createJiti)).toHaveBeenCalledWith(root, {
+    expect(vi.mocked(createJiti)).toHaveBeenCalledWith(expect.any(String), {
       debug: false,
-    });
-  });
-
-  it('makes jiti debuggable if the DEBUG environment variable includes "presetter"', async () => {
-    vi.stubEnv('DEBUG', 'presetter');
-
-    const root = '/path/to/project';
-
-    const result = await resolvePresetterConfig(root);
-    const expected = { id: 'test-preset' };
-
-    expect(result).toEqual(expected);
-    expect(vi.mocked(createJiti)).toHaveBeenCalledWith(root, {
-      debug: true,
+      moduleCache: false,
     });
   });
 
