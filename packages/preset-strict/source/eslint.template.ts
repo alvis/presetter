@@ -103,7 +103,7 @@ export default asset<{ default: Linter.Config[] }>((current) => {
         name: 'presetter-preset-strict:sonar',
         rules: {
           // Best Practices //
-          'sonarjs/sonar-no-control-regex': 'off', // disable in favor of a more targeted control-regex rule
+          'sonarjs/no-control-regex': 'off', // disable in favor of a more targeted control-regex rule
           'sonarjs/different-types-comparison': 'off', // rely on TypeScript for type safety and comparison checks
           'sonarjs/function-return-type': 'off', // handled more effectively by @typescript-eslint/explicit-function-return-type
           'sonarjs/no-async-constructor': 'off', // allow async constructors when necessary
@@ -141,7 +141,7 @@ export default asset<{ default: Linter.Config[] }>((current) => {
           'sonarjs/no-small-switch': 'off', // permit small switch cases for concise logic
           'sonarjs/no-undefined-argument': 'off', // allow undefined arguments for intentional behavior
           'sonarjs/no-unused-private-class-members': 'off', // use no-unused-private-class-members instead
-          'sonarjs/sonar-no-unused-vars': 'off', // defer to @typescript-eslint/no-unused-vars
+          'sonarjs/no-unused-vars': 'off', // defer to @typescript-eslint/no-unused-vars
 
           // Error Prevention //
           'sonarjs/assertions-in-tests': 'off', // disabled due to frequent false positives in test code
