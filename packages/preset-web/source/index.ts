@@ -3,7 +3,7 @@ import { fileURLToPath } from 'node:url';
 
 import { preset } from 'presetter-types';
 
-import * as eslint from './eslint.template';
+import eslint from './eslint.template';
 
 const DIR = fileURLToPath(dirname(import.meta.url));
 

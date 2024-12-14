@@ -8,6 +8,18 @@ import preset, { DEFAULT_VARIABLES as variables } from '#';
 
 import type { PresetContext } from 'presetter-types';
 
+vi.mock('node:fs', async (importActual) => {
+  const actual = await importActual<typeof import('node:fs')>();
+
+  return {
+    ...actual,
+    readdirSync: (path: string) =>
+      path.startsWith('/path/to/project')
+        ? ['tailwind.config.ts']
+        : actual.readdirSync(path),
+  };
+});
+
 vi.mock('node:path', { spy: true });
 
 const OVERRIDES = resolve(import.meta.dirname, '..', 'overrides');
