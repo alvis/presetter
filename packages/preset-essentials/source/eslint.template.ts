@@ -14,7 +14,7 @@ import type { Linter } from 'eslint';
 
 const DOUBLE_OR_HALVE = 2;
 
-export default asset<{ default: Linter.Config[] }>(() => ({
+export default asset<{ default: Linter.Config[] }>((_, { variables }) => ({
   default: tseslint.config(
     eslint.configs.recommended, // eslint recommended rules
     ...tseslint.configs.recommendedTypeChecked, // typescript-specific rules
@@ -33,6 +33,7 @@ export default asset<{ default: Linter.Config[] }>(() => ({
       plugins: { jsdoc, import: imports },
       settings: {
         'import/internal-regex': /^#/,
+        'import/external-module-folders': ['node_modules', variables.types!],
         'import/resolver': {
           typescript: true,
           node: true,
