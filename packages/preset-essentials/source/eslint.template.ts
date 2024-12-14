@@ -32,7 +32,7 @@ export default asset<{ default: Linter.Config[] }>((_, { variables }) => ({
       },
       plugins: { jsdoc, import: imports },
       settings: {
-        'import/internal-regex': /^#/,
+        'import/internal-regex': /^(#|@\/)/,
         'import/external-module-folders': ['node_modules', variables.types!],
         'import/resolver': {
           typescript: true,
