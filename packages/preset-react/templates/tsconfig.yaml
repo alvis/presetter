@@ -15,7 +15,7 @@ compilerOptions:
   jsx: react-jsx
 
   # module resolution
-  moduleResolution: node
+  moduleResolution: bundler
   resolveJsonModule: true
   baseUrl: .
   paths:
