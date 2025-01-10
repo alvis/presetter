@@ -1,5 +1,7 @@
 import { existsSync } from 'node:fs';
+import { dirname } from 'node:path';
 
+import { glob } from 'glob';
 import yargs from 'yargs';
 
 import { bootstrap } from '../preset';
@@ -26,7 +28,17 @@ const bootstrapCommand: CommandModule<
 
     // only proceed if the specified file exists
     if (!only || existsSync(only)) {
-      await bootstrap();
+      // look for all projects by looking for the `preset.json` file
+      const projects = await glob('**/package.json', {
+        ignore: ['**/node_modules/**'],
+      });
+
+      const projectRoots = projects.map(dirname);
+
+      // bootstrap all projects
+      for (const root of projectRoots) {
+        await bootstrap(root);
+      }
     }
   },
 };

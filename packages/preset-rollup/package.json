@@ -30,7 +30,6 @@
     "url": "git+https://github.com/alvis/presetter.git"
   },
   "scripts": {
-    "prepare": "run prepare",
     "build": "run build",
     "coverage": "run coverage --",
     "lint": "run lint --",

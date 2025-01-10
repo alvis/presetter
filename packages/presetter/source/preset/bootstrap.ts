@@ -1,5 +1,5 @@
 import { info } from 'node:console';
-import { resolve } from 'node:path';
+import { relative, resolve } from 'node:path';
 
 import { ensureFile } from '../io';
 import { arePeerPackagesAutoInstalled, reifyDependencies } from '../package';
@@ -11,9 +11,12 @@ import { resolveAssets } from './resolution';
 
 /**
  * generate files from templates and place them to the target project root
+ * @param cwd the current working directory
  */
-export async function bootstrap(): Promise<void> {
-  const context = await getContext();
+export async function bootstrap(cwd?: string): Promise<void> {
+  const context = await getContext(cwd);
+
+  info(`Bootstrapping ${relative(process.cwd(), context.root)}`);
 
   // install all related packages first
   if (!arePeerPackagesAutoInstalled()) {
