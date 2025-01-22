@@ -1,7 +1,7 @@
 import { existsSync } from 'node:fs';
-import { dirname } from 'node:path';
+import { dirname, posix } from 'node:path';
 
-import { glob } from 'glob';
+import { globby } from 'globby';
 import yargs from 'yargs';
 
 import { bootstrap } from '../preset';
@@ -12,7 +12,7 @@ import type { CommandModule } from 'yargs';
 
 const bootstrapCommand: CommandModule<
   Record<string, unknown>,
-  { force?: boolean; only?: string }
+  { only?: string; projects: string[] }
 > = {
   command: 'bootstrap',
   describe: 'setup the project according to the specified preset',
@@ -22,18 +22,30 @@ const bootstrapCommand: CommandModule<
         type: 'string',
         description: 'proceed only if the specified file exists',
       })
+      .option('projects', {
+        type: 'string',
+        alias: 'p',
+        array: true,
+        default: ['.'],
+        description:
+          'a glob pattern matching any target project folders containing package.json',
+      })
       .help(),
   handler: async (argv) => {
-    const { only } = argv;
+    const { only, projects } = argv;
 
     // only proceed if the specified file exists
     if (!only || existsSync(only)) {
       // look for all projects by looking for the `preset.json` file
-      const projects = await glob('**/package.json', {
-        ignore: ['**/node_modules/**'],
-      });
+      const packageJsons = await globby(
+        projects.map((project) => posix.join(project, 'package.json')),
+        {
+          gitignore: true,
+          ignore: ['**/node_modules/**'],
+        },
+      );
 
-      const projectRoots = projects.map(dirname);
+      const projectRoots = packageJsons.map(dirname);
 
       // bootstrap all projects
       for (const root of projectRoots) {

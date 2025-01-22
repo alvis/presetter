@@ -21,7 +21,7 @@
   },
   "scripts": {
     "install": "npx -y only-allow pnpm && husky",
-    "postinstall": "presetter bootstrap",
+    "postinstall": "presetter bootstrap --projects . --projects packages/*",
     "build": "pnpm --recursive run build",
     "coverage": "pnpm run test --coverage",
     "lint": "run-s \"lint:* -- packages/*/source/** packages/*/spec/**\"",
