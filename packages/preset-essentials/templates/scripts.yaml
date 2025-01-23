@@ -14,10 +14,10 @@ lint: run-s "lint:* -- {source} {test}"
 lint:eslint: eslint --flag unstable_ts_config --fix --format stylish --no-error-on-unmatched-pattern --no-warn-ignored
 lint:fixme: leasot --skip-unsupported --exit-nicely package.json
 lint:prettier: prettier --write --no-error-on-unmatched-pattern
-prepare: run-s setup build
-prepublishOnly: true
+prepare: run-s setup
+prepublishOnly: run-s clean build
 release: standard-version --preset metahub
-setup: run-s setup:*
+setup: run-p setup:*
 setup:husky: husky || true
 setup:presetter: presetter bootstrap
 stage: run-p "stage:* -- {@}" --
