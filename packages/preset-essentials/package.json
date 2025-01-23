@@ -1,6 +1,6 @@
 {
   "name": "presetter-preset-essentials",
-  "version": "6.2.0",
+  "version": "7.0.0",
   "description": "A collection of opinionated preset configurations for typescript projects",
   "keywords": [
     "presetter",
