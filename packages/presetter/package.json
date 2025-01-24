@@ -36,9 +36,11 @@
     }
   },
   "publishConfig": {
-    ".": {
-      "types": "./lib/index.d.ts",
-      "import": "./lib/index.js"
+    "exports": {
+      ".": {
+        "types": "./lib/index.d.ts",
+        "import": "./lib/index.js"
+      }
     }
   },
   "repository": {
