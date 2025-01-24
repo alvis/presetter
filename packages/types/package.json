@@ -15,6 +15,18 @@
   "main": "lib/index.js",
   "types": "lib/index.d.ts",
   "type": "module",
+  "exports": {
+    ".": {
+      "development": "./source/index.ts",
+      "import": "./lib/index.js"
+    }
+  },
+  "publishConfig": {
+    ".": {
+      "types": "./lib/index.d.ts",
+      "import": "./lib/index.js"
+    }
+  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/alvis/presetter.git"

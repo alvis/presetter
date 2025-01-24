@@ -32,8 +32,13 @@
   "exports": {
     ".": {
       "development": "./source/index.ts",
-      "default": "./lib/index.js",
-      "types": "./lib/index.d.ts"
+      "default": "./lib/index.js"
+    }
+  },
+  "publishConfig": {
+    ".": {
+      "types": "./lib/index.d.ts",
+      "import": "./lib/index.js"
     }
   },
   "repository": {
