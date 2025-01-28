@@ -1,15 +1,15 @@
 build: run-s clean build:artifact build:typescript
 build:artifact: run-s build:artifact:*
-build:artifact:package: shx mkdir -p {output}
+build:artifact:package: zx --eval "fs.ensureDir('{output}')"
 build:typescript: echo "You must explicitly define your build target. Try presetter-preset-esm or presetter-preset-cjs to set it up."; exit 1
 build:typescript:tsc: tsc -p tsconfig.build.json
 build:typescript:alias: run-s build:typescript:alias:*
 build:typescript:alias:lib: tsc-alias --resolve-full-paths --dir {output}
 build:typescript:alias:root: tsc-alias --resolve-full-paths --dir .
 clean: run-p clean:**
-clean:lib: shx rm -rf {output}
-clean:coverage: shx rm -rf coverage
-clean:tsc: shx rm -f tsconfig.build.tsbuildinfo
+clean:lib: zx --eval "fs.remove('{output}')"
+clean:coverage: zx --eval "fs.remove('coverage')"
+clean:tsc: zx --eval "fs.remove('tsconfig.build.tsbuildinfo')"
 lint: run-s "lint:* -- {source} {test}"
 lint:eslint: eslint --fix --format stylish --no-error-on-unmatched-pattern --no-warn-ignored
 lint:fixme: leasot --skip-unsupported --exit-nicely package.json
