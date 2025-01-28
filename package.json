@@ -25,7 +25,7 @@
     "build": "pnpm --recursive run build",
     "coverage": "pnpm run test --coverage",
     "lint": "run-s \"lint:* -- packages/*/source/** packages/*/spec/**\"",
-    "lint:eslint": "NODE_OPTIONS=--max-old-space-size=8096 eslint --flag unstable_ts_config --flag unstable_config_lookup_from_file --fix --format stylish --no-error-on-unmatched-pattern --no-warn-ignored",
+    "lint:eslint": "NODE_OPTIONS=--max-old-space-size=8096 eslint --flag unstable_config_lookup_from_file --fix --format stylish --no-error-on-unmatched-pattern --no-warn-ignored",
     "lint:fixme": "leasot --skip-unsupported --exit-nicely package.json",
     "lint:prettier": "prettier --write --no-error-on-unmatched-pattern",
     "test": "vitest --passWithNoTests",

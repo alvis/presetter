@@ -51,7 +51,7 @@
     "conventional-changelog-metahub": "^4.0.0",
     "cross-env": "^7.0.0",
     "dotenv-cli": "^7.0.0",
-    "eslint": "^9.0.0",
+    "eslint": "^9.18.0",
     "eslint-config-prettier": "^9.0.0",
     "eslint-import-resolver-typescript": "^3.0.0",
     "eslint-plugin-import": "^2.0.0",
