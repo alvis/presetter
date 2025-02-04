@@ -263,11 +263,17 @@ export default asset<{ default: Linter.Config[] }>((_, { variables }) => ({
               'unknown', // anything else
               'type', // e.g. import type { Foo } from 'foo';
             ],
+            'distinctGroup': false, // do not split subgroups
             'newlines-between': 'always-and-inside-groups', // enable a newline within import groups
             'pathGroups': [
               {
                 group: 'type',
                 pattern: 'node:*', // handle Node.js modules
+                position: 'before',
+              },
+              {
+                group: 'type',
+                pattern: 'node:*/*', // handle Node.js sub modules
                 position: 'before',
               },
               {
