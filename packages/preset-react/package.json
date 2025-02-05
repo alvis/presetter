@@ -43,7 +43,6 @@
   },
   "peerDependencies": {
     "@testing-library/react": "^16.0.0",
-    "@types/react": "^18.0.0",
     "eslint-plugin-react": "^7.0.0",
     "eslint-plugin-testing-library": "^7.0.0",
     "presetter": "workspace:*",
