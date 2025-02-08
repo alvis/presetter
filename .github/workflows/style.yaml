@@ -8,10 +8,10 @@ jobs:
   style:
     runs-on: ubuntu-latest
     steps:
-      - name: enable corepack
-        run: corepack enable
       - name: checkout
         uses: actions/checkout@v4
+      - name: setup pnpm
+        uses: pnpm/action-setup@v4
       - name: use node lts
         uses: actions/setup-node@v4
         with:
@@ -20,6 +20,6 @@ jobs:
       - name: install dependencies
         run: pnpm install
       - name: run code style check
-        run: pnpm run lint 
+        run: pnpm run lint
         env:
           CI: true
