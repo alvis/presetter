@@ -6,7 +6,7 @@ build:typescript:tsc: tsc -p tsconfig.build.json
 build:typescript:alias: run-s build:typescript:alias:*
 build:typescript:alias:lib: tsc-alias --resolve-full-paths --dir {output}
 build:typescript:alias:root: tsc-alias --resolve-full-paths --dir .
-clean: run-p clean:**
+clean: run-s clean:**
 clean:lib: zx --eval "fs.remove('{output}')"
 clean:coverage: zx --eval "fs.remove('coverage')"
 clean:tsc: zx --eval "fs.remove('tsconfig.build.tsbuildinfo')"
