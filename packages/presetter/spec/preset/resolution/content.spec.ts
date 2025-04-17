@@ -155,4 +155,69 @@ describe('fn:resolveNodeContent', () => {
 
     expect(result).toEqual(expected);
   });
+
+  it('should skip merging if the content is returned from a content function ', async () => {
+    const node = {
+      definition: {
+        id: 'parent',
+      },
+      nodes: [
+        {
+          definition: {
+            id: 'child1',
+            assets: { '/path/to/file': { child1: true } },
+          },
+          nodes: [
+            {
+              definition: {
+                id: 'grandchild11',
+                assets: { '/path/to/file': { grandchild11: true } },
+              },
+              nodes: [],
+            },
+            {
+              definition: {
+                id: 'grandchild12',
+                // NOTE: this is a function, not an object, so it should not be merged with content from grandchild11
+                assets: { '/path/to/file': () => ({ grandchild12: true }) },
+              },
+              nodes: [],
+            },
+            {
+              definition: {
+                id: 'grandchild13',
+                assets: { '/path/to/file': { grandchild13: true } },
+              },
+              nodes: [],
+            },
+          ],
+        },
+        {
+          definition: {
+            id: 'child2',
+            assets: { '/path/to/file': { child2: true } },
+          },
+          nodes: [],
+        },
+      ],
+    } satisfies PresetNode;
+    const select = (definition: PresetDefinition) =>
+      definition.assets?.['/path/to/file'];
+
+    const result = await resolveNodeContent({
+      name: '/path/to/file',
+      node,
+      context,
+      select,
+    });
+    const expected = {
+      child1: true,
+      child2: true,
+      // NOTE: no `grandchild11: true`, because the content function from grandchild12 signals a merge stop
+      grandchild12: true,
+      grandchild13: true,
+    };
+
+    expect(result).toEqual(expected);
+  });
 });

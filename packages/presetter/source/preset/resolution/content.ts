@@ -69,12 +69,8 @@ export async function resolveNodeContent<T>(_: {
   debug(`INCOMING (${name})\n${prefixDisplay('└─ ', initial)}`);
 
   const current = await nodes.reduce(
-    async (merged, node) => {
-      const initial = await merged;
-      const next = await resolveNodeContent({ ..._, node, initial });
-
-      return merge(initial, next) as T | null | undefined;
-    },
+    async (merged, node) =>
+      resolveNodeContent({ ..._, node, initial: await merged }),
     initial as Promise<T | null | undefined>,
   );
 
