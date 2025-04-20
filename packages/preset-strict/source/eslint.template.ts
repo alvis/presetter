@@ -9,15 +9,15 @@ import type { Linter } from 'eslint';
 const COGNITIVE_COMPLEXITY = 15;
 
 export default asset<{ default: Linter.Config[] }>((current) => {
-  const configs = current?.default ?? [];
+  const currentConfigs = current?.default ?? [];
 
-  const hasTypescriptEslint = configs.some(
+  const hasTypescriptEslint = currentConfigs.some(
     (config) => !!config.plugins?.['@typescript-eslint'],
   );
 
   return {
     default: [
-      ...configs,
+      ...currentConfigs,
       sonarjs.configs.recommended,
       {
         name: 'presetter-preset-strict:generic',

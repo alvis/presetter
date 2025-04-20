@@ -9,11 +9,12 @@ import type { Linter } from 'eslint';
 
 export default asset<{ default: Linter.Config[] }>(
   (current, { root, variables }) => {
+    const currentConfigs = current?.default ?? [];
     const gitignorePath = resolve(root, '.gitignore');
 
     return {
       default: [
-        ...(current?.default ?? []),
+        ...currentConfigs,
         ...(existsSync(gitignorePath)
           ? [includeIgnoreFile(gitignorePath)]
           : []),

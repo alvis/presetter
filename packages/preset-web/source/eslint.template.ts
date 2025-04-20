@@ -10,9 +10,12 @@ import { asset } from 'presetter';
 
 import type { Linter } from 'eslint';
 
-export default asset<{ default: Linter.Config[] }>((_, { root }) => {
+export default asset<{ default: Linter.Config[] }>((current, { root }) => {
+  const currentConfigs = current?.default ?? [];
+
   return {
     default: [
+      ...currentConfigs,
       ...tailwind.configs['flat/recommended'],
       testing.configs['flat/dom'],
       {
