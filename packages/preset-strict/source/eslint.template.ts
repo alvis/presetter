@@ -123,6 +123,7 @@ export default asset<{ default: Linter.Config[] }>((current) => {
           'sonarjs/max-params': 'off', // handled by @typescript-eslint/max-params
           'sonarjs/no-array-delete': 'off', // handled by @typescript-eslint/no-array-delete
           'sonarjs/deprecation': 'off', // handled by @typescript-eslint/no-deprecated
+          'sonarjs/no-alphabetical-sort': 'off', // while localized sorting is needed sometimes, it is not always necessary
           'sonarjs/no-empty-interface': 'off', // handled by @typescript-eslint/no-empty-interface
           'sonarjs/no-for-in-array': 'off', // handled by @typescript-eslint/no-for-in-array
           'sonarjs/no-this-alias': 'off', // handled by @typescript-eslint/no-this-alias
