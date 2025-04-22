@@ -3,6 +3,7 @@ import { fileURLToPath } from 'node:url';
 
 import { preset } from 'presetter-types';
 
+import eslintOverride from './eslint.override';
 import eslint from './eslint.template';
 
 const DIR = fileURLToPath(dirname(import.meta.url));
@@ -22,6 +23,7 @@ export default preset('presetter-preset-web', {
   override: {
     assets: {
       '.tsconfig.json': resolve(OVERRIDES, 'tsconfig.yaml'),
+      'eslint.config.ts': eslintOverride,
     },
   },
 });

@@ -4,7 +4,6 @@ import { readdirSync } from 'node:fs';
 import { resolve } from 'node:path';
 
 import tailwind from 'eslint-plugin-tailwindcss';
-import testing from 'eslint-plugin-testing-library';
 import globals from 'globals';
 import { asset } from 'presetter';
 
@@ -17,7 +16,6 @@ export default asset<{ default: Linter.Config[] }>((current, { root }) => {
     default: [
       ...currentConfigs,
       ...tailwind.configs['flat/recommended'],
-      testing.configs['flat/dom'],
       {
         name: 'presetter-preset-web',
         languageOptions: {

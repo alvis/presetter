@@ -1,6 +1,5 @@
 /* v8 ignore start */
 
-import testing from 'eslint-plugin-testing-library';
 import { asset } from 'presetter';
 
 import type { Linter } from 'eslint';
@@ -17,11 +16,6 @@ export default asset<{ default: Linter.Config[] }>((current) => {
   return {
     default: [
       ...configs,
-      {
-        name: 'presetter-preset-react:override:test-files',
-        files: ['**/__tests__/**/*.[jt]sx', '**/?(*.)+(spec|test).[jt]sx'],
-        ...testing.configs['flat/react'],
-      },
       {
         name: 'presetter-preset-react:override:react-files',
         files: ['**/*.[jt]sx'],

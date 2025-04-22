@@ -21,7 +21,6 @@
 **presetter-preset-react** is an extension of [**presetter-preset-web**](https://github.com/alvis/presetter) with additional tools to help you to develop a React project with ease via [**presetter**](https://github.com/alvis/presetter).
 
 - ✨ TSX support
-- 🧪 @testing-library/react
 - 📝 Recommended rules from eslint-plugin-react
 
 ## Quick Start
