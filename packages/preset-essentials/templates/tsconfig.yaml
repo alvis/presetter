@@ -2,7 +2,7 @@ compilerOptions:
   # emittance
   outDir: '{output}'
   module: ESNext
-  target: ES2022
+  target: '{target}'
   declaration: true
   declarationMap: true
   incremental: true
@@ -57,7 +57,7 @@ compilerOptions:
 
   # libraries
   lib:
-    - ES2020
+    - '{target}'
 include:
   - '**/*.json'
   - '**/*.ts'

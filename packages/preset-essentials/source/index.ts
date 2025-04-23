@@ -27,6 +27,8 @@ export interface Variables {
   output: string;
   /** the directory containing all test files (default: spec) */
   test: string;
+  /** the typescript build target */
+  target: string;
 }
 
 export const DEFAULT_VARIABLES = {
@@ -36,6 +38,7 @@ export const DEFAULT_VARIABLES = {
   types: 'types',
   output: 'lib',
   test: 'spec',
+  target: 'ES2022',
 } satisfies Variables;
 
 /**
