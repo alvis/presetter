@@ -23,6 +23,7 @@ setup:presetter: presetter bootstrap
 stage: run-p "stage:* -- {@}" --
 stage:lint: run-s "lint:prettier -- {@}" --
 start: run-p "build:typescript -- -w" "build:types:* -- -w"
-test: vitest --passWithNoTests
+test: run-s test:*
+test:vitest: vitest --passWithNoTests
 coverage: npm run --if-present test -- --coverage
 watch: npm run --if-present test -- --watch
