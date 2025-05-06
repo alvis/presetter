@@ -32,6 +32,11 @@ export default asset<{ default: ViteUserConfig }>((current, { variables }) => {
           clean: true,
           ignoreEmptyLines: true,
           include: [`${variables.source!}/**`],
+          exclude: [
+            // exclude type files
+            `${variables.source!}/**/types/**`,
+            `${variables.source!}/**/types.ts`,
+          ],
           provider: 'v8',
           reporter: ['text', 'html', 'clover', 'json', 'lcov'],
         },
