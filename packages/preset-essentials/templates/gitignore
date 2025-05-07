@@ -33,6 +33,7 @@ report.[0-9]*.[0-9]*.[0-9]*.[0-9]*.json
 # cache
 .DS_Store
 .cache
+.eslintcache
 .npm
 .pnpm*
 *.tsbuildinfo
