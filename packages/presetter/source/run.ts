@@ -177,17 +177,16 @@ export async function run(
 
   // find the target project's package.json information
   const pkg = await getPackage();
-  if (templateOnly) {
-    // remove all scripts from the package.json
-    pkg.json.scripts = {};
-  }
+  const distilled: Package = templateOnly
+    ? ({ ...pkg, json: { ...pkg.json, scripts: {} } } as Package)
+    : pkg;
 
   // get the merged script definitions
   const template = await getScripts();
 
   // get Listr tasks based on the provided tasks and package information
   const listTasks = tasks.flatMap((task) =>
-    getListrTasks({ template, pkg, ...task }),
+    getListrTasks({ template, pkg: distilled, ...task }),
   );
 
   // create a Listr instance with the list of tasks and configuration options
