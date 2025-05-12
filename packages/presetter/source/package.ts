@@ -1,9 +1,10 @@
+import { readFile } from 'fs/promises';
 import { homedir } from 'node:os';
 import { resolve } from 'node:path';
 
 import { Arborist } from '@npmcli/arborist';
 import Config from '@npmcli/config';
-import { readPackageUp } from 'read-pkg-up';
+import { findUp } from 'find-up-simple';
 
 import type { PackageJson } from 'type-fest';
 
@@ -51,15 +52,16 @@ export function arePeerPackagesAutoInstalled(): boolean {
  */
 export async function getPackage(root?: string): Promise<Package> {
   // try to find the target project's package.json
-  const detail = await readPackageUp({ cwd: root, normalize: true });
+  const path = await findUp('package.json', { cwd: root, type: 'file' });
 
   // throw an error if there's no package.json found
-  if (!detail) {
+  if (!path) {
     throw new Error("failed to find target's package.json");
   }
 
-  const path = detail.path;
-  const json = detail.packageJson as PackageJson;
+  const json = JSON.parse(
+    await readFile(path, { encoding: 'utf8' }),
+  ) as PackageJson;
 
   return { path, json };
 }

@@ -4,7 +4,7 @@ import { describe, expect, it, vi } from 'vitest';
 
 import { searchPresetterConfigs } from '#preset/config/search';
 
-import type { Options } from 'read-pkg-up';
+import type { Options } from 'find-up-simple';
 
 vi.mock(
   'node:fs',
@@ -25,26 +25,25 @@ vi.mock(
 );
 
 vi.mock(
-  'read-pkg-up',
+  'find-up-simple',
   () =>
     ({
-      readPackageUp: vi.fn(async (options?: Options) => {
+      findUp: vi.fn(async (name: string, options?: Options) => {
         if ((options?.cwd as string).includes('/monorepo')) {
-          return {
-            path: resolve('/monorepo/package.json'),
-            packageJson: {
-              name: 'monorepo',
-              version: '1.0.0',
-              readme: 'README.md',
-              _id: 'id',
-            },
-          };
+          return resolve('/monorepo/package.json');
         }
 
         return undefined;
       }),
-    }) satisfies Partial<typeof import('read-pkg-up')>,
+    }) satisfies Partial<typeof import('find-up-simple')>,
 );
+
+vi.mock('/monorepo/package.json', () => ({
+  name: 'monorepo',
+  version: '1.0.0',
+  readme: 'README.md',
+  _id: 'id',
+}));
 
 describe('fn:searchPresetterConfigs', () => {
   it('returns configuration files from the base directory', async () => {

@@ -1,7 +1,7 @@
 import { existsSync } from 'node:fs';
 import { dirname, resolve } from 'node:path';
 
-import { readPackageUp } from 'read-pkg-up';
+import { findUp } from 'find-up-simple';
 
 import debug from '../../debugger';
 
@@ -22,10 +22,10 @@ export async function searchPresetterConfigs(base: string): Promise<string[]> {
 
   debug(`found ${filesFromBase.length} configuration files from ${base}`);
 
-  const parent = await readPackageUp({ cwd: dirname(base) });
+  const projectRoot = await findUp('package.json', { cwd: dirname(base) });
 
   // if the base is the root of a monorepo, stop searching
-  const filesFromParent = parent?.path
+  const filesFromParent = projectRoot
     ? await searchPresetterConfigs(dirname(base))
     : [];
 
