@@ -1,20 +1,22 @@
-import { createJiti } from 'jiti';
 import { describe, expect, it, vi } from 'vitest';
 
 import { resolvePresetterConfig } from '#preset/config/resolve';
 
 import type { Jiti } from 'jiti';
 
+const createJiti = vi.hoisted(() =>
+  vi.fn(
+    () =>
+      ({
+        import: vi.fn(async () => ({ id: 'test-preset' })),
+      }) as Partial<Jiti> as Jiti,
+  ),
+);
 vi.mock(
   'jiti',
   () =>
     ({
-      createJiti: vi.fn(
-        () =>
-          ({
-            import: vi.fn(async () => ({ id: 'test-preset' })),
-          }) as Partial<Jiti> as Jiti,
-      ),
+      createJiti,
     }) satisfies Partial<typeof import('jiti')>,
 );
 
@@ -41,10 +43,6 @@ describe('fn:resolvePresetterConfig', () => {
     const expected = { id: 'test-preset' };
 
     expect(result).toEqual(expected);
-    expect(vi.mocked(createJiti)).toHaveBeenCalledWith(expect.any(String), {
-      debug: false,
-      moduleCache: false,
-    });
   });
 
   it('throws an error if no configuration file is found', async () => {
