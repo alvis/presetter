@@ -2,22 +2,27 @@ import { resolve as resolvePath } from 'node:path';
 
 import { describe, expect, it, vi } from 'vitest';
 
-import { getContext } from '#preset';
+import { resolveProjectContext } from '#context';
 import { resolve } from '#resolve';
 
-import type { PresetContext } from 'presetter-types';
+import type { ProjectContext } from 'presetter-types';
 
 const { configTs } = vi.hoisted(() => ({ configTs: { foo: () => 'bar' } }));
+
+vi.mock('#context', () => ({
+  resolveProjectContext: vi.fn(
+    async (): Promise<ProjectContext> => ({
+      isRepoRoot: false,
+      repoRoot: resolvePath('/path/to/project'),
+      projectRoot: resolvePath('/path/to/project'),
+      packageJson: {},
+    }),
+  ),
+}));
 
 vi.mock('#preset', async (importActual) => {
   return {
     ...(await importActual<typeof import('#preset')>()),
-    getContext: vi.fn(
-      async (): Promise<PresetContext> => ({
-        root: resolvePath('/path/to/project'),
-        package: {},
-      }),
-    ),
     resolvePresetterConfig: vi.fn(async () => ({
       id: 'test-preset',
       assets: {
@@ -34,7 +39,7 @@ describe('fn:resolve', () => {
     const expected = configTs;
 
     expect(result).toEqual(expected);
-    expect(vi.mocked(getContext)).toHaveBeenCalledWith(
+    expect(vi.mocked(resolveProjectContext)).toHaveBeenCalledWith(
       resolvePath('/path/to/project/nested'),
     );
   });

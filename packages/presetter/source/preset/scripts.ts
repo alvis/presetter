@@ -1,4 +1,5 @@
-import { getContext } from './context';
+import { resolveProjectContext } from '#context';
+
 import { resolveProjectPreset } from './project';
 import { resolveScripts } from './resolution';
 
@@ -7,7 +8,7 @@ import { resolveScripts } from './resolution';
  * @returns scripts template
  */
 export async function getScripts(): Promise<Record<string, string>> {
-  const context = await getContext();
+  const context = await resolveProjectContext();
   const node = await resolveProjectPreset(context);
 
   const script = await resolveScripts(node, context);

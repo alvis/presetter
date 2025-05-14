@@ -1,8 +1,8 @@
 import { dirname, relative, sep } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
+import { resolveProjectContext } from './context';
 import {
-  getContext,
   resolveAsset,
   resolvePreset,
   resolvePresetterConfig,
@@ -16,13 +16,13 @@ import {
  */
 export async function resolve(url: string): Promise<Record<string, unknown>> {
   const path = fileURLToPath(url);
-  const context = await getContext(dirname(path));
+  const context = await resolveProjectContext(dirname(path));
 
   // get the relative name of the asset
-  const name = relative(context.root, path).split(sep).join('/'); // make the path OS agnostic
+  const name = relative(context.projectRoot, path).split(sep).join('/'); // make the path OS agnostic
 
   // get the preset configuration
-  const preset = await resolvePresetterConfig(context.root);
+  const preset = await resolvePresetterConfig(context.projectRoot);
 
   // resolve the preset node
   const node = await resolvePreset(preset, context);

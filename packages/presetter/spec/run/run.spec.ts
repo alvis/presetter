@@ -13,10 +13,12 @@ vi.mock('@npmcli/run-script', () => ({
   }),
 }));
 
-vi.mock('#package', () => ({
-  getPackage: vi.fn(async () => ({
-    path: '/fake/path/package.json',
-    json: {
+vi.mock('#context', () => ({
+  resolveProjectContext: vi.fn(async () => ({
+    isRepoRoot: false,
+    repoRoot: '/fake/path',
+    projectRoot: '/fake/path',
+    packageJson: {
       scripts: {
         custom: 'custom command',
         task: 'run task -- --arg-package',

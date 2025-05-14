@@ -1,7 +1,7 @@
 import { resolveNodeContent } from './content';
 import Debug from './debugger';
 
-import type { PresetContext, PresetNode, Variables } from 'presetter-types';
+import type { PresetNode, ProjectContext, Variables } from 'presetter-types';
 
 /**
  * resolves all variables for a given preset node
@@ -11,7 +11,7 @@ import type { PresetContext, PresetNode, Variables } from 'presetter-types';
  */
 export async function resolveVariables(
   node: PresetNode,
-  context: PresetContext,
+  context: ProjectContext,
 ): Promise<Variables> {
   const name = 'VARIABLES';
   const debug = Debug.extend(name);

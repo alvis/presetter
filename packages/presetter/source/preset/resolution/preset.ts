@@ -1,6 +1,6 @@
 import debug from './debugger';
 
-import type { Preset, PresetContext, PresetNode } from 'presetter-types';
+import type { Preset, PresetNode, ProjectContext } from 'presetter-types';
 
 /**
  * resolve a preset
@@ -10,7 +10,7 @@ import type { Preset, PresetContext, PresetNode } from 'presetter-types';
  */
 export async function resolvePreset(
   preset: Preset,
-  context: PresetContext,
+  context: ProjectContext,
 ): Promise<PresetNode> {
   debug(`resolving node ${preset.id}`);
 

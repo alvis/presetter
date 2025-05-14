@@ -25,14 +25,16 @@ vi.mock(
 );
 
 vi.mock(
-  '#preset/context',
+  '#context',
   () =>
     ({
-      getContext: vi.fn(async () => ({
-        root: resolve('/path/to/project'),
-        package: {},
+      resolveProjectContext: vi.fn(async () => ({
+        isRepoRoot: false,
+        repoRoot: resolve('/path/to/project'),
+        projectRoot: resolve('/path/to/project'),
+        packageJson: {},
       })),
-    }) satisfies Partial<typeof import('#preset/context')>,
+    }) satisfies Partial<typeof import('#context')>,
 );
 
 vi.mock(

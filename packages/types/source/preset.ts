@@ -5,7 +5,7 @@ import type { Promisable } from 'type-fest';
 import type { PresetAssets } from './asset';
 import type { Scripts, Variables } from './auxiliaries';
 import type { PresetContent } from './content';
-import type { PresetContext } from './context';
+import type { ProjectContext } from './context';
 import type { PresetObject } from './object';
 
 /**
@@ -17,7 +17,7 @@ export type Preset = PresetDefinition | (PresetGenerator & { id: string });
  * defines a generator function for presets that accepts a context and returns a preset definition or an array of them
  */
 export type PresetGenerator = (
-  context: PresetContext,
+  context: ProjectContext,
 ) => Promisable<Omit<PresetDefinition, 'id'>>;
 
 /**

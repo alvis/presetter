@@ -8,9 +8,9 @@ import { asset } from 'presetter-types';
 import type { Linter } from 'eslint';
 
 export default asset<{ default: Linter.Config[] }>(
-  (current, { root, variables }) => {
+  (current, { projectRoot, variables }) => {
     const currentConfigs = current?.default ?? [];
-    const gitignorePath = resolve(root, '.gitignore');
+    const gitignorePath = resolve(projectRoot, '.gitignore');
 
     return {
       default: [

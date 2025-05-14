@@ -4,16 +4,18 @@ import Xception from 'xception';
 import { resolvePresetterConfig } from '#preset/config';
 import { resolveProjectPreset } from '#preset/project';
 
-import type { PresetContext, PresetNode } from 'presetter-types';
+import type { PresetNode, ProjectContext } from 'presetter-types';
 
 vi.mock('#preset/config', () => ({
   resolvePresetterConfig: vi.fn(),
 }));
 
 const context = {
-  root: '/path/to/project',
-  package: { name: 'test-package' },
-} satisfies PresetContext;
+  isRepoRoot: false,
+  repoRoot: '/path/to/project',
+  projectRoot: '/path/to/project',
+  packageJson: { name: 'test-package' },
+} satisfies ProjectContext;
 
 describe('fn:resolveProjectPreset', () => {
   it('resolves the project preset successfully', async () => {

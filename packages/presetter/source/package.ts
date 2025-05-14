@@ -1,22 +1,10 @@
-import { readFile } from 'fs/promises';
 import { homedir } from 'node:os';
 import { resolve } from 'node:path';
 
 import { Arborist } from '@npmcli/arborist';
 import Config from '@npmcli/config';
-import { findUp } from 'find-up-simple';
-
-import type { PackageJson } from 'type-fest';
 
 const NPM_VERSION_FOR_PEER_INSTALLATION = 7;
-
-/** package detail */
-export interface Package {
-  /** path to the package.json */
-  path: string;
-  /** content of package.json */
-  json: PackageJson;
-}
 
 /**
  * indicate whether peer packages would be installed automatically
@@ -43,27 +31,6 @@ export function arePeerPackagesAutoInstalled(): boolean {
       major !== undefined &&
       parseInt(major) >= NPM_VERSION_FOR_PEER_INSTALLATION)
   );
-}
-
-/**
- * get scripts from the targeted project's package.json
- * @param root path to the project's root folder
- * @returns package detail
- */
-export async function getPackage(root?: string): Promise<Package> {
-  // try to find the target project's package.json
-  const path = await findUp('package.json', { cwd: root, type: 'file' });
-
-  // throw an error if there's no package.json found
-  if (!path) {
-    throw new Error("failed to find target's package.json");
-  }
-
-  const json = JSON.parse(
-    await readFile(path, { encoding: 'utf8' }),
-  ) as PackageJson;
-
-  return { path, json };
 }
 
 /**

@@ -1,19 +1,17 @@
-import { dirname } from 'node:path';
-
 import npmRunScript from '@npmcli/run-script';
 import { Listr } from 'listr2';
 
 import parse from 'yargs-parser';
 
+import { resolveProjectContext } from './context';
 import debug from './debugger';
-import { getPackage } from './package';
 import { getScripts } from './preset';
 import { composeScripts } from './scripts';
 import { parseGlobalArgs, parseTaskSpec, selectTasks } from './task';
 
 import type { ListrTask, SimpleRenderer } from 'listr2';
+import type { ProjectContext } from 'presetter-types';
 
-import type { Package } from './package';
 import type { Task } from './task';
 
 /**
@@ -21,7 +19,7 @@ import type { Task } from './task';
  * @param _ collection of arguments
  * @param _.composed composed script object containing script definitions
  * @param _.template template object containing script definitions
- * @param _.pkg detail of package.json
+ * @param _.context project context
  * @param _.task task name
  * @param _.args array of arguments
  * @returns array of Listr tasks
@@ -29,11 +27,11 @@ import type { Task } from './task';
 function createListrTask(_: {
   composed: Record<string, string>;
   template: Record<string, string>;
-  pkg: Package;
+  context: ProjectContext;
   task: string;
   args: string[];
 }): ListrTask<never, typeof SimpleRenderer> {
-  const { composed, template, task, args, pkg } = _;
+  const { composed, template, task, args, context } = _;
 
   return {
     title: `Running ${task}...`,
@@ -52,7 +50,7 @@ function createListrTask(_: {
 
         // get subtasks based on the task specifications and global arguments
         const subTasks = taskSpecs.flatMap((taskSpec) =>
-          getListrTasksBySpec({ template, pkg, taskSpec, globalArgs }),
+          getListrTasksBySpec({ template, context, taskSpec, globalArgs }),
         );
 
         const concurrent = executable === 'run-p';
@@ -62,7 +60,12 @@ function createListrTask(_: {
         taskControl.output = `${composed[task]} ${args.join(' ')}`;
 
         // run the npm script with the provided arguments and package information
-        return runWithNPM({ task, args, pkg, composedScript: composed });
+        return runWithNPM({
+          task,
+          args,
+          context,
+          composedScript: composed,
+        });
       }
     },
   };
@@ -72,18 +75,18 @@ function createListrTask(_: {
  * get Listr tasks based on the task specification and global arguments
  * @param _ collection of arguments
  * @param _.template template object containing script definitions
- * @param _.pkg detail of package.json
+ * @param _.context package context
  * @param _.taskSpec task specification string
  * @param _.globalArgs array of global arguments
  * @returns array of Listr tasks
  */
 function getListrTasksBySpec(_: {
   template: Record<string, string>;
-  pkg: Package;
+  context: ProjectContext;
   taskSpec: string;
   globalArgs: string[];
 }): Array<ListrTask<never, typeof SimpleRenderer>> {
-  const { template, pkg, taskSpec, globalArgs } = _;
+  const { template, context, taskSpec, globalArgs } = _;
 
   // parse the task specification and remove any quotes
   const task = parseTaskSpec(
@@ -94,7 +97,7 @@ function getListrTasksBySpec(_: {
   // get Listr tasks based on the provided inputs
   return getListrTasks({
     template,
-    pkg,
+    context,
     selector: task.selector,
     args: task.args,
   });
@@ -104,21 +107,21 @@ function getListrTasksBySpec(_: {
  * create an array of Listr tasks based on the provided inputs
  * @param _ collection of arguments
  * @param _.template template object containing script definitions
- * @param _.pkg detail of package.json
+ * @param _.context project context
  * @param _.selector task selector string
  * @param _.args array of arguments
  * @returns array of Listr tasks
  */
 function getListrTasks(_: {
   template: Record<string, string>;
-  pkg: Package;
+  context: ProjectContext;
   selector: string;
   args: string[];
 }): Array<ListrTask<never, typeof SimpleRenderer>> {
-  const { template, pkg, selector, args } = _;
+  const { template, context, selector, args } = _;
 
   // clone the content for immutability
-  const target = { ...pkg.json.scripts } as Record<string, string>;
+  const target = { ...context.packageJson.scripts } as Record<string, string>;
 
   // compose the script using the provided template and target
   const composed = composeScripts({ template, target });
@@ -128,7 +131,7 @@ function getListrTasks(_: {
 
   // create Listr tasks based on the selected tasks
   return tasks.map((task) =>
-    createListrTask({ composed, template, pkg, task, args }),
+    createListrTask({ composed, template, context, task, args }),
   );
 }
 
@@ -137,17 +140,22 @@ function getListrTasks(_: {
  * @param _ collection of arguments
  * @param _.task task name
  * @param _.args array of arguments
- * @param _.pkg detail of package.json
+ * @param _.context project context
  * @param _.composedScript combined script definitions
  * @returns a promise that will be resolved when the task is completed
  */
 async function runWithNPM(_: {
   task: string;
   args: string[];
-  pkg: Package;
+  context: ProjectContext;
   composedScript: Record<string, string>;
 }): Promise<void> {
-  const { task, args, pkg, composedScript } = _;
+  const {
+    task,
+    args,
+    context: { projectRoot },
+    composedScript,
+  } = _;
 
   debug('RUNNING\n%O', { task, command: composedScript[task] });
 
@@ -155,7 +163,7 @@ async function runWithNPM(_: {
     event: task,
     args,
     pkg: { scripts: composedScript },
-    path: dirname(pkg.path),
+    path: projectRoot,
     stdio: 'inherit',
   });
 }
@@ -176,17 +184,20 @@ export async function run(
   debug('TASK INSTRUCTION\n%O', { tasks, parallel, templateOnly });
 
   // find the target project's package.json information
-  const pkg = await getPackage();
-  const distilled: Package = templateOnly
-    ? ({ ...pkg, json: { ...pkg.json, scripts: {} } } as Package)
-    : pkg;
+  const context = await resolveProjectContext();
+  const distilled: ProjectContext = templateOnly
+    ? ({
+        ...context,
+        packageJson: { ...context.packageJson, scripts: {} },
+      } as ProjectContext)
+    : context;
 
   // get the merged script definitions
   const template = await getScripts();
 
   // get Listr tasks based on the provided tasks and package information
   const listTasks = tasks.flatMap((task) =>
-    getListrTasks({ template, pkg: distilled, ...task }),
+    getListrTasks({ template, context: distilled, ...task }),
   );
 
   // create a Listr instance with the list of tasks and configuration options

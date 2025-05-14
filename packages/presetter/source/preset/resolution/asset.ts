@@ -7,8 +7,8 @@ import { resolveVariables } from './variable';
 
 import type {
   PresetContentContext,
-  PresetContext,
   PresetNode,
+  ProjectContext,
   ResolvedPresetAsset,
   ResolvedPresetAssets,
   Variables,
@@ -46,7 +46,7 @@ export function listAssetNames(
  */
 export async function resolveAssets(
   node: PresetNode,
-  context: PresetContext,
+  context: ProjectContext,
 ): Promise<ResolvedPresetAssets> {
   const debug = Debug.extend('ASSETS').extend(node.definition.id);
 
@@ -80,7 +80,7 @@ export async function resolveAssets(
 export async function resolveAsset(_: {
   name: string;
   node: PresetNode;
-  context: PresetContext;
+  context: ProjectContext;
   variables: Variables;
 }): Promise<ResolvedPresetAsset | null | undefined> {
   const { name, node, context, variables } = _;

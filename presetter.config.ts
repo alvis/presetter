@@ -8,8 +8,8 @@ export default preset('presetter-monorepo', {
     root: '../..',
   },
   override: {
-    assets: (context) =>
-      context.root === import.meta.dirname
+    assets: ({ isRepoRoot }) =>
+      isRepoRoot
         ? {
             // for root
             '.gitignore': null,

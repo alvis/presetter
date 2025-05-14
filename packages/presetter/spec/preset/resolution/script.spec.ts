@@ -3,14 +3,16 @@ import { describe, expect, it, vi } from 'vitest';
 import { resolveNodeContent } from '#preset/resolution/content';
 import { resolveScripts } from '#preset/resolution/script';
 
-import type { PresetContext, PresetNode } from 'presetter-types';
+import type { PresetNode, ProjectContext } from 'presetter-types';
 
 vi.mock('#preset/resolution/content', { spy: true });
 
 const context = {
-  root: '/path/to/project',
-  package: {},
-} satisfies PresetContext;
+  isRepoRoot: false,
+  repoRoot: '/path/to/project',
+  projectRoot: '/path/to/project',
+  packageJson: {},
+} satisfies ProjectContext;
 
 describe('fn:resolveScripts', () => {
   it('should resolve scripts with initial and final pass', async () => {

@@ -6,7 +6,7 @@ import { beforeEach, describe, expect, it, vi } from 'vitest';
 
 import preset, { DEFAULT_VARIABLES as variables } from '#';
 
-import type { PresetContext } from 'presetter-types';
+import type { ProjectContext } from 'presetter-types';
 
 vi.mock('node:fs', async (importActual) => {
   const fs = await importActual<typeof import('node:fs')>();
@@ -24,9 +24,11 @@ const OVERRIDES = resolve(import.meta.dirname, '..', 'overrides');
 const TEMPLATES = resolve(import.meta.dirname, '..', 'templates');
 
 const context = {
-  root: '/path/to/project',
-  package: {},
-} satisfies PresetContext;
+  isRepoRoot: true,
+  repoRoot: '/path/to/project',
+  projectRoot: '/path/to/project',
+  packageJson: {},
+} satisfies ProjectContext;
 
 describe('fn:preset', () => {
   beforeEach(() => vi.clearAllMocks());

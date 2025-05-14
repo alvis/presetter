@@ -4,7 +4,7 @@ import { resolveNodeContent } from './content';
 import Debug from './debugger';
 import { resolveVariables } from './variable';
 
-import type { PresetContext, PresetNode, Scripts } from 'presetter-types';
+import type { PresetNode, ProjectContext, Scripts } from 'presetter-types';
 
 /**
  * resolves all scripts for a given preset node
@@ -14,7 +14,7 @@ import type { PresetContext, PresetNode, Scripts } from 'presetter-types';
  */
 export async function resolveScripts(
   node: PresetNode,
-  context: PresetContext,
+  context: ProjectContext,
 ): Promise<Scripts> {
   const name = 'SCRIPTS';
   const debug = Debug.extend(name);

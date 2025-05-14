@@ -12,7 +12,6 @@
 
 export * from './bootstrap';
 export * from './config';
-export * from './context';
 export * from './project';
 export * from './resolution';
 export * from './scripts';

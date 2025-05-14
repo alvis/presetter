@@ -6,9 +6,9 @@ import Debug from './debugger';
 
 import type {
   PresetContent,
-  PresetContext,
   PresetDefinition,
   PresetNode,
+  ProjectContext,
   Variables,
 } from 'presetter-types';
 
@@ -25,7 +25,7 @@ export async function resolveContent<T>(_: {
   content?: PresetContent<T>;
   current?: T | null;
   variables?: Variables;
-  context: PresetContext;
+  context: ProjectContext;
 }): Promise<T | null | undefined> {
   const { content, current, variables = {}, context } = _;
 
@@ -57,7 +57,7 @@ export async function resolveContent<T>(_: {
 export async function resolveNodeContent<T>(_: {
   name: string;
   node: PresetNode;
-  context: PresetContext;
+  context: ProjectContext;
   initial?: T | null;
   variables?: Variables;
   select: (definition: PresetDefinition) => PresetContent<T> | undefined;
