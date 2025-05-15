@@ -14,12 +14,10 @@ import type { Linter } from 'eslint';
 
 const DOUBLE_OR_HALVE = 2;
 
-export default asset<{ default: Linter.Config[] }>((current, { variables }) => {
-  const currentConfigs = current?.default ?? [];
-
-  return {
+export default asset<{ default: Linter.Config[] }>(
+  (current, { variables }) => ({
     default: tseslint.config(
-      currentConfigs,
+      ...(current?.default ?? []),
       eslint.configs.recommended, // eslint recommended rules
       ...tseslint.configs.recommendedTypeChecked, // typescript-specific rules
       ...tseslint.configs.stylisticTypeChecked, // typescript-specific rules
@@ -347,5 +345,5 @@ export default asset<{ default: Linter.Config[] }>((current, { variables }) => {
         },
       },
     ) as Linter.Config[],
-  };
-});
+  }),
+);

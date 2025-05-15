@@ -10,30 +10,26 @@ import { asset } from 'presetter';
 import type { Linter } from 'eslint';
 
 export default asset<{ default: Linter.Config[] }>(
-  (current, { projectRoot }) => {
-    const currentConfigs = current?.default ?? [];
-
-    return {
-      default: [
-        ...currentConfigs,
-        ...tailwind.configs['flat/recommended'],
-        {
-          name: 'presetter-preset-web',
-          languageOptions: {
-            globals: globals.browser,
+  (current, { projectRoot }) => ({
+    default: [
+      ...(current?.default ?? []),
+      ...tailwind.configs['flat/recommended'],
+      {
+        name: 'presetter-preset-web',
+        languageOptions: {
+          globals: globals.browser,
+        },
+      },
+      {
+        name: 'presetter-preset-web:tailwindcss',
+        settings: {
+          tailwindcss: {
+            config: findTailwindConfigs(projectRoot),
           },
         },
-        {
-          name: 'presetter-preset-web:tailwindcss',
-          settings: {
-            tailwindcss: {
-              config: findTailwindConfigs(projectRoot),
-            },
-          },
-        },
-      ],
-    };
-  },
+      },
+    ],
+  }),
 );
 
 /**
