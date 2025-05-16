@@ -15,7 +15,7 @@ import type { Linter } from 'eslint';
 const DOUBLE_OR_HALVE = 2;
 
 export default asset<{ default: Linter.Config[] }>(
-  (current, { variables }) => ({
+  (current, { variables, projectRoot }) => ({
     default: tseslint.config(
       ...(current?.default ?? []),
       eslint.configs.recommended, // eslint recommended rules
@@ -29,7 +29,7 @@ export default asset<{ default: Linter.Config[] }>(
         languageOptions: {
           parserOptions: {
             projectService: true,
-            tsconfigRootDir: import.meta.dirname,
+            tsconfigRootDir: projectRoot,
           },
         },
         plugins: { jsdoc, import: imports },
