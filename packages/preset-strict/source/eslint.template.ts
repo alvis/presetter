@@ -28,7 +28,7 @@ export default asset<{ default: Linter.Config[] }>((current) => {
           'max-lines': [
             'warn',
             {
-              max: 250, // set a file length limit to improve maintainability
+              max: 300, // set a file length limit to improve maintainability
               skipBlankLines: true, // exclude blank lines to focus on meaningful content
               skipComments: true, // exclude comments to avoid penalizing well-documented files
             },
