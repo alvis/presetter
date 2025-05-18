@@ -20,8 +20,8 @@ export function buildEsmFile(exports: string[]): string {
     '',
     ...exports.map((exportName) =>
       exportName === 'default'
-        ? `export default assets['${exportName}'];`
-        : `export const ${exportName} = assets['${exportName}'];`,
+        ? `export default assets.${exportName};`
+        : `export const ${exportName} = assets.${exportName};`,
     ),
   ].join('\n');
 }

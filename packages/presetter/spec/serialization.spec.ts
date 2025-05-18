@@ -13,8 +13,8 @@ describe('buildEsmFile', () => {
       '',
       `const assets = await resolve(import.meta.url);`,
       '',
-      `export default assets['default'];`,
-      `export const namedExport = assets['namedExport'];`,
+      `export default assets.default;`,
+      `export const namedExport = assets.namedExport;`,
     ].join('\n');
 
     expect(result).toEqual(expectedOutput);
@@ -30,7 +30,7 @@ describe('buildEsmFile', () => {
       '',
       `const assets = await resolve(import.meta.url);`,
       '',
-      `export default assets['default'];`,
+      `export default assets.default;`,
     ].join('\n');
 
     expect(result).toEqual(expectedOutput);
@@ -46,7 +46,7 @@ describe('buildEsmFile', () => {
       '',
       `const assets = await resolve(import.meta.url);`,
       '',
-      `export const namedExport = assets['namedExport'];`,
+      `export const namedExport = assets.namedExport;`,
     ].join('\n');
 
     expect(result).toEqual(expectedOutput);
@@ -82,8 +82,8 @@ describe('fn:serialize', () => {
       '',
       `const assets = await resolve(import.meta.url);`,
       '',
-      `export default assets['default'];`,
-      `export const named = assets['named'];`,
+      `export default assets.default;`,
+      `export const named = assets.named;`,
     ].join('\n');
     expect(result).toEqual(expected);
   });
