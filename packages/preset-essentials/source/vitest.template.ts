@@ -9,14 +9,16 @@ import type { ViteUserConfig } from 'vitest/config';
 
 const plugins = [tsconfigPaths()];
 
-export default asset<{ default: ViteUserConfig }>((current, { variables }) => {
+export default asset<{ default: ViteUserConfig }>((current, context) => {
   const { plugins: incomingPlugins = [], ...rest } = current?.default ?? {};
+  const { packageJson, variables } = context;
 
   return {
     default: mergeConfig(rest, {
       esbuild: { target: 'es2022' }, // required for using `using` statement
       plugins: [...new Set([...plugins, ...incomingPlugins])], // make sure there are no duplicates
       test: {
+        name: `${packageJson.name!}:UNIT`,
         passWithNoTests: true,
         typecheck: {
           enabled: true,
