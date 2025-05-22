@@ -45,7 +45,11 @@ export const DEFAULT_VARIABLES = {
  * @returns list of preset templates
  */
 export default preset('presetter-preset-essentials', (context) => ({
-  variables: DEFAULT_VARIABLES,
+  variables: {
+    ...DEFAULT_VARIABLES,
+    // compute the repository root relative to the project root
+    root: context.relativeRepoRoot,
+  },
   scripts: resolve(TEMPLATES, 'scripts.yaml'),
   assets: {
     ...(context.isRepoRoot

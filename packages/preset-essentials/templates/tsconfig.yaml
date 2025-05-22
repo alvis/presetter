@@ -40,6 +40,7 @@ compilerOptions:
   moduleResolution: bundler
   resolveJsonModule: true
   baseUrl: .
+  rootDir: '{root}' # set rootDir so that tsc won't complain about the output directory being outside of the rootDir
   paths:
     '#':
       - '{source}'
