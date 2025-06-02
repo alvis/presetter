@@ -1,3 +1,6 @@
-import type { ESLint } from 'eslint';
+declare module 'eslint-plugin-no-secrets' {
+  import type { ESLint } from 'eslint';
 
-export default declare as ESLint.Plugin;
+  const plugin: ESLint.Plugin;
+  export default plugin;
+}
