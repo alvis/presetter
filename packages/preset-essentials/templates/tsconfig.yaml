@@ -55,6 +55,10 @@ compilerOptions:
     '*':
       - '*'
       - '{types}/*'
+  typeRoots:
+    - '{types}'
+    - 'node_modules/@types'
+    - '{root}/node_modules/@types'
 
   # libraries
   lib:
