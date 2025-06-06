@@ -1,9 +1,6 @@
 {
   "name": "presetter",
   "version": "7.3.0",
-  "engines": {
-    "node": ">=16.0.0"
-  },
   "description": "Make project configurations clean with presets",
   "keywords": [
     "config",
@@ -18,16 +15,12 @@
   "bugs": {
     "url": "https://github.com/alvis/presetter/issues"
   },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/alvis/presetter.git"
+  },
   "license": "MIT",
   "author": "Alvis HT Tang <alvis@hilbert.space>",
-  "bin": {
-    "presetter": "./bin/cli.js",
-    "run": "./bin/run.js",
-    "run-s": "./bin/run-s.js",
-    "run-p": "./bin/run-p.js"
-  },
-  "main": "lib/index.js",
-  "types": "lib/index.d.ts",
   "type": "module",
   "exports": {
     ".": {
@@ -35,39 +28,25 @@
       "default": "./lib/index.js"
     }
   },
-  "publishConfig": {
-    "exports": {
-      ".": {
-        "types": "./lib/index.d.ts",
-        "import": "./lib/index.js"
-      }
-    }
-  },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/alvis/presetter.git"
+  "main": "lib/index.js",
+  "types": "lib/index.d.ts",
+  "bin": {
+    "presetter": "./bin/cli.js",
+    "run": "./bin/run.js",
+    "run-p": "./bin/run-p.js",
+    "run-s": "./bin/run-s.js"
   },
   "scripts": {
-    "prepare": "tsx --eval \"import('./source/preset/bootstrap.ts').then(({ bootstrap }) => bootstrap())\" && npm run build",
     "build": "npm run script -- build",
     "clean": "npm run script -- clean",
     "coverage": "npm run script -- coverage --",
     "lint": "npm run script -- lint",
+    "prepare": "tsx --eval \"import('./source/preset/bootstrap.ts').then(({ bootstrap }) => bootstrap())\" && npm run build",
     "prepublishOnly": "npm run prepare && npm run script -- prepublishOnly",
     "script": "tsx --eval \"process.argv = [...process.argv.slice(0, 2), 'run', ...process.argv.slice(2)]; import('./source/executable/index.ts');\" -- run --template",
     "stage": "npm run script -- stage --",
     "test": "npm run script -- test --",
     "watch": "npm run script -- watch --"
-  },
-  "devDependencies": {
-    "@types/debug": "^4.0.0",
-    "@types/js-yaml": "^4.0.0",
-    "@types/node": "*",
-    "@types/yargs": "^17.0.0",
-    "presetter-preset-esm": "workspace:*",
-    "presetter-preset-essentials": "workspace:*",
-    "presetter-preset-strict": "workspace:*",
-    "type-fest": "catalog:"
   },
   "dependencies": {
     "@npmcli/arborist": "^8.0.0",
@@ -83,11 +62,32 @@
     "js-yaml": "^4.1.0",
     "listr2": "^8.2.0",
     "mvdan-sh": "^0.10.0",
-    "pupa": "^3.1.0",
     "presetter-types": "workspace:*",
+    "pupa": "^3.1.0",
     "source-map-support": "^0.5.0",
+    "xception": "^6.0.0",
     "yargs": "^17.0.0",
-    "yargs-parser": "^21.0.0",
-    "xception": "^6.0.0"
+    "yargs-parser": "^21.0.0"
+  },
+  "devDependencies": {
+    "@types/debug": "^4.0.0",
+    "@types/js-yaml": "^4.0.0",
+    "@types/node": "*",
+    "@types/yargs": "^17.0.0",
+    "presetter-preset-esm": "workspace:*",
+    "presetter-preset-essentials": "workspace:*",
+    "presetter-preset-strict": "workspace:*",
+    "type-fest": "catalog:"
+  },
+  "engines": {
+    "node": ">=16.0.0"
+  },
+  "publishConfig": {
+    "exports": {
+      ".": {
+        "types": "./lib/index.d.ts",
+        "import": "./lib/index.js"
+      }
+    }
   }
 }

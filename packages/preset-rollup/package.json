@@ -10,13 +10,15 @@
   "bugs": {
     "url": "https://github.com/alvis/presetter/issues"
   },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/alvis/presetter.git"
+  },
   "license": "MIT",
   "author": {
     "name": "Alvis HT Tang",
     "email": "alvis@hilbert.space"
   },
-  "main": "lib/index.js",
-  "types": "lib/index.d.ts",
   "type": "module",
   "exports": {
     ".": {
@@ -24,18 +26,8 @@
       "import": "./lib/index.js"
     }
   },
-  "publishConfig": {
-    "exports": {
-      ".": {
-        "types": "./lib/index.d.ts",
-        "import": "./lib/index.js"
-      }
-    }
-  },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/alvis/presetter.git"
-  },
+  "main": "lib/index.js",
+  "types": "lib/index.d.ts",
   "scripts": {
     "build": "run build",
     "coverage": "run coverage --",
@@ -43,6 +35,13 @@
     "prepublishOnly": "run prepare && run prepublishOnly",
     "test": "run test --",
     "watch": "run watch --"
+  },
+  "dependencies": {
+    "presetter-types": "workspace:*",
+    "type-fest": "catalog:"
+  },
+  "devDependencies": {
+    "presetter": "workspace:*"
   },
   "peerDependencies": {
     "@rollup/plugin-commonjs": "^28.0.0",
@@ -58,11 +57,12 @@
     "rollup-plugin-tsconfig-paths": "^1.0.0",
     "rollup-plugin-visualizer": "^5.0.0"
   },
-  "devDependencies": {
-    "presetter": "workspace:*"
-  },
-  "dependencies": {
-    "presetter-types": "workspace:*",
-    "type-fest": "catalog:"
+  "publishConfig": {
+    "exports": {
+      ".": {
+        "types": "./lib/index.d.ts",
+        "import": "./lib/index.js"
+      }
+    }
   }
 }

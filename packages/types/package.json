@@ -10,16 +10,33 @@
   "bugs": {
     "url": "https://github.com/alvis/presetter/issues"
   },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/alvis/presetter.git"
+  },
   "license": "MIT",
   "author": "Alvis HT Tang <alvis@hilbert.space>",
-  "main": "lib/index.js",
-  "types": "lib/index.d.ts",
   "type": "module",
   "exports": {
     ".": {
       "development": "./source/index.ts",
       "import": "./lib/index.js"
     }
+  },
+  "main": "lib/index.js",
+  "types": "lib/index.d.ts",
+  "scripts": {
+    "bootstrap": "presetter bootstrap",
+    "build": "run build",
+    "coverage": "run coverage --",
+    "lint": "run lint --",
+    "prepare": "tsc --declaration --moduleResolution node --module esnext --target esnext --outdir lib source/index.ts && tsc-esm-fix --sourceMap --target lib",
+    "prepublishOnly": "run prepare && run prepublishOnly",
+    "test": "run test --",
+    "watch": "run watch --"
+  },
+  "dependencies": {
+    "type-fest": "catalog:"
   },
   "publishConfig": {
     "exports": {
@@ -28,22 +45,5 @@
         "import": "./lib/index.js"
       }
     }
-  },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/alvis/presetter.git"
-  },
-  "scripts": {
-    "prepare": "tsc --declaration --moduleResolution node --module esnext --target esnext --outdir lib source/index.ts && tsc-esm-fix --sourceMap --target lib",
-    "bootstrap": "presetter bootstrap",
-    "build": "run build",
-    "coverage": "run coverage --",
-    "lint": "run lint --",
-    "prepublishOnly": "run prepare && run prepublishOnly",
-    "test": "run test --",
-    "watch": "run watch --"
-  },
-  "dependencies": {
-    "type-fest": "catalog:"
   }
 }

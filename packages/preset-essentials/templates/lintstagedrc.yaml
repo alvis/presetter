@@ -1,2 +1,4 @@
 '{source}/**/*.[tj]s':
   - presetter run stage --
+'package.json':
+  - sort-package-json
