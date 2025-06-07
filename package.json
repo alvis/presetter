@@ -1,44 +1,44 @@
 {
   "name": "presetter-monorepo",
-  "private": true,
   "version": "7.3.0",
-  "packageManager": "pnpm@9.15.0",
-  "engines": {
-    "node": ">=20.0.0"
-  },
+  "private": true,
   "description": "Make project configurations clean with presets",
   "keywords": [],
   "homepage": "https://github.com/alvis/presetter#readme",
   "bugs": {
     "url": "https://github.com/alvis/presetter/issues"
   },
-  "license": "MIT",
-  "author": "Alvis HT Tang <alvis@hilbert.space>",
-  "type": "module",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/alvis/presetter.git"
   },
+  "license": "MIT",
+  "author": "Alvis HT Tang <alvis@hilbert.space>",
+  "type": "module",
   "scripts": {
-    "install": "npx -y only-allow pnpm && husky",
-    "postinstall": "presetter bootstrap --projects . --projects packages/*",
     "build": "pnpm --recursive run build",
     "coverage": "pnpm run test --coverage",
+    "install": "npx -y only-allow pnpm && husky",
+    "postinstall": "presetter bootstrap --projects . --projects packages/*",
     "lint": "run-s \"lint:* -- packages/*/source/** packages/*/spec/**\"",
     "lint:eslint": "NODE_OPTIONS=--max-old-space-size=8096 eslint --flag unstable_config_lookup_from_file --fix --format stylish --no-error-on-unmatched-pattern --no-warn-ignored",
     "lint:fixme": "leasot --skip-unsupported --exit-nicely package.json",
     "lint:prettier": "prettier --write --no-error-on-unmatched-pattern",
-    "test": "vitest --passWithNoTests",
-    "stage": "pnpm --recursive exec lint-staged -- --concurrent=false",
     "next": "pnpm run release -- --prerelease next",
     "release": "run-s \"release:root -- {@}\" release:packages release:lock release:git --",
     "release:git": "run-s release:git:*",
     "release:git:add": "git add ':(glob)**/CHANGELOG.md' ':(glob)**/package.json' ':(glob)**/pnpm-lock.yaml'",
     "release:git:commit": "git commit -m \"chore(release): publish v$(npx -c 'echo $npm_package_version')\"",
     "release:git:tag": "git tag v$(npx -c 'echo $npm_package_version')",
-    "release:root": "standard-version --preset metahub --skip.commit --skip.tag",
+    "release:lock": "pnpm install --ignore-scripts",
     "release:packages": "pnpm --recursive --shell-mode exec \"standard-version --path \\$(pwd) --preset metahub --skip.commit --skip.tag  --release-as $(npx -c 'echo $npm_package_version')\"",
-    "release:lock": "pnpm install --ignore-scripts"
+    "release:root": "standard-version --preset metahub --skip.commit --skip.tag",
+    "stage": "pnpm --recursive exec lint-staged -- --concurrent=false",
+    "test": "vitest --passWithNoTests"
+  },
+  "devDependencies": {
+    "@types/node": "^20.0.0",
+    "typescript": "^5.0.0"
   },
   "peerDependencies": {
     "presetter": "workspace:*",
@@ -47,8 +47,8 @@
     "presetter-preset-strict": "workspace:*",
     "presetter-types": "workspace:*"
   },
-  "devDependencies": {
-    "@types/node": "^20.0.0",
-    "typescript": "^5.0.0"
+  "packageManager": "pnpm@9.15.0",
+  "engines": {
+    "node": ">=20.0.0"
   }
 }

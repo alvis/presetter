@@ -10,10 +10,12 @@
   "bugs": {
     "url": "https://github.com/alvis/presetter/issues"
   },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/alvis/presetter.git"
+  },
   "license": "MIT",
   "author": "Alvis HT Tang <alvis@hilbert.space>",
-  "main": "lib/index.js",
-  "types": "lib/index.d.ts",
   "type": "module",
   "exports": {
     ".": {
@@ -21,32 +23,25 @@
       "import": "./lib/index.js"
     }
   },
-  "publishConfig": {
-    "exports": {
-      ".": {
-        "types": "./lib/index.d.ts",
-        "import": "./lib/index.js"
-      }
-    }
-  },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/alvis/presetter.git"
-  },
+  "main": "lib/index.js",
+  "types": "lib/index.d.ts",
   "scripts": {
-    "prepare": "tsc --declaration --moduleResolution bundler --module esnext --target esnext --skipLibCheck --outdir lib source/index.ts && tsc-esm-fix --sourceMap --target lib",
     "bootstrap": "presetter bootstrap",
     "build": "run build",
     "coverage": "run coverage --",
     "lint": "run lint --",
+    "prepare": "tsc --declaration --moduleResolution bundler --module esnext --target esnext --skipLibCheck --outdir lib source/index.ts && tsc-esm-fix --sourceMap --target lib",
     "prepublishOnly": "run prepare && run prepublishOnly",
     "test": "run test --",
     "watch": "run watch --"
   },
+  "dependencies": {
+    "presetter-types": "workspace:*"
+  },
   "peerDependencies": {
+    "@eslint-community/eslint-plugin-eslint-comments": "^4.0.0",
     "@eslint/compat": "^1.0.0",
     "@eslint/js": "^9.0.0",
-    "@eslint-community/eslint-plugin-eslint-comments": "^4.0.0",
     "@vitest/coverage-v8": "^3.0.0",
     "conventional-changelog-metahub": "^4.0.0",
     "cross-env": "^7.0.0",
@@ -61,7 +56,6 @@
     "leasot": "^14.0.0",
     "lint-staged": "^15.0.0",
     "prettier": "^3.0.0",
-    "zx": "^8.0.0",
     "standard-version": "^9.0.0",
     "tsc-alias": "^1.0.0",
     "tsc-esm-fix": "^3.0.0",
@@ -69,10 +63,16 @@
     "tsx": "^4.0.0",
     "typescript": ">=4.7.0",
     "typescript-eslint": "^8.0.0",
+    "vite-tsconfig-paths": "^5.0.0",
     "vitest": "^3.0.0",
-    "vite-tsconfig-paths": "^5.0.0"
+    "zx": "^8.0.0"
   },
-  "dependencies": {
-    "presetter-types": "workspace:*"
+  "publishConfig": {
+    "exports": {
+      ".": {
+        "types": "./lib/index.d.ts",
+        "import": "./lib/index.js"
+      }
+    }
   }
 }

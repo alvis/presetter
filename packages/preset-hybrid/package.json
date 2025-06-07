@@ -10,10 +10,12 @@
   "bugs": {
     "url": "https://github.com/alvis/presetter/issues"
   },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/alvis/presetter.git"
+  },
   "license": "MIT",
   "author": "Alvis HT Tang <alvis@hilbert.space>",
-  "main": "lib/index.js",
-  "types": "lib/index.d.ts",
   "type": "module",
   "exports": {
     ".": {
@@ -21,18 +23,8 @@
       "import": "./lib/index.js"
     }
   },
-  "publishConfig": {
-    "exports": {
-      ".": {
-        "types": "./lib/index.d.ts",
-        "import": "./lib/index.js"
-      }
-    }
-  },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/alvis/presetter.git"
-  },
+  "main": "lib/index.js",
+  "types": "lib/index.d.ts",
   "scripts": {
     "build": "run build",
     "coverage": "run coverage --",
@@ -41,14 +33,22 @@
     "test": "run test --",
     "watch": "run watch --"
   },
-  "peerDependencies": {
-    "presetter": "workspace:*",
-    "presetter-preset-essentials": "workspace:*"
+  "dependencies": {
+    "presetter-types": "workspace:*"
   },
   "devDependencies": {
     "presetter": "workspace:*"
   },
-  "dependencies": {
-    "presetter-types": "workspace:*"
+  "peerDependencies": {
+    "presetter": "workspace:*",
+    "presetter-preset-essentials": "workspace:*"
+  },
+  "publishConfig": {
+    "exports": {
+      ".": {
+        "types": "./lib/index.d.ts",
+        "import": "./lib/index.js"
+      }
+    }
   }
 }
