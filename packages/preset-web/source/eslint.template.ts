@@ -3,7 +3,6 @@
 import { readdirSync } from 'node:fs';
 import { resolve } from 'node:path';
 
-import tailwind from 'eslint-plugin-tailwindcss';
 import globals from 'globals';
 import { asset } from 'presetter';
 
@@ -13,7 +12,6 @@ export default asset<{ default: Linter.Config[] }>(
   (current, { projectRoot }) => ({
     default: [
       ...(current?.default ?? []),
-      ...tailwind.configs['flat/recommended'],
       {
         name: 'presetter-preset-web',
         languageOptions: {
@@ -23,8 +21,8 @@ export default asset<{ default: Linter.Config[] }>(
       {
         name: 'presetter-preset-web:tailwindcss',
         settings: {
-          tailwindcss: {
-            config: findTailwindConfigs(projectRoot),
+          'better-tailwindcss': {
+            tailwindConfig: findTailwindConfigs(projectRoot),
           },
         },
       },
