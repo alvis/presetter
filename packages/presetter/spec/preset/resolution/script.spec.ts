@@ -9,6 +9,8 @@ vi.mock('#preset/resolution/content', { spy: true });
 
 const context = {
   isRepoRoot: false,
+  relativeProjectRoot: '.',
+  relativeRepoRoot: '.',
   repoRoot: '/path/to/project',
   projectRoot: '/path/to/project',
   packageJson: {},

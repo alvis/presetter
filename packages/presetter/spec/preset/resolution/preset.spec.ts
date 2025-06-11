@@ -6,6 +6,8 @@ import type { Preset, PresetNode, ProjectContext } from 'presetter-types';
 
 const context = {
   isRepoRoot: false,
+  relativeProjectRoot: '.',
+  relativeRepoRoot: '.',
   repoRoot: '/path/to/project',
   projectRoot: '/path/to/project',
   packageJson: { name: 'test-package' },

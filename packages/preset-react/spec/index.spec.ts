@@ -27,6 +27,8 @@ const TEMPLATES = resolve(import.meta.dirname, '..', 'templates');
 
 const context = {
   isRepoRoot: false,
+  relativeProjectRoot: '.',
+  relativeRepoRoot: '.',
   repoRoot: '/path/to/project',
   projectRoot: '/path/to/project',
   packageJson: {},

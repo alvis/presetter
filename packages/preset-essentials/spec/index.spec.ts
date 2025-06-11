@@ -25,6 +25,8 @@ const TEMPLATES = resolve(import.meta.dirname, '..', 'templates');
 
 const context = {
   isRepoRoot: true,
+  relativeProjectRoot: '.',
+  relativeRepoRoot: '.',
   repoRoot: '/path/to/project',
   projectRoot: '/path/to/project',
   packageJson: {},
@@ -56,7 +58,14 @@ describe('fn:preset', () => {
   });
 
   it('should skip .husky/pre-commit if .git is not present', async () => {
-    const context = { root: '/packages/project', package: {} };
+    const context = {
+      isRepoRoot: false,
+      relativeProjectRoot: './packages/project',
+      relativeRepoRoot: '../..',
+      repoRoot: '/',
+      projectRoot: '/packages/project',
+      packageJson: {},
+    } satisfies ProjectContext;
 
     const node = await resolvePreset(preset, context);
     listAssetNames(node, { ...context, variables });
