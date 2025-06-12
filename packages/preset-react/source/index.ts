@@ -13,14 +13,6 @@ const DIR = fileURLToPath(dirname(import.meta.url));
 const TEMPLATES = resolve(DIR, '..', 'templates');
 const OVERRIDES = resolve(DIR, '..', 'overrides');
 
-/** config for this preset */
-export interface PresetConfig {
-  /** configuration to be merged with .eslintrc */
-  eslint?: Record<string, unknown>;
-  /** configuration to be merged with tsconfig.json */
-  tsconfig?: Record<string, unknown>;
-}
-
 /** list of configurable variables */
 export interface Variables {
   /** the directory containing all source code (default: source) */
