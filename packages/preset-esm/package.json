@@ -17,6 +17,13 @@
   "license": "MIT",
   "author": "Alvis HT Tang <alvis@hilbert.space>",
   "type": "module",
+  "imports": {
+    "#*": {
+      "types": "./source/*.ts",
+      "development": "./source/*.ts",
+      "import": "./lib/*.js"
+    }
+  },
   "exports": {
     ".": {
       "development": "./source/index.ts",
@@ -30,7 +37,7 @@
     "build": "run build",
     "coverage": "run coverage",
     "lint": "run lint",
-    "prepare": "tsc --declaration --moduleResolution bundler --module esnext --target esnext --skipLibCheck --outdir lib source/index.ts && tsc-esm-fix --sourceMap --target lib",
+    "prepare": "tsc --skipLibCheck --declaration --moduleResolution bundler --module esnext --target esnext --skipLibCheck --outdir lib source/index.ts && tsc-esm-fix --sourceMap --target lib",
     "prepublishOnly": "run prepare && run prepublishOnly",
     "test": "run test",
     "watch": "run watch"
@@ -42,6 +49,12 @@
     "presetter-preset-essentials": "workspace:*"
   },
   "publishConfig": {
+    "imports": {
+      "#*": {
+        "types": "./lib/*.d.ts",
+        "import": "./lib/*.js"
+      }
+    },
     "exports": {
       ".": {
         "types": "./lib/index.d.ts",

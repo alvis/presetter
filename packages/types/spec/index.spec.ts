@@ -1,6 +1,6 @@
 import { describe, expect, expectTypeOf, it } from 'vitest';
 
-import { asset, preset } from '#';
+import { asset, preset } from '#index';
 
 import type {
   Preset,
@@ -8,7 +8,7 @@ import type {
   PresetContentGenerator,
   PresetDefinition,
   PresetGenerator,
-} from '#';
+} from '#index';
 
 describe('fn:preset', () => {
   it('should create a preset with an object definition', () => {

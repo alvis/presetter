@@ -4,7 +4,7 @@ import { resolve } from 'node:path';
 import { listAssetNames, resolveAssets, resolvePreset } from 'presetter';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 
-import preset, { DEFAULT_VARIABLES as variables } from '#';
+import preset, { DEFAULT_VARIABLES as variables } from '#index';
 
 import type { ProjectContext } from 'presetter-types';
 

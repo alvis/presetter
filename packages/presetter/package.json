@@ -22,6 +22,38 @@
   "license": "MIT",
   "author": "Alvis HT Tang <alvis@hilbert.space>",
   "type": "module",
+  "imports": {
+    "#preset": {
+      "types": "./source/preset/index.ts",
+      "development": "./source/preset/index.ts",
+      "import": "./lib/preset/index.js"
+    },
+    "#preset/config": {
+      "types": "./source/preset/config/index.ts",
+      "development": "./source/preset/config/index.ts",
+      "import": "./lib/preset/config/index.js"
+    },
+    "#preset/resolution": {
+      "types": "./source/preset/resolution/index.ts",
+      "development": "./source/preset/resolution/index.ts",
+      "import": "./lib/preset/resolution/index.js"
+    },
+    "#template": {
+      "types": "./source/template/index.ts",
+      "development": "./source/template/index.ts",
+      "import": "./lib/template/index.js"
+    },
+    "#utilities": {
+      "types": "./source/utilities/index.ts",
+      "development": "./source/utilities/index.ts",
+      "import": "./lib/utilities/index.js"
+    },
+    "#*": {
+      "types": "./source/*.ts",
+      "development": "./source/*.ts",
+      "import": "./lib/*.js"
+    }
+  },
   "exports": {
     ".": {
       "development": "./source/index.ts",
@@ -41,9 +73,9 @@
     "clean": "npm run script -- clean",
     "coverage": "npm run script -- coverage --",
     "lint": "npm run script -- lint",
-    "prepare": "tsx --eval \"import('./source/preset/bootstrap.ts').then(({ bootstrap }) => bootstrap())\" && npm run build",
+    "prepare": "tsx --conditions=development --eval \"import('./source/preset/bootstrap.ts').then(({ bootstrap }) => bootstrap())\" && npm run build",
     "prepublishOnly": "npm run prepare && npm run script -- prepublishOnly",
-    "script": "tsx --eval \"process.argv = [...process.argv.slice(0, 2), 'run', ...process.argv.slice(2)]; import('./source/executable/index.ts');\" -- run --template",
+    "script": "tsx --conditions=development --eval \"process.argv = [...process.argv.slice(0, 2), 'run', ...process.argv.slice(2)]; import('./source/executable/index.ts');\" -- run --template",
     "stage": "npm run script -- stage --",
     "test": "npm run script -- test --",
     "watch": "npm run script -- watch --"
@@ -83,6 +115,32 @@
     "node": ">=16.0.0"
   },
   "publishConfig": {
+    "imports": {
+      "#preset": {
+        "types": "./lib/preset/index.d.ts",
+        "import": "./lib/preset/index.js"
+      },
+      "#preset/config": {
+        "types": "./lib/preset/config/index.d.ts",
+        "import": "./lib/preset/config/index.js"
+      },
+      "#preset/resolution": {
+        "types": "./lib/preset/resolution/index.d .ts",
+        "import": "./lib/preset/resolution/index.js"
+      },
+      "#template": {
+        "types": "./lib/template/index.d.ts",
+        "import": "./lib/template/index.js"
+      },
+      "#utilities": {
+        "types": "./lib/utilities/index.d.ts",
+        "import": "./lib/utilities/index.js"
+      },
+      "#*": {
+        "types": "./lib/*.d.ts",
+        "import": "./lib/*.js"
+      }
+    },
     "exports": {
       ".": {
         "types": "./lib/index.d.ts",

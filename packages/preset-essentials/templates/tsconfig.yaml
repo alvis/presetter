@@ -41,20 +41,6 @@ compilerOptions:
   resolveJsonModule: true
   baseUrl: .
   rootDir: '{root}' # set rootDir so that tsc won't complain about the output directory being outside of the rootDir
-  paths:
-    '#':
-      - '{source}'
-    '#*':
-      - '{source}/*'
-      - '{generated}/*'
-    '@':
-      - '{source}'
-    '@/*':
-      - '{source}/*'
-      - '{generated}/*'
-    '*':
-      - '*'
-      - '{types}/*'
   typeRoots:
     - '{types}'
     - 'node_modules/@types'

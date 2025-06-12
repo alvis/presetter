@@ -17,6 +17,13 @@
   "license": "MIT",
   "author": "Alvis HT Tang <alvis@hilbert.space>",
   "type": "module",
+  "imports": {
+    "#*": {
+      "types": "./source/*.ts",
+      "development": "./source/*.ts",
+      "import": "./lib/*.js"
+    }
+  },
   "exports": {
     ".": {
       "development": "./source/index.ts",
@@ -58,6 +65,12 @@
     "tailwindcss": "^4.0.0"
   },
   "publishConfig": {
+    "imports": {
+      "#*": {
+        "types": "./lib/*.d.ts",
+        "import": "./lib/*.js"
+      }
+    },
     "exports": {
       ".": {
         "types": "./lib/index.d.ts",
