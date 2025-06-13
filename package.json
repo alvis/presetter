@@ -20,7 +20,7 @@
     "coverage": "pnpm run test --coverage",
     "install": "npx -y only-allow pnpm && husky",
     "postinstall": "presetter bootstrap --projects . --projects packages/*",
-    "lint": "run-s \"lint:* -- packages/*/source/** packages/*/spec/**\"",
+    "lint": "run-s \"lint:* -- packages/*/src/** packages/*/spec/**\"",
     "lint:eslint": "NODE_OPTIONS=--max-old-space-size=8096 eslint --flag unstable_config_lookup_from_file --fix --format stylish --no-error-on-unmatched-pattern --no-warn-ignored",
     "lint:fixme": "leasot --skip-unsupported --exit-nicely package.json",
     "lint:prettier": "prettier --write --no-error-on-unmatched-pattern",

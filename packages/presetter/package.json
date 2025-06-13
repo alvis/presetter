@@ -24,39 +24,39 @@
   "type": "module",
   "imports": {
     "#preset": {
-      "types": "./source/preset/index.ts",
-      "development": "./source/preset/index.ts",
+      "types": "./src/preset/index.ts",
+      "development": "./src/preset/index.ts",
       "import": "./lib/preset/index.js"
     },
     "#preset/config": {
-      "types": "./source/preset/config/index.ts",
-      "development": "./source/preset/config/index.ts",
+      "types": "./src/preset/config/index.ts",
+      "development": "./src/preset/config/index.ts",
       "import": "./lib/preset/config/index.js"
     },
     "#preset/resolution": {
-      "types": "./source/preset/resolution/index.ts",
-      "development": "./source/preset/resolution/index.ts",
+      "types": "./src/preset/resolution/index.ts",
+      "development": "./src/preset/resolution/index.ts",
       "import": "./lib/preset/resolution/index.js"
     },
     "#template": {
-      "types": "./source/template/index.ts",
-      "development": "./source/template/index.ts",
+      "types": "./src/template/index.ts",
+      "development": "./src/template/index.ts",
       "import": "./lib/template/index.js"
     },
     "#utilities": {
-      "types": "./source/utilities/index.ts",
-      "development": "./source/utilities/index.ts",
+      "types": "./src/utilities/index.ts",
+      "development": "./src/utilities/index.ts",
       "import": "./lib/utilities/index.js"
     },
     "#*": {
-      "types": "./source/*.ts",
-      "development": "./source/*.ts",
+      "types": "./src/*.ts",
+      "development": "./src/*.ts",
       "import": "./lib/*.js"
     }
   },
   "exports": {
     ".": {
-      "development": "./source/index.ts",
+      "development": "./src/index.ts",
       "default": "./lib/index.js"
     }
   },
@@ -73,9 +73,9 @@
     "clean": "npm run script -- clean",
     "coverage": "npm run script -- coverage --",
     "lint": "npm run script -- lint",
-    "prepare": "tsx --conditions=development --eval \"import('./source/preset/bootstrap.ts').then(({ bootstrap }) => bootstrap())\" && npm run build",
+    "prepare": "tsx --conditions=development --eval \"import('./src/preset/bootstrap.ts').then(({ bootstrap }) => bootstrap())\" && npm run build",
     "prepublishOnly": "npm run prepare && npm run script -- prepublishOnly",
-    "script": "tsx --conditions=development --eval \"process.argv = [...process.argv.slice(0, 2), 'run', ...process.argv.slice(2)]; import('./source/executable/index.ts');\" -- run --template",
+    "script": "tsx --conditions=development --eval \"process.argv = [...process.argv.slice(0, 2), 'run', ...process.argv.slice(2)]; import('./src/executable/index.ts');\" -- run --template",
     "stage": "npm run script -- stage --",
     "test": "npm run script -- test --",
     "watch": "npm run script -- watch --"

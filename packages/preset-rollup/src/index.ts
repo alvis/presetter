@@ -19,7 +19,7 @@ export interface Variables {
 }
 
 export const DEFAULT_VARIABLES = {
-  source: 'source',
+  source: 'src',
   output: 'lib',
 } satisfies Variables;
 

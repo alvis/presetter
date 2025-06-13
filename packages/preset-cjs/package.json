@@ -19,14 +19,14 @@
   "type": "module",
   "imports": {
     "#*": {
-      "types": "./source/*.ts",
-      "development": "./source/*.ts",
+      "types": "./src/*.ts",
+      "development": "./src/*.ts",
       "import": "./lib/*.js"
     }
   },
   "exports": {
     ".": {
-      "development": "./source/index.ts",
+      "development": "./src/index.ts",
       "import": "./lib/index.js"
     }
   },
@@ -37,7 +37,7 @@
     "build": "run build",
     "coverage": "run coverage",
     "lint": "run lint",
-    "prepare": "tsc --skipLibCheck --declaration --moduleResolution bundler --module esnext --target esnext --skipLibCheck --outdir lib source/index.ts && tsc-esm-fix --sourceMap --target lib",
+    "prepare": "tsc --skipLibCheck --declaration --moduleResolution bundler --module esnext --target esnext --skipLibCheck --outdir lib src/index.ts && tsc-esm-fix --sourceMap --target lib",
     "prepublishOnly": "run prepare && run prepublishOnly",
     "test": "run test",
     "watch": "run watch"
@@ -49,16 +49,16 @@
     "presetter-preset-essentials": "workspace:*"
   },
   "publishConfig": {
-    "imports": {
-      "#*": {
-        "types": "./lib/*.d.ts",
-        "import": "./lib/*.js"
-      }
-    },
     "exports": {
       ".": {
         "types": "./lib/index.d.ts",
         "import": "./lib/index.js"
+      }
+    },
+    "imports": {
+      "#*": {
+        "types": "./lib/*.d.ts",
+        "import": "./lib/*.js"
       }
     }
   }

@@ -30,7 +30,7 @@ This repo is a monorepo. It contains the code for presetter and a simple preset.
 Here's a quick guide to the content of the monorepo.
 
 | Package                                                   | Description                                                                    |
-|-----------------------------------------------------------|--------------------------------------------------------------------------------|
+| --------------------------------------------------------- | ------------------------------------------------------------------------------ |
 | [presetter](packages/presetter)                           | The core of presetter containing all the logic and the CLI utility             |
 | [presetter-preset-essentials](packages/preset-essentials) | A battery-loaded preset for building presetter, containing typescript and more |
 | [presetter-preset-strict](packages/preset-strict)         | An extension of presetter-preset-essentials with stricter rules                |
@@ -44,7 +44,7 @@ Here's a quick guide to the content of the monorepo.
 
 We write code in [test-driven development (TDD)](https://en.wikipedia.org/wiki/test-driven_development) approach.
 
-All tests are hosted under the `spec` folder, with the same structure as the `source` folder so that tests are easy to be located.
+All tests are hosted under the `spec` folder, with the same structure as the `src` folder so that tests are easy to be located.
 In general, each source file should have its own test file.
 
 ### Requirement

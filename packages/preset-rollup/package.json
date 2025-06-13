@@ -22,14 +22,14 @@
   "type": "module",
   "imports": {
     "#*": {
-      "types": "./source/*.ts",
-      "development": "./source/*.ts",
+      "types": "./src/*.ts",
+      "development": "./src/*.ts",
       "import": "./lib/*.js"
     }
   },
   "exports": {
     ".": {
-      "development": "./source/index.ts",
+      "development": "./src/index.ts",
       "import": "./lib/index.js"
     }
   },
@@ -65,16 +65,16 @@
     "rollup-plugin-visualizer": "^5.0.0"
   },
   "publishConfig": {
-    "imports": {
-      "#*": {
-        "types": "./lib/*.d.ts",
-        "import": "./lib/*.js"
-      }
-    },
     "exports": {
       ".": {
         "types": "./lib/index.d.ts",
         "import": "./lib/index.js"
+      }
+    },
+    "imports": {
+      "#*": {
+        "types": "./lib/*.d.ts",
+        "import": "./lib/*.js"
       }
     }
   }

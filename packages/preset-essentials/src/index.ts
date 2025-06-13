@@ -18,7 +18,7 @@ export interface Variables {
   root: string;
   /** the directory containing all source code (default: generated) */
   generated: string;
-  /** the directory containing all source code (default: source) */
+  /** the directory containing all source code (default: src) */
   source: string;
   /** the directory containing all extra typing files (default: types) */
   types: string;
@@ -33,7 +33,7 @@ export interface Variables {
 export const DEFAULT_VARIABLES = {
   root: '.',
   generated: 'generated',
-  source: 'source',
+  source: 'src',
   types: 'types',
   output: 'lib',
   test: 'spec',

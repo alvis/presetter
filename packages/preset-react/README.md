@@ -62,20 +62,20 @@ and now you can try to run some example life cycle scripts (e.g. run prepare).
 
 After installation, your project file structure should resemble the following, or include more configuration files if you also installed other presets.
 
-Implement your business logic under `source` and prepare tests under `spec`.
+Implement your business logic under `src` and prepare tests under `spec`.
 The `.d.ts` files are handy type definitions for you to import `.css` or image files in typescript.
 
 **NOTE** You will notice there's no additional configuration file on your root folder like other presets such as [`presetter-preset-esm`](https://github.com/alvis/presetter/blob/master/packages/preset-esm).
 It's because `presetter-preset-react` extends `presetter-preset-web` which is a bundle only preset, meaning it only helps you to install the development packages specified in this preset only.
 
-**TIPS** You can always change the source directory to other (e.g. src) by setting the `source` variable in `presetter.config.ts`. See the [customization](https://github.com/alvis/presetter/blob/master/packages/preset-essentials#customization) section below for more details.
+**TIPS** You can always change the source directory to other (e.g. src) by setting the `src` variable in `presetter.config.ts`. See the [customization](https://github.com/alvis/presetter/blob/master/packages/preset-essentials#customization) section below for more details.
 
 ```
 (root)
  ├─ .git
  ├─ presetter.config.ts
  ├─ node_modules
- ├─ source
+ ├─ src
  │   ├─ <folders>
  │   ├─ index.ts
  │   ├─ (auxiliary).ts

@@ -20,7 +20,7 @@
 
 To work with presetter-preset-strict, you'll need another preset like [`presetter-preset-esm`](https://github.com/alvis/presetter/blob/master/packages/preset-esm) for ESM support and other basic toolings.
 
-You can check out the [additional rules here](https://github.com/alvis/presetter/tree/master/packages/preset-strict/source).
+You can check out the [additional rules here](https://github.com/alvis/presetter/tree/master/packages/preset-strict/src).
 
 In addition to a set of opinionated configuration files, it also provides a number of essential lifecycle and helper commands.
 
@@ -62,9 +62,9 @@ and now you can try to run some example life cycle scripts (e.g. run prepare).
 
 After installation, your project file structure should resemble the following, or include more configuration files if you also installed other presets.
 
-Implement your business logic under `source` and prepare tests under `spec`.
+Implement your business logic under `src` and prepare tests under `spec`.
 
-**TIPS** You can always change the source directory to other (e.g. src) by setting the `source` variable in `presetter.config.ts`. See the [customization](https://github.com/alvis/presetter/blob/master/packages/preset-essentials#customization) section below for more details.
+**TIPS** You can always change the source directory to other (e.g. src) by setting the `src` variable in `presetter.config.ts`. See the [customization](https://github.com/alvis/presetter/blob/master/packages/preset-essentials#customization) section below for more details.
 
 ```
 (root)
@@ -75,7 +75,7 @@ Implement your business logic under `source` and prepare tests under `spec`.
  ├─ .prettierrc.json
  ├─ presetter.config.ts
  ├─ node_modules
- ├─ source
+ ├─ src
  │   ├─ <folders>
  │   ├─ index.ts
  │   ├─ (auxiliary).ts
