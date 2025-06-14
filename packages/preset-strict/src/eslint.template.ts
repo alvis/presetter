@@ -103,10 +103,12 @@ export default asset<{ default: Linter.Config[] }>((current) => {
         name: 'presetter-preset-strict:sonar',
         rules: {
           // Best Practices //
-          'sonarjs/no-control-regex': 'off', // disable in favor of a more targeted control-regex rule
+          'sonarjs/arguments-order': 'off', // handled by typescript natively
           'sonarjs/different-types-comparison': 'off', // rely on TypeScript for type safety and comparison checks
           'sonarjs/function-return-type': 'off', // handled more effectively by @typescript-eslint/explicit-function-return-type
           'sonarjs/no-async-constructor': 'off', // allow async constructors when necessary
+          'sonarjs/no-commented-code': 'off', // off due to extremely slow performance
+          'sonarjs/no-control-regex': 'off', // disable in favor of a more targeted control-regex rule
           'sonarjs/no-empty-function': 'off', // handled by @typescript-eslint/no-empty-function
           'sonarjs/no-misused-promises': 'off', // handled by @typescript-eslint/no-misused-promises
           'sonarjs/no-nested-assignment': 'off', // permit nested assignments for improved clarity in specific cases
