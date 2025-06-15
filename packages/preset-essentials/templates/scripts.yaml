@@ -24,5 +24,8 @@ stage: run-p "stage:* -- {@}" --
 stage:lint: run-s "lint:prettier -- {@}" --
 start: run-p "build:typescript -- -w" "build:types:* -- -w"
 test: vitest --passWithNoTests
+test:unit: run-s "test -- --project=*:UNIT {@}" --
+test:int: run-s "test -- --project=*:INT {@}" --
+test:e2e: run-s "test -- --project=*:E2E {@}" --
+watch: 'run-s "test:unit -- --watch {@}" --'
 coverage: npm run --if-present test -- --coverage
-watch: npm run --if-present test -- --watch
