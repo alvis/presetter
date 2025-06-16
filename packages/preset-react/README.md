@@ -102,6 +102,9 @@ You can further customize (either extending or replacing) the configuration by s
 - **`run clean`**: Clean up any previously transpiled code
 - **`run develop -- <file path>`**: Create a service that run the specified file whenever the source has changed
 - **`run test`**: Run all tests
+- **`run test:unit`**: Run only unit tests
+- **`run test:int`**: Run only integration tests
+- **`run test:e2e`**: Run only end-to-end tests
 - **`run watch`**: Rerun all tests whenever the source has change
 - **`run coverage`**: Run all test with coverage report
 - **`run release`**: Bump the version and automatically generate a change log

@@ -443,8 +443,8 @@ Explore these example presets to see **Presetter** in action:
 | [presetter-preset-hybrid](/packages/preset-hybrid)         | Aimed at creating dual CommonJS/ESM packages with minimal hassle.                                                        |
 | [presetter-preset-react](/packages/preset-react)           | An opinionated preset optimized for React development.                                                                   |
 | [presetter-preset-rollup](/packages/preset-rollup)         | An opinionated preset optimized for Rollup development.                                                                  |
-| [presetter-preset-strict](/packages/preset-strict)         | Extends `presetter-preset-esm` with additional strict rules for enhanced development workflows.                          |
-| [presetter-preset-web](/packages/preset-web)               | Extends `presetter-preset-esm` with bundling GraphQL, PostCSS, and TailwindCSS with no extras.                           |
+| [presetter-preset-strict](/packages/preset-strict)         | Extends `presetter-preset-esm` with strict linting rules, optimized for performance.                                     |
+| [presetter-preset-web](/packages/preset-web)               | Extends `presetter-preset-esm` with Storybook v9, TailwindCSS v4, GraphQL, and PostCSS.                                 |
 
 ---
 

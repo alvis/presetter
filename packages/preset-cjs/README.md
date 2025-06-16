@@ -10,7 +10,7 @@
 [![build](https://img.shields.io/github/actions/workflow/status/alvis/presetter/test.yaml?branch=master&style=flat-square)](https://github.com/alvis/presetter/actions)
 [![maintainability](https://img.shields.io/codeclimate/maintainability/alvis/presetter?style=flat-square)](https://codeclimate.com/github/alvis/presetter/maintainability)
 [![coverage](https://img.shields.io/codeclimate/coverage/alvis/presetter?style=flat-square)](https://codeclimate.com/github/alvis/presetter/test_coverage)
-[![security](https://img.shields.io/snyk/vulnerabilities/github/alvis/presetter/packages/preset-esm/package.json.svg?style=flat-square)](https://snyk.io/test/github/alvis/presetter?targetFile=packages/preset-esm/package.json&style=flat-square)
+[![security](https://img.shields.io/snyk/vulnerabilities/github/alvis/presetter/packages/preset-cjs/package.json.svg?style=flat-square)](https://snyk.io/test/github/alvis/presetter?targetFile=packages/preset-cjs/package.json&style=flat-square)
 [![dependencies](https://img.shields.io/librariesio/release/npm/presetter-preset-cjs?style=flat-square)](https://libraries.io/npm/presetter-preset-cjs)
 [![license](https://img.shields.io/github/license/alvis/presetter.svg?style=flat-square)](https://github.com/alvis/presetter/blob/master/LICENSE)
 
@@ -83,7 +83,7 @@ After installation, your project file structure should resemble the following, o
 
 Implement your business logic under `src` and prepare tests under `spec`.
 
-**TIPS** You can always change the source directory to other (e.g. src) by setting the `src` variable in `presetter.config.ts`. See the [customization](https://github.com/alvis/presetter/blob/master/packages/preset-essentials#customization) section below for more details.
+**TIPS** You can always change the source directory by setting the `source` variable in `presetter.config.ts`. See the [customization](https://github.com/alvis/presetter/blob/master/packages/preset-essentials#customization) section below for more details.
 
 ```plain
 (root)
@@ -118,7 +118,10 @@ You can further customize (either extending or replacing) the configuration by s
 - **`run clean`**: Clean up any previously transpiled code
 - **`run develop -- <file path>`**: Create a service that run the specified file whenever the source has changed
 - **`run test`**: Run all tests
-- **`run watch`**: Rerun all tests whenever the source has change
-- **`run coverage`**: Run all test with coverage report
+- **`run test:unit`**: Run unit tests only (files matching *:UNIT pattern)
+- **`run test:int`**: Run integration tests only (files matching *:INT pattern)
+- **`run test:e2e`**: Run end-to-end tests only (files matching *:E2E pattern)
+- **`run watch`**: Rerun unit tests whenever the source has changed
+- **`run coverage`**: Run all tests with coverage report
 - **`run release`**: Bump the version and automatically generate a change log
 - **`run release -- --prerelease <tag>`**: Release with a prerelease tag

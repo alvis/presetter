@@ -21,7 +21,9 @@
 **presetter-preset-web** is an opinionated preset for you to setup some common tools for a web project in a fraction of time you usually take via [**presetter**](https://github.com/alvis/presetter)
 
 - 💄 PostCSS 8
-- 💨 TailwindCSS 3
+- 💨 TailwindCSS 4
+- 📚 Storybook 9
+- 🎨 Additional tools for modern web development
 
 ## Quick Start
 

@@ -74,7 +74,7 @@ you don't need to bootstrap the preset as it's done automatically.
 To adopt a preset to an empty project, simple run `presetter use <preset>` on your project root.
 By running this command, it will
 
-- create a `.presetterrc` file under the root, detailing the preset setting,
+- create a `presetter.config.ts` file under the root, detailing the preset setting,
 - add a `presetter bootstrap` command to the prepublish life cycle script in your `package.json`, and
 - bootstrap the preset at the end of the process.
 
@@ -134,16 +134,20 @@ Presetter support customization in two ways.
 
 #### Preset Customization
 
-If your preset support customization, you can supply the customization parameter via the `config` field in `.presetterrc`.
-e.g. For [presetter-preset-esm](https://github.com/alvis/presetter/tree/master/packages/preset-esm), you can adding an expression to `.gitignore` with the following in `.presetterrc`:
+If your preset support customization, you can supply the customization parameter via the preset configuration in `presetter.config.ts`.
+e.g. For [presetter-preset-esm](https://github.com/alvis/presetter/tree/master/packages/preset-esm), you can add additional configurations like this:
 
-```json
-{
-  "preset": "presetter-preset-esm",
-  "config": {
-    "gitignore": ["<pattern to ignore>"]
+```typescript
+// presetter.config.ts
+import { preset } from 'presetter';
+import esm from 'presetter-preset-esm';
+
+export default preset('project name', {
+  extends: [esm],
+  assets: {
+    '.gitignore': ['<pattern to ignore>']
   }
-}
+});
 ```
 
 #### Local Configuration

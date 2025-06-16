@@ -60,7 +60,7 @@ To kickstart a library, set the following in your `package.json` and follow the 
 
 [**FULL DOCUMENTATION IS AVAILABLE HERE**](https://github.com/alvis/presetter/blob/master/README.md)
 
-### 1. Bootstrap your project with presetter-preset-web
+### 1. Bootstrap your project with presetter-preset-rollup
 
 On your project root, create a `presetter.config.ts` file with the following content:
 
@@ -124,6 +124,9 @@ You can further customize (either extending or replacing) the configuration by s
 - **`run clean`**: Clean up any previously transpiled code
 - **`run develop -- <file path>`**: Create a service that run the specified file whenever the source has changed
 - **`run test`**: Run all tests
+- **`run test:unit`**: Run only unit tests
+- **`run test:int`**: Run only integration tests
+- **`run test:e2e`**: Run only end-to-end tests
 - **`run watch`**: Rerun all tests whenever the source has change
 - **`run coverage`**: Run all test with coverage report
 - **`run release`**: Bump the version and automatically generate a change log
