@@ -17,7 +17,7 @@ export default asset<{ default: ViteUserConfig }>((current, context) => {
         passWithNoTests: true,
         typecheck: {
           enabled: true,
-          tsconfig: 'tsconfig.build.json',
+          tsconfig: 'tsconfig.json',
         },
         watch: false,
         // auto clear mocks and stubs
