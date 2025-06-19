@@ -330,6 +330,16 @@ export default asset<{ default: Linter.Config[] }>(
 
           // Error Prevention //
           '@typescript-eslint/no-non-null-assertion': 'off', // allow non-null assertions
+          '@typescript-eslint/restrict-template-expressions': [
+            'error',
+            {
+              allowBoolean: true,
+              allowNever: true,
+              allowNullish: true,
+              allowNumber: true,
+              allowRegExp: true,
+            },
+          ], // allow certain auto-conversion of template literals to strings
           '@typescript-eslint/unbound-method': [
             'error', // invoking an unbound method is error-prone
             {
