@@ -3,6 +3,7 @@
 import eslint from '@eslint/js';
 import comments from '@eslint-community/eslint-plugin-eslint-comments/configs';
 import prettier from 'eslint-config-prettier';
+import compat from 'eslint-plugin-compat';
 import imports from 'eslint-plugin-import';
 import jsdoc from 'eslint-plugin-jsdoc';
 import { asset } from 'presetter-types';
@@ -14,8 +15,22 @@ import type { Linter } from 'eslint';
 
 const DOUBLE_OR_HALVE = 2;
 
+const commonWebDependencies = [
+  'autoprefixer',
+  'next',
+  'parcel',
+  'postcss',
+  'react',
+  'rollup',
+  'storybook',
+  'vite',
+  'vue',
+  'webpack',
+  'tailwindcss',
+];
+
 export default asset<{ default: Linter.Config[] }>(
-  (current, { variables, projectRoot }) => ({
+  (current, { packageJson, projectRoot, variables }) => ({
     default: tseslint.config(
       ...(current?.default ?? []),
       eslint.configs.recommended, // eslint recommended rules
@@ -24,6 +39,7 @@ export default asset<{ default: Linter.Config[] }>(
       comments.recommended, // comment formatting
       jsdoc.configs['flat/recommended'], // documentation
       prettier, // ignore formatting issue
+      compat.configs['flat/recommended'], // compatibility with various environments
       {
         name: 'presetter-preset-essentials',
         languageOptions: {
@@ -43,6 +59,15 @@ export default asset<{ default: Linter.Config[] }>(
           'jsdoc': {
             mode: 'typescript',
           },
+          'targets':
+            (packageJson.browserslist ??
+            Object.keys({
+              ...packageJson.dependencies,
+              ...packageJson.devDependencies,
+              ...packageJson.peerDependencies,
+            }).some((dependency) => commonWebDependencies.includes(dependency)))
+              ? ['>0.5%'] // assuming a web project if it has any common web dependencies
+              : ['maintained node versions'], // otherwise, assume a node.js project
         },
         rules: {
           // Extension Rules //
