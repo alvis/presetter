@@ -2,16 +2,9 @@ import { describe, expect, it } from 'vitest';
 
 import { resolvePreset } from '#preset/resolution/preset';
 
-import type { Preset, PresetNode, ProjectContext } from 'presetter-types';
+import { context } from './fixture';
 
-const context = {
-  isRepoRoot: false,
-  relativeProjectRoot: '.',
-  relativeRepoRoot: '.',
-  repoRoot: '/path/to/project',
-  projectRoot: '/path/to/project',
-  packageJson: { name: 'test-package' },
-} satisfies ProjectContext;
+import type { Preset, PresetNode } from 'presetter-types';
 
 describe('fn:resolvePreset', () => {
   it('should able to resolve a plan object preset successfully', async () => {

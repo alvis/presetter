@@ -3,18 +3,11 @@ import { describe, expect, it, vi } from 'vitest';
 import { resolveNodeContent } from '#preset/resolution/content';
 import { resolveVariables } from '#preset/resolution/variable';
 
-import type { PresetNode, ProjectContext } from 'presetter-types';
+import { context } from './fixture';
+
+import type { PresetNode } from 'presetter-types';
 
 vi.mock('#preset/resolution/content', { spy: true });
-
-const context = {
-  isRepoRoot: false,
-  relativeProjectRoot: '.',
-  relativeRepoRoot: '.',
-  repoRoot: '/path/to/project',
-  projectRoot: '/path/to/project',
-  packageJson: {},
-} satisfies ProjectContext;
 
 describe('fn:resolveVariables', () => {
   it('should resolve initial variables', async () => {

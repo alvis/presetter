@@ -3,21 +3,13 @@ import { describe, expect, it, vi } from 'vitest';
 import { loadFile } from '#io';
 import { resolveContent, resolveNodeContent } from '#preset/resolution/content';
 
-import type {
-  PresetContentContext,
-  PresetDefinition,
-  PresetNode,
-} from 'presetter-types';
+import { context } from './fixture';
+
+import type { PresetDefinition, PresetNode } from 'presetter-types';
 
 vi.mock('#io', () => ({
   loadFile: vi.fn(),
 }));
-
-const context = {
-  root: '/',
-  package: {},
-  variables: {},
-} satisfies PresetContentContext;
 
 describe('fn:resolveContent', () => {
   it('should resolve dynamic content from a function', async () => {

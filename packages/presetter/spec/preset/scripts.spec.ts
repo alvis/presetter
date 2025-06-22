@@ -3,17 +3,6 @@ import { describe, expect, it, vi } from 'vitest';
 import { getScripts } from '#preset/scripts';
 
 vi.mock(
-  '#preset/context',
-  () =>
-    ({
-      getContext: vi.fn(async () => ({
-        root: '/path/to/project',
-        package: {},
-      })),
-    }) satisfies Partial<typeof import('#preset/context')>,
-);
-
-vi.mock(
   '#preset/project',
   () =>
     ({

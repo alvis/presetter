@@ -13,6 +13,8 @@ vi.mock('#context', () => ({
   resolveProjectContext: vi.fn(
     async (): Promise<ProjectContext> => ({
       isRepoRoot: false,
+      relativeProjectRoot: '.',
+      relativeRepoRoot: '.',
       repoRoot: resolvePath('/path/to/project'),
       projectRoot: resolvePath('/path/to/project'),
       packageJson: {},

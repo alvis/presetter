@@ -7,6 +7,8 @@ import {
 } from '#preset/resolution/asset';
 import { resolveNodeContent } from '#preset/resolution/content';
 
+import { context } from './fixture';
+
 import type {
   PresetAssets,
   PresetContentContext,
@@ -15,14 +17,6 @@ import type {
 } from 'presetter-types';
 
 vi.mock('#preset/resolution/content', { spy: true });
-
-const context = {
-  root: '/',
-  package: {},
-  variables: {
-    customAssetPath: 'path/to/custom/asset',
-  },
-} satisfies PresetContentContext;
 
 describe('fn:listAssetNames', () => {
   it('should list all asset names in a preset node', () => {
