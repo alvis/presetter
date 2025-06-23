@@ -1,0 +1,70 @@
+{
+  "name": "presetter-preset-monorepo",
+  "version": "7.3.0",
+  "description": "An opinionated presetter preset for a monorepo",
+  "keywords": [
+    "presetter",
+    "preset"
+  ],
+  "homepage": "https://github.com/alvis/presetter#readme",
+  "bugs": {
+    "url": "https://github.com/alvis/presetter/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/alvis/presetter.git"
+  },
+  "license": "MIT",
+  "author": "Alvis HT Tang <alvis@hilbert.space>",
+  "type": "module",
+  "imports": {
+    "#*": {
+      "types": "./src/*.ts",
+      "development": "./src/*.ts",
+      "import": "./lib/*.js"
+    }
+  },
+  "exports": {
+    ".": {
+      "development": "./src/index.ts",
+      "import": "./lib/index.js"
+    }
+  },
+  "main": "lib/index.js",
+  "types": "lib/index.d.ts",
+  "scripts": {
+    "bootstrap": "presetter bootstrap",
+    "build": "run build",
+    "coverage": "run coverage",
+    "lint": "run lint",
+    "prepare": "tsc --skipLibCheck --declaration --moduleResolution bundler --module esnext --target esnext --skipLibCheck --outdir lib src/index.ts && tsc-esm-fix --sourceMap --target lib",
+    "prepublishOnly": "run prepare && run prepublishOnly",
+    "test": "run test",
+    "watch": "run watch"
+  },
+  "dependencies": {
+    "presetter-types": "workspace:*"
+  },
+  "devDependencies": {
+    "presetter": "workspace:*"
+  },
+  "peerDependencies": {
+    "presetter": "workspace:*",
+    "presetter-preset-esm": "workspace:*",
+    "presetter-preset-strict": "workspace:*"
+  },
+  "publishConfig": {
+    "exports": {
+      ".": {
+        "types": "./lib/index.d.ts",
+        "import": "./lib/index.js"
+      }
+    },
+    "imports": {
+      "#*": {
+        "types": "./lib/*.d.ts",
+        "import": "./lib/*.js"
+      }
+    }
+  }
+}
