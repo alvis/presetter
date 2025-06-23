@@ -3,7 +3,6 @@ import { relative, resolve } from 'node:path';
 
 import { resolveProjectContext } from '../context';
 import { ensureFile } from '../io';
-import { arePeerPackagesAutoInstalled, reifyDependencies } from '../package';
 import { serialize } from '../serialization';
 
 import { resolveProjectPreset } from './project';
@@ -17,11 +16,6 @@ export async function bootstrap(cwd?: string): Promise<void> {
   const context = await resolveProjectContext(cwd);
 
   info(`Bootstrapping ${relative(process.cwd(), context.projectRoot)}`);
-
-  // install all related packages first
-  if (!arePeerPackagesAutoInstalled()) {
-    await reifyDependencies({ root: context.projectRoot });
-  }
 
   // generate configurations
   const node = await resolveProjectPreset(context);

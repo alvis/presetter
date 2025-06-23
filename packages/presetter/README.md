@@ -56,7 +56,7 @@ my-project/
 
 ---
 
-## 🎯 One Command. Perfect Setup. Every Time.
+## 🎯 One Command. Perfect Setup. Every Time
 
 ```bash
 # Choose your development style and get everything instantly:
@@ -298,7 +298,6 @@ Presetter uses a sophisticated **two-pass resolution system** that makes configu
 - **Context Awareness**: Presets adapt based on project structure and location
 - **Deep Merging**: Sophisticated algorithms handle complex inheritance
 - **Script Composition**: Local scripts merge with preset scripts intelligently
-- **Dependency Management**: Automatic installation of required peer dependencies
 
 ---
 

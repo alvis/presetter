@@ -1,22 +1,11 @@
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 
 import { entry } from '#executable/entry';
-import { reifyDependencies } from '#package';
 import { bootstrap } from '#preset';
 import { run } from '#run';
 
 vi.mock('node:fs', () => ({
   existsSync: vi.fn((path: string) => path === 'exist'),
-}));
-
-vi.mock('#package', () => ({
-  getPackage: vi.fn(() => ({ path: '' })),
-  reifyDependencies: vi.fn(
-    async ({
-      add,
-    }: Parameters<typeof import('#package').reifyDependencies>[0]) =>
-      add?.map((name) => ({ name, version: '*' })),
-  ),
 }));
 
 vi.mock('#preset', () => ({
@@ -139,7 +128,6 @@ describe('fn:entry', () => {
   it('should not do anything if the command cannot be recognized', async () => {
     await entry(['unknown', '--arg-1']);
 
-    expect(reifyDependencies).toHaveBeenCalledTimes(0);
     expect(bootstrap).toHaveBeenCalledTimes(0);
     expect(run).toHaveBeenCalledTimes(0);
   });

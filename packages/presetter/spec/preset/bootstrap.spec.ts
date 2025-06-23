@@ -3,7 +3,6 @@ import { resolve } from 'node:path';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 
 import { ensureFile } from '#io';
-import { arePeerPackagesAutoInstalled, reifyDependencies } from '#package';
 
 import { bootstrap } from '#preset/bootstrap';
 import { resolveAssets } from '#preset/resolution';
@@ -30,6 +29,8 @@ vi.mock(
     ({
       resolveProjectContext: vi.fn(async () => ({
         isRepoRoot: false,
+        relativeProjectRoot: '.',
+        relativeRepoRoot: '.',
         repoRoot: resolve('/path/to/project'),
         projectRoot: resolve('/path/to/project'),
         packageJson: {},
@@ -55,14 +56,6 @@ vi.mock(
       resolveAssets: vi.fn(async () => ({})),
     }) satisfies Partial<typeof import('#preset/resolution')>,
 );
-
-vi.mock('#package', () => ({
-  arePeerPackagesAutoInstalled: vi.fn(),
-  reifyDependencies: vi.fn(
-    async ({ add }: Parameters<typeof reifyDependencies>[0]) =>
-      add?.map((name) => ({ name, version: '*' })),
-  ),
-}));
 
 describe('fn:bootstrap', () => {
   beforeEach(() => vi.clearAllMocks());
@@ -90,21 +83,5 @@ describe('fn:bootstrap', () => {
     await bootstrap();
 
     expect(vi.mocked(ensureFile)).not.toHaveBeenCalled();
-  });
-
-  it('should install packages specified by the preset if peer packages are not automatically installed by the package manager', async () => {
-    vi.mocked(arePeerPackagesAutoInstalled).mockReturnValue(false);
-
-    await bootstrap();
-
-    expect(reifyDependencies).toHaveBeenCalledTimes(1);
-  });
-
-  it('should skip installing peer packages manually if auto peers install is supported by package manager', async () => {
-    vi.mocked(arePeerPackagesAutoInstalled).mockReturnValue(true);
-
-    await bootstrap();
-
-    expect(reifyDependencies).not.toHaveBeenCalled();
   });
 });
