@@ -1,5 +1,4 @@
 import { describe, expect, it, vi } from 'vitest';
-import Xception from 'xception';
 
 import { resolvePresetterConfig } from '#preset/config';
 import { resolveProjectPreset } from '#preset/project';
@@ -39,6 +38,6 @@ describe('fn:resolveProjectPreset', () => {
       new Error('something went wrong'),
     );
 
-    await expect(resolveProjectPreset(context)).rejects.toThrow(Xception);
+    await expect(resolveProjectPreset(context)).rejects.toThrow();
   });
 });

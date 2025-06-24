@@ -341,9 +341,6 @@ importers:
       source-map-support:
         specifier: ^0.5.0
         version: 0.5.21
-      xception:
-        specifier: ^7.0.0
-        version: 7.0.0
       yargs:
         specifier: ^18.0.0
         version: 18.0.0
@@ -5268,10 +5265,6 @@ packages:
         optional: true
       utf-8-validate:
         optional: true
-
-  xception@7.0.0:
-    resolution: {integrity: sha512-TgYGL2Xn+QqU4YZnytljnQAUUtRXmg1Vkm4WcTkfxE7l+Y1wZeOKW4jcc83cDm9lBgSLN0EWCsK/sbZ1Zip7Ww==}
-    engines: {node: '>=18.18'}
 
   xtend@4.0.2:
     resolution: {integrity: sha512-LKYU1iAXJXUgAXn9URjiu+MWhyUXHsvfp7mcuYm9dSUKK0/CjtrUwFAxD82/mCWbtLsGjFIad0wIsod4zrTAEQ==}
@@ -10593,13 +10586,6 @@ snapshots:
       strip-ansi: 7.1.0
 
   ws@8.18.1: {}
-
-  xception@7.0.0:
-    dependencies:
-      chalk: 5.3.0
-      highlight-es: 1.0.3
-      type-fest: 4.27.1
-      yaml: 2.8.0
 
   xtend@4.0.2: {}
 

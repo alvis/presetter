@@ -1,5 +1,3 @@
-import { xception } from 'xception';
-
 import debug from '../debugger';
 
 import { resolvePresetterConfig } from './config';
@@ -15,7 +13,7 @@ import type { PresetNode, ProjectContext } from 'presetter-types';
 export async function resolveProjectPreset(
   context: ProjectContext,
 ): Promise<PresetNode> {
-  const { projectRoot, packageJson } = context;
+  const { projectRoot } = context;
 
   try {
     debug(`resolving preset at ${projectRoot}`);
@@ -27,9 +25,9 @@ export async function resolveProjectPreset(
 
     return await resolvePreset(preset, context);
   } catch (cause) {
-    throw xception(cause, {
-      meta: { project: packageJson.name, projectRoot },
-    });
+    debug(`failed to resolve preset at ${projectRoot}: ${cause}`);
+
+    throw cause;
     /* v8 ignore start */
   } finally {
     debug(`all nodes resolved`);
