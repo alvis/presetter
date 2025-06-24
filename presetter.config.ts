@@ -1,39 +1,15 @@
-import esm from 'presetter-preset-esm';
-import strict from 'presetter-preset-strict';
-import { preset } from 'presetter-types';
+import { asset, preset } from 'presetter';
+import monorepo from 'presetter-preset-monorepo';
+
+import type { ViteUserConfig } from 'vitest/config';
 
 export default preset('presetter-monorepo', {
-  extends: [esm, strict],
-  variables: {
-    root: '../..',
-  },
+  extends: [monorepo],
   override: {
     assets: ({ isRepoRoot }) =>
       isRepoRoot
-        ? {
-            // for root
-            '.gitignore': null,
-            '.npmignore': null,
-            'eslint.config.ts': null,
-            'tsconfig.json': null,
-            'tsconfig.build.json': null,
-            'vitest.config.ts': (current, { variables }) => ({
-              ...current,
-              default: {
-                ...current!.default,
-                test: {
-                  ...current!.default.test,
-                  coverage: {
-                    ...current!.default.test.coverage,
-                    include: [`packages/*/${variables.source!}/**`],
-                  },
-                },
-              },
-            }),
-          }
+        ? {}
         : {
-            // for packages
-            '.prettierrc.json': null,
             '.npmignore': ['!/overrides/**', '!/templates/**'], // include overrides and templates folders
             'eslint.config.ts': {
               default: [
@@ -47,13 +23,13 @@ export default preset('presetter-monorepo', {
                 },
               ],
             },
-            'vitest.config.ts': {
+            'vitest.config.ts': asset<{ default: ViteUserConfig }>({
               default: {
                 test: {
                   clearMocks: false, // disable for counting template files usage
                 },
               },
-            },
+            }),
           },
   },
 });

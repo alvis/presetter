@@ -42,10 +42,7 @@
   },
   "peerDependencies": {
     "presetter": "workspace:*",
-    "presetter-preset-esm": "workspace:*",
-    "presetter-preset-essentials": "workspace:*",
-    "presetter-preset-strict": "workspace:*",
-    "presetter-types": "workspace:*"
+    "presetter-preset-monorepo": "workspace:*"
   },
   "packageManager": "pnpm@9.15.0",
   "engines": {

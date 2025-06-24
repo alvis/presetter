@@ -17,18 +17,9 @@ importers:
       presetter:
         specifier: workspace:*
         version: link:packages/presetter
-      presetter-preset-esm:
+      presetter-preset-monorepo:
         specifier: workspace:*
-        version: link:packages/preset-esm
-      presetter-preset-essentials:
-        specifier: workspace:*
-        version: link:packages/preset-essentials
-      presetter-preset-strict:
-        specifier: workspace:*
-        version: link:packages/preset-strict
-      presetter-types:
-        specifier: workspace:*
-        version: link:packages/types
+        version: link:packages/preset-monorepo
     devDependencies:
       '@types/node':
         specifier: ^20.0.0

@@ -1,5 +1,0 @@
-/coverage
-/node_modules
-/vitest.config.ts
-/.lintstagedrc.json
-/.prettierrc.json
