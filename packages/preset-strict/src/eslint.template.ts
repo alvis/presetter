@@ -48,35 +48,37 @@ export default asset<{ default: Linter.Config[] }>((current) => {
       },
       {
         name: 'presetter-preset-strict:@typescript-eslint',
-        rules: hasTypescriptEslint && {
-          // ECMAScript //
-          '@typescript-eslint/prefer-nullish-coalescing': 'warn', // prefer nullish coalescing operator for cleaner and safer defaulting logic
+        rules: hasTypescriptEslint
+          ? {
+              // ECMAScript //
+              '@typescript-eslint/prefer-nullish-coalescing': 'warn', // prefer nullish coalescing operator for cleaner and safer defaulting logic
 
-          // Best Practices //
-          '@typescript-eslint/no-base-to-string': 'error', // prevent unintended string conversions of objects
-          '@typescript-eslint/promise-function-async': 'warn', // ensure promise-returning functions are properly marked as async
-          '@typescript-eslint/return-await': 'error', // improve stack traces in try/catch by enforcing `return await`
-          '@typescript-eslint/no-unnecessary-condition': 'error', // detect and remove redundant conditional checks
+              // Best Practices //
+              '@typescript-eslint/no-base-to-string': 'error', // prevent unintended string conversions of objects
+              '@typescript-eslint/promise-function-async': 'warn', // ensure promise-returning functions are properly marked as async
+              '@typescript-eslint/return-await': 'error', // improve stack traces in try/catch by enforcing `return await`
+              '@typescript-eslint/no-unnecessary-condition': 'error', // detect and remove redundant conditional checks
 
-          // Code Quality //
-          '@typescript-eslint/no-unused-expressions': [
-            'warn',
-            {
-              allowShortCircuit: true, // permit short-circuit expressions for practical use
-              allowTernary: true, // permit ternary expressions for concise logic
-            },
-          ],
-          '@typescript-eslint/prefer-function-type': 'warn', // prefer function types over interfaces for function declarations
-          '@typescript-eslint/unified-signatures': 'warn', // enforce simplified function overloads for better readability
+              // Code Quality //
+              '@typescript-eslint/no-unused-expressions': [
+                'warn',
+                {
+                  allowShortCircuit: true, // permit short-circuit expressions for practical use
+                  allowTernary: true, // permit ternary expressions for concise logic
+                },
+              ],
+              '@typescript-eslint/prefer-function-type': 'warn', // prefer function types over interfaces for function declarations
+              '@typescript-eslint/unified-signatures': 'warn', // enforce simplified function overloads for better readability
 
-          // Error Prevention //
-          '@typescript-eslint/no-misused-promises': [
-            'warn',
-            {
-              checksVoidReturn: false, // allow void-returning promises where appropriate
-            },
-          ],
-        },
+              // Error Prevention //
+              '@typescript-eslint/no-misused-promises': [
+                'warn',
+                {
+                  checksVoidReturn: false, // allow void-returning promises where appropriate
+                },
+              ],
+            }
+          : {},
       },
       {
         name: 'presetter-preset-strict:no-secrets',
