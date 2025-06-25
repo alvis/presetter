@@ -44,7 +44,7 @@
     "presetter": "workspace:*",
     "presetter-preset-monorepo": "workspace:*"
   },
-  "packageManager": "pnpm@9.15.0",
+  "packageManager": "pnpm@10.12.3",
   "engines": {
     "node": ">=20.0.0"
   }
