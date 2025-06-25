@@ -2,479 +2,448 @@
 
 <div align="center">
 
-_Set up your build configurations from templates—quickly and accurately!_
+[![npm](https://img.shields.io/npm/v/presetter?style=flat-square)](https://github.com/alvis/presetter/releases)
+[![build](https://img.shields.io/github/actions/workflow/status/alvis/presetter/test.yaml?branch=master&style=flat-square)](https://github.com/alvis/presetter/actions)
+[![maintainability](https://img.shields.io/codeclimate/maintainability/alvis/presetter?style=flat-square)](https://codeclimate.com/github/alvis/presetter/maintainability)
+[![coverage](https://img.shields.io/codeclimate/coverage/alvis/presetter?style=flat-square)](https://codeclimate.com/github/alvis/presetter/test_coverage)
+[![dependencies](https://img.shields.io/librariesio/release/npm/presetter?style=flat-square)](https://libraries.io/npm/presetter)
 
-•   [Quick Start](#quick-start)   •   [Concept](#concept)   •   [FAQ](#faq)   •   [About](#about)   •
+_Transform 40+ dev dependencies into 2 packages — template-driven configuration management for modern TypeScript development_
+
+•   [Quick Start](#-quick-start)   •   [Monorepo Structure](#-monorepo-structure)   •   [Official Presets](#-official-presets)   •   [Usage](#-usage)   •
 
 </div>
 
-Managing shared build configurations across projects can be tedious. How often have you copied over settings for `babel`, `eslint`, `vitest`, `typescript`, or the scripts in `package.json`?  
-How many dependencies did you have to install before you could even start a new project?
+**Presetter** is a configuration management tool that eliminates the pain of setting up and maintaining build configurations across TypeScript projects. Instead of copying dozens of config files and managing 40+ dev dependencies, you install 2 packages and get a perfectly configured development environment.
 
-And when it’s time to update those configurations across multiple projects... 😩
-
-**Presetter simplifies this process by setting up development tools from a template.**  
-With just two packages - Presetter and your preferred preset — all your essential development tools (e.g., TypeScript, ESLint, Vitest) and their configurations are set up automatically during initialization.
+This monorepo contains the **Presetter engine** and a comprehensive ecosystem of **official presets** for every TypeScript development scenario.
 
 ![Before and After](assets/before-and-after.jpg)
 
 ---
 
-## Quick Start
+## 🚀 Quick Start
 
-### 1. **Add Presetter and a preset to your project**
+### 🎯 Choose Your Development Style
 
-Choose a preset, such as [presetter-preset-esm](packages/preset-esm), and add it along with Presetter to your `devDependencies`. Additionally, define a `bootstrap` script in your `package.json` to initialize the preset.
+```bash
+# 🟢 Modern ESM development
+npx presetter use presetter-preset-esm
 
-```json
+# 🔗 Legacy CommonJS compatibility
+npx presetter use presetter-preset-cjs
+
+# 🌐 Dual-module library publishing
+npx presetter use presetter-preset-hybrid
+
+# 🎨 Modern web development (TailwindCSS + Storybook)
+npx presetter use presetter-preset-esm presetter-preset-web
+
+# ⚛️ React application with optimized toolchain
+npx presetter use presetter-preset-esm presetter-preset-react
+
+# 🏢 Production-grade (security + 100% coverage)
+npx presetter use presetter-preset-esm presetter-preset-strict
+```
+
+### 🔧 Or Set It Up Manually
+
+1. **Add Presetter and preset to your project:**
+
+```json5
 {
-  "scripts": {
-    "bootstrap": "presetter bootstrap"
+  scripts: {
+    bootstrap: 'presetter bootstrap',
   },
-  "devDependencies": {
-    "presetter": "<version>",
-    "presetter-preset-esm": "<version>"
-  }
+  devDependencies: {
+    'presetter': 'latest',
+    'presetter-preset-esm': 'latest',
+  },
 }
 ```
 
-### 2. **Create a preset configuration file**
-
-Create a `presetter.config.ts` file in the same directory as your `package.json` to specify the preset:
-
-#### Basic Example
+2. **Create preset configuration:**
 
 ```typescript
 // presetter.config.ts
-
-// use a preset as is
-
-// replace `presetter-preset-esm` with your desired preset
 export { default } from 'presetter-preset-esm';
 ```
 
-#### With Customization
+3. **Install and start developing:**
 
-```typescript
-// presetter.config.ts
-
-// use a preset with customization
-
-import esm from 'presetter-preset-esm';
-import { preset } from 'presetter';
-
-export default preset('<customization name>', {
-  extends: [esm], // extend your chosen preset
-  assets: {
-    'eslint.config.ts': {
-      default: [
-        {
-          rules: {
-            // custom rules to override the preset
-          },
-        },
-      ],
-    },
-  },
-});
-```
-
-> _Note:_ Yes, `presetter.config.ts` itself functions as a preset!
-
-### 3. **Install dependencies**
-
-Run your package manager's installation command (e.g., `npm install`) to install all necessary dependencies.
-
-After installation, all required configuration files will be automatically generated, enabling you to start development immediately.
-
-### 4. **Start developing**
-
-You're all set! Use the lifecycle scripts provided by the preset to begin your development workflow. For instance, try running:
-
-```shell
-npx run test
+```bash
+npm install  # Configurations generated automatically
+npm run test # Everything just works! ✨
 ```
 
 ![Demo](assets/demo.gif)
 
 ---
 
-## Concept
+## 🏗️ Monorepo Structure
 
-Presetter revolves around two main components: [**presetter**](packages/presetter) (the utility) and a **preset**. You can even [create your own custom preset](#how-to-create-a-preset).
+This repository is organized as a TypeScript monorepo containing the core Presetter engine and all official presets:
+
+```
+presetter/
+├── packages/
+│   ├── presetter/              🎛️ Core configuration management engine
+│   ├── types/                  📋 TypeScript definitions for preset development
+│   │
+│   ├── preset-essentials/      🏗️ Foundation toolkit (TypeScript, ESLint, Vitest)
+│   ├── preset-monorepo/        📦 Monorepo project management
+│   │
+│   ├── preset-esm/             🚀 ESM-first development
+│   ├── preset-cjs/             🔗 CommonJS compatibility
+│   ├── preset-hybrid/          🌐 Dual CommonJS/ESM packages
+│   │
+│   ├── preset-strict/          🏢 Production-grade quality enforcement
+│   ├── preset-web/             🎨 Modern web development stack
+│   ├── preset-react/           ⚛️ React development excellence
+│   └── preset-rollup/          📦 Professional library bundling
+│
+└── assets/                     🎨 Logos, demos, and documentation assets
+```
+
+### 🎯 Package Categories
+
+| **Category**       | **Packages**                                                   | **Purpose**                              |
+| ------------------ | -------------------------------------------------------------- | ---------------------------------------- |
+| **Core Engine**    | `presetter`, `types`                                           | Configuration management infrastructure  |
+| **Foundation**     | `preset-essentials`, `preset-monorepo`                         | Base TypeScript development toolkit      |
+| **Module Systems** | `preset-esm`, `preset-cjs`, `preset-hybrid`                    | JavaScript module format specializations |
+| **Extensions**     | `preset-strict`, `preset-web`, `preset-react`, `preset-rollup` | Specialized development environments     |
 
 ---
 
-### **presetter**
+## 📦 Official Presets
 
-Presetter handles two core tasks:
+### 🏗️ Foundation Presets
 
-1. **Setting up your development environment:**
+| Preset                                                        | Purpose                                 | Dependencies                                | Best For                               |
+| ------------------------------------------------------------- | --------------------------------------- | ------------------------------------------- | -------------------------------------- |
+| **[presetter-preset-essentials](packages/preset-essentials)** | Complete TypeScript development toolkit | TypeScript, ESLint, Vitest, Prettier, Husky | Foundation for all TypeScript projects |
+| **[presetter-preset-monorepo](packages/preset-monorepo)**     | Monorepo project management             | Workspace tools, cross-package scripts      | Multi-package repositories             |
 
-   - Installs development dependencies defined by the preset without modifying your `package.json`.
-   - Generates configuration files (e.g., `.babelrc`) in your project root based on the preset.
+### 🚀 Module System Presets
 
-2. **Merging lifecycle scripts:**
+| Preset                                                | Purpose                    | Extends    | Best For                                  |
+| ----------------------------------------------------- | -------------------------- | ---------- | ----------------------------------------- |
+| **[presetter-preset-esm](packages/preset-esm)**       | ESM-first development      | essentials | Modern Node.js projects, libraries        |
+| **[presetter-preset-cjs](packages/preset-cjs)**       | CommonJS compatibility     | essentials | Legacy environments, enterprise           |
+| **[presetter-preset-hybrid](packages/preset-hybrid)** | Dual CommonJS/ESM packages | essentials | npm libraries needing broad compatibility |
 
-   - Combines lifecycle scripts from the preset with your local `package.json`.
+### 🎨 Specialized Extension Presets
 
-[Learn more about CLI usage](packages/presetter#usage).
+| Preset                                                | Purpose                              | Extends         | Best For                                  |
+| ----------------------------------------------------- | ------------------------------------ | --------------- | ----------------------------------------- |
+| **[presetter-preset-strict](packages/preset-strict)** | Production-grade quality enforcement | Any base preset | Enterprise applications, critical systems |
+| **[presetter-preset-web](packages/preset-web)**       | Modern web development stack         | Any base preset | Web applications, SPAs                    |
+| **[presetter-preset-react](packages/preset-react)**   | React development excellence         | Any base preset | React applications, component libraries   |
+| **[presetter-preset-rollup](packages/preset-rollup)** | Professional library bundling        | Any base preset | npm packages, open-source libraries       |
 
-#### **Lifecycle Scripts**
-
-When you run `presetter run <task>` (or its alias `run <task>`), Presetter:
-
-1. Merges lifecycle scripts from the preset with your local `package.json`.
-2. Executes the task using `@npmcli/run-script`.
-
-_Pro Tip:_ Your local scripts always take priority over preset scripts, so you retain full control over customizations.
-
-**Example:** Given the following preset and local `package.json` files:
-
-**Preset**
-
-```json
-{
-  "scripts": {
-    "build": "tsc",
-    "prepare": "npm run lint && npm run build",
-    "lint": "eslint *_/_.ts",
-    "test": "vitest"
-  }
-}
-```
-
-**Local `package.json`**
-
-```json
-{
-  "scripts": {
-    "build": "run build",
-    "lint": "eslint --fix *_/_.ts",
-    "coverage": "run test -- --coverage"
-  }
-}
-```
-
-**Resulting `package.json` during execution**
-
-```json
-{
-  "scripts": {
-    "build": "tsc",
-    "prepare": "npm run lint && npm run build",
-    "lint": "eslint --fix *_/_.ts",
-    "test": "vitest",
-    "coverage": "vitest --coverage"
-  }
-}
-```
-
----
-
-### **preset**
-
-A preset is a reusable bundle of configurations and dependencies. For example, see [presetter-preset-esm](/packages/preset-esm).
-
-A preset typically includes:
-
-1. **Development dependencies:** Defined as `peerDependencies` and installed automatically by Presetter.
-2. **Configuration files:** Hardlinked or symlinked to your project root.
-3. **Lifecycle scripts:** Templates that integrate seamlessly with your local scripts.
-
-Presets are highly customizable. Use the `override` field in `presetter.config.ts` to adjust configurations dynamically during installation and execution.  
-[Check out an example preset](#how-to-create-a-preset) for more details.
-
----
-
-## FAQ
-
-### How to Create a Preset?
-
-Creating a preset is straightforward. You write a preset to configure your project, or you can either export a preset as a npm package to share with your team. Follow these steps to write an npm package that exports a default function with the required signature:
-
-Creating a preset is straightforward. You can write a preset to configure your project or export it as an npm package to share with your team. Follow these steps to write a preset file that exports a default function with the required signature:
+### 🎯 Common Preset Combinations
 
 ```typescript
-// either presetter.config.ts for configuring your project or the entry file (e.g. index.ts) for exporting as a npm package
+// Modern web application
+extends: [esm, web]
 
-import { preset } from 'presetter';
+// React component library
+extends: [react, rollup]
 
-export default preset('preset-name', (context) => {
-  return {
-    extends: [
-      // define any presets to extend here
-    ],
-    variables: {
-      // define your variables here
-    },
-    scripts: {
-      // define your scripts here
-    },
-    assets: {
-      // define your assets here
-    },
-    override: {
-      // define any overrides here
-      variables: {
-        // override variables here
-      },
-      scripts: {
-        // override scripts here
-      },
-      assets: {
-        // override assets here
-      },
-    },
-  };
-});
+// Legacy Node.js service
+extends: [cjs]
+
+// Full-stack TypeScript monorepo
+extends: [monorepo]
 ```
 
-Alternatively, you can export a configuration object if the preset does not require dynamic generation. This approach is more performant for most presets:
+---
+
+## 🔍 How Presetter Works
+
+**Presetter** transforms configuration management through intelligent template processing:
+
+### 🎛️ The Core Engine ([packages/presetter](packages/presetter))
+
+Presetter handles two main responsibilities:
+
+1. **🏗️ Environment Setup:**
+
+   - Installs development dependencies defined by presets
+   - Generates configuration files using sophisticated templates
+
+2. **⚡ Script Management:**
+   - Merges preset scripts with local `package.json` scripts
+   - Provides intelligent script composition and execution
+   - Enables `run`, `run-s`, and `run-p` commands for enhanced workflows
+
+### 📋 Preset Architecture
+
+Each preset is a reusable configuration bundle containing:
+
+- **Dependencies**: Defined as `peerDependencies` and installed automatically
+- **Configuration Templates**: Dynamic files that adapt to your project structure
+- **Scripts**: Lifecycle commands that integrate with your local workflows
+- **Variables**: Customizable parameters for flexible configuration
+
+### 🧠 Two-Pass Resolution System
+
+Presetter uses a sophisticated resolution process:
+
+1. **📋 Dependency Resolution**: Build preset inheritance tree and merge configurations
+2. **🎯 Asset Generation**: Process templates with context-aware variable substitution
+3. **⚡ Override Application**: Apply customizations while preserving preset benefits
+
+---
+
+## 🛠️ Usage
+
+### 📝 Basic Configuration
 
 ```typescript
-// either presetter.config.ts for configuring your project or the entry file (e.g. index.ts) for exporting as an npm package
+// presetter.config.ts - Use a preset as-is
+export { default } from 'presetter-preset-esm';
+```
 
+### 🎨 Advanced Customization
+
+```typescript
+// presetter.config.ts - Customize and extend presets
 import { preset } from 'presetter';
+import esm from 'presetter-preset-esm';
+import strict from 'presetter-preset-strict';
 
-export default preset('preset-name', {
-  extends: [
-    // define any presets to extend here
-  ],
-  variables: {
-    // define your variables here
-  },
-  scripts: {
-    // define your scripts here
-  },
-  assets: {
-    // define your assets here
-  },
+export default preset('my-project', {
+  extends: [esm, strict],
   override: {
-    // define any overrides here
-  },
-});
-```
-
-#### Example Preset
-
-Here is an example of a simple preset:
-
-```typescript
-import { preset } from 'presetter-types';
-
-export default preset('my-preset', (context) => {
-  return {
     variables: {
-      root: '.',
-      source: 'src',
-      output: 'dist',
-    },
-    scripts: {
-      build: 'tsc',
-      test: 'vitest',
+      target: 'ES2023', // Modern compilation target
+      source: 'source', // Custom source directory
     },
     assets: {
       'tsconfig.json': {
         compilerOptions: {
-          target: 'ES2020',
-          module: 'commonjs',
-          outDir: 'dist',
-          rootDir: 'src',
+          allowImportingTsExtensions: true,
         },
       },
-      '.gitignore': ['node_modules', 'dist'],
     },
-    override: {
-      assets: {
-        'tsconfig.json': (current, { variables }) => ({
-          ...current,
-          include: [`${variables.source}/**/*`],
-        }),
-      },
-    },
-  };
-});
-```
-
-### How to Configure Presetter for Monorepos?
-
-To create a preset for a monorepo, define a preset that sets up the configurations for the monorepo. Individual projects within the monorepo can then extend this preset to meet their specific needs. Here is an example of a monorepo preset:
-
-```typescript
-import { preset } from 'presetter';
-
-export default preset('monorepo', (context) => {
-  return context.root === import.meta.dirname ? {
-    // configurations for the monorepo
-    ...
-  }: {
-    // configurations for any child projects without a presetter.config.ts
-    ...
-  }
-});
-```
-
-In individual projects, you can extend the monorepo preset and override configurations as needed. Presetter will always look for the nearest presetter.config.ts file in the parent directories. If it does not find one, it will use the configurations defined in the monorepo preset.
-
-```typescript
-// /monorepo/path/to/project/presetter.config.ts
-import { preset } from 'presetter';
-
-import monorepo from '../path/to/root/presetter.config.ts';
-
-export default preset('project', {
-  extends: [monorepo], // extend the monorepo preset
-  override: {
-    // override configurations here
   },
 });
 ```
 
-### How to Ignore Files?
+### ⚡ CLI Commands
 
-To ignore files provided by a preset, you can override the relevant asset with `null` in the override field. For example, to ignore the `.gitignore` file provided by a preset, here is how you can override it:
+```bash
+# Preset management
+presetter use <preset>         # Adopt preset(s) to project
+presetter bootstrap           # Apply configurations
+presetter unset              # Remove all preset artifacts
+
+# Development workflows
+run build                    # Build your project
+run test                     # Run tests with coverage
+run lint                     # Lint and fix code
+run watch                    # Development mode
+
+# Advanced execution
+run-s clean build test       # Sequential execution
+run-p lint test              # Parallel execution
+```
+
+---
+
+## 🏢 Monorepo Development
+
+### 🔧 Development Setup
+
+This monorepo uses **Presetter itself** for development! Each package has its own preset configuration:
+
+```bash
+# Install dependencies
+npm install
+
+# Bootstrap all packages
+npm run bootstrap
+
+# Run tests across all packages
+npm run test
+
+# Build all packages
+npm run build
+```
+
+### 📊 Package Dependencies
+
+```mermaid
+graph TD
+  T[types]
+  P[presetter]
+  E[preset-essentials]
+  S[preset-strict]
+  M[preset-esm]
+  C[preset-cjs]
+  H[preset-hybrid]
+  W[preset-web]
+  R[preset-react]
+  U[preset-rollup]
+  O[preset-monorepo]
+
+  P --> T
+  E --> T
+  M --> E
+  C --> E
+  H --> E
+  S --> T
+  W --> T
+  R --> W
+  U --> T
+  O --> M
+  O --> S
+```
+
+### 🎯 Workspace Scripts
+
+The monorepo provides convenient workspace-wide commands:
+
+| Command             | Purpose                                |
+| ------------------- | -------------------------------------- |
+| `npm run build`     | Build all packages in dependency order |
+| `npm run test`      | Run tests across all packages          |
+| `npm run lint`      | Lint all packages with auto-fix        |
+| `npm run clean`     | Clean build artifacts                  |
+| `npm run bootstrap` | Bootstrap all preset configurations    |
+
+---
+
+## 📖 Documentation
+
+### 📚 Package Documentation
+
+Each package contains comprehensive documentation:
+
+- **[Core Engine Documentation](packages/presetter)** - CLI usage, configuration, advanced features
+- **[Preset Development Guide](packages/types)** - TypeScript definitions and preset creation
+- **Individual Preset Guides** - Detailed feature explanations and usage examples
+
+### 🎓 Learning Resources
+
+| Topic               | Resource                                                  |
+| ------------------- | --------------------------------------------------------- |
+| **Getting Started** | [Core Engine Quick Start](packages/presetter#quick-start) |
+| **Preset Creation** | [Types Package Guide](packages/types)                     |
+| **Advanced Usage**  | [Configuration Customization](#-advanced-customization)   |
+| **Monorepo Setup**  | [Monorepo Preset Guide](packages/preset-monorepo)         |
+
+---
+
+## 🤝 Contributing
+
+We'd love your ideas and contributions!
+Submit issues or suggestions via [GitHub Issues](https://github.com/alvis/presetter/issues).
+See the [Contribution Guide](https://github.com/alvis/presetter/blob/master/CONTRIBUTING.md) for more details.
+
+---
+
+## ❓ FAQ
+
+### How do I create a custom preset?
+
+Create a TypeScript file that exports a preset configuration:
 
 ```typescript
-// presetter.config.ts
 import { preset } from 'presetter';
 
+export default preset('my-preset', {
+  variables: {
+    source: 'src',
+    output: 'dist',
+  },
+  scripts: {
+    build: 'tsc',
+    test: 'vitest',
+  },
+  assets: {
+    'tsconfig.json': {
+      compilerOptions: {
+        target: 'ES2022',
+        module: 'ESNext',
+      },
+    },
+  },
+});
+```
+
+### How do I customize an existing preset?
+
+Use the `override` field to modify preset configurations:
+
+```typescript
+import { preset } from 'presetter';
 import esm from 'presetter-preset-esm';
 
-export default preset('project name', {
+export default preset('custom', {
   extends: [esm],
   override: {
     assets: {
-      '.gitignore': null,
-    },
-  },
-});
-```
-
-### How to Merge a Preset with Another Preset?
-
-To merge a preset with another preset, you can extend the preset in the `extends` field of the preset configuration. For example, to merge the `presetter-preset-esm` preset with another preset, here is how you can extend it:
-
-```typescript
-// presetter.config.ts
-import { preset } from 'presetter';
-
-import esm from 'presetter-preset-esm';
-import other from 'other-preset';
-
-export default preset('project name', {
-  extends: [esm, other],
-  override: {
-    // override the configuration here
-  },
-});
-```
-
-### What is the difference between `variables`, `scripts`, `assets` and those in `override`?
-
-The `variables`, `scripts`, and `assets` fields in the preset configuration object define the initial resolution. The `override` field, on the other hand, is used to customize or override the initial resolution.
-
-- **Initial Resolution**: The `variables`, `scripts`, and `assets` fields are used to set up the initial configuration.
-- **Override**: The `override` field is applied after the initial resolution, allowing you to customize the configuration provided by the preset. This is useful when you need to make adjustments based on the fully resolved configuration.
-
-If you only need to provide additional configurations, you can define them directly in the preset configuration object. However, be aware that these configurations may be overridden by other presets if the user extends multiple presets. Using the `override` field ensures that your customizations are applied last and are not overridden by other presets.
-
-### How to Customize a Configuration Provided by a Preset?
-
-There are two approaches to customize a configuration (either `assets` or `scripts`) provided by a preset:
-
-1. **Generate the content via a function**: If you provide a function as the value for a configuration file, the function will receive the current content of the file and the variables defined in the preset configuration. You can then return the updated content based on the current content and variables. The content returned by the function will be used as the final content of the configuration file without being merged with the current content.
-
-1. **Provide additional object for merging**: If you want to add additional configurations to the preset, you can provide the additions either in the `assets` or in the `override.assets` field. These additional configurations will be deep merged with the preset configuration.
-
-For example, to add additional files to the `.gitignore` file provided by a preset, you can provide the additional files in the .gitignore of either the `assets` or `override.assets` field:
-
-```typescript
-// presetter.config.ts
-import { preset } from 'presetter';
-
-import esm from 'presetter-preset-esm';
-
-export default preset('project name', {
-  extends: [esm],
-  assets: {
-    '.gitignore': ['additional-file'],
-  },
-});
-```
-
-To add additional rules to the ESLint configuration provided by a preset, you can provide the additional rules like this:
-
-```typescript
-// presetter.config.ts
-import { preset } from 'presetter';
-
-import esm from 'presetter-preset-esm';
-
-export default preset('project name', {
-  extends: [esm],
-  assets: {
-    'eslint.config.ts': {
-      default: [
-        {
-          rules: {
-            'additional-rule': 'error',
-          },
+      'tsconfig.json': {
+        compilerOptions: {
+          strict: false, // Relax TypeScript strictness
         },
-      ],
+      },
     },
   },
 });
 ```
 
-Note that for ESLint configuration, if you want to add additional rules with file filters, it is recommended to use the `override` field to ensure that the additional rules are applied last. Otherwise, the additional rules may be overridden by other extended presets.
+### Can I combine multiple presets?
+
+Yes! Presets are designed to be composable:
+
+```typescript
+import { preset } from 'presetter';
+import essentials from 'presetter-preset-essentials';
+import web from 'presetter-preset-web';
+import react from 'presetter-preset-react';
+import strict from 'presetter-preset-strict';
+
+export default preset('ultimate-react', {
+  extends: [essentials, web, react, strict],
+});
+```
+
+### How do I ignore files from a preset?
+
+Override the asset with `null`:
+
+```typescript
+export default preset('custom', {
+  extends: [somePreset],
+  override: {
+    assets: {
+      '.gitignore': null, // Don't generate .gitignore
+    },
+  },
+});
+```
 
 ---
 
-## Demo Presets
+## 🌟 Philosophy
 
-Explore these example presets to see **Presetter** in action:
+Presetter was born from the frustration of maintaining identical configurations across multiple TypeScript projects. The core principles:
 
-| Preset                                                     | Description                                                                                                              |
-| ---------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------ |
-| [presetter-preset-essentials](/packages/preset-essentials) | A foundational preset for modern ESM projects, bundling tools like ESLint and Vitest, with best-practice configurations. |
-| [presetter-preset-esm](/packages/preset-esm)               | Builds on `essentials`, adding tools optimized for ESM projects.                                                         |
-| [presetter-preset-cjs](/packages/preset-cjs)               | Extends `essentials` with configurations tailored for CommonJS projects.                                                 |
-| [presetter-preset-hybrid](/packages/preset-hybrid)         | Aimed at creating dual CommonJS/ESM packages with minimal hassle.                                                        |
-| [presetter-preset-react](/packages/preset-react)           | An opinionated preset optimized for React development.                                                                   |
-| [presetter-preset-rollup](/packages/preset-rollup)         | An opinionated preset optimized for Rollup development.                                                                  |
-| [presetter-preset-strict](/packages/preset-strict)         | Extends `presetter-preset-esm` with strict linting rules, optimized for performance.                                     |
-| [presetter-preset-web](/packages/preset-web)               | Extends `presetter-preset-esm` with Storybook v9, TailwindCSS v4, GraphQL, and PostCSS.                                 |
+- **🎯 Simplicity**: One command should set up a complete development environment
+- **🔄 Maintainability**: Updates should propagate automatically across all projects
+- **🧩 Composability**: Presets should work together seamlessly
+- **⚡ Flexibility**: Local customizations should always be respected
+- **📈 Scalability**: Should work for individual projects and large monorepos
 
 ---
 
-## About
+## 📄 License
 
-This project was born out of frustration with maintaining identical configurations across multiple projects. Every new project required copying numerous files and installing dozens of dependencies.
-
-With Presetter, I consolidated **40 development dependencies** into just **1 preset**, simplifying project setup and maintenance.
-Let it save you time, too!
-
-### Philosophy
-
-- Presetter focuses solely on providing build tools for your project.
-- Presets are flexible yet reusable.
-- Updating a preset version is all you need to refresh your tools and configs.
-- Local changes are always preserved.
-
----
-
-### Contributing
-
-We’d love your ideas and contributions!
-Submit issues or suggestions via [GitHub Issues](../../issues).
-See the [Contribution Guide](CONTRIBUTING.md) for more details.
-
----
-
-### License
-
-Released under the [MIT License](LICENSE).
+Released under the [MIT License](https://github.com/alvis/presetter/blob/master/LICENSE).
 © 2020, [Alvis Tang](https://github.com/alvis).
 
-[![License](https://img.shields.io/github/license/alvis/presetter.svg?style=flat-square)](LICENSE)
+[![License](https://img.shields.io/github/license/alvis/presetter.svg?style=flat-square)](https://github.com/alvis/presetter/blob/master/LICENSE)
