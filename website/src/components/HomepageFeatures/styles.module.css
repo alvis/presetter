@@ -1,0 +1,41 @@
+.features {
+  display: flex;
+  align-items: center;
+  padding: 4rem 0;
+  width: 100%;
+  background: rgba(245, 230, 211, 0.3);
+}
+
+.featureSvg {
+  height: 200px;
+  width: 200px;
+  filter: hue-rotate(180deg) saturate(0.8);
+}
+
+.feature {
+  padding: 2rem 1rem;
+  text-align: center;
+}
+
+.feature h3 {
+  color: var(--ifm-color-emphasis-800);
+  margin-bottom: 1rem;
+  font-weight: 600;
+}
+
+.feature p {
+  color: var(--ifm-color-emphasis-600);
+  line-height: 1.6;
+}
+
+[data-theme='dark'] .features {
+  background: rgba(30, 41, 59, 0.5);
+}
+
+[data-theme='dark'] .feature h3 {
+  color: var(--ifm-color-emphasis-200);
+}
+
+[data-theme='dark'] .feature p {
+  color: var(--ifm-color-emphasis-400);
+}

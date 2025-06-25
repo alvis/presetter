@@ -1,0 +1,44 @@
+release:
+  label: Release
+  permalink: /release
+  description: Presetter release announcements and updates
+
+monorepo:
+  label: Monorepo
+  permalink: /monorepo
+  description: Monorepo management and workspace features
+
+storybook:
+  label: Storybook
+  permalink: /storybook
+  description: Storybook integration and component development
+
+web:
+  label: Web Development
+  permalink: /web
+  description: Web development tools and configurations
+
+v8:
+  label: Version 8
+  permalink: /v8
+  description: Presetter version 8 features and improvements
+
+facebook:
+  label: Facebook
+  permalink: /facebook
+  description: Facebook tag description
+
+hello:
+  label: Hello
+  permalink: /hello
+  description: Hello tag description
+
+docusaurus:
+  label: Docusaurus
+  permalink: /docusaurus
+  description: Docusaurus tag description
+
+hola:
+  label: Hola
+  permalink: /hola
+  description: Hola tag description

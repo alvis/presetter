@@ -1,5 +1,6 @@
 packages:
   - packages/*
+  - website
 
 catalog:
   type-fest: ^4.23.0

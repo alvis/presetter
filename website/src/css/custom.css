@@ -1,0 +1,286 @@
+/**
+ * Any CSS included here will be global. The classic template
+ * bundles Infima by default. Infima is a CSS framework designed to
+ * work well for content-centric websites.
+ */
+
+/* Presetter brand colors and theme customization */
+:root {
+  /* Presetter brand colors - Matching the logo palette */
+  --ifm-color-primary: #6DD5C3;
+  --ifm-color-primary-dark: #5bc4b0;
+  --ifm-color-primary-darker: #4bb89e;
+  --ifm-color-primary-darkest: #3ea085;
+  --ifm-color-primary-light: #7fddd6;
+  --ifm-color-primary-lighter: #91e5de;
+  --ifm-color-primary-lightest: #b5ede9;
+  
+  /* Secondary colors from logo */
+  --presetter-coral: #FF9B7D;
+  --presetter-golden: #FFCA7A;
+  --presetter-turquoise: #6DD5C3;
+  --presetter-cream: #F5E6D3;
+  
+  /* Enhanced typography */
+  --ifm-font-family-base: 'Inter', system-ui, -apple-system, sans-serif;
+  --ifm-font-family-monospace: 'JetBrains Mono', 'Fira Code', 'SF Mono', Monaco, 'Consolas', monospace;
+  --ifm-code-font-size: 0.9em;
+  --ifm-code-border-radius: 6px;
+  --ifm-code-padding-horizontal: 0.4rem;
+  --ifm-code-padding-vertical: 0.2rem;
+  
+  /* Enhanced spacing and layout */
+  --ifm-spacing-horizontal: 1.5rem;
+  --ifm-global-radius: 8px;
+  --ifm-card-border-radius: 12px;
+  
+  /* Code highlighting */
+  --docusaurus-highlighted-code-line-bg: rgba(14, 165, 233, 0.1);
+  
+  /* Custom component styling */
+  --ifm-alert-border-width: 0;
+  --ifm-alert-border-radius: 8px;
+  --ifm-button-border-radius: 8px;
+  
+  /* Animation and transitions */
+  --ifm-transition-fast: 150ms;
+  --ifm-transition-slow: 300ms;
+  
+  /* Enhanced contrast for accessibility */
+  --ifm-color-emphasis-900: #1e293b;
+  --ifm-color-emphasis-800: #334155;
+  --ifm-color-emphasis-700: #475569;
+}
+
+/* Dark mode optimizations */
+[data-theme='dark'] {
+  --ifm-color-primary: #7fddd6;
+  --ifm-color-primary-dark: #6DD5C3;
+  --ifm-color-primary-darker: #5bc4b0;
+  --ifm-color-primary-darkest: #4bb89e;
+  --ifm-color-primary-light: #91e5de;
+  --ifm-color-primary-lighter: #a3ebe6;
+  --ifm-color-primary-lightest: #b5ede9;
+  
+  /* Enhanced dark mode code highlighting */
+  --docusaurus-highlighted-code-line-bg: rgba(109, 213, 195, 0.1);
+  
+  /* Better dark mode contrast */
+  --ifm-background-color: #0f172a;
+  --ifm-background-surface-color: #1e293b;
+  --ifm-color-emphasis-100: #cbd5e1;
+  --ifm-color-emphasis-200: #94a3b8;
+  --ifm-color-emphasis-300: #64748b;
+}
+
+/* Performance optimizations */
+* {
+  box-sizing: border-box;
+}
+
+/* Improved code blocks */
+.theme-code-block {
+  margin-bottom: 1.5rem;
+  border-radius: var(--ifm-code-border-radius);
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+}
+
+.theme-code-block-highlighted-line {
+  background-color: var(--docusaurus-highlighted-code-line-bg);
+  display: block;
+  margin: 0 calc(-1 * var(--ifm-pre-padding));
+  padding: 0 var(--ifm-pre-padding);
+  border-left: 3px solid var(--ifm-color-primary);
+}
+
+/* Interactive component styling */
+.config-generator, .command-helper {
+  margin: 1.5rem 0;
+  border-radius: var(--ifm-card-border-radius);
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+  transition: box-shadow var(--ifm-transition-slow);
+}
+
+.config-generator:hover, .command-helper:hover {
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+}
+
+/* Preset Explorer section styling */
+.preset-explorer-section {
+  background: linear-gradient(135deg, rgba(109, 213, 195, 0.05) 0%, rgba(255, 202, 122, 0.05) 100%);
+  padding: 4rem 0;
+  margin-top: 2rem;
+}
+
+[data-theme='dark'] .preset-explorer-section {
+  background: linear-gradient(135deg, rgba(109, 213, 195, 0.03) 0%, rgba(255, 202, 122, 0.03) 100%);
+}
+
+/* Card components with brand colors */
+.card {
+  border: 1px solid rgba(109, 213, 195, 0.2);
+  transition: all var(--ifm-transition-fast);
+}
+
+.card:hover {
+  border-color: var(--ifm-color-primary);
+  box-shadow: 0 8px 25px rgba(109, 213, 195, 0.15);
+}
+
+/* Enhanced buttons and form elements */
+.button--primary {
+  background: linear-gradient(135deg, var(--ifm-color-primary) 0%, var(--ifm-color-primary-dark) 100%);
+  border: none;
+  transition: all var(--ifm-transition-fast);
+}
+
+.button--primary:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 4px 6px -1px rgba(109, 213, 195, 0.3);
+}
+
+/* Hero section styling */
+.hero {
+  background: linear-gradient(135deg, var(--presetter-cream) 0%, rgba(255, 202, 122, 0.1) 100%);
+  position: relative;
+  overflow: hidden;
+}
+
+.hero::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: 
+    radial-gradient(circle at 20% 80%, rgba(255, 155, 125, 0.2) 0%, transparent 50%),
+    radial-gradient(circle at 80% 20%, rgba(255, 202, 122, 0.2) 0%, transparent 50%),
+    radial-gradient(circle at 40% 40%, rgba(109, 213, 195, 0.2) 0%, transparent 50%);
+  pointer-events: none;
+}
+
+.hero__title {
+  color: var(--ifm-color-emphasis-900);
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.hero__subtitle {
+  color: var(--ifm-color-emphasis-700);
+  font-size: 1.25rem;
+  margin-bottom: 2rem;
+}
+
+[data-theme='dark'] .hero {
+  background: linear-gradient(135deg, #1e293b 0%, rgba(109, 213, 195, 0.05) 100%);
+}
+
+[data-theme='dark'] .hero__title {
+  color: var(--ifm-color-emphasis-100);
+}
+
+[data-theme='dark'] .hero__subtitle {
+  color: var(--ifm-color-emphasis-300);
+}
+
+/* Responsive design improvements */
+@media (max-width: 768px) {
+  :root {
+    --ifm-spacing-horizontal: 1rem;
+  }
+  
+  .config-generator, .command-helper {
+    margin: 1rem -1rem;
+    border-radius: 0;
+  }
+  
+  .navbar__item {
+    display: none;
+  }
+  
+  .navbar__item.navbar__item--search {
+    display: block;
+  }
+}
+
+/* Tutorial progress indicators */
+.tutorial-progress {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.875rem;
+  color: var(--ifm-color-emphasis-600);
+  margin-bottom: 1rem;
+}
+
+.tutorial-progress .badge {
+  background: var(--ifm-color-primary-lightest);
+  color: var(--ifm-color-primary-darkest);
+  border-radius: 1rem;
+  padding: 0.25rem 0.75rem;
+  font-weight: 500;
+}
+
+/* Enhanced search styling */
+.navbar__search {
+  margin-right: 1rem;
+}
+
+.DocSearch-Button {
+  border-radius: var(--ifm-global-radius);
+  transition: all var(--ifm-transition-fast);
+}
+
+.DocSearch-Button:hover {
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+/* Improved table styling */
+table {
+  border-collapse: collapse;
+  width: 100%;
+  margin-bottom: 1.5rem;
+  border-radius: var(--ifm-global-radius);
+  overflow: hidden;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+table th {
+  background: var(--ifm-color-primary-lightest);
+  color: var(--ifm-color-primary-darkest);
+  font-weight: 600;
+}
+
+/* Loading and performance optimizations */
+.markdown img {
+  loading: lazy;
+  border-radius: var(--ifm-global-radius);
+}
+
+/* Smooth scrolling */
+html {
+  scroll-behavior: smooth;
+}
+
+/* Focus states for accessibility */
+.button:focus,
+input:focus,
+select:focus,
+textarea:focus {
+  outline: 2px solid var(--ifm-color-primary);
+  outline-offset: 2px;
+}
+
+/* Print styles */
+@media print {
+  .navbar,
+  .footer,
+  .theme-doc-sidebar-container,
+  .theme-doc-toc-desktop {
+    display: none !important;
+  }
+  
+  .main-wrapper {
+    margin-left: 0 !important;
+  }
+}

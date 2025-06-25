@@ -1,0 +1,74 @@
+{
+  "$schema": "https://typedoc.org/schema.json",
+  "entryPoints": ["../packages/types/src/index.ts"],
+  "out": "./docs/api",
+  "plugin": ["typedoc-plugin-markdown"],
+  "readme": "none",
+  "gitRevision": "master",
+  "sourceLinkTemplate": "https://github.com/alvis/presetter/blob/{gitRevision}/{path}#L{line}",
+  "disableSources": false,
+  
+  "name": "Presetter Types API",
+  "includeVersion": true,
+  "excludeExternals": true,
+  "excludePrivate": true,
+  "excludeProtected": true,
+  "excludeInternal": true,
+  "exclude": [
+    "**/*.spec.ts",
+    "**/*.test.ts",
+    "**/node_modules/**"
+  ],
+  
+  "sort": ["source-order"],
+  "kindSortOrder": [
+    "Document",
+    "Project",
+    "Module",
+    "Namespace",
+    "Enum",
+    "EnumMember",
+    "Class",
+    "Interface",
+    "TypeAlias",
+    "Constructor",
+    "Property",
+    "Variable",
+    "Function",
+    "Accessor",
+    "Method",
+    "Parameter",
+    "TypeParameter",
+    "TypeLiteral",
+    "CallSignature",
+    "ConstructorSignature",
+    "IndexSignature",
+    "GetSignature",
+    "SetSignature"
+  ],
+  
+  "categoryOrder": [
+    "Preset",
+    "Asset",
+    "Content", 
+    "Context",
+    "Utility",
+    "*"
+  ],
+  
+  "navigation": {
+    "includeCategories": true,
+    "includeGroups": true
+  },
+  
+  "hidePageTitle": false,
+  "indexFormat": "list",
+  "membersWithOwnFile": [
+    "Interface",
+    "Class",
+    "Enum",
+    "TypeAlias"
+  ],
+  
+  "tsconfig": "../packages/types/tsconfig.json"
+}

@@ -1,0 +1,72 @@
+{
+  "name": "presetter-website",
+  "version": "8.0.0",
+  "private": true,
+  "description": "Documentation website for Presetter - Configuration Management That Scales",
+  "keywords": [
+    "presetter",
+    "documentation",
+    "typescript",
+    "configuration",
+    "build-tools"
+  ],
+  "homepage": "https://alvis.github.io/presetter/",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/alvis/presetter.git",
+    "directory": "website"
+  },
+  "license": "MIT",
+  "author": "Alvis HT Tang <alvis@hilbert.space>",
+  "scripts": {
+    "docusaurus": "docusaurus",
+    "start": "docusaurus start",
+    "dev": "docusaurus start",
+    "build": "npm run api:generate && docusaurus build",
+    "build:fast": "docusaurus build",
+    "swizzle": "docusaurus swizzle",
+    "deploy": "docusaurus deploy",
+    "clear": "docusaurus clear",
+    "serve": "docusaurus serve",
+    "write-translations": "docusaurus write-translations",
+    "write-heading-ids": "docusaurus write-heading-ids",
+    "typecheck": "tsc",
+    "lint": "eslint --ext .ts,.tsx,.js,.jsx src/",
+    "lint:fix": "eslint --ext .ts,.tsx,.js,.jsx src/ --fix",
+    "api:generate": "typedoc --options typedoc.json",
+    "api:clean": "rm -rf docs/api && mkdir -p docs/api"
+  },
+  "dependencies": {
+    "@docusaurus/core": "3.8.1",
+    "@docusaurus/preset-classic": "3.8.1",
+    "@mdx-js/react": "^3.0.0",
+    "clsx": "^2.0.0",
+    "prism-react-renderer": "^2.3.0",
+    "react": "^19.0.0",
+    "react-dom": "^19.0.0"
+  },
+  "devDependencies": {
+    "@docusaurus/module-type-aliases": "3.8.1",
+    "@docusaurus/tsconfig": "3.8.1",
+    "@docusaurus/types": "3.8.1",
+    "docusaurus-plugin-typedoc": "^1.4.0",
+    "typedoc": "^0.28.5",
+    "typedoc-plugin-markdown": "^4.6.4",
+    "typescript": "~5.6.2"
+  },
+  "browserslist": {
+    "production": [
+      ">0.5%",
+      "not dead",
+      "not op_mini all"
+    ],
+    "development": [
+      "last 3 chrome version",
+      "last 3 firefox version",
+      "last 5 safari version"
+    ]
+  },
+  "engines": {
+    "node": ">=18.0"
+  }
+}

@@ -36,7 +36,10 @@ npx presetter use presetter-preset-cjs
 # 🌐 Dual-module library publishing
 npx presetter use presetter-preset-hybrid
 
-# 🎨 Modern web development (TailwindCSS + Storybook)
+# 📦 Monorepo management with zero config duplication
+npx presetter use presetter-preset-monorepo
+
+# 🎨 Modern web development (TailwindCSS 4 + Storybook 9)
 npx presetter use presetter-preset-esm presetter-preset-web
 
 # ⚛️ React application with optimized toolchain
@@ -62,14 +65,14 @@ npx presetter use presetter-preset-esm presetter-preset-strict
 }
 ```
 
-2. **Create preset configuration:**
+1. **Create preset configuration:**
 
 ```typescript
 // presetter.config.ts
 export { default } from 'presetter-preset-esm';
 ```
 
-3. **Install and start developing:**
+1. **Install and start developing:**
 
 ```bash
 npm install  # Configurations generated automatically
@@ -84,7 +87,7 @@ npm run test # Everything just works! ✨
 
 This repository is organized as a TypeScript monorepo containing the core Presetter engine and all official presets:
 
-```
+```plain
 presetter/
 ├── packages/
 │   ├── presetter/              🎛️ Core configuration management engine
@@ -135,27 +138,30 @@ presetter/
 
 ### 🎨 Specialized Extension Presets
 
-| Preset                                                | Purpose                              | Extends         | Best For                                  |
-| ----------------------------------------------------- | ------------------------------------ | --------------- | ----------------------------------------- |
-| **[presetter-preset-strict](packages/preset-strict)** | Production-grade quality enforcement | Any base preset | Enterprise applications, critical systems |
-| **[presetter-preset-web](packages/preset-web)**       | Modern web development stack         | Any base preset | Web applications, SPAs                    |
-| **[presetter-preset-react](packages/preset-react)**   | React development excellence         | Any base preset | React applications, component libraries   |
-| **[presetter-preset-rollup](packages/preset-rollup)** | Professional library bundling        | Any base preset | npm packages, open-source libraries       |
+| Preset                                                | Purpose                                        | Extends         | Best For                                  |
+| ----------------------------------------------------- | ---------------------------------------------- | --------------- | ----------------------------------------- |
+| **[presetter-preset-strict](packages/preset-strict)** | Production-grade quality enforcement           | Any base preset | Enterprise applications, critical systems |
+| **[presetter-preset-web](packages/preset-web)**       | Modern web stack (TailwindCSS 4 + Storybook 9) | Any base preset | Web applications, component development   |
+| **[presetter-preset-react](packages/preset-react)**   | React development excellence                   | Any base preset | React applications, component libraries   |
+| **[presetter-preset-rollup](packages/preset-rollup)** | Professional library bundling                  | Any base preset | npm packages, open-source libraries       |
 
 ### 🎯 Common Preset Combinations
 
 ```typescript
-// Modern web application
+// Modern web application with Storybook
 extends: [esm, web]
 
-// React component library
-extends: [react, rollup]
+// React component library with Storybook
+extends: [esm, web, react, rollup]
 
 // Legacy Node.js service
 extends: [cjs]
 
-// Full-stack TypeScript monorepo
-extends: [monorepo]
+// Full-stack TypeScript monorepo with strict quality
+extends: [monorepo, strict]
+
+// Modern monorepo with web components
+extends: [monorepo, web]
 ```
 
 ---
@@ -169,7 +175,6 @@ extends: [monorepo]
 Presetter handles two main responsibilities:
 
 1. **🏗️ Environment Setup:**
-
    - Installs development dependencies defined by presets
    - Generates configuration files using sophisticated templates
 
@@ -324,16 +329,18 @@ Each package contains comprehensive documentation:
 
 - **[Core Engine Documentation](packages/presetter)** - CLI usage, configuration, advanced features
 - **[Preset Development Guide](packages/types)** - TypeScript definitions and preset creation
+- **[Official Documentation Website](https://presetter.dev)** - Complete guides and tutorials
 - **Individual Preset Guides** - Detailed feature explanations and usage examples
 
 ### 🎓 Learning Resources
 
-| Topic               | Resource                                                  |
-| ------------------- | --------------------------------------------------------- |
-| **Getting Started** | [Core Engine Quick Start](packages/presetter#quick-start) |
-| **Preset Creation** | [Types Package Guide](packages/types)                     |
-| **Advanced Usage**  | [Configuration Customization](#-advanced-customization)   |
-| **Monorepo Setup**  | [Monorepo Preset Guide](packages/preset-monorepo)         |
+| Topic               | Resource                                                                             |
+| ------------------- | ------------------------------------------------------------------------------------ |
+| **Getting Started** | [Core Engine Quick Start](packages/presetter#quick-start)                            |
+| **Preset Creation** | [Types Package Guide](packages/types)                                                |
+| **Advanced Usage**  | [Configuration Customization](#-advanced-customization)                              |
+| **Monorepo Setup**  | [Monorepo Preset Guide](packages/preset-monorepo)                                    |
+| **Migration Guide** | [v7 to v8 Migration](https://presetter.dev/docs/tutorials/migration-guides/v7-to-v8) |
 
 ---
 
