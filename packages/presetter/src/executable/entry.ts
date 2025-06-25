@@ -1,5 +1,5 @@
 import { existsSync } from 'node:fs';
-import { dirname, posix } from 'node:path';
+import { dirname, posix, resolve } from 'node:path';
 
 import { globby } from 'globby';
 import yargs from 'yargs';
@@ -49,7 +49,7 @@ const bootstrapCommand: CommandModule<
 
       // bootstrap all projects
       for (const root of projectRoots) {
-        await bootstrap(root);
+        await bootstrap(resolve(root));
       }
     }
   },

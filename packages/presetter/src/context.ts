@@ -53,7 +53,7 @@ export async function resolveProjectContext(
  * @returns path to the repository root, if found
  */
 export async function resolveRepoRoot(
-  cwd: string = process.cwd(),
+  cwd?: string,
 ): Promise<string | undefined> {
   for (const name of ['.git', '.hg', '.svn']) {
     const metaPath = await findUp(name, { cwd });
@@ -63,7 +63,9 @@ export async function resolveRepoRoot(
     }
   }
 
-  const parentPackagePath = await findUp('package.json', { cwd: dirname(cwd) });
+  const parentPackagePath = await findUp('package.json', {
+    cwd: dirname(cwd ?? process.cwd()),
+  });
 
   return parentPackagePath ? dirname(parentPackagePath) : undefined;
 }
