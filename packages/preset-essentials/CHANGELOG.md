@@ -2,6 +2,464 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## 8.0.1 (2025-06-27)
+
+
+
+# 8.0.0 (2025-06-27)
+
+
+### ✨ Features
+
+* **preset-essentials:** add env compatibility check ([2a86824](https://github.com/alvis/presetter/commit/2a868245ed1c5deb31897d2c2f0144a2288d2fb2))
+* **preset-essentials:** add project name to vitest config ([75a4351](https://github.com/alvis/presetter/commit/75a4351bab2710ace7c8fe175afbfe2c5629ac48))
+* **preset-essentials:** add scripts for various test types ([63a0e23](https://github.com/alvis/presetter/commit/63a0e230c82b2184c9a9dd4e03cd8e802c5eae63))
+* **preset-essentials:** add typescript target ([c3b610f](https://github.com/alvis/presetter/commit/c3b610f3447d145a9e3cc595572723c4f0869325))
+* **preset-essentials:** exclude type files in coverage ([67ff205](https://github.com/alvis/presetter/commit/67ff2056aa63d220c07399312fa4332379073abc))
+* **preset-essentials:** instruct eslint to use cache ([7f63337](https://github.com/alvis/presetter/commit/7f63337f17eb9360eb7101fa3333d534f73d49bb))
+
+
+### 🐛 Bug Fixes
+
+* **preset-essentials:** allow certain types in template literals ([3474e5f](https://github.com/alvis/presetter/commit/3474e5f2e2b652ffc2cb751fd99ca914967b8a07))
+* **preset-essentials:** correct tsconfig root path ([1eebe8b](https://github.com/alvis/presetter/commit/1eebe8be0fb4e4ef8728769eef16143d68afa087))
+* **preset-essentials:** include all sources from the repo root ([744b0c5](https://github.com/alvis/presetter/commit/744b0c5146c174520abb5acf71e9f9a32e0578d9))
+* **preset-essentials:** include custom types in npm package ([c03bd29](https://github.com/alvis/presetter/commit/c03bd299b6e4d0fb05627aaf84e6c7ef3c99f7b3))
+* **preset-essentials:** load types from generated files ([39e370f](https://github.com/alvis/presetter/commit/39e370f1a53c5f1126482eeabda2570a742eeb32))
+* **preset-essentials:** load types from various roots ([ff9ec74](https://github.com/alvis/presetter/commit/ff9ec7488a530954f7e5c0e50e66f2713f378abd))
+* **preset-essentials:** type check all test files ([1923017](https://github.com/alvis/presetter/commit/19230174b037b40e410c7a7a59cc9595420651ef))
+* **preset-strict:** add sort-package-json ([593d1ef](https://github.com/alvis/presetter/commit/593d1efa561502595af765a0119e1efa61e278ad))
+* **preset:** include ts files in hidden folders ([40237d3](https://github.com/alvis/presetter/commit/40237d339c3e0f465a5ab21327b53bfc0c89e186))
+
+
+### 📦 Code Refactoring
+
+* **preset:** simplify eslint templates ([5761edd](https://github.com/alvis/presetter/commit/5761edd0dbecb72de5d129ef20223afd6e54f1f9))
+* **presetter:** remove auto peerDeps install and drop npm <7 support ([bda9238](https://github.com/alvis/presetter/commit/bda9238559a0d885b269de499a29bd7bba2bed28))
+
+
+### 📚 Documentation
+
+* **preset-essentials:** fix a typo with prettier config file ([24df92a](https://github.com/alvis/presetter/commit/24df92a4ed16150786afbb40affe21bb36611162))
+* update README files ([6f38a03](https://github.com/alvis/presetter/commit/6f38a0365d194745f2818f413742a4d09d3a5731))
+* update READMEs to reflect recent changes ([1c23de6](https://github.com/alvis/presetter/commit/1c23de6c0b88acace15e826ea87df87e7843cf0c))
+
+
+### 🚨 Tests
+
+* resolve type issues among tests ([f83e923](https://github.com/alvis/presetter/commit/f83e9234a8407d51659745650cc62e55b42b1db7))
+
+
+### ♻️ Chores
+
+* **release:** publish v8.0.0 ([3fb7b25](https://github.com/alvis/presetter/commit/3fb7b25edf5e1c46129b06393b97ae0c024df1dc))
+
+
+### Breaking changes
+
+* **presetter:** Drops support for npm versions below 7, which do not support auto peer dependency installation.
+
+
+
+# 7.3.0 (2025-04-21)
+
+
+### 🐛 Bug Fixes
+
+* **preset-essentials:** set rootDir for typecheck ([e9f8872](https://github.com/alvis/presetter/commit/e9f887233b0c7fc70c8def2c92b643325e10fa02))
+* **preset:** include accumulated eslint configs ([00a4d72](https://github.com/alvis/presetter/commit/00a4d72f29743b1da6f36ae031adfa815e32e075))
+
+
+### ♻️ Chores
+
+* **release:** publish v7.3.0 ([22f79f3](https://github.com/alvis/presetter/commit/22f79f3418f5ac2b44ba04b69ef32f475f954699))
+
+
+
+# 7.2.0 (2025-04-17)
+
+
+### 🐛 Bug Fixes
+
+* **preset-essentials:** group node submodules ([fe96d1b](https://github.com/alvis/presetter/commit/fe96d1b3a0c975dde4b5557757dd21c0e22c6664))
+* **preset-essentials:** run zx sequentially ([6e247f1](https://github.com/alvis/presetter/commit/6e247f1d79d79f8e7d54380218f15ba0a1b2ae9c))
+
+
+### ♻️ Chores
+
+* **release:** publish v7.2.0 ([e61558d](https://github.com/alvis/presetter/commit/e61558d849b1154594dd4e37ac9f700b34d8ab4e))
+
+
+
+# 7.1.0 (2025-01-28)
+
+
+### ✨ Features
+
+* **preset-essentials:** replace shx with zx ([3d82634](https://github.com/alvis/presetter/commit/3d826342c61744e50fc2f072f04e4f05bcf0782f))
+
+
+### 🐛 Bug Fixes
+
+* **preset-essentials:** update eslint dependencies ([0821bae](https://github.com/alvis/presetter/commit/0821baea29156361c04237a0c5216012655fe15c))
+* **preset-essentials:** update eslint to v9.18 ([82392bb](https://github.com/alvis/presetter/commit/82392bbe5101e8167ba681308a8fd81e4162c5be))
+
+
+### ♻️ Chores
+
+* **release:** publish v7.1.0 ([1fb2c7a](https://github.com/alvis/presetter/commit/1fb2c7a8db4880379f0522f6aeab8cc966bbc31b))
+
+
+
+## 7.0.2 (2025-01-24)
+
+
+### 🐛 Bug Fixes
+
+* resolve incorrect publishConfig ([9348b0f](https://github.com/alvis/presetter/commit/9348b0f9851662c7dc012288e9a11a6363cfe7b2))
+
+
+### ♻️ Chores
+
+* **release:** publish v7.0.2 ([a695a4a](https://github.com/alvis/presetter/commit/a695a4a7ba8c9e38685a9a6606bdd3887947ae82))
+
+
+
+## 7.0.1 (2025-01-24)
+
+
+### 🐛 Bug Fixes
+
+* remove development export upon publication ([f6c1d12](https://github.com/alvis/presetter/commit/f6c1d12ac22271a8f6bf38ceab5a4138974284e7))
+
+
+### ♻️ Chores
+
+* **release:** publish v7.0.1 ([1a25398](https://github.com/alvis/presetter/commit/1a2539882e374300b2e44fb61e81c5540aa95ee8))
+
+
+
+# 7.0.0 (2025-01-23)
+
+
+### ✨ Features
+
+* **preset-essentials:** skip building on install ([1544d17](https://github.com/alvis/presetter/commit/1544d174d195ea9450ad12d7927b5110b3c30359))
+* **preset-essentials:** update vitest to v3 ([029edc1](https://github.com/alvis/presetter/commit/029edc1fd40448c50b5f6e32ed6ce8dca5f06e8d))
+
+
+### 🐛 Bug Fixes
+
+* **preset-essentials:** pass with no tests ([5900f63](https://github.com/alvis/presetter/commit/5900f63616372cb20bc0655bec20eb4239580842))
+
+
+### ♻️ Chores
+
+* **release:** publish v7.0.0 ([1bf4cf9](https://github.com/alvis/presetter/commit/1bf4cf996ff1af7591f8f49a662a038ee248ec0a))
+
+
+### Breaking changes
+
+* **preset-essentials:** Most tooling now supports
+    TypeScript's project references. Skipping the
+    build on install will save time on CI.
+    However, this change will break any monorepo
+    setup that needs packages to be built on
+    install. If this is the case, modify the
+    prepare script in presetter.config.ts to
+    enable build upon install
+
+
+
+# 6.2.0 (2025-01-10)
+
+
+### ♻️ Chores
+
+* add conditional exports ([8717aa9](https://github.com/alvis/presetter/commit/8717aa96a56a0a2ae2d7ceb15665ba28b125706b))
+* **release:** publish v6.2.0 ([5ca15d8](https://github.com/alvis/presetter/commit/5ca15d88a8c5dd4db5767e19051af15f2dadb647))
+
+
+
+# 6.1.0 (2024-12-24)
+
+
+### ✨ Features
+
+* **preset-essentials:** add @/ import shortcut ([ef75190](https://github.com/alvis/presetter/commit/ef75190a5274e3614dbbf09ff0281bd061d91185))
+* **preset-essentials:** eslint with .gitignore ([4df3d23](https://github.com/alvis/presetter/commit/4df3d23e99f09aaaec225785a1d0341eaea4dfed))
+* **preset-essentials:** skip linting binary & definition files ([1d95468](https://github.com/alvis/presetter/commit/1d954684eacbcb634da3a1d774e8810a1da4f5df))
+
+
+### 🐛 Bug Fixes
+
+* **preset-essentials:** add @/ as internal alias ([75f82d4](https://github.com/alvis/presetter/commit/75f82d4688dfae1f76e0664fd37273a08cb948f8))
+* **preset-essentials:** don't treat custom types as internal ([f872626](https://github.com/alvis/presetter/commit/f8726261f9b318ee5f9800e4deaac73abee63650))
+* **preset-essentials:** run lint-staged pre-commit ([e632e65](https://github.com/alvis/presetter/commit/e632e65c46ca6ce50ebdaeaef1ad6de0dbcc36fe))
+
+
+### ♻️ Chores
+
+* **release:** publish v6.1.0 ([0f64b05](https://github.com/alvis/presetter/commit/0f64b0511487e274fadce0ca651e21bd467545bf))
+
+
+
+# 6.0.0 (2024-11-27)
+
+
+### ✨ Features
+
+* convert the whole project into ESM ([381c84f](https://github.com/alvis/presetter/commit/381c84f59605faf9ce6c2b3f81c2eea81bfebc61))
+* introduce presetter.config.ts ([74e2326](https://github.com/alvis/presetter/commit/74e23263780146e24db0c36bef71ff6edc5a66fa))
+* **preset-essentials:** make build-in modules imported first ([aa2aedd](https://github.com/alvis/presetter/commit/aa2aeddbf328c89d9707a0e388995b5d3bfc7fba))
+* **preset-essentials:** update jest and ts-jest to v29 ([b0f215b](https://github.com/alvis/presetter/commit/b0f215b70e15512d3e842669e9e23f8046196659))
+* **preset:** include test files in eslint ([fab68c5](https://github.com/alvis/presetter/commit/fab68c5ced14613366e370f254c2f9362b855b17))
+* **presetter:** run tasks without a temporary package.json ([6c404b3](https://github.com/alvis/presetter/commit/6c404b3d3ac4b7463961ac8898c7c4803c6ebe7c))
+* **types:** separate types from presetter ([4ff3626](https://github.com/alvis/presetter/commit/4ff3626d915649208067b2235645e8534508f341))
+
+
+### 🐛 Bug Fixes
+
+* **preset-essentials:** ensure the exact path is also searched ([ca08946](https://github.com/alvis/presetter/commit/ca08946117ed11eef5844411ae4279a13e91cb39))
+
+
+### 📦 Code Refactoring
+
+* separate esm preset from essentials ([81b8b27](https://github.com/alvis/presetter/commit/81b8b27197b6c35239a585b890a1fdc23eef8a63))
+
+
+### ♻️ Chores
+
+* make essential presets available before presetter ([9feb4ac](https://github.com/alvis/presetter/commit/9feb4acf20ef1f1745ec037c29b261250ab53853))
+* **release:** publish v6.0.0 ([c798b9b](https://github.com/alvis/presetter/commit/c798b9b7249e2108e22a7e486ec78da61f0bab2e))
+
+
+### 💎 Styles
+
+* make any node build-in modules explicitly imported first ([90730f2](https://github.com/alvis/presetter/commit/90730f2dfd27a6a6f1fbceb26ac5fb974e11508e))
+
+
+### Breaking changes
+
+* With the introduction of new presetter.config.ts,
+the old legacy .presetterrc.json config format is
+no longer supported.
+* - by default, client project emit ESM and for clarity preset-essentials has been renamed to preset-esm
+- ts-node is removed in favor of a more powerful and less buggy tsx
+
+
+
+## 3.5.5 (2023-03-31)
+
+
+### ♻️ Chores
+
+* **release:** publish v3.5.5 ([14c1a3b](https://github.com/alvis/presetter/commit/14c1a3b7ddc807e8d0323afc02145bc886424c02))
+
+
+
+## 3.5.4 (2023-03-30)
+
+
+### 🐛 Bug Fixes
+
+* **preset-essentials:** check type in test files ([3bc1982](https://github.com/alvis/presetter/commit/3bc19825eedc8e3b8f16cb2f3a0078159a71f8a7))
+
+
+### ♻️ Chores
+
+* **release:** publish v3.5.4 ([a3567cd](https://github.com/alvis/presetter/commit/a3567cd8e12dd7f8d2134c2204db09bb917c55c0))
+
+
+
+## 3.5.3 (2023-03-26)
+
+
+### ♻️ Chores
+
+* **release:** publish v3.5.3 ([e9e7a78](https://github.com/alvis/presetter/commit/e9e7a783a017903f2eb4b51b619bc76bfac777a2))
+
+
+
+## 3.5.2 (2023-03-26)
+
+
+### ♻️ Chores
+
+* **release:** publish v3.5.2 ([1b134cf](https://github.com/alvis/presetter/commit/1b134cf5f2c9088f1335e0be762355958ed1a4b9))
+
+
+
+## 3.5.1 (2023-03-18)
+
+
+### 🐛 Bug Fixes
+
+* **preset-essentials:** remove deprecated typescript configs ([0dc6cf7](https://github.com/alvis/presetter/commit/0dc6cf7c74544b95f6d53fce1531e3f206ed423d))
+
+
+### ♻️ Chores
+
+* **release:** publish v3.5.1 ([1e12a59](https://github.com/alvis/presetter/commit/1e12a59395c835efadf404dc65b7195b25433378))
+
+
+
+# 3.5.0 (2022-09-23)
+
+
+### ♻️ Chores
+
+* **release:** publish v3.5.0 ([42e1057](https://github.com/alvis/presetter/commit/42e1057e478b22adabdb13948beaa734ad583645))
+
+
+
+## 3.4.1 (2022-08-10)
+
+
+### 🐛 Bug Fixes
+
+* **preset-essentials:** correct test files' path pattern ([1746203](https://github.com/alvis/presetter/commit/1746203448a077f9466367856e09b3e11a4db2c4))
+* update packages ([ec8307d](https://github.com/alvis/presetter/commit/ec8307d79468f8529b29a0f7b356b4368c03302c))
+
+
+### ♻️ Chores
+
+* **release:** publish v3.4.1 ([89d06c0](https://github.com/alvis/presetter/commit/89d06c0f29795283b582e17e8a05ff0b9fe9e476))
+
+
+
+# 3.4.0 (2022-08-02)
+
+
+### ♻️ Chores
+
+* **release:** publish v3.4.0 ([2b0eee4](https://github.com/alvis/presetter/commit/2b0eee4a4a5cba4c275c9601af9c9447049722ac))
+
+
+
+# 3.3.0 (2022-07-12)
+
+
+### ✨ Features
+
+* support dual commonjs/esm exports ([a8c3ca1](https://github.com/alvis/presetter/commit/a8c3ca11b99be251d6e35e14ec42dc3afdbd0741))
+
+
+### 📚 Documentation
+
+* update dependencies badges ([94c084d](https://github.com/alvis/presetter/commit/94c084ddc39821106c9077bd4c12d1a7da9529eb))
+
+
+### ♻️ Chores
+
+* **release:** publish v3.3.0 ([7eaabf6](https://github.com/alvis/presetter/commit/7eaabf69d2908a447b2023fb4846ef4939f56d96))
+
+
+
+# 3.2.0 (2022-05-18)
+
+
+### ✨ Features
+
+* **preset-essentials:** remove babel in favorite of tsc ([dd62e01](https://github.com/alvis/presetter/commit/dd62e01d2519ab755713a27db99d38203e50a992))
+
+
+### 🐛 Bug Fixes
+
+* **preset-essentials:** add husky to the build toolset ([2a24fa9](https://github.com/alvis/presetter/commit/2a24fa9a29d5ac685ef73ec9f485e186a9c7b6fa))
+* **preset-essentials:** allow type indexes ([c735879](https://github.com/alvis/presetter/commit/c735879cb456886a4a3c7465db84dcdb75fd341a))
+* **preset-essentials:** mark # as an internal path prefix ([e0feb56](https://github.com/alvis/presetter/commit/e0feb56ebf58386a323c24827a1d2eeaa62cd258))
+
+
+### 📦 Code Refactoring
+
+* use American English ([17315b7](https://github.com/alvis/presetter/commit/17315b78a9d65fb6193a609dd27b4d34454df1bc))
+
+
+### ♻️ Chores
+
+* **release:** publish v3.2.0 ([aef9950](https://github.com/alvis/presetter/commit/aef9950d4605d07f8fda87c331ca5bc7a6bb2c2d))
+* update package dependencies ([4e50e0d](https://github.com/alvis/presetter/commit/4e50e0d2fce1bea470fbea62fc1eba52dccb3aed))
+
+
+
+## 3.1.1 (2021-12-29)
+
+
+### ♻️ Chores
+
+* **release:** publish v3.1.1 ([8e1aecb](https://github.com/alvis/presetter/commit/8e1aecbd95d08e3b9e185f37993b7af73f9ff365))
+
+
+
+# 3.1.0 (2021-12-28)
+
+
+### ✨ Features
+
+* **preset-essentials:** add dotenv to the build toolset ([2e5ceb3](https://github.com/alvis/presetter/commit/2e5ceb3b62a4cc11289bba39407a12c31f0da290))
+
+
+### 🐛 Bug Fixes
+
+* **preset/lint:** update eslint to v8 ([f8cfa4d](https://github.com/alvis/presetter/commit/f8cfa4de68eaaf0fe7501f89b174b9c1262a7d1c))
+* **preset:** lint code before committing ([e7219b2](https://github.com/alvis/presetter/commit/e7219b24e5293434ea2d588aa32496842c3535ce))
+
+
+### ♻️ Chores
+
+* **release:** publish v3.1.0 ([113b374](https://github.com/alvis/presetter/commit/113b3744cc4e3f517667285a2ab4b7292364ae1a))
+
+
+
+## 3.0.3 (2021-11-03)
+
+
+### ♻️ Chores
+
+* **release:** publish v3.0.3 ([3c1640d](https://github.com/alvis/presetter/commit/3c1640dd1301371c78693a9f04e3dd71c0e2a921))
+
+
+
+## 3.0.2 (2021-11-03)
+
+
+### ♻️ Chores
+
+* **release:** publish v3.0.2 ([3c22351](https://github.com/alvis/presetter/commit/3c22351df97e51be70f90566e3248716d46bf6d1))
+
+
+
+## 3.0.1 (2021-10-14)
+
+
+### 🐛 Bug Fixes
+
+* **preset-essentials/lint:** run prettier at the end ([b8faeb5](https://github.com/alvis/presetter/commit/b8faeb5c3bac23896c93b72fb4977705588ed70b))
+* **preset-essentials:** warn for unused variables instead ([3b9dca5](https://github.com/alvis/presetter/commit/3b9dca54bfb95e942ce8997239164881d2eb2eeb))
+* **preset:** add back the missing gitignore entries ([70ac386](https://github.com/alvis/presetter/commit/70ac3865fccb823f8ad962609dd9d88e83b504a4))
+
+
+### ♻️ Chores
+
+* **release:** publish v3.0.1 ([fcdb544](https://github.com/alvis/presetter/commit/fcdb54439c1f77b5e57f74b5a21fe30b4a3ab20a))
+
+
+
+# 3.0.0 (2021-10-04)
+
+
+### 📦 Code Refactoring
+
+* rename presetter-preset to presetter-preset-essentials ([b799587](https://github.com/alvis/presetter/commit/b7995871d85a1ccb8d2e43ba9b3a7e305de7a99b))
+
+
+### ♻️ Chores
+
+* **release:** publish v3.0.0 ([9bd9399](https://github.com/alvis/presetter/commit/9bd93991d4ea2ede7b1b7ee1bbea94f76f8f80bd))
+
+
+
 # 8.0.0 (2025-06-27)
 
 
