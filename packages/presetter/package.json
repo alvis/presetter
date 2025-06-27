@@ -1,6 +1,6 @@
 {
   "name": "presetter",
-  "version": "7.3.0",
+  "version": "8.0.0",
   "description": "Make project configurations clean with presets",
   "keywords": [
     "config",
@@ -113,6 +113,12 @@
     "node": ">=16.0.0"
   },
   "publishConfig": {
+    "exports": {
+      ".": {
+        "types": "./lib/index.d.ts",
+        "import": "./lib/index.js"
+      }
+    },
     "imports": {
       "#preset": {
         "types": "./lib/preset/index.d.ts",
@@ -137,12 +143,6 @@
       "#*": {
         "types": "./lib/*.d.ts",
         "import": "./lib/*.js"
-      }
-    },
-    "exports": {
-      ".": {
-        "types": "./lib/index.d.ts",
-        "import": "./lib/index.js"
       }
     }
   }
