@@ -95,7 +95,7 @@ my-project/
 ├── package.json                 ← 15+ devDependencies
 ├── tsconfig.json               ← Manual TypeScript config
 ├── eslint.config.js            ← 200+ lines of ESLint rules
-├── .prettierrc                 ← Prettier settings
+├── .prettierrc.json            ← Prettier settings
 ├── vitest.config.ts            ← Test configuration
 ├── .lintstagedrc.json          ← Pre-commit setup
 ├── .husky/
