@@ -26,6 +26,9 @@ compilerOptions:
     - DOM
     - DOM.Iterable
 include:
+  - '.*/**/*.json'
+  - '.*/**/*.ts'
+  - '.*/**/*.tsx'
   - '**/*.json'
   - '**/*.ts'
   - '**/*.tsx'

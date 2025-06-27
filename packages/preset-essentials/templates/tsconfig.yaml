@@ -51,6 +51,10 @@ compilerOptions:
   lib:
     - '{target}'
 include:
+  - '.*/**/*.json'
+  - '.*/**/*.ts'
+  - '.*/**/*.cts'
+  - '.*/**/*.mts'
   - '**/*.json'
   - '**/*.ts'
   - '**/*.cts'
