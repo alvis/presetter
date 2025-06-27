@@ -32,6 +32,6 @@ jobs:
         env:
           NPM_AUTH_TOKEN: ${{ secrets.NPM_AUTH_TOKEN }}
       - name: publish the package
-        run: pnpm --recursive publish --no-git-checks
+        run: pnpm --recursive publish --no-git-checks --access public
         env:
           NPM_CONFIG_PROVENANCE: true
