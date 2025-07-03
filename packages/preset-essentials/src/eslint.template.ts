@@ -60,14 +60,14 @@ export default asset<{ default: Linter.Config[] }>(
             mode: 'typescript',
           },
           'targets':
-            (packageJson.browserslist ??
-            Object.keys({
+            (packageJson.browserslist as string[] | undefined) ??
+            (Object.keys({
               ...packageJson.dependencies,
               ...packageJson.devDependencies,
               ...packageJson.peerDependencies,
-            }).some((dependency) => commonWebDependencies.includes(dependency)))
-              ? ['>0.5%'] // assuming a web project if it has any common web dependencies
-              : ['maintained node versions'], // otherwise, assume a node.js project
+            }).some((dependency) => commonWebDependencies.includes(dependency))
+              ? ['>0.5%'] // assuming web API usage on browsers only if it has any common web dependencies
+              : ['maintained node versions']), // otherwise, only check if web API usage are supported by the specified node js versions,
         },
         rules: {
           // Extension Rules //
