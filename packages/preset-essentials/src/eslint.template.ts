@@ -33,6 +33,7 @@ export default asset<{ default: Linter.Config[] }>(
   (current, { packageJson, projectRoot, variables }) => ({
     default: tseslint.config(
       ...(current?.default ?? []),
+      { files: [variables.source!, variables.test!] },
       eslint.configs.recommended, // eslint recommended rules
       ...tseslint.configs.recommendedTypeChecked, // typescript-specific rules
       ...tseslint.configs.stylisticTypeChecked, // typescript-specific rules
