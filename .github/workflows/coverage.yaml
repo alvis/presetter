@@ -21,10 +21,6 @@ jobs:
         with:
           node-version: lts/*
           cache: pnpm
-      - name: install code climate reporter
-        run: |
-          curl -L https://codeclimate.com/downloads/test-reporter/test-reporter-latest-linux-amd64 > /tmp/cc-test-reporter
-          chmod +x /tmp/cc-test-reporter
       - name: install dependencies
         run: pnpm install
       - name: run coverage
@@ -32,8 +28,7 @@ jobs:
         env:
           CI: true
       - name: upload coverage
-        env:
-          CC_TEST_REPORTER_ID: ${{ secrets.CC_TEST_REPORTER_ID }}
-        run: |
-          /tmp/cc-test-reporter format-coverage -t lcov ./coverage/lcov.info
-          /tmp/cc-test-reporter upload-coverage
+        uses: qltysh/qlty-action/coverage@v1
+        with:
+          token: ${{secrets.QLTY_COVERAGE_TOKEN}}
+          files: coverage/lcov.info
