@@ -8,12 +8,16 @@ import type { Linter } from 'eslint';
 
 const COGNITIVE_COMPLEXITY = 15;
 
-export default asset<{ default: Linter.Config[] }>((current) => {
+export default asset<{ default: Linter.Config[] }>((current, context) => {
+  const { packageJson } = context;
+
   const currentConfigs = current?.default ?? [];
 
   const hasTypescriptEslint = currentConfigs.some(
     (config) => !!config.plugins?.['@typescript-eslint'],
   );
+
+  const isNodeOnly = !!packageJson.engines?.node;
 
   return {
     default: [
@@ -44,6 +48,13 @@ export default asset<{ default: Linter.Config[] }>((current) => {
           ],
           'no-console': 'warn', // discourage console usage in production code, but allow it for debugging
           'no-eval': 'error', // disallow eval due to its security risks and performance concerns
+        },
+      },
+      {
+        name: 'presetter-preset-strict:import',
+        rules: {
+          'import/enforce-node-protocol-usage': ['warn', 'always'], // ensure all node modules are imported under node: protocol
+          'import/no-nodejs-modules': isNodeOnly ? 'off' : 'error',
         },
       },
       {

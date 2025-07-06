@@ -53,6 +53,9 @@
     "presetter-preset-esm": "workspace:*",
     "presetter-preset-strict": "workspace:*"
   },
+  "engines": {
+    "node": ">=20.0.0"
+  },
   "publishConfig": {
     "exports": {
       ".": {

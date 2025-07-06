@@ -64,6 +64,9 @@
     "rollup-plugin-tsconfig-paths": "^1.0.0",
     "rollup-plugin-visualizer": "^5.0.0"
   },
+  "engines": {
+    "node": ">=20.0.0"
+  },
   "publishConfig": {
     "exports": {
       ".": {

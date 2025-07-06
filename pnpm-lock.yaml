@@ -82,7 +82,7 @@ importers:
         specifier: ^6.0.0
         version: 6.0.2(eslint@9.29.0(jiti@2.4.2))
       eslint-plugin-import:
-        specifier: ^2.0.0
+        specifier: ^2.32.0
         version: 2.32.0(@typescript-eslint/parser@8.35.0(eslint@9.29.0(jiti@2.4.2))(typescript@5.8.3))(eslint-import-resolver-typescript@4.4.3)(eslint@9.29.0(jiti@2.4.2))
       eslint-plugin-jsdoc:
         specifier: ^51.0.0

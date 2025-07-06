@@ -50,6 +50,9 @@
     "eslint-plugin-sonarjs": "^3.0.0",
     "sort-package-json": "^3.2.0"
   },
+  "engines": {
+    "node": ">=20.0.0"
+  },
   "publishConfig": {
     "exports": {
       ".": {

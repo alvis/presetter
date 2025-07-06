@@ -46,6 +46,9 @@
   "dependencies": {
     "type-fest": "catalog:"
   },
+  "engines": {
+    "node": ">=20.0.0"
+  },
   "publishConfig": {
     "exports": {
       ".": {

@@ -62,6 +62,9 @@
     "storybook-addon-test-codegen": "^2.0.0",
     "tailwindcss": "^4.0.0"
   },
+  "engines": {
+    "node": ">=20.0.0"
+  },
   "publishConfig": {
     "exports": {
       ".": {

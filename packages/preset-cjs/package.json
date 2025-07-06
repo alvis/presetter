@@ -48,6 +48,9 @@
   "peerDependencies": {
     "presetter-preset-essentials": "workspace:*"
   },
+  "engines": {
+    "node": ">=20.0.0"
+  },
   "publishConfig": {
     "exports": {
       ".": {

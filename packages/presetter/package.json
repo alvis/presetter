@@ -110,7 +110,7 @@
     "type-fest": "catalog:"
   },
   "engines": {
-    "node": ">=16.0.0"
+    "node": ">=20.0.0"
   },
   "publishConfig": {
     "exports": {
