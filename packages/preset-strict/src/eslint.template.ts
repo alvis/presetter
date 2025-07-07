@@ -158,6 +158,7 @@ export default asset<{ default: Linter.Config[] }>((current, context) => {
           'sonarjs/no-undefined-argument': 'off', // allow undefined arguments for intentional behavior
           'sonarjs/no-unused-private-class-members': 'off', // use no-unused-private-class-members instead
           'sonarjs/no-unused-vars': 'off', // defer to @typescript-eslint/no-unused-vars
+          'sonarjs/void-use': 'off', // handled by @typescript-eslint/no-floating-promises
 
           // Error Prevention //
           'sonarjs/assertions-in-tests': 'off', // disabled due to frequent false positives in test code
