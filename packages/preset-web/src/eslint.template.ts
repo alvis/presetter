@@ -32,6 +32,7 @@ export default asset<{ default: Linter.Config[] }>(
 );
 
 const commonSourceDirectories = [
+  '.storybook',
   'source',
   'src',
   'app',
