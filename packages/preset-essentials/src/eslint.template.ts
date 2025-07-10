@@ -293,37 +293,8 @@ export default asset<{ default: Linter.Config[] }>(
               ],
               'distinctGroup': false, // do not split subgroups
               'newlines-between': 'always-and-inside-groups', // enable a newline within import groups
-              'pathGroups': [
-                {
-                  group: 'type',
-                  pattern: 'node:*', // handle Node.js modules
-                  position: 'before',
-                },
-                {
-                  group: 'type',
-                  pattern: 'node:*/*', // handle Node.js sub modules
-                  position: 'before',
-                },
-                {
-                  group: 'type',
-                  pattern:
-                    '{#*,#*/**,@/**,..,../{,..,../..,../../..,../../../..,../../../../..}/**,.,./**}',
-                  position: 'after',
-                  patternOptions: {
-                    dot: true, // handle dot-based imports
-                  },
-                },
-              ],
-              'pathGroupsExcludedImportTypes': [
-                'builtin',
-                'external',
-                'internal',
-                'parent',
-                'index',
-                'sibling',
-                'object',
-                'unknown',
-              ],
+              'sortTypesGroup': true,
+              'newlines-between-types': 'always-and-inside-groups',
             },
           ],
           'eqeqeq': 'error', // enforce type-safe equality operators
