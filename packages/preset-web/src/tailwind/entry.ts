@@ -1,0 +1,97 @@
+import { readdir, readFile } from 'node:fs/promises';
+import { resolve } from 'node:path';
+
+/** common source directories where css files are typically located */
+const commonSourceDirectories = [
+  '.storybook',
+  'source',
+  'src',
+  'app',
+  'styles',
+  'assets',
+  'public',
+  'static',
+];
+
+/** common css file names prioritized during search */
+const commonStyleFileNames = [
+  'globals.css',
+  'global.css',
+  'index.css',
+  'main.css',
+  'styles.css',
+];
+
+/**
+ * locates the main css file that contains the tailwind css import directive
+ * @param rootDirectory the root directory to search for css files
+ * @returns path to the css file containing @import "tailwindcss"
+ */
+export async function locateTailwindEntryFile(
+  rootDirectory: string,
+): Promise<string | undefined> {
+  // search in common source directories
+  for (const sourceDirectory of commonSourceDirectories) {
+    const directoryPath = resolve(rootDirectory, sourceDirectory);
+    const result = await findTailwindEntryInDirectory(directoryPath);
+    if (result) {
+      return result;
+    }
+  }
+
+  // search in root directory
+  return findTailwindEntryInDirectory(rootDirectory);
+}
+
+/**
+ * searches for tailwind css entry file in a specific directory
+ * @param directoryPath the directory path to search in
+ * @returns path to the css file containing @import "tailwindcss" or undefined
+ */
+async function findTailwindEntryInDirectory(
+  directoryPath: string,
+): Promise<string | undefined> {
+  try {
+    const files = await readdir(directoryPath);
+
+    // create a prioritized list of files to check
+    const filesToCheck = [
+      // common style files first (if they exist)
+      ...commonStyleFileNames.filter((name) => files.includes(name)),
+      // then all other CSS files
+      ...files.filter(
+        (file) => file.endsWith('.css') && !commonStyleFileNames.includes(file),
+      ),
+    ];
+
+    // check each file for tailwind import
+    for (const file of filesToCheck) {
+      const filePath = resolve(directoryPath, file);
+      if (await hasTailwindImport(filePath)) {
+        return filePath;
+      }
+    }
+  } catch {
+    // directory doesn't exist or can't be read
+  }
+
+  return undefined;
+}
+
+/**
+ * checks if a css file contains tailwind import directive, following local imports recursively
+ * @param path the path to the css file to check
+ * @returns true if the file contains @import "tailwindcss" directly or indirectly
+ */
+async function hasTailwindImport(path: string): Promise<boolean> {
+  const content = await readFile(path, 'utf-8');
+
+  console.log({
+    path,
+    content,
+    result: /@import\s+["']tailwindcss/.test(content),
+  });
+
+  // check for direct tailwind import
+  return /@import\s+["']tailwindcss/.test(content);
+}
