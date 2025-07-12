@@ -1,5 +1,5 @@
 import { readdir, readFile } from 'node:fs/promises';
-import { resolve } from 'node:path';
+import { dirname, resolve } from 'node:path';
 
 /** common source directories where css files are typically located */
 const commonSourceDirectories = [
@@ -84,14 +84,55 @@ async function findTailwindEntryInDirectory(
  * @returns true if the file contains @import "tailwindcss" directly or indirectly
  */
 async function hasTailwindImport(path: string): Promise<boolean> {
-  const content = await readFile(path, 'utf-8');
+  return checkTailwindImportRecursively(path, new Set<string>());
+}
 
-  console.log({
-    path,
-    content,
-    result: /@import\s+["']tailwindcss/.test(content),
-  });
+/**
+ * internal recursive helper for hasTailwindImport
+ * @param path the path to the css file to check
+ * @param visited set of already visited files to prevent infinite loops
+ * @returns true if the file contains @import "tailwindcss" directly or indirectly
+ */
+async function checkTailwindImportRecursively(
+  path: string,
+  visited: Set<string>,
+): Promise<boolean> {
+  try {
+    if (visited.has(path)) {
+      return false;
+    }
+    visited.add(path);
 
-  // check for direct tailwind import
-  return /@import\s+["']tailwindcss/.test(content);
+    const content = await readFile(path, 'utf-8');
+
+    // check for direct tailwind import
+    if (/@import\s+["']tailwindcss/.exec(content) !== null) {
+      return true;
+    }
+
+    // find all local CSS imports and check them recursively
+    const importRegex = /@import\s+["']([^"']+)["']/g;
+    let match: RegExpExecArray | null;
+
+    while ((match = importRegex.exec(content)) !== null) {
+      const importPath = match[1];
+
+      // skip URL imports (http/https)
+      if (/^https?:\/\//.test(importPath)) {
+        continue;
+      }
+
+      // resolve relative imports
+      const resolvedImportPath = resolve(dirname(path), importPath);
+
+      // recursively check the imported file
+      if (await checkTailwindImportRecursively(resolvedImportPath, visited)) {
+        return true;
+      }
+    }
+
+    return false;
+  } catch {
+    return false;
+  }
 }
