@@ -13,20 +13,14 @@ function resolveImportPath(
   importPath: string,
   currentFilePath: string,
 ): string {
-  // check if this is a module import (starts with @ or doesn't start with ./ or /)
-  if (
-    importPath.startsWith('@') ||
-    (!importPath.startsWith('./') && !importPath.startsWith('/'))
-  ) {
-    // resolve module imports using import.meta.resolve
-    return resolveModule(importPath, `file://${currentFilePath}`).replace(
-      'file://',
-      '',
-    );
-  } else {
-    // resolve relative imports
-    return resolve(dirname(currentFilePath), importPath);
-  }
+  return importPath.startsWith('.')
+    ? // resolve relative imports
+      resolve(dirname(currentFilePath), importPath)
+    : // resolve module imports using import.meta.resolve
+      resolveModule(importPath, `file://${currentFilePath}`).replace(
+        'file://',
+        '',
+      );
 }
 
 /** common source directories where css files are typically located */
@@ -150,17 +144,16 @@ async function checkTailwindImportRecursively(
         continue;
       }
 
-      let resolvedImportPath: string;
       try {
-        resolvedImportPath = resolveImportPath(importPath, path);
+        const resolvedImportPath = resolveImportPath(importPath, path);
+
+        // recursively check the imported file
+        if (await checkTailwindImportRecursively(resolvedImportPath, visited)) {
+          return true;
+        }
       } catch {
         // if import resolution fails, skip this import
         continue;
-      }
-
-      // recursively check the imported file
-      if (await checkTailwindImportRecursively(resolvedImportPath, visited)) {
-        return true;
       }
     }
 
