@@ -1,6 +1,34 @@
 import { readdir, readFile } from 'node:fs/promises';
 import { dirname, resolve } from 'node:path';
 
+import { resolveModule } from '#module';
+
+/**
+ * resolves an import path to an absolute file path
+ * @param importPath the import path from CSS @import statement
+ * @param currentFilePath the path of the current file being processed
+ * @returns resolved absolute file path
+ */
+function resolveImportPath(
+  importPath: string,
+  currentFilePath: string,
+): string {
+  // check if this is a module import (starts with @ or doesn't start with ./ or /)
+  if (
+    importPath.startsWith('@') ||
+    (!importPath.startsWith('./') && !importPath.startsWith('/'))
+  ) {
+    // resolve module imports using import.meta.resolve
+    return resolveModule(importPath, `file://${currentFilePath}`).replace(
+      'file://',
+      '',
+    );
+  } else {
+    // resolve relative imports
+    return resolve(dirname(currentFilePath), importPath);
+  }
+}
+
 /** common source directories where css files are typically located */
 const commonSourceDirectories = [
   '.storybook',
@@ -110,7 +138,7 @@ async function checkTailwindImportRecursively(
       return true;
     }
 
-    // find all local CSS imports and check them recursively
+    // find all CSS imports and check them recursively
     const importRegex = /@import\s+["']([^"']+)["']/g;
     let match: RegExpExecArray | null;
 
@@ -122,8 +150,13 @@ async function checkTailwindImportRecursively(
         continue;
       }
 
-      // resolve relative imports
-      const resolvedImportPath = resolve(dirname(path), importPath);
+      let resolvedImportPath: string;
+      try {
+        resolvedImportPath = resolveImportPath(importPath, path);
+      } catch {
+        // if import resolution fails, skip this import
+        continue;
+      }
 
       // recursively check the imported file
       if (await checkTailwindImportRecursively(resolvedImportPath, visited)) {

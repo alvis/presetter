@@ -52,6 +52,35 @@ const mockFileContents: Record<string, string> = {
     '@import "./a.css";\n.b { color: blue; }',
   '/test/recursive/missing-import/src/missing-import.css':
     '@import "./nonexistent.css";\n.main { color: black; }',
+
+  // module import test files
+  '/test/module-import/src/main.css':
+    '@import "@theriety/web/base.css";\n.main { color: purple; }',
+  '/fake/node_modules/@theriety/web/base.css':
+    '@import "tailwindcss";\n.base { margin: 0; }',
+  '/test/module-import-nested/src/entry.css':
+    '@import "@acme/design-system/styles.css";\n.entry { padding: 5px; }',
+  '/fake/node_modules/@acme/design-system/styles.css':
+    '@import "./components.css";\n.styles { background: white; }',
+  '/fake/node_modules/@acme/design-system/components.css':
+    '@import "tailwindcss";\n.components { border: 1px solid; }',
+  '/test/module-import-no-tailwind/src/main.css':
+    '@import "@external/lib/theme.css";\n.main { color: black; }',
+  '/fake/node_modules/@external/lib/theme.css': '.theme { font-size: 16px; }',
+  '/test/module-import-mixed/src/app.css':
+    '@import "./local.css";\n@import "@pkg/styles/base.css";\n.app { display: flex; }',
+  '/test/module-import-mixed/src/local.css':
+    '@import "@pkg/styles/base.css";\n.local { margin: 10px; }',
+  '/fake/node_modules/@pkg/styles/base.css':
+    '@import "tailwindcss";\n.base { padding: 0; }',
+  '/test/module-import-error/src/main.css':
+    '@import "@unresolvable/module";\n.main { color: red; }',
+  '/test/module-import-error/src/fallback.css':
+    '@import "tailwindcss";\n.fallback { color: blue; }',
+  '/test/bare-module-import/src/main.css':
+    '@import "some-css-library";\\n.main { color: orange; }',
+  '/fake/node_modules/some-css-library/index.css':
+    '@import "tailwindcss";\\n.library { font-weight: bold; }',
 };
 
 // mock directory contents
@@ -68,6 +97,12 @@ const directoryContents: Record<string, string[]> = {
   '/test/recursive/circular/src': ['a.css'],
   '/test/recursive/missing-import/src': ['missing-import.css'],
   '/test/error/src': ['main.css'],
+  '/test/module-import/src': ['main.css'],
+  '/test/module-import-nested/src': ['entry.css'],
+  '/test/module-import-no-tailwind/src': ['main.css'],
+  '/test/module-import-mixed/src': ['app.css'],
+  '/test/module-import-error/src': ['main.css', 'fallback.css'],
+  '/test/bare-module-import/src': ['main.css'],
   '/test/dir-no-css': ['index.js', 'styles.txt'],
 };
 
@@ -76,6 +111,17 @@ const errorFiles = new Set([
   '/test/nonexistent.css',
   '/test/recursive/nonexistent.css',
 ]);
+
+// mock module resolutions
+const moduleResolutions: Record<string, string> = {
+  '@theriety/web/base.css': 'file:///fake/node_modules/@theriety/web/base.css',
+  '@acme/design-system/styles.css':
+    'file:///fake/node_modules/@acme/design-system/styles.css',
+  '@external/lib/theme.css':
+    'file:///fake/node_modules/@external/lib/theme.css',
+  '@pkg/styles/base.css': 'file:///fake/node_modules/@pkg/styles/base.css',
+  'some-css-library': 'file:///fake/node_modules/some-css-library/index.css',
+};
 
 vi.mock('node:fs/promises', () => ({
   readFile: vi.fn(async (path: string) => {
@@ -106,6 +152,12 @@ vi.mock('node:fs/promises', () => ({
       'recursive/with-url',
       'recursive/circular',
       'recursive/missing-import',
+      'module-import',
+      'module-import-nested',
+      'module-import-no-tailwind',
+      'module-import-mixed',
+      'module-import-error',
+      'bare-module-import',
       'project',
       'project-root',
     ];
@@ -134,6 +186,20 @@ vi.mock('node:fs/promises', () => ({
     }
 
     throw new Error(`missing readdir mock for ${path}`);
+  }),
+}));
+
+vi.mock('#module', () => ({
+  resolveModule: vi.fn((specifier: string, _parent?: string | URL) => {
+    if (specifier === '@unresolvable/module') {
+      throw new Error(`Cannot resolve module "${specifier}"`);
+    }
+
+    if (moduleResolutions[specifier]) {
+      return moduleResolutions[specifier];
+    }
+
+    throw new Error(`Cannot resolve module "${specifier}"`);
   }),
 }));
 
@@ -248,6 +314,56 @@ describe('fn:locateTailwindEntryFile', () => {
     const expected = undefined;
 
     const result = await locateTailwindEntryFile('/test/error');
+
+    expect(result).toBe(expected);
+  });
+
+  it('should detect tailwind import through module imports', async () => {
+    const expected = resolve('/test/module-import/src/main.css');
+
+    const result = await locateTailwindEntryFile('/test/module-import');
+
+    expect(result).toBe(expected);
+  });
+
+  it('should detect tailwind import through nested module imports', async () => {
+    const expected = resolve('/test/module-import-nested/src/entry.css');
+
+    const result = await locateTailwindEntryFile('/test/module-import-nested');
+
+    expect(result).toBe(expected);
+  });
+
+  it('should return undefined when module imports do not contain tailwind', async () => {
+    const expected = undefined;
+
+    const result = await locateTailwindEntryFile(
+      '/test/module-import-no-tailwind',
+    );
+
+    expect(result).toBe(expected);
+  });
+
+  it('should detect tailwind import through mixed local and module imports', async () => {
+    const expected = resolve('/test/module-import-mixed/src/app.css');
+
+    const result = await locateTailwindEntryFile('/test/module-import-mixed');
+
+    expect(result).toBe(expected);
+  });
+
+  it('should skip unresolvable module imports and continue to find tailwind', async () => {
+    const expected = resolve('/test/module-import-error/src/fallback.css');
+
+    const result = await locateTailwindEntryFile('/test/module-import-error');
+
+    expect(result).toBe(expected);
+  });
+
+  it('should detect tailwind import through bare module imports (no @ or ./ prefix)', async () => {
+    const expected = resolve('/test/bare-module-import/src/main.css');
+
+    const result = await locateTailwindEntryFile('/test/bare-module-import');
 
     expect(result).toBe(expected);
   });
