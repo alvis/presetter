@@ -6,167 +6,134 @@ import { locateTailwindEntryFile } from '#tailwind/entry';
 
 import { posix } from '../path';
 
+// mock file contents
+const mockFileContents: Record<string, string> = {
+  // files containing tailwindcss import
+  '/test/file.css':
+    '// some comments\n@import  "tailwindcss";\n// some other comments',
+  '/test/dir/index.css': '@import "tailwindcss";',
+  '/test/dir-priority/main.css': '@import "tailwindcss";',
+  '/test/project/src/index.css': '@import "tailwindcss";',
+  '/test/project-root/tailwind.css': '@import "tailwindcss";',
+
+  // files with other imports
+  '/test/file-no-tailwind.css': '@import "some-other-library";',
+
+  // files with regular CSS (no tailwind)
+  '/test/dir/styles.css': '.class { color: red; }',
+  '/test/dir/other.css': '.class { color: red; }',
+  '/test/dir-no-tailwind/index.css': '.class { color: red; }',
+  '/test/dir-no-tailwind/styles.css': '.class { color: red; }',
+
+  // recursive import test files
+  '/test/recursive/src/main.css':
+    '@import "./base.css";\n.main { color: blue; }',
+  '/test/recursive/src/base.css':
+    '@import "tailwindcss";\n.base { margin: 0; }',
+  '/test/recursive/deep/src/entry.css':
+    '@import "./level1.css";\n.entry { padding: 10px; }',
+  '/test/recursive/deep/src/level1.css':
+    '@import "./level2.css";\n.level1 { font-size: 14px; }',
+  '/test/recursive/deep/src/level2.css':
+    '@import "tailwindcss";\n.level2 { color: green; }',
+  '/test/recursive/no-tailwind/src/main.css':
+    '@import "./other.css";\n.main { color: red; }',
+  '/test/recursive/no-tailwind/src/other.css':
+    '@import "./another.css";\n.other { background: white; }',
+  '/test/recursive/no-tailwind/src/another.css':
+    '.another { border: 1px solid black; }',
+  '/test/recursive/with-url/src/main.css':
+    '@import "https://fonts.googleapis.com/css2?family=Inter";\n@import "./local.css";',
+  '/test/recursive/with-url/src/local.css':
+    '@import "tailwindcss";\n.local { font-family: Inter; }',
+  '/test/recursive/circular/src/a.css':
+    '@import "./b.css";\n.a { color: red; }',
+  '/test/recursive/circular/src/b.css':
+    '@import "./a.css";\n.b { color: blue; }',
+  '/test/recursive/missing-import/src/missing-import.css':
+    '@import "./nonexistent.css";\n.main { color: black; }',
+};
+
+// mock directory contents
+const directoryContents: Record<string, string[]> = {
+  '/test/dir': ['index.css', 'styles.css', 'other.css'],
+  '/test/dir-priority': ['app.css', 'main.css', 'styles.css'],
+  '/test/dir-no-tailwind': ['index.css', 'styles.css'],
+  '/test/project/src': ['index.css'],
+  '/test/project-root': ['tailwind.css'],
+  '/test/recursive/src': ['main.css'],
+  '/test/recursive/deep/src': ['entry.css'],
+  '/test/recursive/no-tailwind/src': ['main.css'],
+  '/test/recursive/with-url/src': ['main.css'],
+  '/test/recursive/circular/src': ['a.css'],
+  '/test/recursive/missing-import/src': ['missing-import.css'],
+  '/test/error/src': ['main.css'],
+  '/test/dir-no-css': ['index.js', 'styles.txt'],
+};
+
+const errorFiles = new Set([
+  '/test/error/src/main.css',
+  '/test/nonexistent.css',
+  '/test/recursive/nonexistent.css',
+]);
+
 vi.mock('node:fs/promises', () => ({
   readFile: vi.fn(async (path: string) => {
-    switch (posix(path)) {
-      // files containing tailwindcss import
-      case '/test/file.css':
-        return '// some comments\n@import  "tailwindcss";\n// some other comments';
-      case '/test/dir/index.css':
-      case '/test/dir-priority/main.css':
-      case '/test/project/src/index.css':
-      case '/test/project-root/tailwind.css':
-        return '@import "tailwindcss";';
+    const normalizedPath = posix(path);
 
-      // files with other imports
-      case '/test/file-no-tailwind.css':
-        return '@import "some-other-library";';
-
-      // files with regular CSS (no tailwind)
-      case '/test/dir/styles.css':
-      case '/test/dir/other.css':
-      case '/test/dir-no-tailwind/index.css':
-      case '/test/dir-no-tailwind/styles.css':
-        return '.class { color: red; }';
-
-      // recursive import test files
-      case '/test/recursive/src/main.css':
-        return '@import "./base.css";\n.main { color: blue; }';
-      case '/test/recursive/src/base.css':
-        return '@import "tailwindcss";\n.base { margin: 0; }';
-
-      case '/test/recursive/deep/src/entry.css':
-        return '@import "./level1.css";\n.entry { padding: 10px; }';
-      case '/test/recursive/deep/src/level1.css':
-        return '@import "./level2.css";\n.level1 { font-size: 14px; }';
-      case '/test/recursive/deep/src/level2.css':
-        return '@import "tailwindcss";\n.level2 { color: green; }';
-
-      case '/test/recursive/no-tailwind/src/main.css':
-        return '@import "./other.css";\n.main { color: red; }';
-      case '/test/recursive/no-tailwind/src/other.css':
-        return '@import "./another.css";\n.other { background: white; }';
-      case '/test/recursive/no-tailwind/src/another.css':
-        return '.another { border: 1px solid black; }';
-
-      case '/test/recursive/with-url/src/main.css':
-        return '@import "https://fonts.googleapis.com/css2?family=Inter";\n@import "./local.css";';
-      case '/test/recursive/with-url/src/local.css':
-        return '@import "tailwindcss";\n.local { font-family: Inter; }';
-
-      case '/test/recursive/circular/src/a.css':
-        return '@import "./b.css";\n.a { color: red; }';
-      case '/test/recursive/circular/src/b.css':
-        return '@import "./a.css";\n.b { color: blue; }';
-
-      case '/test/recursive/missing-import/src/missing-import.css':
-        return '@import "./nonexistent.css";\n.main { color: black; }';
-
-      // files that cause errors during processing
-      case '/test/error/src/main.css':
-        throw new Error('permission denied');
-
-      // non-existent files
-      case '/test/nonexistent.css':
-      case '/test/recursive/nonexistent.css':
-        throw new Error('file not found');
-
-      default:
-        return '.class { color: red; }';
+    if (errorFiles.has(normalizedPath)) {
+      throw new Error(
+        normalizedPath === '/test/error/src/main.css'
+          ? 'permission denied'
+          : 'file not found',
+      );
     }
+
+    return mockFileContents[normalizedPath] || '.class { color: red; }';
   }),
   readdir: vi.fn(async (path: string) => {
-    switch (posix(path)) {
-      // directories with CSS files
-      case '/test/dir':
-        return ['index.css', 'styles.css', 'other.css'];
-      case '/test/dir-priority':
-        return ['app.css', 'main.css', 'styles.css'];
-      case '/test/dir-no-tailwind':
-        return ['index.css', 'styles.css'];
-      case '/test/project/src':
-        return ['index.css'];
-      case '/test/project-root':
-        return ['tailwind.css'];
-      case '/test/recursive/src':
-        return ['main.css'];
-      case '/test/recursive/deep/src':
-        return ['entry.css'];
-      case '/test/recursive/no-tailwind/src':
-        return ['main.css'];
-      case '/test/recursive/with-url/src':
-        return ['main.css'];
-      case '/test/recursive/circular/src':
-        return ['a.css'];
-      case '/test/recursive/missing-import/src':
-        return ['missing-import.css'];
-      case '/test/error/src':
-        return ['main.css'];
+    const normalizedPath = posix(path);
 
-      // directories with non-CSS files
-      case '/test/dir-no-css':
-        return ['index.js', 'styles.txt'];
-
-      // non-existent directories (all throw the same error)
-      case '/nonexistent/dir':
-      case '/nonexistent/project':
-      case '/test/project/.storybook':
-      case '/test/project/source':
-      case '/test/project-root/.storybook':
-      case '/test/project-root/source':
-      case '/test/project-root/src':
-      case '/test/project-root/app':
-      case '/test/project-root/styles':
-      case '/test/project-root/assets':
-      case '/test/project-root/public':
-      case '/test/project-root/static':
-      case '/test/recursive/.storybook':
-      case '/test/recursive/source':
-      case '/test/recursive/app':
-      case '/test/recursive/styles':
-      case '/test/recursive/assets':
-      case '/test/recursive/public':
-      case '/test/recursive/static':
-      case '/test/recursive/deep/.storybook':
-      case '/test/recursive/deep/source':
-      case '/test/recursive/deep/app':
-      case '/test/recursive/deep/styles':
-      case '/test/recursive/deep/assets':
-      case '/test/recursive/deep/public':
-      case '/test/recursive/deep/static':
-      case '/test/recursive/no-tailwind/.storybook':
-      case '/test/recursive/no-tailwind/source':
-      case '/test/recursive/no-tailwind/app':
-      case '/test/recursive/no-tailwind/styles':
-      case '/test/recursive/no-tailwind/assets':
-      case '/test/recursive/no-tailwind/public':
-      case '/test/recursive/no-tailwind/static':
-      case '/test/recursive/with-url/.storybook':
-      case '/test/recursive/with-url/source':
-      case '/test/recursive/with-url/app':
-      case '/test/recursive/with-url/styles':
-      case '/test/recursive/with-url/assets':
-      case '/test/recursive/with-url/public':
-      case '/test/recursive/with-url/static':
-      case '/test/recursive/circular/.storybook':
-      case '/test/recursive/circular/source':
-      case '/test/recursive/circular/app':
-      case '/test/recursive/circular/styles':
-      case '/test/recursive/circular/assets':
-      case '/test/recursive/circular/public':
-      case '/test/recursive/circular/static':
-      case '/test/recursive/missing-import/.storybook':
-      case '/test/recursive/missing-import/source':
-      case '/test/recursive/missing-import/app':
-      case '/test/recursive/missing-import/styles':
-      case '/test/recursive/missing-import/assets':
-      case '/test/recursive/missing-import/public':
-      case '/test/recursive/missing-import/static':
-        throw new Error('directory not found');
-
-      default:
-        throw new Error(`missing readdir mock for ${path}`);
+    if (normalizedPath in directoryContents) {
+      return directoryContents[normalizedPath];
     }
+
+    // generate non-existent directory paths
+    const testPaths = [
+      'recursive',
+      'recursive/deep',
+      'recursive/no-tailwind',
+      'recursive/with-url',
+      'recursive/circular',
+      'recursive/missing-import',
+      'project',
+      'project-root',
+    ];
+    const subDirs = [
+      '.storybook',
+      'source',
+      'src',
+      'app',
+      'styles',
+      'assets',
+      'public',
+      'static',
+    ];
+
+    const isNonExistentDir = testPaths.some((testPath) => {
+      return subDirs.some(
+        (subDir) =>
+          normalizedPath === `/test/${testPath}/${subDir}` ||
+          normalizedPath === `/nonexistent/dir` ||
+          normalizedPath === `/nonexistent/project`,
+      );
+    });
+
+    if (isNonExistentDir) {
+      throw new Error('directory not found');
+    }
+
+    throw new Error(`missing readdir mock for ${path}`);
   }),
 }));
 
