@@ -91,7 +91,7 @@
     "globby": "^14.0.0",
     "jiti": "^2.4.0",
     "js-yaml": "^4.1.0",
-    "listr2": "^8.2.0",
+    "listr2": "^9.0.0",
     "mvdan-sh": "^0.10.0",
     "presetter-types": "workspace:*",
     "pupa": "^3.1.0",
@@ -102,7 +102,7 @@
   "devDependencies": {
     "@types/debug": "^4.0.0",
     "@types/js-yaml": "^4.0.0",
-    "@types/node": "^22.0.0",
+    "@types/node": "^24.0.0",
     "@types/yargs": "^17.0.0",
     "presetter-preset-esm": "workspace:*",
     "presetter-preset-essentials": "workspace:*",
