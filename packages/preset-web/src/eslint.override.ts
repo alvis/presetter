@@ -12,7 +12,6 @@ export default [
   ...storybook.configs['flat/recommended'],
   {
     name: 'presetter-preset-web:override:tailwindcss',
-    files: ['**/*.tsx'],
     plugins: {
       'better-tailwindcss': tailwind,
     },
@@ -24,6 +23,10 @@ export default [
     rules: {
       ...tailwind.configs['recommended-error'].rules,
       'better-tailwindcss/no-conflicting-classes': 'error',
+      'better-tailwindcss/no-unregistered-classes': [
+        'error',
+        { detectComponentClasses: true },
+      ],
     },
   },
 ] satisfies Linter.Config[];
