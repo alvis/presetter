@@ -261,6 +261,7 @@ export default asset<{ default: Linter.Config[] }>(
               ignoreTypeIndexes: true,
             },
           ],
+          '@typescript-eslint/no-unsafe-assignment': 'off', // disable due to poor performance
           '@typescript-eslint/require-await': 'off', // allow async functions with no await
           'import/consistent-type-specifier-style': [
             'warn',

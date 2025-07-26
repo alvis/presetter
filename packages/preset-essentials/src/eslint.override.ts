@@ -58,7 +58,6 @@ export default asset<{ default: Linter.Config[] }>(
             '@typescript-eslint/no-empty-function': 'off', // allows empty functions in test files for flexibility with dummy functions
             '@typescript-eslint/no-magic-numbers': 'off', // permits the use of arbitrary numbers as expected values in tests
             '@typescript-eslint/no-unsafe-argument': 'off', // allows passing arguments of any type in test cases
-            '@typescript-eslint/no-unsafe-assignment': 'off', // permits assigning variables of any type in test contexts
             '@typescript-eslint/no-unsafe-member-access': 'off', // allows access to members of any type in test scenarios
             '@typescript-eslint/no-unsafe-return': 'off', // permits returning values of any type in test functions
             '@typescript-eslint/unbound-method': 'off', // unbound methods are often used to check if the method has been called
