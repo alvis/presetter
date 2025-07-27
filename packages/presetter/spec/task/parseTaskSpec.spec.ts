@@ -49,4 +49,60 @@ describe('fn:parseTaskSpec', () => {
 
     expect(parseTaskSpec(taskString, globalArgs)).toEqual(expectedResult);
   });
+
+  it('should use default value when {@:default} is provided and no globalArgs', () => {
+    const taskString = 'selector -- {@:--default-arg} --arg1=value1';
+    const globalArgs: string[] = [];
+    const expectedResult: { selector: string; args: string[] } = {
+      selector: 'selector',
+      args: ['--default-arg', '--arg1=value1'],
+    };
+
+    expect(parseTaskSpec(taskString, globalArgs)).toEqual(expectedResult);
+  });
+
+  it('should use globalArgs instead of default when both are provided', () => {
+    const taskString = 'selector -- {@:--default-arg} --arg1=value1';
+    const globalArgs: string[] = ['--globalArg1=value1', '--globalArg2=value2'];
+    const expectedResult: { selector: string; args: string[] } = {
+      selector: 'selector',
+      args: ['--globalArg1=value1', '--globalArg2=value2', '--arg1=value1'],
+    };
+
+    expect(parseTaskSpec(taskString, globalArgs)).toEqual(expectedResult);
+  });
+
+  it('should handle multiple default args when {@:arg1 arg2} is provided and no globalArgs', () => {
+    const taskString =
+      'selector -- {@:--default-arg1 --default-arg2} --arg1=value1';
+    const globalArgs: string[] = [];
+    const expectedResult: { selector: string; args: string[] } = {
+      selector: 'selector',
+      args: ['--default-arg1', '--default-arg2', '--arg1=value1'],
+    };
+
+    expect(parseTaskSpec(taskString, globalArgs)).toEqual(expectedResult);
+  });
+
+  it('should handle empty default value {@:} correctly', () => {
+    const taskString = 'selector -- {@:} --arg1=value1';
+    const globalArgs: string[] = [];
+    const expectedResult: { selector: string; args: string[] } = {
+      selector: 'selector',
+      args: ['--arg1=value1'],
+    };
+
+    expect(parseTaskSpec(taskString, globalArgs)).toEqual(expectedResult);
+  });
+
+  it('should handle malformed placeholder without closing bracket', () => {
+    const taskString = 'selector -- {@:--default-arg --arg1=value1';
+    const globalArgs: string[] = [];
+    const expectedResult: { selector: string; args: string[] } = {
+      selector: 'selector',
+      args: [],
+    };
+
+    expect(parseTaskSpec(taskString, globalArgs)).toEqual(expectedResult);
+  });
 });

@@ -28,6 +28,93 @@ export function parseGlobalArgs(argv: Arguments): string[] {
   );
 }
 
+const ARG_PLACEHOLDER_REGEX = /^{@:?(.*)$/;
+
+/**
+ * expand a placeholder pattern like {@:default args} into actual arguments
+ *
+ * this function handles the {@:...} syntax where:
+ * - {@} gets replaced with globalArgs
+ * - {@:default} uses "default" if no globalArgs, otherwise uses globalArgs
+ * - {@:arg1 arg2} splits into ["arg1", "arg2"] if no globalArgs
+ * @example
+ * // with globalArgs available
+ * expandPlaceholderArgs(['{@:--verbose}'], 0, ['--quiet', '--force'])
+ * // returns: { args: ['--quiet', '--force'], nextIndex: 1 }
+ * @example
+ * // No globalArgs, use defaults
+ * expandPlaceholderArgs(['{@:--verbose', '--output}'], 0, [])
+ * // returns: { args: ['--verbose', '--output'], nextIndex: 2 }
+ * @example
+ * // empty placeholder
+ * expandPlaceholderArgs(['{@:}'], 0, [])
+ * // returns: { args: [], nextIndex: 1 }
+ * @param rawArgs array of raw arguments
+ * @param startIndex starting index of the placeholder
+ * @param globalArgs global arguments to use if available
+ * @returns object with expanded args and next index to continue from
+ */
+function expandPlaceholderArgs(
+  rawArgs: string[],
+  startIndex: number,
+  globalArgs: string[],
+): { args: string[]; nextIndex: number } {
+  // find the closing bracket index - placeholders can span multiple array elements
+  // example: ['{@:arg1', 'arg2', 'arg3}'] spans 3 elements
+  const closingIndex = rawArgs.findIndex(
+    (arg, index) => index >= startIndex && arg.endsWith('}'),
+  );
+
+  if (closingIndex === -1) {
+    // malformed placeholder without closing }, consume remaining args as empty
+    return { args: [], nextIndex: rawArgs.length };
+  }
+
+  // extract and reconstruct the default args string from multiple parts
+  // example: ['{@:--verbose', '--output', 'file}'] becomes "--verbose --output file"
+  const relevantParts = rawArgs.slice(startIndex, closingIndex + 1);
+  const defaultArgsString = relevantParts
+    .map((part, index) => {
+      if (index === 0) {
+        // first part: extract content after {@: prefix
+        return part.replace(/^{@:/, '');
+      } else {
+        // subsequent parts: use as-is (they're continuation of the placeholder)
+        return part;
+      }
+    })
+    .join(' ') // rejoin with spaces
+    .replace('}', '') // remove trailing }
+    .trim();
+
+  // priority: globalArgs override defaults
+  if (globalArgs.length > 0) {
+    // use provided globalArgs instead of placeholder defaults
+    return { args: globalArgs, nextIndex: closingIndex + 1 };
+  } else if (defaultArgsString) {
+    // use placeholder defaults, split by whitespace into individual args
+    const defaultArgs = defaultArgsString.split(/\s+/);
+
+    return { args: defaultArgs, nextIndex: closingIndex + 1 };
+  }
+
+  // empty placeholder {@:} with no globalArgs produces no args
+  return { args: [], nextIndex: closingIndex + 1 };
+}
+
+/**
+ * state object for functional argument processing in reduce operation
+ *
+ * this tracks our progress as we iterate through rawArgs and handle different
+ * argument types ({@}, {@:defaults}, and regular args)
+ */
+interface ProcessingState {
+  /** the accumulated array of processed arguments */
+  processedArgs: string[];
+  /** the next array index to process (allows skipping multi-part placeholders) */
+  skipUntil: number;
+}
+
 /**
  * parse task string and return a parsed task object with selector and args
  * @param spec - the task string to parse
@@ -40,16 +127,45 @@ export function parseTaskSpec(spec: string, globalArgs: string[]): Task {
   });
 
   const selector = argv._[0] as string;
-  const args = parseGlobalArgs(argv).reduce((processedArgs, arg) => {
-    if (arg === '{@}') {
-      // replace {@} with globalArgs
-      return [...processedArgs, ...globalArgs];
-    } else {
-      return [...processedArgs, arg];
-    }
-  }, [] as string[]);
+  const rawArgs = parseGlobalArgs(argv);
 
-  return { selector, args };
+  // process arguments using functional reduce approach
+  // this iterates through rawArgs and handles three cases:
+  // 1. {@} - simple placeholder that gets replaced with globalArgs
+  // 2. {@:defaults} - complex placeholder that may span multiple array elements
+  // 3. regular args - passed through unchanged
+  const finalState = rawArgs.reduce<ProcessingState>(
+    (state, arg, index) => {
+      // skip indices that were already processed by multi-part placeholders
+      if (index < state.skipUntil) {
+        return state;
+      }
+
+      if (ARG_PLACEHOLDER_REGEX.test(arg)) {
+        // complex case: {@:default args} that may span multiple elements
+        // the expandPlaceholderArgs function finds the closing } and processes defaults
+        const { args: processedArgs, nextIndex } = expandPlaceholderArgs(
+          rawArgs,
+          index,
+          globalArgs,
+        );
+
+        return {
+          processedArgs: [...state.processedArgs, ...processedArgs],
+          skipUntil: nextIndex, // skip to after the closing }
+        };
+      } else {
+        // regular argument: add as-is
+        return {
+          processedArgs: [...state.processedArgs, arg],
+          skipUntil: index + 1,
+        };
+      }
+    },
+    { processedArgs: [], skipUntil: 0 },
+  );
+
+  return { selector, args: finalState.processedArgs };
 }
 
 /**
