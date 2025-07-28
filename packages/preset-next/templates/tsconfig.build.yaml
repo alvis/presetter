@@ -1,0 +1,8 @@
+include:
+  - '{source}'
+  - next-env.d.ts
+exclude:
+  - .*/**/*.ts
+  - .*/**/*.tsx
+  - '**/*.mock.ts'
+  - '**/*.mock.tsx'

@@ -44,6 +44,9 @@ npx presetter use presetter-preset-esm presetter-preset-react
 
 # 🏢 Production-grade (security + 100% coverage)
 npx presetter use presetter-preset-esm presetter-preset-strict
+
+# ⚡ Next.js application with full-stack support
+npx presetter use presetter-preset-next
 ```
 
 ### 🔧 Or Set It Up Manually
@@ -100,6 +103,7 @@ presetter/
 │   ├── preset-strict/          🏢 Production-grade quality enforcement
 │   ├── preset-web/             🎨 Modern web development stack
 │   ├── preset-react/           ⚛️ React development excellence
+│   ├── preset-next/            ⚡ Next.js full-stack development
 │   └── preset-rollup/          📦 Professional library bundling
 │
 └── assets/                     🎨 Logos, demos, and documentation assets
@@ -110,9 +114,9 @@ presetter/
 | **Category**       | **Packages**                                                   | **Purpose**                              |
 | ------------------ | -------------------------------------------------------------- | ---------------------------------------- |
 | **Core Engine**    | `presetter`, `types`                                           | Configuration management infrastructure  |
-| **Foundation**     | `preset-essentials`, `preset-monorepo`                         | Base TypeScript development toolkit      |
-| **Module Systems** | `preset-esm`, `preset-cjs`, `preset-hybrid`                    | JavaScript module format specializations |
-| **Extensions**     | `preset-strict`, `preset-web`, `preset-react`, `preset-rollup` | Specialized development environments     |
+| **Foundation**     | `preset-essentials`, `preset-monorepo`                                | Base TypeScript development toolkit      |
+| **Module Systems** | `preset-esm`, `preset-cjs`, `preset-hybrid`                           | JavaScript module format specializations |
+| **Extensions**     | `preset-strict`, `preset-web`, `preset-react`, `preset-next`, `preset-rollup` | Specialized development environments     |
 
 ---
 
@@ -140,6 +144,7 @@ presetter/
 | **[presetter-preset-strict](packages/preset-strict)** | Production-grade quality enforcement | Any base preset | Enterprise applications, critical systems |
 | **[presetter-preset-web](packages/preset-web)**       | Modern web development stack         | Any base preset | Web applications, SPAs                    |
 | **[presetter-preset-react](packages/preset-react)**   | React development excellence         | Any base preset | React applications, component libraries   |
+| **[presetter-preset-next](packages/preset-next)**     | Next.js full-stack development       | esm + strict + react | Next.js apps with App Router, Server Components |
 | **[presetter-preset-rollup](packages/preset-rollup)** | Professional library bundling        | Any base preset | npm packages, open-source libraries       |
 
 ### 🎯 Common Preset Combinations
@@ -156,6 +161,9 @@ extends: [cjs]
 
 // Full-stack TypeScript monorepo
 extends: [monorepo]
+
+// Next.js application (includes everything)
+export { default } from 'presetter-preset-next';
 ```
 
 ---
@@ -286,6 +294,7 @@ graph TD
   H[preset-hybrid]
   W[preset-web]
   R[preset-react]
+  N[preset-next]
   U[preset-rollup]
   O[preset-monorepo]
 
@@ -297,6 +306,9 @@ graph TD
   S --> T
   W --> T
   R --> W
+  N --> M
+  N --> S
+  N --> R
   U --> T
   O --> M
   O --> S

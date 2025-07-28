@@ -1,0 +1,18 @@
+include:
+  - next.config.mjs
+  - next-env.d.ts
+  - .*/*.ts
+  - .*/*.tsx
+compilerOptions:
+  allowJs: true
+  # declaration: false # as a client-side app, there is no need for type definition  generation
+  # declarationMap: false
+  isolatedModules: true # requirement for SWC / Babel
+  jsx: preserve # next.js implements its own optimized jsx transform
+  moduleResolution: bundler # enable exports mapping in package.json for mocking to work as barrel files are not supported by storybook-addon-module-mock
+  strict: false
+  plugins:
+    - name: next
+  types:
+    - next
+    - next/image-types/global
