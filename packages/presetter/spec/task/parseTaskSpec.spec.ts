@@ -25,6 +25,17 @@ describe('fn:parseTaskSpec', () => {
     expect(parseTaskSpec(taskString, globalArgs)).toEqual(expectedResult);
   });
 
+  it('should handle simple placeholder {@} with no globalArgs and return empty args', () => {
+    const taskString = 'selector -- {@}';
+    const globalArgs: string[] = [];
+    const expectedResult: { selector: string; args: string[] } = {
+      selector: 'selector',
+      args: [],
+    };
+
+    expect(parseTaskSpec(taskString, globalArgs)).toEqual(expectedResult);
+  });
+
   it('should return the correct selector and args with globalArgs', () => {
     const taskString = 'selector -- {@} --arg1=value1';
     const globalArgs: string[] = ['--globalArg1=value1', '--globalArg2=value2'];

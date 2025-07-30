@@ -77,7 +77,7 @@ function expandPlaceholderArgs(
     .map((part, index) => {
       if (index === 0) {
         // first part: extract content after {@: prefix
-        return part.replace(/^{@:/, '');
+        return part.replace(/^{@:?/, '');
       } else {
         // subsequent parts: use as-is (they're continuation of the placeholder)
         return part;
