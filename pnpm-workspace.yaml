@@ -4,6 +4,10 @@ packages:
 catalog:
   type-fest: ^4.23.0
 
+nodeLinker: hoisted # don't use symlinks
+
 onlyBuiltDependencies:
   - esbuild
   - unrs-resolver
+
+shamefullyHoist: true # hoist all dependencies to the root's node_modules
