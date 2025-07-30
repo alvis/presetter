@@ -27,5 +27,6 @@ test: vitest --passWithNoTests
 test:unit: run-s "test -- --project=*:UNIT {@}" --
 test:int: run-s "test -- --project=*:INT {@}" --
 test:e2e: run-s "test -- --project=*:E2E {@}" --
+typecheck: tsc --noEmit --skipLibCheck
 watch: 'run-s "test:unit -- --watch {@}" --'
 coverage: npm run --if-present test -- --coverage
