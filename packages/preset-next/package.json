@@ -1,6 +1,6 @@
 {
   "name": "presetter-preset-next",
-  "version": "8.0.4",
+  "version": "8.0.5",
   "description": "An opinionated presetter preset for a Next JS project",
   "keywords": [
     "presetter",
