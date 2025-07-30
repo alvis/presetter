@@ -28,6 +28,7 @@ const TEMPLATES = resolve(DIR, '..', 'templates');
 
 export default preset(name, {
   extends: [esm, strict, react],
+  variables: DEFAULT_VARIABLES,
   assets: ({ variables }) => ({
     '.gitignore': resolve(TEMPLATES, 'gitignore'),
     '.npmignore': resolve(TEMPLATES, 'npmignore'),
