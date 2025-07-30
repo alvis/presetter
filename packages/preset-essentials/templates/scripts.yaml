@@ -10,8 +10,8 @@ clean: run-s clean:**
 clean:lib: zx --eval "fs.remove('{output}')"
 clean:coverage: zx --eval "fs.remove('coverage')"
 clean:tsc: zx --eval "fs.remove('tsconfig.build.tsbuildinfo')"
-lint: run-s "lint:* -- {@}" --
-lint:prettier: prettier --write --no-error-on-unmatched-pattern .unmatched
+lint: run-s "lint:* -- {@:.}" --
+lint:prettier: prettier --write --no-error-on-unmatched-pattern
 lint:eslint: eslint --fix --format stylish --no-error-on-unmatched-pattern --no-warn-ignored --cache --cache-strategy content
 lint:fixme: leasot --skip-unsupported --exit-nicely package.json
 prepare: run-s setup
