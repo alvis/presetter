@@ -10,9 +10,16 @@ import { name } from '../package.json';
 
 import * as eslintTemplate from './eslint.template';
 
-export { DEFAULT_VARIABLES } from 'presetter-preset-react';
+import { DEFAULT_VARIABLES as REACT_DEFAULT_VARIABLES } from 'presetter-preset-react';
+
+import type { Variables } from 'presetter-preset-react';
 
 export type { Variables } from 'presetter-preset-react';
+
+export const DEFAULT_VARIABLES = {
+  ...REACT_DEFAULT_VARIABLES,
+  output: 'dist',
+} satisfies Variables;
 
 const DIR = fileURLToPath(dirname(import.meta.url));
 
