@@ -21,10 +21,10 @@ export default [
       },
     },
     rules: {
-      ...tailwind.configs['recommended-error'].rules,
-      'better-tailwindcss/no-conflicting-classes': 'error',
+      ...tailwind.configs['recommended-warn'].rules,
+      'better-tailwindcss/no-conflicting-classes': 'warn',
       'better-tailwindcss/no-unregistered-classes': [
-        'error',
+        'warn',
         { detectComponentClasses: true },
       ],
     },
