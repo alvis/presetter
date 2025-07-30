@@ -1,6 +1,8 @@
 include:
   - next.config.mjs
+  - next.config.ts
   - next-env.d.ts
+  - .next/types/**/*.ts
   - .*/*.ts
   - .*/*.tsx
 compilerOptions:
