@@ -56,7 +56,7 @@ export async function resolveRepoRoot(
   cwd?: string,
 ): Promise<string | undefined> {
   for (const name of ['.git', '.hg', '.svn']) {
-    const metaPath = await findUp(name, { cwd });
+    const metaPath = await findUp(name, { cwd, type: 'directory' });
 
     if (metaPath) {
       return dirname(metaPath);
@@ -65,6 +65,7 @@ export async function resolveRepoRoot(
 
   const parentPackagePath = await findUp('package.json', {
     cwd: dirname(cwd ?? process.cwd()),
+    type: 'file',
   });
 
   return parentPackagePath ? dirname(parentPackagePath) : undefined;
