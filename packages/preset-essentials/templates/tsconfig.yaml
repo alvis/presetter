@@ -42,7 +42,6 @@ compilerOptions:
   baseUrl: .
   rootDir: '{root}' # set rootDir so that tsc won't complain about the output directory being outside of the rootDir
   typeRoots:
-    - '{generated}'
     - '{types}'
     - 'node_modules/@types'
     - '{root}/node_modules/@types'
