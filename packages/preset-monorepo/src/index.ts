@@ -26,7 +26,6 @@ export default preset('presetter-preset-monorepo', {
           }
         : {
             // for packages
-            '.prettierrc.json': null,
           },
   },
 });
