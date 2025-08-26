@@ -22,9 +22,7 @@ export default preset('presetter-preset-web', {
   },
   override: {
     assets: {
-      '.prettierrc.json': {
-        plugins: ['prettier-plugin-tailwindcss'],
-      },
+      '.prettierrc.json': resolve(OVERRIDES, 'prettierrc.yaml'),
       '.tsconfig.json': resolve(OVERRIDES, 'tsconfig.yaml'),
       'eslint.config.ts': eslintOverride,
     },
