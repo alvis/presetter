@@ -61,6 +61,7 @@ export default asset<{ default: Linter.Config[] }>(
             '@typescript-eslint/no-unsafe-member-access': 'off', // allows access to members of any type in test scenarios
             '@typescript-eslint/no-unsafe-return': 'off', // permits returning values of any type in test functions
             '@typescript-eslint/unbound-method': 'off', // unbound methods are often used to check if the method has been called
+            'compat/compat': 'off', // no compatibility issues we need to worry about for test files
             'jsdoc/require-description': 'off', // skips JSDoc descriptions for test functions, assuming test names are descriptive enough
             'jsdoc/require-jsdoc': 'off', // omits JSDoc comments for test functions to keep tests focused and concise
             'jsdoc/require-returns': 'off', // does not require return documentation for test functions

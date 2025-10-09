@@ -11,6 +11,13 @@ const callees = [...getDefaultCallees(), 'classnames'] satisfies Callees;
 export default [
   ...storybook.configs['flat/recommended'],
   {
+    name: 'presetter-preset-web:override:storybook',
+    files: ['**/*.stories.[jt]sx'],
+    rules: {
+      'compat/compat': 'off',
+    },
+  },
+  {
     name: 'presetter-preset-web:override:tailwindcss',
     plugins: {
       'better-tailwindcss': tailwind,
