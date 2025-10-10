@@ -292,7 +292,7 @@ export default asset<{ default: Linter.Config[] }>(
                 'unknown', // anything else
                 'type', // e.g. import type { Foo } from 'foo';
               ],
-              'distinctGroup': false, // do not split subgroups
+              'distinctGroup': true, // ensure new lines between type groups
               'newlines-between': 'always-and-inside-groups', // enable a newline within import groups
               'sortTypesGroup': true,
               'newlines-between-types': 'always-and-inside-groups',
