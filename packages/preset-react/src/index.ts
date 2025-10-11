@@ -1,7 +1,6 @@
 import { dirname, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
-import web from 'presetter-preset-web';
 import { preset } from 'presetter-types';
 
 import eslintOverride from './eslint.override';
@@ -33,7 +32,6 @@ const IMAGE_TYPE = 'image.d.ts';
 const STYLE_TYPE = 'style.d.ts';
 
 export default preset('presetter-preset-react', {
-  extends: [web],
   variables: DEFAULT_VARIABLES,
   scripts: resolve(TEMPLATES, 'scripts.yaml'),
   assets: ({ variables }) => ({

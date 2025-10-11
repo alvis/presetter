@@ -48,8 +48,7 @@
   },
   "peerDependencies": {
     "eslint-plugin-react": "^7.0.0",
-    "presetter": "workspace:*",
-    "presetter-preset-web": "workspace:*"
+    "presetter": "workspace:*"
   },
   "engines": {
     "node": ">=20.0.0"
