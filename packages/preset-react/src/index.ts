@@ -16,42 +16,23 @@ const OVERRIDES = resolve(DIR, '..', 'overrides');
 export interface Variables {
   /** the directory containing all source code (default: source) */
   source: string;
-  /** the directory containing all extra typing files (default: types) */
-  types: string;
   /** the directory containing all the compiled files (default: lib) */
   output: string;
 }
 
 export const DEFAULT_VARIABLES = {
   source: 'src',
-  types: 'types',
   output: 'lib',
 } satisfies Variables;
-
-const IMAGE_TYPE = 'image.d.ts';
-const STYLE_TYPE = 'style.d.ts';
 
 export default preset('presetter-preset-react', {
   variables: DEFAULT_VARIABLES,
   scripts: resolve(TEMPLATES, 'scripts.yaml'),
-  assets: ({ variables }) => ({
-    '.gitignore': (current, { variables }) => [
-      ...(current ?? []),
-      `/${variables.types!}/${IMAGE_TYPE}`,
-      `/${variables.types!}/${STYLE_TYPE}`,
-    ],
+  assets: {
     'eslint.config.ts': eslint,
     'tsconfig.json': resolve(TEMPLATES, 'tsconfig.yaml'),
     'tsconfig.build.json': resolve(TEMPLATES, 'tsconfig.build.yaml'),
-    [`${variables.types!}/${IMAGE_TYPE}` as 'image.d.ts']: resolve(
-      TEMPLATES,
-      IMAGE_TYPE,
-    ),
-    [`${variables.types!}/${STYLE_TYPE}` as 'style.d.ts']: resolve(
-      TEMPLATES,
-      STYLE_TYPE,
-    ),
-  }),
+  },
   override: {
     assets: {
       '.lintstagedrc.json': resolve(OVERRIDES, 'lintstaged.yaml'),

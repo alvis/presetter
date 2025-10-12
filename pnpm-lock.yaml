@@ -209,9 +209,6 @@ importers:
       eslint-plugin-react:
         specifier: ^7.0.0
         version: 7.37.5(eslint@9.32.0(jiti@2.5.1))
-      presetter-preset-web:
-        specifier: workspace:*
-        version: link:../preset-web
       presetter-types:
         specifier: workspace:*
         version: link:../types
