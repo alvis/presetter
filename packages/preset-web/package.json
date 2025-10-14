@@ -53,19 +53,19 @@
     "presetter-preset-essentials": "workspace:*"
   },
   "peerDependencies": {
-    "@storybook/addon-a11y": "^9.0.0",
-    "@storybook/addon-vitest": "^9.0.0",
-    "autoprefixer": "^10.0.0",
-    "eslint-plugin-better-tailwindcss": "^3.1.0",
-    "eslint-plugin-storybook": "^9.0.0",
-    "globals": "^16.0.0",
-    "postcss": "^8.0.0",
+    "@storybook/addon-a11y": "catalog:storybook",
+    "@storybook/addon-vitest": "catalog:storybook",
+    "autoprefixer": "catalog:web",
+    "eslint-plugin-better-tailwindcss": "catalog:lint",
+    "eslint-plugin-storybook": "catalog:lint",
+    "globals": "catalog:web",
+    "postcss": "catalog:web",
     "presetter": "workspace:*",
-    "prettier-plugin-tailwindcss": "*",
-    "storybook": "^9.0.0",
-    "storybook-addon-pseudo-states": "^9.0.0",
-    "storybook-addon-test-codegen": "^2.0.0",
-    "tailwindcss": "^4.0.0"
+    "prettier-plugin-tailwindcss": "catalog:web",
+    "storybook": "catalog:storybook",
+    "storybook-addon-pseudo-states": "catalog:storybook",
+    "storybook-addon-test-codegen": "catalog:storybook",
+    "tailwindcss": "catalog:web"
   },
   "engines": {
     "node": ">=20.0.0"

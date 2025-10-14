@@ -47,7 +47,7 @@
     "presetter": "workspace:*"
   },
   "peerDependencies": {
-    "eslint-plugin-react": "^7.0.0",
+    "eslint-plugin-react": "catalog:lint",
     "presetter": "workspace:*"
   },
   "engines": {

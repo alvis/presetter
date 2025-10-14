@@ -82,32 +82,32 @@
     "watch": "npm run script -- watch --"
   },
   "dependencies": {
-    "@npmcli/run-script": "^9.0.0",
-    "callsite-record": "^4.1.0",
-    "chalk": "^5.3.0",
-    "debug": "^4.3.5",
-    "execa": "^9.3.0",
-    "find-up-simple": "^1.0.0",
-    "globby": "^14.0.0",
-    "jiti": "^2.4.0",
-    "js-yaml": "^4.1.0",
-    "listr2": "^9.0.0",
-    "mvdan-sh": "^0.10.0",
+    "@npmcli/run-script": "catalog:runtime",
+    "callsite-record": "catalog:runtime",
+    "chalk": "catalog:runtime",
+    "debug": "catalog:runtime",
+    "execa": "catalog:runtime",
+    "find-up-simple": "catalog:runtime",
+    "globby": "catalog:runtime",
+    "jiti": "catalog:runtime",
+    "js-yaml": "catalog:runtime",
+    "listr2": "catalog:runtime",
+    "mvdan-sh": "catalog:runtime",
     "presetter-types": "workspace:*",
-    "pupa": "^3.1.0",
-    "source-map-support": "^0.5.0",
-    "yargs": "^18.0.0",
-    "yargs-parser": "^22.0.0"
+    "pupa": "catalog:runtime",
+    "source-map-support": "catalog:runtime",
+    "yargs": "catalog:runtime",
+    "yargs-parser": "catalog:runtime"
   },
   "devDependencies": {
-    "@types/debug": "^4.0.0",
-    "@types/js-yaml": "^4.0.0",
-    "@types/node": "^24.0.0",
-    "@types/yargs": "^17.0.0",
+    "@types/debug": "catalog:runtime",
+    "@types/js-yaml": "catalog:runtime",
+    "@types/node": "catalog:types",
+    "@types/yargs": "catalog:runtime",
     "presetter-preset-esm": "workspace:*",
     "presetter-preset-essentials": "workspace:*",
     "presetter-preset-strict": "workspace:*",
-    "type-fest": "catalog:"
+    "type-fest": "catalog:types"
   },
   "engines": {
     "node": ">=20.0.0"

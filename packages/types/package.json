@@ -44,7 +44,7 @@
     "watch": "run watch --"
   },
   "dependencies": {
-    "type-fest": "catalog:"
+    "type-fest": "catalog:types"
   },
   "engines": {
     "node": ">=20.0.0"

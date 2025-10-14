@@ -45,24 +45,24 @@
   },
   "dependencies": {
     "presetter-types": "workspace:*",
-    "type-fest": "catalog:"
+    "type-fest": "catalog:types"
   },
   "devDependencies": {
     "presetter": "workspace:*"
   },
   "peerDependencies": {
-    "@rollup/plugin-commonjs": "^28.0.0",
-    "@rollup/plugin-graphql": "^2.0.0",
-    "@rollup/plugin-image": "^3.0.0",
-    "@rollup/plugin-json": "^6.0.0",
-    "@rollup/plugin-node-resolve": "^15.0.0",
-    "@rollup/plugin-typescript": "^12.0.0",
-    "@rollup/plugin-yaml": "^4.0.0",
+    "@rollup/plugin-commonjs": "catalog:rollup",
+    "@rollup/plugin-graphql": "catalog:rollup",
+    "@rollup/plugin-image": "catalog:rollup",
+    "@rollup/plugin-json": "catalog:rollup",
+    "@rollup/plugin-node-resolve": "catalog:rollup",
+    "@rollup/plugin-typescript": "catalog:rollup",
+    "@rollup/plugin-yaml": "catalog:rollup",
     "presetter": "workspace:*",
-    "rollup": "^4.0.0",
-    "rollup-plugin-postcss": "^4.0.0",
-    "rollup-plugin-tsconfig-paths": "^1.0.0",
-    "rollup-plugin-visualizer": "^5.0.0"
+    "rollup": "catalog:rollup",
+    "rollup-plugin-postcss": "catalog:rollup",
+    "rollup-plugin-tsconfig-paths": "catalog:rollup",
+    "rollup-plugin-visualizer": "catalog:rollup"
   },
   "engines": {
     "node": ">=20.0.0"

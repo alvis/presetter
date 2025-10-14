@@ -44,20 +44,20 @@
     "presetter-preset-react": "workspace:*",
     "presetter-preset-web": "workspace:*",
     "presetter-types": "workspace:*",
-    "type-fest": "catalog:"
+    "type-fest": "catalog:types"
   },
   "peerDependencies": {
-    "@next/eslint-plugin-next": "^15.0.0",
-    "@storybook/nextjs-vite": "^9.0.0",
-    "@tailwindcss/postcss": "^4.0.0",
-    "next": "^15.0.0",
-    "postcss-preset-env": "^10.0.0",
+    "@next/eslint-plugin-next": "catalog:nextjs",
+    "@storybook/nextjs-vite": "catalog:storybook",
+    "@tailwindcss/postcss": "catalog:web",
+    "next": "catalog:nextjs",
+    "postcss-preset-env": "catalog:web",
     "presetter": "workspace:*",
     "presetter-preset-esm": "workspace:*",
     "presetter-preset-react": "workspace:*",
     "presetter-preset-strict": "workspace:*",
     "presetter-preset-web": "workspace:*",
-    "sharp": ">=0.34.0"
+    "sharp": "catalog:image"
   },
   "engines": {
     "node": ">=20.0.0"

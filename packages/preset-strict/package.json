@@ -46,9 +46,9 @@
     "presetter-types": "workspace:*"
   },
   "peerDependencies": {
-    "eslint-plugin-no-secrets": "^1.0.0",
-    "eslint-plugin-sonarjs": "^3.0.0",
-    "sort-package-json": "^3.2.0"
+    "eslint-plugin-no-secrets": "catalog:lint",
+    "eslint-plugin-sonarjs": "catalog:lint",
+    "sort-package-json": "catalog:lint"
   },
   "engines": {
     "node": ">=20.0.0"
