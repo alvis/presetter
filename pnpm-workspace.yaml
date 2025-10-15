@@ -24,8 +24,8 @@ catalogs:
     eslint-plugin-better-tailwindcss: ^3.1.0
     eslint-plugin-compat: ^6.0.0
     eslint-plugin-import: ^2.32.0
-    eslint-plugin-jsdoc: ^51.0.0
-    eslint-plugin-no-secrets: ^1.0.0
+    eslint-plugin-jsdoc: ^61.0.0
+    eslint-plugin-no-secrets: ^2.0.0
     eslint-plugin-react: ^7.0.0
     eslint-plugin-sonarjs: ^3.0.0
     eslint-plugin-storybook: ^9.0.0
@@ -45,23 +45,23 @@ catalogs:
     '@rollup/plugin-graphql': ^2.0.0
     '@rollup/plugin-image': ^3.0.0
     '@rollup/plugin-json': ^6.0.0
-    '@rollup/plugin-node-resolve': ^15.0.0
+    '@rollup/plugin-node-resolve': ^16.0.0
     '@rollup/plugin-typescript': ^12.0.0
     '@rollup/plugin-yaml': ^4.0.0
     rollup: ^4.0.0
     rollup-plugin-postcss: ^4.0.0
     rollup-plugin-tsconfig-paths: ^1.0.0
-    rollup-plugin-visualizer: ^5.0.0
+    rollup-plugin-visualizer: ^6.0.0
 
   runtime:
-    '@npmcli/run-script': ^9.0.0
+    '@npmcli/run-script': ^10.0.0
     callsite-record: ^4.1.0
     chalk: ^5.3.0
     debug: ^4.3.5
     '@types/debug': ^4.0.0
     execa: ^9.3.0
     find-up-simple: ^1.0.0
-    globby: ^14.0.0
+    globby: ^15.0.0
     jiti: ^2.4.0
     js-yaml: ^4.1.0
     '@types/js-yaml': ^4.0.0
@@ -86,12 +86,12 @@ catalogs:
     vitest: ^3.0.0
 
   types:
-    type-fest: ^4.23.0
+    type-fest: ^5.0.0
     '@types/node': ^24.0.0
 
   utilities:
-    cross-env: ^7.0.0
-    dotenv-cli: ^8.0.0
+    cross-env: ^10.0.0
+    dotenv-cli: ^10.0.0
     zx: ^8.0.0
 
   web:
