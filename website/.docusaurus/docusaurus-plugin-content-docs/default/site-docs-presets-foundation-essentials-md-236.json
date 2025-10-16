@@ -1,0 +1,30 @@
+{
+  "id": "presets/foundation/essentials",
+  "title": "presetter-preset-essentials",
+  "description": "🏄🏻 A collection of opinionated configurations for a TypeScript project",
+  "source": "@site/docs/presets/foundation/essentials.md",
+  "sourceDirName": "presets/foundation",
+  "slug": "/presets/foundation/essentials",
+  "permalink": "/presetter/docs/presets/foundation/essentials",
+  "draft": false,
+  "unlisted": false,
+  "editUrl": "https://github.com/alvis/presetter/tree/master/website/docs/presets/foundation/essentials.md",
+  "tags": [],
+  "version": "current",
+  "lastUpdatedBy": null,
+  "lastUpdatedAt": null,
+  "sidebarPosition": 2,
+  "frontMatter": {
+    "sidebar_position": 2,
+    "title": "presetter-preset-essentials"
+  },
+  "sidebar": "tutorialSidebar",
+  "previous": {
+    "title": "Foundation Presets",
+    "permalink": "/presetter/docs/presets/foundation/"
+  },
+  "next": {
+    "title": "Preset Ecosystem",
+    "permalink": "/presetter/docs/presets/"
+  }
+}

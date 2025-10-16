@@ -1,0 +1,30 @@
+{
+  "id": "introduction/concepts",
+  "title": "Core Concepts",
+  "description": "Understand the fundamental concepts that make Presetter powerful and flexible.",
+  "source": "@site/docs/introduction/concepts.md",
+  "sourceDirName": "introduction",
+  "slug": "/introduction/concepts",
+  "permalink": "/presetter/docs/introduction/concepts",
+  "draft": false,
+  "unlisted": false,
+  "editUrl": "https://github.com/alvis/presetter/tree/master/website/docs/introduction/concepts.md",
+  "tags": [],
+  "version": "current",
+  "lastUpdatedBy": null,
+  "lastUpdatedAt": null,
+  "sidebarPosition": 4,
+  "frontMatter": {
+    "sidebar_position": 4,
+    "title": "Core Concepts"
+  },
+  "sidebar": "tutorialSidebar",
+  "previous": {
+    "title": "Installation",
+    "permalink": "/presetter/docs/introduction/installation"
+  },
+  "next": {
+    "title": "Presetter vs Others",
+    "permalink": "/presetter/docs/introduction/comparison"
+  }
+}

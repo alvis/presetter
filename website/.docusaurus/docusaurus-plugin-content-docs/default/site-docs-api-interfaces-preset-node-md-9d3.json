@@ -1,0 +1,26 @@
+{
+  "id": "api/interfaces/PresetNode",
+  "title": "PresetNode",
+  "description": "Presetter Types API v8.0.0",
+  "source": "@site/docs/api/interfaces/PresetNode.md",
+  "sourceDirName": "api/interfaces",
+  "slug": "/api/interfaces/PresetNode",
+  "permalink": "/presetter/docs/api/interfaces/PresetNode",
+  "draft": false,
+  "unlisted": false,
+  "editUrl": "https://github.com/alvis/presetter/tree/master/website/docs/api/interfaces/PresetNode.md",
+  "tags": [],
+  "version": "current",
+  "lastUpdatedBy": null,
+  "lastUpdatedAt": null,
+  "frontMatter": {},
+  "sidebar": "tutorialSidebar",
+  "previous": {
+    "title": "PresetDefinition",
+    "permalink": "/presetter/docs/api/interfaces/PresetDefinition"
+  },
+  "next": {
+    "title": "ProjectContext",
+    "permalink": "/presetter/docs/api/interfaces/ProjectContext"
+  }
+}

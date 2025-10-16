@@ -1,0 +1,30 @@
+{
+  "id": "advanced/index",
+  "title": "Advanced Topics",
+  "description": "Dive deep into advanced Presetter features, troubleshooting, and optimization techniques.",
+  "source": "@site/docs/advanced/index.md",
+  "sourceDirName": "advanced",
+  "slug": "/advanced/",
+  "permalink": "/presetter/docs/advanced/",
+  "draft": false,
+  "unlisted": false,
+  "editUrl": "https://github.com/alvis/presetter/tree/master/website/docs/advanced/index.md",
+  "tags": [],
+  "version": "current",
+  "lastUpdatedBy": null,
+  "lastUpdatedAt": null,
+  "sidebarPosition": 1,
+  "frontMatter": {
+    "sidebar_position": 1,
+    "title": "Advanced Topics"
+  },
+  "sidebar": "tutorialSidebar",
+  "previous": {
+    "title": "Creating Custom Presets",
+    "permalink": "/presetter/docs/tutorials/custom-presets"
+  },
+  "next": {
+    "title": "Advanced Topics",
+    "permalink": "/presetter/docs/advanced/"
+  }
+}

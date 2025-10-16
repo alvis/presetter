@@ -1,0 +1,30 @@
+{
+  "id": "presets/module-systems/index",
+  "title": "Module System Presets",
+  "description": "Module system presets provide specialized configurations for different JavaScript module formats and compatibility requirements.",
+  "source": "@site/docs/presets/module-systems/index.md",
+  "sourceDirName": "presets/module-systems",
+  "slug": "/presets/module-systems/",
+  "permalink": "/presetter/docs/presets/module-systems/",
+  "draft": false,
+  "unlisted": false,
+  "editUrl": "https://github.com/alvis/presetter/tree/master/website/docs/presets/module-systems/index.md",
+  "tags": [],
+  "version": "current",
+  "lastUpdatedBy": null,
+  "lastUpdatedAt": null,
+  "sidebarPosition": 2,
+  "frontMatter": {
+    "sidebar_position": 2,
+    "title": "Module System Presets"
+  },
+  "sidebar": "tutorialSidebar",
+  "previous": {
+    "title": "Preset Ecosystem",
+    "permalink": "/presetter/docs/presets/"
+  },
+  "next": {
+    "title": "presetter-preset-esm",
+    "permalink": "/presetter/docs/presets/module-systems/esm"
+  }
+}

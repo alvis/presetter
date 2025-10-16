@@ -1,0 +1,30 @@
+{
+  "id": "cli-reference/bootstrap",
+  "title": "presetter bootstrap",
+  "description": "Setup the project according to the specified preset by generating configuration files and installing dependencies.",
+  "source": "@site/docs/cli-reference/bootstrap.md",
+  "sourceDirName": "cli-reference",
+  "slug": "/cli-reference/bootstrap",
+  "permalink": "/presetter/docs/cli-reference/bootstrap",
+  "draft": false,
+  "unlisted": false,
+  "editUrl": "https://github.com/alvis/presetter/tree/master/website/docs/cli-reference/bootstrap.md",
+  "tags": [],
+  "version": "current",
+  "lastUpdatedBy": null,
+  "lastUpdatedAt": null,
+  "sidebarPosition": 2,
+  "frontMatter": {
+    "sidebar_position": 2,
+    "title": "presetter bootstrap"
+  },
+  "sidebar": "tutorialSidebar",
+  "previous": {
+    "title": "CLI Reference",
+    "permalink": "/presetter/docs/cli-reference/"
+  },
+  "next": {
+    "title": "presetter run",
+    "permalink": "/presetter/docs/cli-reference/run"
+  }
+}

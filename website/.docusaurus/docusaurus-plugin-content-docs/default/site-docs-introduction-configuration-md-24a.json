@@ -1,0 +1,30 @@
+{
+  "id": "introduction/configuration",
+  "title": "Configuration",
+  "description": "Learn how to customize Presetter to fit your exact needs through the presetter.config.ts file.",
+  "source": "@site/docs/introduction/configuration.md",
+  "sourceDirName": "introduction",
+  "slug": "/introduction/configuration",
+  "permalink": "/presetter/docs/introduction/configuration",
+  "draft": false,
+  "unlisted": false,
+  "editUrl": "https://github.com/alvis/presetter/tree/master/website/docs/introduction/configuration.md",
+  "tags": [],
+  "version": "current",
+  "lastUpdatedBy": null,
+  "lastUpdatedAt": null,
+  "sidebarPosition": 6,
+  "frontMatter": {
+    "sidebar_position": 6,
+    "title": "Configuration"
+  },
+  "sidebar": "tutorialSidebar",
+  "previous": {
+    "title": "Presetter vs Others",
+    "permalink": "/presetter/docs/introduction/comparison"
+  },
+  "next": {
+    "title": "CLI Reference",
+    "permalink": "/presetter/docs/cli-reference/"
+  }
+}

@@ -1,0 +1,30 @@
+{
+  "id": "presets/frameworks/react",
+  "title": "presetter-preset-react",
+  "description": "React applications with TSX support and React-specific linting.",
+  "source": "@site/docs/presets/frameworks/react.md",
+  "sourceDirName": "presets/frameworks",
+  "slug": "/presets/frameworks/react",
+  "permalink": "/presetter/docs/presets/frameworks/react",
+  "draft": false,
+  "unlisted": false,
+  "editUrl": "https://github.com/alvis/presetter/tree/master/website/docs/presets/frameworks/react.md",
+  "tags": [],
+  "version": "current",
+  "lastUpdatedBy": null,
+  "lastUpdatedAt": null,
+  "sidebarPosition": 2,
+  "frontMatter": {
+    "sidebar_position": 2,
+    "title": "presetter-preset-react"
+  },
+  "sidebar": "tutorialSidebar",
+  "previous": {
+    "title": "presetter-preset-web",
+    "permalink": "/presetter/docs/presets/frameworks/web"
+  },
+  "next": {
+    "title": "Bundling Presets",
+    "permalink": "/presetter/docs/presets/bundling/"
+  }
+}

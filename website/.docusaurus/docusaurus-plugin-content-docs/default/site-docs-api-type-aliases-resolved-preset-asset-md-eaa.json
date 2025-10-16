@@ -1,0 +1,26 @@
+{
+  "id": "api/type-aliases/ResolvedPresetAsset",
+  "title": "ResolvedPresetAsset",
+  "description": "Presetter Types API v8.0.0",
+  "source": "@site/docs/api/type-aliases/ResolvedPresetAsset.md",
+  "sourceDirName": "api/type-aliases",
+  "slug": "/api/type-aliases/ResolvedPresetAsset",
+  "permalink": "/presetter/docs/api/type-aliases/ResolvedPresetAsset",
+  "draft": false,
+  "unlisted": false,
+  "editUrl": "https://github.com/alvis/presetter/tree/master/website/docs/api/type-aliases/ResolvedPresetAsset.md",
+  "tags": [],
+  "version": "current",
+  "lastUpdatedBy": null,
+  "lastUpdatedAt": null,
+  "frontMatter": {},
+  "sidebar": "tutorialSidebar",
+  "previous": {
+    "title": "PresetObjectGenerator",
+    "permalink": "/presetter/docs/api/type-aliases/PresetObjectGenerator"
+  },
+  "next": {
+    "title": "Scripts",
+    "permalink": "/presetter/docs/api/type-aliases/Scripts"
+  }
+}

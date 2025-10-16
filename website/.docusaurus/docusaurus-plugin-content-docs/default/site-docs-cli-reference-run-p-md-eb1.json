@@ -1,0 +1,30 @@
+{
+  "id": "cli-reference/run-p",
+  "title": "presetter run-p",
+  "description": "Run multiple scripts in parallel (simultaneously) for maximum performance and efficiency.",
+  "source": "@site/docs/cli-reference/run-p.md",
+  "sourceDirName": "cli-reference",
+  "slug": "/cli-reference/run-p",
+  "permalink": "/presetter/docs/cli-reference/run-p",
+  "draft": false,
+  "unlisted": false,
+  "editUrl": "https://github.com/alvis/presetter/tree/master/website/docs/cli-reference/run-p.md",
+  "tags": [],
+  "version": "current",
+  "lastUpdatedBy": null,
+  "lastUpdatedAt": null,
+  "sidebarPosition": 5,
+  "frontMatter": {
+    "sidebar_position": 5,
+    "title": "presetter run-p"
+  },
+  "sidebar": "tutorialSidebar",
+  "previous": {
+    "title": "presetter run-s",
+    "permalink": "/presetter/docs/cli-reference/run-s"
+  },
+  "next": {
+    "title": "Preset Ecosystem",
+    "permalink": "/presetter/docs/presets/"
+  }
+}

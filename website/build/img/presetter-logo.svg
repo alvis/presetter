@@ -1,0 +1,11 @@
+<svg width="512" height="512" viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg">
+  <rect width="512" height="512" fill="#F5E6D3" rx="64"/>
+  <g transform="translate(256, 256)">
+    <!-- Sun/circle shape -->
+    <circle cx="0" cy="-60" r="80" fill="#FF9B7D" opacity="0.9"/>
+    
+    <!-- Wave layers -->
+    <path d="M -120 20 Q -60 -20 0 -10 T 120 20 L 120 100 L -120 100 Z" fill="#FFCA7A" opacity="0.9"/>
+    <path d="M -120 60 Q -60 20 0 30 T 120 60 L 120 100 L -120 100 Z" fill="#6DD5C3" opacity="0.9"/>
+  </g>
+</svg>

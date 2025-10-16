@@ -1,0 +1,30 @@
+{
+  "id": "introduction/comparison",
+  "title": "Presetter vs Others",
+  "description": "How does Presetter compare to other configuration management solutions?",
+  "source": "@site/docs/introduction/comparison.md",
+  "sourceDirName": "introduction",
+  "slug": "/introduction/comparison",
+  "permalink": "/presetter/docs/introduction/comparison",
+  "draft": false,
+  "unlisted": false,
+  "editUrl": "https://github.com/alvis/presetter/tree/master/website/docs/introduction/comparison.md",
+  "tags": [],
+  "version": "current",
+  "lastUpdatedBy": null,
+  "lastUpdatedAt": null,
+  "sidebarPosition": 5,
+  "frontMatter": {
+    "sidebar_position": 5,
+    "title": "Presetter vs Others"
+  },
+  "sidebar": "tutorialSidebar",
+  "previous": {
+    "title": "Core Concepts",
+    "permalink": "/presetter/docs/introduction/concepts"
+  },
+  "next": {
+    "title": "Configuration",
+    "permalink": "/presetter/docs/introduction/configuration"
+  }
+}

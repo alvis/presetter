@@ -1,0 +1,30 @@
+{
+  "id": "cli-reference/index",
+  "title": "CLI Reference",
+  "description": "The Presetter CLI provides powerful commands for managing your project configuration and running scripts efficiently.",
+  "source": "@site/docs/cli-reference/index.md",
+  "sourceDirName": "cli-reference",
+  "slug": "/cli-reference/",
+  "permalink": "/presetter/docs/cli-reference/",
+  "draft": false,
+  "unlisted": false,
+  "editUrl": "https://github.com/alvis/presetter/tree/master/website/docs/cli-reference/index.md",
+  "tags": [],
+  "version": "current",
+  "lastUpdatedBy": null,
+  "lastUpdatedAt": null,
+  "sidebarPosition": 1,
+  "frontMatter": {
+    "sidebar_position": 1,
+    "title": "CLI Reference"
+  },
+  "sidebar": "tutorialSidebar",
+  "previous": {
+    "title": "Configuration",
+    "permalink": "/presetter/docs/introduction/configuration"
+  },
+  "next": {
+    "title": "CLI Reference",
+    "permalink": "/presetter/docs/cli-reference/"
+  }
+}

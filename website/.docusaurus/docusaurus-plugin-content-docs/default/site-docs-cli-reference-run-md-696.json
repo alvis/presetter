@@ -1,0 +1,30 @@
+{
+  "id": "cli-reference/run",
+  "title": "presetter run",
+  "description": "Run a single script or task from your preset configuration.",
+  "source": "@site/docs/cli-reference/run.md",
+  "sourceDirName": "cli-reference",
+  "slug": "/cli-reference/run",
+  "permalink": "/presetter/docs/cli-reference/run",
+  "draft": false,
+  "unlisted": false,
+  "editUrl": "https://github.com/alvis/presetter/tree/master/website/docs/cli-reference/run.md",
+  "tags": [],
+  "version": "current",
+  "lastUpdatedBy": null,
+  "lastUpdatedAt": null,
+  "sidebarPosition": 3,
+  "frontMatter": {
+    "sidebar_position": 3,
+    "title": "presetter run"
+  },
+  "sidebar": "tutorialSidebar",
+  "previous": {
+    "title": "presetter bootstrap",
+    "permalink": "/presetter/docs/cli-reference/bootstrap"
+  },
+  "next": {
+    "title": "presetter run-s",
+    "permalink": "/presetter/docs/cli-reference/run-s"
+  }
+}

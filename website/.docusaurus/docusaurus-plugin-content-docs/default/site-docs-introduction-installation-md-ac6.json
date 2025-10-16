@@ -1,0 +1,30 @@
+{
+  "id": "introduction/installation",
+  "title": "Installation",
+  "description": "System Requirements",
+  "source": "@site/docs/introduction/installation.md",
+  "sourceDirName": "introduction",
+  "slug": "/introduction/installation",
+  "permalink": "/presetter/docs/introduction/installation",
+  "draft": false,
+  "unlisted": false,
+  "editUrl": "https://github.com/alvis/presetter/tree/master/website/docs/introduction/installation.md",
+  "tags": [],
+  "version": "current",
+  "lastUpdatedBy": null,
+  "lastUpdatedAt": null,
+  "sidebarPosition": 3,
+  "frontMatter": {
+    "sidebar_position": 3,
+    "title": "Installation"
+  },
+  "sidebar": "tutorialSidebar",
+  "previous": {
+    "title": "Getting Started",
+    "permalink": "/presetter/docs/introduction/getting-started"
+  },
+  "next": {
+    "title": "Core Concepts",
+    "permalink": "/presetter/docs/introduction/concepts"
+  }
+}

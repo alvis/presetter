@@ -1,0 +1,30 @@
+{
+  "id": "cli-reference/run-s",
+  "title": "presetter run-s",
+  "description": "Run multiple scripts sequentially (one after another) with sophisticated argument handling.",
+  "source": "@site/docs/cli-reference/run-s.md",
+  "sourceDirName": "cli-reference",
+  "slug": "/cli-reference/run-s",
+  "permalink": "/presetter/docs/cli-reference/run-s",
+  "draft": false,
+  "unlisted": false,
+  "editUrl": "https://github.com/alvis/presetter/tree/master/website/docs/cli-reference/run-s.md",
+  "tags": [],
+  "version": "current",
+  "lastUpdatedBy": null,
+  "lastUpdatedAt": null,
+  "sidebarPosition": 4,
+  "frontMatter": {
+    "sidebar_position": 4,
+    "title": "presetter run-s"
+  },
+  "sidebar": "tutorialSidebar",
+  "previous": {
+    "title": "presetter run",
+    "permalink": "/presetter/docs/cli-reference/run"
+  },
+  "next": {
+    "title": "presetter run-p",
+    "permalink": "/presetter/docs/cli-reference/run-p"
+  }
+}

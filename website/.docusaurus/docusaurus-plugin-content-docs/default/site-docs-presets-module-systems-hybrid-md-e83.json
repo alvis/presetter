@@ -1,0 +1,30 @@
+{
+  "id": "presets/module-systems/hybrid",
+  "title": "presetter-preset-hybrid",
+  "description": "Dual CommonJS/ESM package delivery for maximum compatibility.",
+  "source": "@site/docs/presets/module-systems/hybrid.md",
+  "sourceDirName": "presets/module-systems",
+  "slug": "/presets/module-systems/hybrid",
+  "permalink": "/presetter/docs/presets/module-systems/hybrid",
+  "draft": false,
+  "unlisted": false,
+  "editUrl": "https://github.com/alvis/presetter/tree/master/website/docs/presets/module-systems/hybrid.md",
+  "tags": [],
+  "version": "current",
+  "lastUpdatedBy": null,
+  "lastUpdatedAt": null,
+  "sidebarPosition": 3,
+  "frontMatter": {
+    "sidebar_position": 3,
+    "title": "presetter-preset-hybrid"
+  },
+  "sidebar": "tutorialSidebar",
+  "previous": {
+    "title": "presetter-preset-cjs",
+    "permalink": "/presetter/docs/presets/module-systems/cjs"
+  },
+  "next": {
+    "title": "Framework Presets",
+    "permalink": "/presetter/docs/presets/frameworks/"
+  }
+}

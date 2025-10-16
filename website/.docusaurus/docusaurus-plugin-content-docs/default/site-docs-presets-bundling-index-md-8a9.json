@@ -1,0 +1,30 @@
+{
+  "id": "presets/bundling/index",
+  "title": "Bundling Presets",
+  "description": "Advanced bundling and build configurations for library and application distribution.",
+  "source": "@site/docs/presets/bundling/index.md",
+  "sourceDirName": "presets/bundling",
+  "slug": "/presets/bundling/",
+  "permalink": "/presetter/docs/presets/bundling/",
+  "draft": false,
+  "unlisted": false,
+  "editUrl": "https://github.com/alvis/presetter/tree/master/website/docs/presets/bundling/index.md",
+  "tags": [],
+  "version": "current",
+  "lastUpdatedBy": null,
+  "lastUpdatedAt": null,
+  "sidebarPosition": 4,
+  "frontMatter": {
+    "sidebar_position": 4,
+    "title": "Bundling Presets"
+  },
+  "sidebar": "tutorialSidebar",
+  "previous": {
+    "title": "presetter-preset-react",
+    "permalink": "/presetter/docs/presets/frameworks/react"
+  },
+  "next": {
+    "title": "presetter-preset-rollup",
+    "permalink": "/presetter/docs/presets/bundling/rollup"
+  }
+}

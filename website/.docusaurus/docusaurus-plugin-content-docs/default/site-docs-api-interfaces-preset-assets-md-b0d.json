@@ -1,0 +1,26 @@
+{
+  "id": "api/interfaces/PresetAssets",
+  "title": "PresetAssets",
+  "description": "Presetter Types API v8.0.0",
+  "source": "@site/docs/api/interfaces/PresetAssets.md",
+  "sourceDirName": "api/interfaces",
+  "slug": "/api/interfaces/PresetAssets",
+  "permalink": "/presetter/docs/api/interfaces/PresetAssets",
+  "draft": false,
+  "unlisted": false,
+  "editUrl": "https://github.com/alvis/presetter/tree/master/website/docs/api/interfaces/PresetAssets.md",
+  "tags": [],
+  "version": "current",
+  "lastUpdatedBy": null,
+  "lastUpdatedAt": null,
+  "frontMatter": {},
+  "sidebar": "tutorialSidebar",
+  "previous": {
+    "title": "README",
+    "permalink": "/presetter/docs/api/"
+  },
+  "next": {
+    "title": "PresetContentContext",
+    "permalink": "/presetter/docs/api/interfaces/PresetContentContext"
+  }
+}

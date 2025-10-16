@@ -1,0 +1,30 @@
+{
+  "id": "presets/quality/index",
+  "title": "Quality Presets",
+  "description": "Enhanced code quality, project structure, and team collaboration tools.",
+  "source": "@site/docs/presets/quality/index.md",
+  "sourceDirName": "presets/quality",
+  "slug": "/presets/quality/",
+  "permalink": "/presetter/docs/presets/quality/",
+  "draft": false,
+  "unlisted": false,
+  "editUrl": "https://github.com/alvis/presetter/tree/master/website/docs/presets/quality/index.md",
+  "tags": [],
+  "version": "current",
+  "lastUpdatedBy": null,
+  "lastUpdatedAt": null,
+  "sidebarPosition": 5,
+  "frontMatter": {
+    "sidebar_position": 5,
+    "title": "Quality Presets"
+  },
+  "sidebar": "tutorialSidebar",
+  "previous": {
+    "title": "presetter-preset-rollup",
+    "permalink": "/presetter/docs/presets/bundling/rollup"
+  },
+  "next": {
+    "title": "presetter-preset-strict",
+    "permalink": "/presetter/docs/presets/quality/strict"
+  }
+}

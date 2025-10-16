@@ -1,0 +1,441 @@
+{
+  "/presetter/blog-944": {
+    "__comp": "a6aa9e1f",
+    "__context": {
+      "plugin": "36994c47"
+    },
+    "sidebar": "814f3328",
+    "items": [
+      {
+        "content": "7661071f"
+      },
+      {
+        "content": "f4f34a3a"
+      },
+      {
+        "content": "8717b14a"
+      },
+      {
+        "content": "925b3f96"
+      }
+    ],
+    "__props": "b6922368"
+  },
+  "/presetter/blog/archive-223": {
+    "__comp": "9e4087bc",
+    "__context": {
+      "plugin": "36994c47"
+    },
+    "__props": "4301b61c"
+  },
+  "/presetter/blog/authors-6dd": {
+    "__comp": "621db11d",
+    "__context": {
+      "data": {
+        "blogMetadata": "acecf23e"
+      },
+      "plugin": "36994c47"
+    },
+    "sidebar": "814f3328",
+    "__props": "f3e8220e"
+  },
+  "/presetter/blog/authors/all-sebastien-lorber-articles-c9c": {
+    "__comp": "33fc5bb8",
+    "__context": {
+      "data": {
+        "blogMetadata": "acecf23e"
+      },
+      "plugin": "36994c47"
+    },
+    "items": [
+      {
+        "content": "7661071f"
+      },
+      {
+        "content": "f4f34a3a"
+      },
+      {
+        "content": "925b3f96"
+      }
+    ],
+    "sidebar": "814f3328",
+    "__props": "4b304534"
+  },
+  "/presetter/blog/authors/yangshun-f19": {
+    "__comp": "33fc5bb8",
+    "__context": {
+      "data": {
+        "blogMetadata": "acecf23e"
+      },
+      "plugin": "36994c47"
+    },
+    "items": [
+      {
+        "content": "7661071f"
+      },
+      {
+        "content": "8717b14a"
+      },
+      {
+        "content": "925b3f96"
+      }
+    ],
+    "sidebar": "814f3328",
+    "__props": "fa6ef492"
+  },
+  "/presetter/blog/first-blog-post-84b": {
+    "__comp": "ccc49370",
+    "__context": {
+      "data": {
+        "blogMetadata": "acecf23e"
+      },
+      "plugin": "36994c47"
+    },
+    "sidebar": "814f3328",
+    "content": "e273c56f"
+  },
+  "/presetter/blog/long-blog-post-43e": {
+    "__comp": "ccc49370",
+    "__context": {
+      "data": {
+        "blogMetadata": "acecf23e"
+      },
+      "plugin": "36994c47"
+    },
+    "sidebar": "814f3328",
+    "content": "73664a40"
+  },
+  "/presetter/blog/mdx-blog-post-da1": {
+    "__comp": "ccc49370",
+    "__context": {
+      "data": {
+        "blogMetadata": "acecf23e"
+      },
+      "plugin": "36994c47"
+    },
+    "sidebar": "814f3328",
+    "content": "59362658"
+  },
+  "/presetter/blog/tags-d1b": {
+    "__comp": "01a85c17",
+    "__context": {
+      "plugin": "36994c47"
+    },
+    "sidebar": "814f3328",
+    "__props": "7ecc011a"
+  },
+  "/presetter/blog/tags/docusaurus-3d3": {
+    "__comp": "6875c492",
+    "__context": {
+      "plugin": "36994c47"
+    },
+    "sidebar": "814f3328",
+    "items": [
+      {
+        "content": "7661071f"
+      },
+      {
+        "content": "f4f34a3a"
+      },
+      {
+        "content": "8717b14a"
+      },
+      {
+        "content": "925b3f96"
+      }
+    ],
+    "__props": "cf713f6e"
+  },
+  "/presetter/blog/tags/facebook-ce2": {
+    "__comp": "6875c492",
+    "__context": {
+      "plugin": "36994c47"
+    },
+    "sidebar": "814f3328",
+    "items": [
+      {
+        "content": "7661071f"
+      }
+    ],
+    "__props": "9540551b"
+  },
+  "/presetter/blog/tags/hello-db3": {
+    "__comp": "6875c492",
+    "__context": {
+      "plugin": "36994c47"
+    },
+    "sidebar": "814f3328",
+    "items": [
+      {
+        "content": "7661071f"
+      },
+      {
+        "content": "8717b14a"
+      }
+    ],
+    "__props": "e6c388d6"
+  },
+  "/presetter/blog/tags/hola-db3": {
+    "__comp": "6875c492",
+    "__context": {
+      "plugin": "36994c47"
+    },
+    "sidebar": "814f3328",
+    "items": [
+      {
+        "content": "925b3f96"
+      }
+    ],
+    "__props": "29d9a796"
+  },
+  "/presetter/blog/welcome-ad3": {
+    "__comp": "ccc49370",
+    "__context": {
+      "data": {
+        "blogMetadata": "acecf23e"
+      },
+      "plugin": "36994c47"
+    },
+    "sidebar": "814f3328",
+    "content": "d9f32620"
+  },
+  "/presetter/markdown-page-d9d": {
+    "__comp": "1f391b9e",
+    "__context": {
+      "plugin": "a7456010"
+    },
+    "content": "393be207"
+  },
+  "/presetter/docs-cf5": {
+    "__comp": "5e95c892",
+    "__context": {
+      "plugin": "aba21aa0"
+    }
+  },
+  "/presetter/docs-97b": {
+    "__comp": "a7bd4aaa",
+    "__props": "e0f2a57b"
+  },
+  "/presetter/docs-2df": {
+    "__comp": "a94703ab"
+  },
+  "/presetter/docs/-edc": {
+    "__comp": "17896441",
+    "content": "0e384e19"
+  },
+  "/presetter/docs/advanced/-7fe": {
+    "__comp": "17896441",
+    "content": "99f49855"
+  },
+  "/presetter/docs/api/-264": {
+    "__comp": "17896441",
+    "content": "982ac012"
+  },
+  "/presetter/docs/api/interfaces/PresetAssets-4c7": {
+    "__comp": "17896441",
+    "content": "b0d86284"
+  },
+  "/presetter/docs/api/interfaces/PresetContentContext-aad": {
+    "__comp": "17896441",
+    "content": "25c01d31"
+  },
+  "/presetter/docs/api/interfaces/PresetDefinition-598": {
+    "__comp": "17896441",
+    "content": "ca127f76"
+  },
+  "/presetter/docs/api/interfaces/PresetNode-c68": {
+    "__comp": "17896441",
+    "content": "9d3a7423"
+  },
+  "/presetter/docs/api/interfaces/ProjectContext-45b": {
+    "__comp": "17896441",
+    "content": "7add06f0"
+  },
+  "/presetter/docs/api/interfaces/ResolvedPresetAssets-0b1": {
+    "__comp": "17896441",
+    "content": "212d8e73"
+  },
+  "/presetter/docs/api/type-aliases/Path-217": {
+    "__comp": "17896441",
+    "content": "96eb8ea3"
+  },
+  "/presetter/docs/api/type-aliases/Preset-8b2": {
+    "__comp": "17896441",
+    "content": "33bdc1ff"
+  },
+  "/presetter/docs/api/type-aliases/PresetContent-70d": {
+    "__comp": "17896441",
+    "content": "36a280c3"
+  },
+  "/presetter/docs/api/type-aliases/PresetContentGenerator-987": {
+    "__comp": "17896441",
+    "content": "c88ef2e8"
+  },
+  "/presetter/docs/api/type-aliases/PresetGenerator-bcf": {
+    "__comp": "17896441",
+    "content": "3df10df5"
+  },
+  "/presetter/docs/api/type-aliases/PresetGraph-8d5": {
+    "__comp": "17896441",
+    "content": "def21fcf"
+  },
+  "/presetter/docs/api/type-aliases/PresetObject-2bd": {
+    "__comp": "17896441",
+    "content": "2e932290"
+  },
+  "/presetter/docs/api/type-aliases/PresetObjectGenerator-639": {
+    "__comp": "17896441",
+    "content": "97196ec0"
+  },
+  "/presetter/docs/api/type-aliases/ResolvedPresetAsset-0e5": {
+    "__comp": "17896441",
+    "content": "eaa37c7c"
+  },
+  "/presetter/docs/api/type-aliases/Scripts-0d1": {
+    "__comp": "17896441",
+    "content": "c55fd5e5"
+  },
+  "/presetter/docs/api/type-aliases/Variables-20f": {
+    "__comp": "17896441",
+    "content": "63a41a99"
+  },
+  "/presetter/docs/cli-reference/-8a4": {
+    "__comp": "17896441",
+    "content": "1a7799cf"
+  },
+  "/presetter/docs/cli-reference/bootstrap-20f": {
+    "__comp": "17896441",
+    "content": "88826ad3"
+  },
+  "/presetter/docs/cli-reference/run-e1c": {
+    "__comp": "17896441",
+    "content": "696eedac"
+  },
+  "/presetter/docs/cli-reference/run-p-ae3": {
+    "__comp": "17896441",
+    "content": "eb17876b"
+  },
+  "/presetter/docs/cli-reference/run-s-eb1": {
+    "__comp": "17896441",
+    "content": "460fafcd"
+  },
+  "/presetter/docs/introduction/-914": {
+    "__comp": "17896441",
+    "content": "1cda0596"
+  },
+  "/presetter/docs/introduction/comparison-5a5": {
+    "__comp": "17896441",
+    "content": "29524af5"
+  },
+  "/presetter/docs/introduction/concepts-77a": {
+    "__comp": "17896441",
+    "content": "333dc438"
+  },
+  "/presetter/docs/introduction/configuration-5d9": {
+    "__comp": "17896441",
+    "content": "24a39604"
+  },
+  "/presetter/docs/introduction/getting-started-f31": {
+    "__comp": "17896441",
+    "content": "f048ed9e"
+  },
+  "/presetter/docs/introduction/installation-290": {
+    "__comp": "17896441",
+    "content": "ac68e5b7"
+  },
+  "/presetter/docs/presets/-816": {
+    "__comp": "17896441",
+    "content": "4f82a661"
+  },
+  "/presetter/docs/presets/bundling/-93d": {
+    "__comp": "17896441",
+    "content": "8a9ffd5c"
+  },
+  "/presetter/docs/presets/bundling/rollup-c17": {
+    "__comp": "17896441",
+    "content": "410e60cc"
+  },
+  "/presetter/docs/presets/foundation/-072": {
+    "__comp": "17896441",
+    "content": "e4cae3fc"
+  },
+  "/presetter/docs/presets/foundation/essentials-25f": {
+    "__comp": "17896441",
+    "content": "23680ed0"
+  },
+  "/presetter/docs/presets/frameworks/-cf3": {
+    "__comp": "17896441",
+    "content": "50fde2e7"
+  },
+  "/presetter/docs/presets/frameworks/react-5fd": {
+    "__comp": "17896441",
+    "content": "cddeca7b"
+  },
+  "/presetter/docs/presets/frameworks/web-705": {
+    "__comp": "17896441",
+    "content": "5ed10f8d"
+  },
+  "/presetter/docs/presets/module-systems/-0cc": {
+    "__comp": "17896441",
+    "content": "b7b1976c"
+  },
+  "/presetter/docs/presets/module-systems/cjs-f15": {
+    "__comp": "17896441",
+    "content": "8d55f61a"
+  },
+  "/presetter/docs/presets/module-systems/esm-80d": {
+    "__comp": "17896441",
+    "content": "c1e8d9d0"
+  },
+  "/presetter/docs/presets/module-systems/hybrid-b26": {
+    "__comp": "17896441",
+    "content": "e8380082"
+  },
+  "/presetter/docs/presets/quality/-35a": {
+    "__comp": "17896441",
+    "content": "ec2ca76b"
+  },
+  "/presetter/docs/presets/quality/monorepo-bd3": {
+    "__comp": "17896441",
+    "content": "c96106ea"
+  },
+  "/presetter/docs/presets/quality/strict-e53": {
+    "__comp": "17896441",
+    "content": "061115b1"
+  },
+  "/presetter/docs/tutorials/-175": {
+    "__comp": "17896441",
+    "content": "fea1970e"
+  },
+  "/presetter/docs/tutorials/custom-presets-c73": {
+    "__comp": "17896441",
+    "content": "b3f781f2"
+  },
+  "/presetter/docs/tutorials/existing-project-8e6": {
+    "__comp": "17896441",
+    "content": "e25e2e00"
+  },
+  "/presetter/docs/tutorials/migration-guides/-189": {
+    "__comp": "17896441",
+    "content": "c9a24fee"
+  },
+  "/presetter/docs/tutorials/migration-guides/from-cra-dc9": {
+    "__comp": "17896441",
+    "content": "1d3718a4"
+  },
+  "/presetter/docs/tutorials/monorepo-setup-690": {
+    "__comp": "17896441",
+    "content": "db8d098f"
+  },
+  "/presetter/docs/tutorials/new-project-1f1": {
+    "__comp": "17896441",
+    "content": "aa885d85"
+  },
+  "/presetter/-ac8": {
+    "__comp": "1df93b7f",
+    "__context": {
+      "plugin": "a7456010"
+    },
+    "config": "5e9f5e1a"
+  }
+}

@@ -1,0 +1,31 @@
+{
+  "id": "tutorials/existing-project",
+  "title": "Migrating Existing Projects",
+  "description": "Step-by-step guide to convert existing projects to use Presetter configurations",
+  "source": "@site/docs/tutorials/existing-project.md",
+  "sourceDirName": "tutorials",
+  "slug": "/tutorials/existing-project",
+  "permalink": "/presetter/docs/tutorials/existing-project",
+  "draft": false,
+  "unlisted": false,
+  "editUrl": "https://github.com/alvis/presetter/tree/master/website/docs/tutorials/existing-project.md",
+  "tags": [],
+  "version": "current",
+  "lastUpdatedBy": null,
+  "lastUpdatedAt": null,
+  "sidebarPosition": 3,
+  "frontMatter": {
+    "sidebar_position": 3,
+    "title": "Migrating Existing Projects",
+    "description": "Step-by-step guide to convert existing projects to use Presetter configurations"
+  },
+  "sidebar": "tutorialSidebar",
+  "previous": {
+    "title": "New Project Setup",
+    "permalink": "/presetter/docs/tutorials/new-project"
+  },
+  "next": {
+    "title": "Monorepo Setup",
+    "permalink": "/presetter/docs/tutorials/monorepo-setup"
+  }
+}

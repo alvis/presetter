@@ -1,0 +1,30 @@
+{
+  "id": "presets/module-systems/cjs",
+  "title": "presetter-preset-cjs",
+  "description": "CommonJS module configuration for Node.js and legacy compatibility.",
+  "source": "@site/docs/presets/module-systems/cjs.md",
+  "sourceDirName": "presets/module-systems",
+  "slug": "/presets/module-systems/cjs",
+  "permalink": "/presetter/docs/presets/module-systems/cjs",
+  "draft": false,
+  "unlisted": false,
+  "editUrl": "https://github.com/alvis/presetter/tree/master/website/docs/presets/module-systems/cjs.md",
+  "tags": [],
+  "version": "current",
+  "lastUpdatedBy": null,
+  "lastUpdatedAt": null,
+  "sidebarPosition": 2,
+  "frontMatter": {
+    "sidebar_position": 2,
+    "title": "presetter-preset-cjs"
+  },
+  "sidebar": "tutorialSidebar",
+  "previous": {
+    "title": "presetter-preset-esm",
+    "permalink": "/presetter/docs/presets/module-systems/esm"
+  },
+  "next": {
+    "title": "presetter-preset-hybrid",
+    "permalink": "/presetter/docs/presets/module-systems/hybrid"
+  }
+}

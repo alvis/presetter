@@ -1,0 +1,30 @@
+{
+  "id": "presets/quality/monorepo",
+  "title": "presetter-preset-monorepo",
+  "description": "Monorepo workspace management and optimization for team collaboration.",
+  "source": "@site/docs/presets/quality/monorepo.md",
+  "sourceDirName": "presets/quality",
+  "slug": "/presets/quality/monorepo",
+  "permalink": "/presetter/docs/presets/quality/monorepo",
+  "draft": false,
+  "unlisted": false,
+  "editUrl": "https://github.com/alvis/presetter/tree/master/website/docs/presets/quality/monorepo.md",
+  "tags": [],
+  "version": "current",
+  "lastUpdatedBy": null,
+  "lastUpdatedAt": null,
+  "sidebarPosition": 2,
+  "frontMatter": {
+    "sidebar_position": 2,
+    "title": "presetter-preset-monorepo"
+  },
+  "sidebar": "tutorialSidebar",
+  "previous": {
+    "title": "presetter-preset-strict",
+    "permalink": "/presetter/docs/presets/quality/strict"
+  },
+  "next": {
+    "title": "README",
+    "permalink": "/presetter/docs/api/"
+  }
+}

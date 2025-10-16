@@ -1,0 +1,31 @@
+{
+  "id": "tutorials/monorepo-setup",
+  "title": "Monorepo Setup",
+  "description": "Configure a multi-package workspace with shared Presetter configurations",
+  "source": "@site/docs/tutorials/monorepo-setup.md",
+  "sourceDirName": "tutorials",
+  "slug": "/tutorials/monorepo-setup",
+  "permalink": "/presetter/docs/tutorials/monorepo-setup",
+  "draft": false,
+  "unlisted": false,
+  "editUrl": "https://github.com/alvis/presetter/tree/master/website/docs/tutorials/monorepo-setup.md",
+  "tags": [],
+  "version": "current",
+  "lastUpdatedBy": null,
+  "lastUpdatedAt": null,
+  "sidebarPosition": 4,
+  "frontMatter": {
+    "sidebar_position": 4,
+    "title": "Monorepo Setup",
+    "description": "Configure a multi-package workspace with shared Presetter configurations"
+  },
+  "sidebar": "tutorialSidebar",
+  "previous": {
+    "title": "Migrating Existing Projects",
+    "permalink": "/presetter/docs/tutorials/existing-project"
+  },
+  "next": {
+    "title": "Creating Custom Presets",
+    "permalink": "/presetter/docs/tutorials/custom-presets"
+  }
+}

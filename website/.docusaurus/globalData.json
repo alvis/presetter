@@ -1,0 +1,293 @@
+{
+  "docusaurus-plugin-content-docs": {
+    "default": {
+      "path": "/presetter/docs",
+      "versions": [
+        {
+          "name": "current",
+          "label": "Next",
+          "isLast": true,
+          "path": "/presetter/docs",
+          "mainDocId": "intro",
+          "docs": [
+            {
+              "id": "advanced/index",
+              "path": "/presetter/docs/advanced/",
+              "sidebar": "tutorialSidebar"
+            },
+            {
+              "id": "api/interfaces/PresetAssets",
+              "path": "/presetter/docs/api/interfaces/PresetAssets",
+              "sidebar": "tutorialSidebar"
+            },
+            {
+              "id": "api/interfaces/PresetContentContext",
+              "path": "/presetter/docs/api/interfaces/PresetContentContext",
+              "sidebar": "tutorialSidebar"
+            },
+            {
+              "id": "api/interfaces/PresetDefinition",
+              "path": "/presetter/docs/api/interfaces/PresetDefinition",
+              "sidebar": "tutorialSidebar"
+            },
+            {
+              "id": "api/interfaces/PresetNode",
+              "path": "/presetter/docs/api/interfaces/PresetNode",
+              "sidebar": "tutorialSidebar"
+            },
+            {
+              "id": "api/interfaces/ProjectContext",
+              "path": "/presetter/docs/api/interfaces/ProjectContext",
+              "sidebar": "tutorialSidebar"
+            },
+            {
+              "id": "api/interfaces/ResolvedPresetAssets",
+              "path": "/presetter/docs/api/interfaces/ResolvedPresetAssets",
+              "sidebar": "tutorialSidebar"
+            },
+            {
+              "id": "api/README",
+              "path": "/presetter/docs/api/",
+              "sidebar": "tutorialSidebar"
+            },
+            {
+              "id": "api/type-aliases/Path",
+              "path": "/presetter/docs/api/type-aliases/Path",
+              "sidebar": "tutorialSidebar"
+            },
+            {
+              "id": "api/type-aliases/Preset",
+              "path": "/presetter/docs/api/type-aliases/Preset",
+              "sidebar": "tutorialSidebar"
+            },
+            {
+              "id": "api/type-aliases/PresetContent",
+              "path": "/presetter/docs/api/type-aliases/PresetContent",
+              "sidebar": "tutorialSidebar"
+            },
+            {
+              "id": "api/type-aliases/PresetContentGenerator",
+              "path": "/presetter/docs/api/type-aliases/PresetContentGenerator",
+              "sidebar": "tutorialSidebar"
+            },
+            {
+              "id": "api/type-aliases/PresetGenerator",
+              "path": "/presetter/docs/api/type-aliases/PresetGenerator",
+              "sidebar": "tutorialSidebar"
+            },
+            {
+              "id": "api/type-aliases/PresetGraph",
+              "path": "/presetter/docs/api/type-aliases/PresetGraph",
+              "sidebar": "tutorialSidebar"
+            },
+            {
+              "id": "api/type-aliases/PresetObject",
+              "path": "/presetter/docs/api/type-aliases/PresetObject",
+              "sidebar": "tutorialSidebar"
+            },
+            {
+              "id": "api/type-aliases/PresetObjectGenerator",
+              "path": "/presetter/docs/api/type-aliases/PresetObjectGenerator",
+              "sidebar": "tutorialSidebar"
+            },
+            {
+              "id": "api/type-aliases/ResolvedPresetAsset",
+              "path": "/presetter/docs/api/type-aliases/ResolvedPresetAsset",
+              "sidebar": "tutorialSidebar"
+            },
+            {
+              "id": "api/type-aliases/Scripts",
+              "path": "/presetter/docs/api/type-aliases/Scripts",
+              "sidebar": "tutorialSidebar"
+            },
+            {
+              "id": "api/type-aliases/Variables",
+              "path": "/presetter/docs/api/type-aliases/Variables",
+              "sidebar": "tutorialSidebar"
+            },
+            {
+              "id": "cli-reference/bootstrap",
+              "path": "/presetter/docs/cli-reference/bootstrap",
+              "sidebar": "tutorialSidebar"
+            },
+            {
+              "id": "cli-reference/index",
+              "path": "/presetter/docs/cli-reference/",
+              "sidebar": "tutorialSidebar"
+            },
+            {
+              "id": "cli-reference/run",
+              "path": "/presetter/docs/cli-reference/run",
+              "sidebar": "tutorialSidebar"
+            },
+            {
+              "id": "cli-reference/run-p",
+              "path": "/presetter/docs/cli-reference/run-p",
+              "sidebar": "tutorialSidebar"
+            },
+            {
+              "id": "cli-reference/run-s",
+              "path": "/presetter/docs/cli-reference/run-s",
+              "sidebar": "tutorialSidebar"
+            },
+            {
+              "id": "intro",
+              "path": "/presetter/docs/",
+              "sidebar": "tutorialSidebar"
+            },
+            {
+              "id": "introduction/comparison",
+              "path": "/presetter/docs/introduction/comparison",
+              "sidebar": "tutorialSidebar"
+            },
+            {
+              "id": "introduction/concepts",
+              "path": "/presetter/docs/introduction/concepts",
+              "sidebar": "tutorialSidebar"
+            },
+            {
+              "id": "introduction/configuration",
+              "path": "/presetter/docs/introduction/configuration",
+              "sidebar": "tutorialSidebar"
+            },
+            {
+              "id": "introduction/getting-started",
+              "path": "/presetter/docs/introduction/getting-started",
+              "sidebar": "tutorialSidebar"
+            },
+            {
+              "id": "introduction/index",
+              "path": "/presetter/docs/introduction/",
+              "sidebar": "tutorialSidebar"
+            },
+            {
+              "id": "introduction/installation",
+              "path": "/presetter/docs/introduction/installation",
+              "sidebar": "tutorialSidebar"
+            },
+            {
+              "id": "presets/bundling/index",
+              "path": "/presetter/docs/presets/bundling/",
+              "sidebar": "tutorialSidebar"
+            },
+            {
+              "id": "presets/bundling/rollup",
+              "path": "/presetter/docs/presets/bundling/rollup",
+              "sidebar": "tutorialSidebar"
+            },
+            {
+              "id": "presets/foundation/essentials",
+              "path": "/presetter/docs/presets/foundation/essentials",
+              "sidebar": "tutorialSidebar"
+            },
+            {
+              "id": "presets/foundation/index",
+              "path": "/presetter/docs/presets/foundation/",
+              "sidebar": "tutorialSidebar"
+            },
+            {
+              "id": "presets/frameworks/index",
+              "path": "/presetter/docs/presets/frameworks/",
+              "sidebar": "tutorialSidebar"
+            },
+            {
+              "id": "presets/frameworks/react",
+              "path": "/presetter/docs/presets/frameworks/react",
+              "sidebar": "tutorialSidebar"
+            },
+            {
+              "id": "presets/frameworks/web",
+              "path": "/presetter/docs/presets/frameworks/web",
+              "sidebar": "tutorialSidebar"
+            },
+            {
+              "id": "presets/index",
+              "path": "/presetter/docs/presets/",
+              "sidebar": "tutorialSidebar"
+            },
+            {
+              "id": "presets/module-systems/cjs",
+              "path": "/presetter/docs/presets/module-systems/cjs",
+              "sidebar": "tutorialSidebar"
+            },
+            {
+              "id": "presets/module-systems/esm",
+              "path": "/presetter/docs/presets/module-systems/esm",
+              "sidebar": "tutorialSidebar"
+            },
+            {
+              "id": "presets/module-systems/hybrid",
+              "path": "/presetter/docs/presets/module-systems/hybrid",
+              "sidebar": "tutorialSidebar"
+            },
+            {
+              "id": "presets/module-systems/index",
+              "path": "/presetter/docs/presets/module-systems/",
+              "sidebar": "tutorialSidebar"
+            },
+            {
+              "id": "presets/quality/index",
+              "path": "/presetter/docs/presets/quality/",
+              "sidebar": "tutorialSidebar"
+            },
+            {
+              "id": "presets/quality/monorepo",
+              "path": "/presetter/docs/presets/quality/monorepo",
+              "sidebar": "tutorialSidebar"
+            },
+            {
+              "id": "presets/quality/strict",
+              "path": "/presetter/docs/presets/quality/strict",
+              "sidebar": "tutorialSidebar"
+            },
+            {
+              "id": "tutorials/custom-presets",
+              "path": "/presetter/docs/tutorials/custom-presets",
+              "sidebar": "tutorialSidebar"
+            },
+            {
+              "id": "tutorials/existing-project",
+              "path": "/presetter/docs/tutorials/existing-project",
+              "sidebar": "tutorialSidebar"
+            },
+            {
+              "id": "tutorials/index",
+              "path": "/presetter/docs/tutorials/",
+              "sidebar": "tutorialSidebar"
+            },
+            {
+              "id": "tutorials/migration-guides/from-cra",
+              "path": "/presetter/docs/tutorials/migration-guides/from-cra",
+              "sidebar": "tutorialSidebar"
+            },
+            {
+              "id": "tutorials/migration-guides/index",
+              "path": "/presetter/docs/tutorials/migration-guides/",
+              "sidebar": "tutorialSidebar"
+            },
+            {
+              "id": "tutorials/monorepo-setup",
+              "path": "/presetter/docs/tutorials/monorepo-setup",
+              "sidebar": "tutorialSidebar"
+            },
+            {
+              "id": "tutorials/new-project",
+              "path": "/presetter/docs/tutorials/new-project",
+              "sidebar": "tutorialSidebar"
+            }
+          ],
+          "draftIds": [],
+          "sidebars": {
+            "tutorialSidebar": {
+              "link": {
+                "path": "/presetter/docs/",
+                "label": "intro"
+              }
+            }
+          }
+        }
+      ],
+      "breadcrumbs": true
+    }
+  }
+}

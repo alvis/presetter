@@ -1,0 +1,82 @@
+{
+  "name": "Presetter Documentation",
+  "short_name": "Presetter",
+  "description": "Configuration management that scales with your projects",
+  "start_url": "/presetter/",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#0ea5e9",
+  "categories": ["developer", "documentation", "tools"],
+  "lang": "en",
+  "orientation": "any",
+  "icons": [
+    {
+      "src": "img/presetter-logo.svg",
+      "type": "image/svg+xml",
+      "sizes": "any",
+      "purpose": "any"
+    },
+    {
+      "src": "img/presetter-logo-192.png",
+      "type": "image/png",
+      "sizes": "192x192",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "img/presetter-logo-512.png",
+      "type": "image/png",
+      "sizes": "512x512",
+      "purpose": "any maskable"
+    }
+  ],
+  "shortcuts": [
+    {
+      "name": "Getting Started",
+      "short_name": "Get Started",
+      "description": "Quick start guide for Presetter",
+      "url": "/presetter/docs/",
+      "icons": [
+        {
+          "src": "img/presetter-logo.svg",
+          "sizes": "96x96"
+        }
+      ]
+    },
+    {
+      "name": "Tutorials",
+      "short_name": "Tutorials",
+      "description": "Interactive tutorials and guides",
+      "url": "/presetter/docs/tutorials/",
+      "icons": [
+        {
+          "src": "img/presetter-logo.svg",
+          "sizes": "96x96"
+        }
+      ]
+    },
+    {
+      "name": "API Reference",
+      "short_name": "API",
+      "description": "TypeScript API documentation",
+      "url": "/presetter/docs/api/",
+      "icons": [
+        {
+          "src": "img/presetter-logo.svg",
+          "sizes": "96x96"
+        }
+      ]
+    },
+    {
+      "name": "Presets",
+      "short_name": "Presets",
+      "description": "Available configuration presets",
+      "url": "/presetter/docs/presets/",
+      "icons": [
+        {
+          "src": "img/presetter-logo.svg",
+          "sizes": "96x96"
+        }
+      ]
+    }
+  ]
+}

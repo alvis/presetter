@@ -1,0 +1,1 @@
+"use strict";(self.webpackChunkpresetter_website=self.webpackChunkpresetter_website||[]).push([[7569],{1892:e=>{e.exports=JSON.parse('{"metadata":{"permalink":"/presetter/blog","page":1,"postsPerPage":5,"totalPages":1,"totalCount":4,"blogDescription":"News, updates, and guides about Presetter configuration management","blogTitle":"Presetter Blog"}}')}}]);

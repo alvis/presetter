@@ -1,0 +1,30 @@
+{
+  "id": "tutorials/index",
+  "title": "Tutorials",
+  "description": "Learn Presetter through practical, hands-on guides. Each tutorial walks you through real-world scenarios with complete examples and interactive tools.",
+  "source": "@site/docs/tutorials/index.md",
+  "sourceDirName": "tutorials",
+  "slug": "/tutorials/",
+  "permalink": "/presetter/docs/tutorials/",
+  "draft": false,
+  "unlisted": false,
+  "editUrl": "https://github.com/alvis/presetter/tree/master/website/docs/tutorials/index.md",
+  "tags": [],
+  "version": "current",
+  "lastUpdatedBy": null,
+  "lastUpdatedAt": null,
+  "sidebarPosition": 1,
+  "frontMatter": {
+    "sidebar_position": 1,
+    "title": "Tutorials"
+  },
+  "sidebar": "tutorialSidebar",
+  "previous": {
+    "title": "Variables",
+    "permalink": "/presetter/docs/api/type-aliases/Variables"
+  },
+  "next": {
+    "title": "Tutorials",
+    "permalink": "/presetter/docs/tutorials/"
+  }
+}

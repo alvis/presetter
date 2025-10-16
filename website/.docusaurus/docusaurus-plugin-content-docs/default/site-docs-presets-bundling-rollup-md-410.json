@@ -1,0 +1,30 @@
+{
+  "id": "presets/bundling/rollup",
+  "title": "presetter-preset-rollup",
+  "description": "Rollup bundler with comprehensive plugin ecosystem for library packaging.",
+  "source": "@site/docs/presets/bundling/rollup.md",
+  "sourceDirName": "presets/bundling",
+  "slug": "/presets/bundling/rollup",
+  "permalink": "/presetter/docs/presets/bundling/rollup",
+  "draft": false,
+  "unlisted": false,
+  "editUrl": "https://github.com/alvis/presetter/tree/master/website/docs/presets/bundling/rollup.md",
+  "tags": [],
+  "version": "current",
+  "lastUpdatedBy": null,
+  "lastUpdatedAt": null,
+  "sidebarPosition": 1,
+  "frontMatter": {
+    "sidebar_position": 1,
+    "title": "presetter-preset-rollup"
+  },
+  "sidebar": "tutorialSidebar",
+  "previous": {
+    "title": "Bundling Presets",
+    "permalink": "/presetter/docs/presets/bundling/"
+  },
+  "next": {
+    "title": "Quality Presets",
+    "permalink": "/presetter/docs/presets/quality/"
+  }
+}

@@ -1,0 +1,30 @@
+{
+  "id": "presets/quality/strict",
+  "title": "presetter-preset-strict",
+  "description": "Additional linting rules and quality enforcement for production-grade code.",
+  "source": "@site/docs/presets/quality/strict.md",
+  "sourceDirName": "presets/quality",
+  "slug": "/presets/quality/strict",
+  "permalink": "/presetter/docs/presets/quality/strict",
+  "draft": false,
+  "unlisted": false,
+  "editUrl": "https://github.com/alvis/presetter/tree/master/website/docs/presets/quality/strict.md",
+  "tags": [],
+  "version": "current",
+  "lastUpdatedBy": null,
+  "lastUpdatedAt": null,
+  "sidebarPosition": 1,
+  "frontMatter": {
+    "sidebar_position": 1,
+    "title": "presetter-preset-strict"
+  },
+  "sidebar": "tutorialSidebar",
+  "previous": {
+    "title": "Quality Presets",
+    "permalink": "/presetter/docs/presets/quality/"
+  },
+  "next": {
+    "title": "presetter-preset-monorepo",
+    "permalink": "/presetter/docs/presets/quality/monorepo"
+  }
+}

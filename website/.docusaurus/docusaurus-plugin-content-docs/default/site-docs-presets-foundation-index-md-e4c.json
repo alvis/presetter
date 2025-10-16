@@ -1,0 +1,30 @@
+{
+  "id": "presets/foundation/index",
+  "title": "Foundation Presets",
+  "description": "Foundation presets provide the core development tools and essential configurations that serve as the base for all other presets. These presets establish the fundamental development environment with TypeScript, testing, linting, and formatting capabilities.",
+  "source": "@site/docs/presets/foundation/index.md",
+  "sourceDirName": "presets/foundation",
+  "slug": "/presets/foundation/",
+  "permalink": "/presetter/docs/presets/foundation/",
+  "draft": false,
+  "unlisted": false,
+  "editUrl": "https://github.com/alvis/presetter/tree/master/website/docs/presets/foundation/index.md",
+  "tags": [],
+  "version": "current",
+  "lastUpdatedBy": null,
+  "lastUpdatedAt": null,
+  "sidebarPosition": 1,
+  "frontMatter": {
+    "sidebar_position": 1,
+    "title": "Foundation Presets"
+  },
+  "sidebar": "tutorialSidebar",
+  "previous": {
+    "title": "Preset Ecosystem",
+    "permalink": "/presetter/docs/presets/"
+  },
+  "next": {
+    "title": "presetter-preset-essentials",
+    "permalink": "/presetter/docs/presets/foundation/essentials"
+  }
+}

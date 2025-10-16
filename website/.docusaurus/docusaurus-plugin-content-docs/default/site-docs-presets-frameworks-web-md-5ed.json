@@ -1,0 +1,30 @@
+{
+  "id": "presets/frameworks/web",
+  "title": "presetter-preset-web",
+  "description": "Web development with PostCSS, TailwindCSS, and Storybook.",
+  "source": "@site/docs/presets/frameworks/web.md",
+  "sourceDirName": "presets/frameworks",
+  "slug": "/presets/frameworks/web",
+  "permalink": "/presetter/docs/presets/frameworks/web",
+  "draft": false,
+  "unlisted": false,
+  "editUrl": "https://github.com/alvis/presetter/tree/master/website/docs/presets/frameworks/web.md",
+  "tags": [],
+  "version": "current",
+  "lastUpdatedBy": null,
+  "lastUpdatedAt": null,
+  "sidebarPosition": 1,
+  "frontMatter": {
+    "sidebar_position": 1,
+    "title": "presetter-preset-web"
+  },
+  "sidebar": "tutorialSidebar",
+  "previous": {
+    "title": "Framework Presets",
+    "permalink": "/presetter/docs/presets/frameworks/"
+  },
+  "next": {
+    "title": "presetter-preset-react",
+    "permalink": "/presetter/docs/presets/frameworks/react"
+  }
+}

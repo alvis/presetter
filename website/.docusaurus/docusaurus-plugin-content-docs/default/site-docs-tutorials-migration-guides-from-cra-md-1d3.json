@@ -1,0 +1,31 @@
+{
+  "id": "tutorials/migration-guides/from-cra",
+  "title": "Migrating from Create React App",
+  "description": "Complete guide to migrating Create React App projects to Presetter with modern tooling",
+  "source": "@site/docs/tutorials/migration-guides/from-cra.md",
+  "sourceDirName": "tutorials/migration-guides",
+  "slug": "/tutorials/migration-guides/from-cra",
+  "permalink": "/presetter/docs/tutorials/migration-guides/from-cra",
+  "draft": false,
+  "unlisted": false,
+  "editUrl": "https://github.com/alvis/presetter/tree/master/website/docs/tutorials/migration-guides/from-cra.md",
+  "tags": [],
+  "version": "current",
+  "lastUpdatedBy": null,
+  "lastUpdatedAt": null,
+  "sidebarPosition": 2,
+  "frontMatter": {
+    "sidebar_position": 2,
+    "title": "Migrating from Create React App",
+    "description": "Complete guide to migrating Create React App projects to Presetter with modern tooling"
+  },
+  "sidebar": "tutorialSidebar",
+  "previous": {
+    "title": "Migration Guides",
+    "permalink": "/presetter/docs/tutorials/migration-guides/"
+  },
+  "next": {
+    "title": "New Project Setup",
+    "permalink": "/presetter/docs/tutorials/new-project"
+  }
+}

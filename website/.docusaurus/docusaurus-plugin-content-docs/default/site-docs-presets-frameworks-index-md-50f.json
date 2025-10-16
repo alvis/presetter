@@ -1,0 +1,30 @@
+{
+  "id": "presets/frameworks/index",
+  "title": "Framework Presets",
+  "description": "Framework-specific configurations that include specialized tooling and optimizations.",
+  "source": "@site/docs/presets/frameworks/index.md",
+  "sourceDirName": "presets/frameworks",
+  "slug": "/presets/frameworks/",
+  "permalink": "/presetter/docs/presets/frameworks/",
+  "draft": false,
+  "unlisted": false,
+  "editUrl": "https://github.com/alvis/presetter/tree/master/website/docs/presets/frameworks/index.md",
+  "tags": [],
+  "version": "current",
+  "lastUpdatedBy": null,
+  "lastUpdatedAt": null,
+  "sidebarPosition": 3,
+  "frontMatter": {
+    "sidebar_position": 3,
+    "title": "Framework Presets"
+  },
+  "sidebar": "tutorialSidebar",
+  "previous": {
+    "title": "presetter-preset-hybrid",
+    "permalink": "/presetter/docs/presets/module-systems/hybrid"
+  },
+  "next": {
+    "title": "presetter-preset-web",
+    "permalink": "/presetter/docs/presets/frameworks/web"
+  }
+}

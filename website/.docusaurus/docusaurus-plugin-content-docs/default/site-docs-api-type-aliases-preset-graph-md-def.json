@@ -1,0 +1,26 @@
+{
+  "id": "api/type-aliases/PresetGraph",
+  "title": "PresetGraph",
+  "description": "Presetter Types API v8.0.0",
+  "source": "@site/docs/api/type-aliases/PresetGraph.md",
+  "sourceDirName": "api/type-aliases",
+  "slug": "/api/type-aliases/PresetGraph",
+  "permalink": "/presetter/docs/api/type-aliases/PresetGraph",
+  "draft": false,
+  "unlisted": false,
+  "editUrl": "https://github.com/alvis/presetter/tree/master/website/docs/api/type-aliases/PresetGraph.md",
+  "tags": [],
+  "version": "current",
+  "lastUpdatedBy": null,
+  "lastUpdatedAt": null,
+  "frontMatter": {},
+  "sidebar": "tutorialSidebar",
+  "previous": {
+    "title": "PresetGenerator",
+    "permalink": "/presetter/docs/api/type-aliases/PresetGenerator"
+  },
+  "next": {
+    "title": "PresetObject",
+    "permalink": "/presetter/docs/api/type-aliases/PresetObject"
+  }
+}

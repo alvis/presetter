@@ -1,0 +1,31 @@
+{
+  "id": "tutorials/custom-presets",
+  "title": "Creating Custom Presets",
+  "description": "Build your own Presetter presets for team-specific requirements and reusable configurations",
+  "source": "@site/docs/tutorials/custom-presets.md",
+  "sourceDirName": "tutorials",
+  "slug": "/tutorials/custom-presets",
+  "permalink": "/presetter/docs/tutorials/custom-presets",
+  "draft": false,
+  "unlisted": false,
+  "editUrl": "https://github.com/alvis/presetter/tree/master/website/docs/tutorials/custom-presets.md",
+  "tags": [],
+  "version": "current",
+  "lastUpdatedBy": null,
+  "lastUpdatedAt": null,
+  "sidebarPosition": 5,
+  "frontMatter": {
+    "sidebar_position": 5,
+    "title": "Creating Custom Presets",
+    "description": "Build your own Presetter presets for team-specific requirements and reusable configurations"
+  },
+  "sidebar": "tutorialSidebar",
+  "previous": {
+    "title": "Monorepo Setup",
+    "permalink": "/presetter/docs/tutorials/monorepo-setup"
+  },
+  "next": {
+    "title": "Advanced Topics",
+    "permalink": "/presetter/docs/advanced/"
+  }
+}

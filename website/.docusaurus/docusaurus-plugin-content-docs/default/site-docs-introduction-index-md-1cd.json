@@ -1,0 +1,30 @@
+{
+  "id": "introduction/index",
+  "title": "Introduction",
+  "description": "Stop the Configuration Chaos",
+  "source": "@site/docs/introduction/index.md",
+  "sourceDirName": "introduction",
+  "slug": "/introduction/",
+  "permalink": "/presetter/docs/introduction/",
+  "draft": false,
+  "unlisted": false,
+  "editUrl": "https://github.com/alvis/presetter/tree/master/website/docs/introduction/index.md",
+  "tags": [],
+  "version": "current",
+  "lastUpdatedBy": null,
+  "lastUpdatedAt": null,
+  "sidebarPosition": 1,
+  "frontMatter": {
+    "sidebar_position": 1,
+    "title": "Introduction"
+  },
+  "sidebar": "tutorialSidebar",
+  "previous": {
+    "title": "Welcome to Presetter",
+    "permalink": "/presetter/docs/"
+  },
+  "next": {
+    "title": "Introduction",
+    "permalink": "/presetter/docs/introduction/"
+  }
+}
