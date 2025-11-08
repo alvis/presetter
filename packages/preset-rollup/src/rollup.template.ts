@@ -1,5 +1,3 @@
-/* v8 ignore start */
-
 import commonjs from '@rollup/plugin-commonjs';
 import graphql from '@rollup/plugin-graphql';
 import image from '@rollup/plugin-image';

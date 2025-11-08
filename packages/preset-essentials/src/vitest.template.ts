@@ -1,5 +1,3 @@
-/* v8 ignore start */
-
 import { asset } from 'presetter-types';
 
 import { mergeConfig } from 'vitest/config';
@@ -25,14 +23,13 @@ export default asset<{ default: ViteUserConfig }>((current, context) => {
         unstubEnvs: true,
         unstubGlobals: true,
         coverage: {
-          all: true,
           clean: true,
-          ignoreEmptyLines: true,
-          include: [`${variables.source!}/**`],
+          include: [`${variables.source!}/**/*.ts`],
           exclude: [
+            // exclude barrel files
+            `${variables.source!}/**/index.ts`,
             // exclude type files
             `${variables.source!}/**/types/**`,
-            `${variables.source!}/**/types.ts`,
           ],
           provider: 'v8',
           reporter: ['text', 'html', 'clover', 'json', 'lcov'],

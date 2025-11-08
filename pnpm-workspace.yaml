@@ -82,8 +82,8 @@ catalogs:
     storybook-addon-test-codegen: ^2.0.0
 
   testing:
-    '@vitest/coverage-v8': ^3.0.0
-    vitest: ^3.0.0
+    '@vitest/coverage-v8': ^4.0.0
+    vitest: ^4.0.0
 
   types:
     type-fest: ^5.0.0

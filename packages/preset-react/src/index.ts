@@ -5,6 +5,7 @@ import { preset } from 'presetter-types';
 
 import eslintOverride from './eslint.override';
 import * as eslint from './eslint.template';
+import vitest from './vitest.template';
 
 const DIR = fileURLToPath(dirname(import.meta.url));
 
@@ -32,6 +33,7 @@ export default preset('presetter-preset-react', {
     'eslint.config.ts': eslint,
     'tsconfig.json': resolve(TEMPLATES, 'tsconfig.yaml'),
     'tsconfig.build.json': resolve(TEMPLATES, 'tsconfig.build.yaml'),
+    'vitest.config.ts': vitest,
   },
   override: {
     assets: {

@@ -3,11 +3,24 @@ import monorepo from 'presetter-preset-monorepo';
 
 import type { ViteUserConfig } from 'vitest/config';
 
+const vitest = asset<{ default: ViteUserConfig }>({
+  default: {
+    test: {
+      clearMocks: false, // disable for counting template files usage
+      coverage: {
+        provider: 'v8',
+        exclude: ['**/*.template.ts', '**/*.override.ts'],
+      },
+    },
+  },
+});
+
 export default preset('presetter-monorepo', {
   extends: [monorepo],
   override: {
-    assets: ({ isRepoRoot }) =>
-      isRepoRoot
+    assets: ({ isRepoRoot }) => ({
+      'vitest.config.ts': vitest,
+      ...(isRepoRoot
         ? {}
         : {
             '.npmignore': ['!/overrides/**', '!/templates/**'], // include overrides and templates folders
@@ -23,13 +36,7 @@ export default preset('presetter-monorepo', {
                 },
               ],
             },
-            'vitest.config.ts': asset<{ default: ViteUserConfig }>({
-              default: {
-                test: {
-                  clearMocks: false, // disable for counting template files usage
-                },
-              },
-            }),
-          },
+          }),
+    }),
   },
 });

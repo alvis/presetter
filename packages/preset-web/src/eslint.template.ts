@@ -1,5 +1,3 @@
-/* v8 ignore start */
-
 import globals from 'globals';
 import { asset } from 'presetter';
 

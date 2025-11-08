@@ -1,5 +1,3 @@
-/* v8 ignore start */
-
 import eslint from '@eslint/js';
 import comments from '@eslint-community/eslint-plugin-eslint-comments/configs';
 import prettier from 'eslint-config-prettier';

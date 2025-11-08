@@ -1,5 +1,3 @@
-/* v8 ignore start */
-
 import react from 'eslint-plugin-react';
 
 import type { Linter } from 'eslint';

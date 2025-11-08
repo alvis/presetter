@@ -1,5 +1,3 @@
-/* v8 ignore start */
-
 import { asset } from 'presetter-types';
 
 import type { ViteUserConfig } from 'vitest/config';
@@ -10,15 +8,14 @@ export default asset<{ default: ViteUserConfig }>((_, { variables }) => {
     default: {
       test: {
         name: 'root',
-        workspace: ['*/*/vitest.config{,.int,.e2e}.ts'],
+        projects: ['*/*/vitest.config.ts'],
         watch: false,
         // NOTE: setting coverage here is needed in order to report coverage at the workspace level
         coverage: {
-          ignoreEmptyLines: true,
           include: [`**/${variables.source}/**/*.?(c|m)[jt]s?(x)`],
           exclude: [
+            `**/${variables.source!}/**/index.ts`,
             `**/${variables.source}/**/types/**`,
-            `**/${variables.source}/**/types.ts`,
           ],
           provider: 'v8',
           reporter: ['text', 'html', 'clover', 'json', 'lcov'],

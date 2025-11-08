@@ -1,5 +1,3 @@
-/* v8 ignore start */
-
 import type { Linter } from 'eslint';
 
 export default [

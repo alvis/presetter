@@ -1,5 +1,3 @@
-/* v8 ignore start */
-
 import { asset } from 'presetter';
 
 import type { Linter } from 'eslint';

@@ -6,8 +6,16 @@ const { warn } = vi.hoisted(() => ({
   warn: vi.fn(),
 }));
 
+const { createCallsiteRecord } = vi.hoisted(() => ({
+  createCallsiteRecord: vi.fn(),
+}));
+
 vi.mock('node:console', () => ({
   warn,
+}));
+
+vi.mock('callsite-record', () => ({
+  default: createCallsiteRecord,
 }));
 
 const ansiPattern = [
@@ -35,6 +43,9 @@ describe.sequential('fn:handleError', () => {
     process.stdout.isTTY = true;
 
     const error = new Error('tty');
+    createCallsiteRecord.mockReturnValueOnce({
+      render: vi.fn().mockResolvedValue('callsite record'),
+    });
 
     await handleError(error);
 
@@ -42,5 +53,19 @@ describe.sequential('fn:handleError', () => {
 
     const message = warn.mock.calls[0][0] as string;
     expect(message.replace(ansi, '')).toEqual(`[Error] tty`);
+  });
+
+  it('should print the error without callsite record when record is null', async () => {
+    process.stdout.isTTY = true;
+
+    const error = new Error('no record');
+    createCallsiteRecord.mockReturnValueOnce(null);
+
+    await handleError(error);
+
+    expect(warn).toHaveBeenCalledTimes(1);
+
+    const message = warn.mock.calls[0][0] as string;
+    expect(message.replace(ansi, '')).toEqual(`[Error] no record`);
   });
 });

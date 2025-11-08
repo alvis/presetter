@@ -1,4 +1,3 @@
-/* v8 ignore start */
 import { existsSync } from 'node:fs';
 import { resolve } from 'node:path';
 

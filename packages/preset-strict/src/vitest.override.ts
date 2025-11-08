@@ -1,5 +1,3 @@
-/* v8 ignore start */
-
 import { defineConfig } from 'vitest/config';
 
 export default defineConfig({
