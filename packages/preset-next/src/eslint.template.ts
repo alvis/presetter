@@ -4,4 +4,4 @@ import type { Linter } from 'eslint';
 
 export default [
   next.flatConfig.recommended as Linter.Config,
-] satisfies Linter.Config[];
+] as Linter.Config[];
