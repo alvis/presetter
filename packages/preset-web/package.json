@@ -55,6 +55,7 @@
   "peerDependencies": {
     "@storybook/addon-a11y": "catalog:storybook",
     "@storybook/addon-vitest": "catalog:storybook",
+    "@vitest/browser-playwright": "catalog:testing",
     "autoprefixer": "catalog:web",
     "eslint-plugin-better-tailwindcss": "catalog:lint",
     "eslint-plugin-storybook": "catalog:lint",
