@@ -109,5 +109,3 @@ nodeLinker: hoisted # don't use symlinks
 onlyBuiltDependencies:
   - esbuild
   - unrs-resolver
-
-shamefullyHoist: true # hoist all dependencies to the root's node_modules
