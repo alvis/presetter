@@ -31,23 +31,23 @@ export function parseGlobalArgs(argv: Arguments): string[] {
 const ARG_PLACEHOLDER_REGEX = /^{@:?(.*)$/;
 
 /**
- * expand a placeholder pattern like {@:default args} into actual arguments
+ * expand a placeholder pattern like {\@:default args} into actual arguments
  *
- * this function handles the {@:...} syntax where:
- * - {@} gets replaced with globalArgs
- * - {@:default} uses "default" if no globalArgs, otherwise uses globalArgs
- * - {@:arg1 arg2} splits into ["arg1", "arg2"] if no globalArgs
+ * this function handles the {\@:...} syntax where:
+ * - {\@} gets replaced with globalArgs
+ * - {\@:default} uses "default" if no globalArgs, otherwise uses globalArgs
+ * - {\@:arg1 arg2} splits into ["arg1", "arg2"] if no globalArgs
  * @example
  * // with globalArgs available
- * expandPlaceholderArgs(['{@:--verbose}'], 0, ['--quiet', '--force'])
+ * expandPlaceholderArgs(['{\@:--verbose}'], 0, ['--quiet', '--force'])
  * // returns: { args: ['--quiet', '--force'], nextIndex: 1 }
  * @example
  * // No globalArgs, use defaults
- * expandPlaceholderArgs(['{@:--verbose', '--output}'], 0, [])
+ * expandPlaceholderArgs(['{\@:--verbose', '--output}'], 0, [])
  * // returns: { args: ['--verbose', '--output'], nextIndex: 2 }
  * @example
  * // empty placeholder
- * expandPlaceholderArgs(['{@:}'], 0, [])
+ * expandPlaceholderArgs(['{\@:}'], 0, [])
  * // returns: { args: [], nextIndex: 1 }
  * @param rawArgs array of raw arguments
  * @param startIndex starting index of the placeholder
@@ -106,7 +106,7 @@ function expandPlaceholderArgs(
  * state object for functional argument processing in reduce operation
  *
  * this tracks our progress as we iterate through rawArgs and handle different
- * argument types ({@}, {@:defaults}, and regular args)
+ * argument types ({\@}, {\@:defaults}, and regular args)
  */
 interface ProcessingState {
   /** the accumulated array of processed arguments */

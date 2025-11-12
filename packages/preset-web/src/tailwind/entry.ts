@@ -5,7 +5,7 @@ import { resolveModule } from '#module';
 
 /**
  * resolves an import path to an absolute file path
- * @param importPath the import path from CSS @import statement
+ * @param importPath the import path from CSS `@import` statement
  * @param currentFilePath the path of the current file being processed
  * @returns resolved absolute file path
  */
@@ -47,7 +47,7 @@ const commonStyleFileNames = [
 /**
  * locates the main css file that contains the tailwind css import directive
  * @param rootDirectory the root directory to search for css files
- * @returns path to the css file containing @import "tailwindcss"
+ * @returns path to the css file containing `@import "tailwindcss"`
  */
 export async function locateTailwindEntryFile(
   rootDirectory: string,
@@ -68,7 +68,7 @@ export async function locateTailwindEntryFile(
 /**
  * searches for tailwind css entry file in a specific directory
  * @param directoryPath the directory path to search in
- * @returns path to the css file containing @import "tailwindcss" or undefined
+ * @returns path to the css file containing `@import "tailwindcss"` or undefined
  */
 async function findTailwindEntryInDirectory(
   directoryPath: string,
@@ -103,7 +103,7 @@ async function findTailwindEntryInDirectory(
 /**
  * checks if a css file contains tailwind import directive, following local imports recursively
  * @param path the path to the css file to check
- * @returns true if the file contains @import "tailwindcss" directly or indirectly
+ * @returns true if the file contains `@import "tailwindcss"` directly or indirectly
  */
 async function hasTailwindImport(path: string): Promise<boolean> {
   return checkTailwindImportRecursively(path, new Set<string>());
@@ -113,7 +113,7 @@ async function hasTailwindImport(path: string): Promise<boolean> {
  * internal recursive helper for hasTailwindImport
  * @param path the path to the css file to check
  * @param visited set of already visited files to prevent infinite loops
- * @returns true if the file contains @import "tailwindcss" directly or indirectly
+ * @returns true if the file contains `@import "tailwindcss"` directly or indirectly
  */
 async function checkTailwindImportRecursively(
   path: string,

@@ -3,13 +3,14 @@ import { fileURLToPath } from 'node:url';
 
 import { preset } from 'presetter';
 import esm from 'presetter-preset-esm';
-import react, { DEFAULT_VARIABLES as REACT_DEFAULT_VARIABLES } from 'presetter-preset-react';
+import react, {
+  DEFAULT_VARIABLES as REACT_DEFAULT_VARIABLES,
+} from 'presetter-preset-react';
 import strict from 'presetter-preset-strict';
 
 import { name } from '../package.json';
 
 import * as eslintTemplate from './eslint.template';
-
 
 import type { Variables } from 'presetter-preset-react';
 
