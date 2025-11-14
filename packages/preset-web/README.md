@@ -366,16 +366,6 @@ globals: {
 }
 ```
 
-### Prettier Integration
-
-```jsonc
-// .prettierrc enhancement
-{
-  "plugins": ["prettier-plugin-tailwindcss"],
-  // Automatic TailwindCSS class sorting and formatting
-}
-```
-
 ### TypeScript Browser Optimization
 
 ```yaml

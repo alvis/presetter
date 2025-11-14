@@ -62,7 +62,6 @@
     "globals": "catalog:web",
     "postcss": "catalog:web",
     "presetter": "workspace:*",
-    "prettier-plugin-tailwindcss": "catalog:web",
     "storybook": "catalog:storybook",
     "storybook-addon-pseudo-states": "catalog:storybook",
     "storybook-addon-test-codegen": "catalog:storybook",
