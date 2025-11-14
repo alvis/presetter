@@ -1,6 +1,6 @@
 {
   "name": "presetter-preset-hybrid",
-  "version": "8.1.0",
+  "version": "8.2.0",
   "description": "An opinionated presetter preset for delivering a dual CommonJS/ESM package",
   "keywords": [
     "presetter",

@@ -1,6 +1,6 @@
 {
   "name": "presetter-monorepo",
-  "version": "8.1.0",
+  "version": "8.2.0",
   "private": true,
   "description": "Make project configurations clean with presets",
   "keywords": [],
