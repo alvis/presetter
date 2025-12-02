@@ -7,6 +7,11 @@ import * as eslintOverride from './eslint.override';
 import eslintTemplate from './eslint.template';
 import * as vitestOverride from './vitest.override';
 
+/** list of configurable variables */
+export interface Variables {}
+
+export const DEFAULT_VARIABLES = {} satisfies Variables;
+
 const DIR = dirname(fileURLToPath(import.meta.url));
 
 // paths to the template directory
