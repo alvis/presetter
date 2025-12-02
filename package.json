@@ -34,7 +34,9 @@
     "release:packages": "pnpm --recursive --shell-mode exec \"standard-version --path \\$(pwd) --preset metahub --skip.commit --skip.tag  --release-as $(npx -c 'echo $npm_package_version')\"",
     "release:root": "standard-version --preset metahub --skip.commit --skip.tag",
     "stage": "pnpm --recursive exec lint-staged -- --concurrent=false",
-    "test": "vitest --passWithNoTests"
+    "test": "vitest --passWithNoTests",
+    "typecheck": "pnpm --recursive exec tsc --noEmit --skipLibCheck",
+    "watch": "npm run test -- --watch"
   },
   "devDependencies": {
     "@types/node": "catalog:types",

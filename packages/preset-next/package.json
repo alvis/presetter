@@ -37,6 +37,7 @@
     "lint": "run lint --",
     "prepublishOnly": "run prepare && run prepublishOnly",
     "test": "run test --",
+    "typecheck": "run typecheck --",
     "watch": "run watch --"
   },
   "dependencies": {

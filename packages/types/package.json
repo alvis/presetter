@@ -41,6 +41,7 @@
     "prepare": "tsc --skipLibCheck --declaration --moduleResolution bundler --module esnext --target esnext --outdir lib src/index.ts && tsc-esm-fix --sourceMap --target lib",
     "prepublishOnly": "run prepare && run prepublishOnly",
     "test": "run test --",
+    "typecheck": "run typecheck --",
     "watch": "run watch --"
   },
   "dependencies": {
