@@ -18,8 +18,8 @@ export default asset<{ default: ViteUserConfig }>((current, context) => {
           tsconfig: 'tsconfig.json',
         },
         watch: false,
-        // auto clear mocks and stubs
-        clearMocks: true,
+        // auto reset mocks and stubs
+        mockReset: true,
         unstubEnvs: true,
         unstubGlobals: true,
         coverage: {

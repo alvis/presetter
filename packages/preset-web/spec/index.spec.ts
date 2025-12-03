@@ -1,7 +1,7 @@
 import { existsSync, readdirSync } from 'node:fs';
-import { resolve } from 'node:path';
+import { relative, resolve } from 'node:path';
 
-import { listAssetNames, resolveAssets, resolvePreset } from 'presetter';
+import { resolveAssets, resolvePreset } from 'presetter';
 import { describe, expect, it, vi } from 'vitest';
 
 import preset, { DEFAULT_VARIABLES as variables } from '#index';
@@ -20,8 +20,6 @@ vi.mock('node:fs', async (importActual) => {
   };
 });
 
-vi.mock('node:path', { spy: true });
-
 const OVERRIDES = resolve(import.meta.dirname, '..', 'overrides');
 const TEMPLATES = resolve(import.meta.dirname, '..', 'templates');
 
@@ -37,19 +35,34 @@ const context = {
 describe('fn:preset', () => {
   it('should use all templates', async () => {
     const node = await resolvePreset(preset, context);
-    listAssetNames(node, { ...context, variables });
 
     const overrides = existsSync(OVERRIDES) ? readdirSync(OVERRIDES) : [];
     const templates = existsSync(TEMPLATES) ? readdirSync(TEMPLATES) : [];
 
+    const consumedOverrides = [
+      node.definition.override?.scripts,
+      ...Object.values({ ...node.definition.override?.assets }),
+    ]
+      .filter((item) => typeof item === 'string')
+      .map((path) => relative(OVERRIDES, path));
+    const consumedTemplates = [
+      node.definition.scripts,
+      ...Object.values({
+        ...(node.definition.assets instanceof Function
+          ? node.definition.assets({ ...context, variables })
+          : node.definition.assets),
+      }),
+    ]
+      .filter((item) => typeof item === 'string')
+      .map((path) => relative(TEMPLATES, path));
+
     for (const path of overrides) {
-      expect(vi.mocked(resolve)).toHaveBeenCalledWith(OVERRIDES, path);
+      expect(consumedOverrides).contain(path);
     }
     for (const path of templates) {
-      expect(vi.mocked(resolve)).toHaveBeenCalledWith(TEMPLATES, path);
+      expect(consumedTemplates).contain(path);
     }
   });
-
   it('should be able to resolve all assets', async () => {
     const node = await resolvePreset(preset, context);
     const result = resolveAssets(node, context);

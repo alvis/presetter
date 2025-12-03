@@ -6,7 +6,6 @@ import type { ViteUserConfig } from 'vitest/config';
 const vitest = asset<{ default: ViteUserConfig }>({
   default: {
     test: {
-      clearMocks: false, // disable for counting template files usage
       coverage: {
         provider: 'v8',
         exclude: ['**/*.template.ts', '**/*.override.ts'],

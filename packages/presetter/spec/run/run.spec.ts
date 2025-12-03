@@ -3,8 +3,6 @@ import { beforeEach, describe, expect, it, vi } from 'vitest';
 
 import { run } from '#run';
 
-vi.spyOn(process, 'exit').mockImplementation((() => {}) as any);
-
 vi.mock('@npmcli/run-script', () => ({
   default: vi.fn(({ event }: { event: string }) => {
     if (event === 'error') {
@@ -96,6 +94,7 @@ describe('fn:run', () => {
   });
 
   it('should exit with an error code when any one of the tasks fails', async () => {
+    vi.spyOn(process, 'exit').mockImplementation(() => undefined as never);
     await run([{ selector: 'error', args: [] }]);
 
     expect(process.exit).toHaveBeenCalledWith(1);
