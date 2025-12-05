@@ -48,12 +48,12 @@ export default asset<{ default: RollupOptions }>((current, { variables }) => ({
     input: `${variables.source!}/index.ts`,
     output: [
       {
-        file: `${variables.outout!}/index.js`,
+        file: `${variables.output!}/index.js`,
         format: 'cjs',
         sourcemap: true,
       },
       {
-        file: `${variables.outout!}/index.mjs`,
+        file: `${variables.output!}/index.mjs`,
         format: 'es',
         sourcemap: true,
       },
