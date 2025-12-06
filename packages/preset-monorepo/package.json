@@ -44,6 +44,8 @@
     "watch": "run watch --"
   },
   "dependencies": {
+    "presetter-preset-esm": "workspace:*",
+    "presetter-preset-strict": "workspace:*",
     "presetter-types": "workspace:*"
   },
   "devDependencies": {

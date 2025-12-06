@@ -257,17 +257,16 @@ catalogs:
 importers:
 
   .:
-    dependencies:
+    devDependencies:
+      '@types/node':
+        specifier: catalog:types
+        version: 24.10.0
       presetter:
         specifier: workspace:*
         version: link:packages/presetter
       presetter-preset-monorepo:
         specifier: workspace:*
         version: link:packages/preset-monorepo
-    devDependencies:
-      '@types/node':
-        specifier: catalog:types
-        version: 24.10.0
       typescript:
         specifier: catalog:build
         version: 5.9.3
@@ -4213,6 +4212,7 @@ packages:
   next@16.0.1:
     resolution: {integrity: sha512-e9RLSssZwd35p7/vOa+hoDFggUZIUbZhIUSLZuETCwrCVvxOs87NamoUzT+vbcNAL8Ld9GobBnWOA6SbV/arOw==}
     engines: {node: '>=20.9.0'}
+    deprecated: This version has a security vulnerability. Please upgrade to a patched version. See https://nextjs.org/blog/CVE-2025-66478 for more details.
     hasBin: true
     peerDependencies:
       '@opentelemetry/api': ^1.1.0

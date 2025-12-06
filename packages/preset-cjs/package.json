@@ -44,6 +44,7 @@
     "watch": "run watch --"
   },
   "dependencies": {
+    "presetter-preset-essentials": "workspace:*",
     "presetter-types": "workspace:*"
   },
   "peerDependencies": {
