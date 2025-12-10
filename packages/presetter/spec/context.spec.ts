@@ -22,6 +22,13 @@ vi.mock(
     }) satisfies Partial<typeof import('find-up-simple')>,
 );
 
+vi.mock('#preset/project', () => ({
+  resolveProjectPreset: vi.fn(async () => ({
+    definition: { id: 'test-preset', root: '/path/to/preset' },
+    nodes: [],
+  })),
+}));
+
 describe('fn:resolveProjectContext', () => {
   it('resolve the content in package.json', async () => {
     // mock calls for resolveRepoRoot (.git, .hg, .svn)

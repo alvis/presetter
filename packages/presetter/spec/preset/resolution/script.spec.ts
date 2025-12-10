@@ -1,3 +1,5 @@
+import { resolve } from 'node:path';
+
 import { describe, expect, it, vi } from 'vitest';
 
 import { resolveNodeContent } from '#preset/resolution/content';
@@ -23,7 +25,7 @@ describe('fn:resolveScripts', () => {
     } satisfies PresetNode;
 
     const result = await resolveScripts(node, context);
-    const expected = { script: 'echo "final"' };
+    const expected = { paths: [], scripts: { script: 'echo "final"' } };
 
     expect(result).toEqual(expected);
     expect(resolveNodeContent).toHaveBeenCalledWith({
@@ -57,7 +59,7 @@ describe('fn:resolveScripts', () => {
     } satisfies PresetNode;
 
     const result = await resolveScripts(node, context);
-    const expected = { script: 'echo "final"' };
+    const expected = { paths: [], scripts: { script: 'echo "final"' } };
 
     expect(result).toEqual(expected);
     expect(resolveNodeContent).toHaveBeenCalledWith({
@@ -84,7 +86,7 @@ describe('fn:resolveScripts', () => {
     } satisfies PresetNode;
 
     const result = await resolveScripts(node, context);
-    const expected = {};
+    const expected = { paths: [], scripts: {} };
 
     expect(result).toEqual(expected);
     expect(resolveNodeContent).toHaveBeenCalledWith({
@@ -102,5 +104,24 @@ describe('fn:resolveScripts', () => {
       variables: {},
       select: expect.any(Function),
     });
+  });
+
+  it('should extract and resolve paths from preset roots', async () => {
+    const node = {
+      definition: {
+        id: 'test-preset',
+        root: resolve('preset', 'root'),
+        scripts: { build: 'echo build' },
+      },
+      nodes: [],
+    } satisfies PresetNode;
+
+    const result = await resolveScripts(node, context);
+    const expected = {
+      paths: [resolve('preset', 'root', 'node_modules', '.bin')],
+      scripts: { build: 'echo build' },
+    };
+
+    expect(result).toEqual(expected);
   });
 });

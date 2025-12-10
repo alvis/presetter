@@ -1,7 +1,10 @@
+import { resolve } from 'node:path';
+
 import { substitute } from '../../template';
 
 import { resolveNodeContent } from './content';
 import Debug from './debugger';
+import { extractPresetRoots } from './roots';
 import { resolveVariables } from './variable';
 
 import type { PresetNode, ProjectContext, Scripts } from 'presetter-types';
@@ -15,7 +18,7 @@ import type { PresetNode, ProjectContext, Scripts } from 'presetter-types';
 export async function resolveScripts(
   node: PresetNode,
   context: ProjectContext,
-): Promise<Scripts> {
+): Promise<{ paths: string[]; scripts: Scripts }> {
   const name = 'SCRIPTS';
   const debug = Debug.extend(name);
 
@@ -50,5 +53,13 @@ export async function resolveScripts(
 
   debug('RESOLVED SCRIPTS (FINAL PASS)\n%O', final);
 
-  return substitute(final, variables);
+  const presetRoots = extractPresetRoots(node);
+
+  const paths = presetRoots.map((path) =>
+    resolve(path, 'node_modules', '.bin'),
+  );
+
+  debug('RESOLVED PATHS\n%O', paths);
+
+  return { paths, scripts: substitute(final, variables) };
 }

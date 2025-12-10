@@ -1,10 +1,13 @@
 import { existsSync, readdirSync } from 'node:fs';
 import { resolve } from 'node:path';
 
-import { listAssetNames, resolvePreset, type ProjectContext } from 'presetter';
+import { listAssetNames, resolvePreset } from 'presetter';
+
 import { describe, expect, it, vi } from 'vitest';
 
 import preset, { DEFAULT_VARIABLES as variables } from '#index';
+
+import type { ProjectContext } from 'presetter';
 
 vi.mock('node:fs', () => ({
   existsSync: (path: string) => path === '/.git',

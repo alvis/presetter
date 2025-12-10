@@ -15,6 +15,7 @@ const OVERRIDES = resolve(DIR, '..', 'overrides');
 const TEMPLATES = resolve(DIR, '..', 'templates');
 
 export default preset('presetter-preset-hybrid', {
+  root: resolve(import.meta.dirname, '..'),
   extends: [essentials],
   assets: {
     'tsconfig.cjs.json': resolve(TEMPLATES, 'tsconfig.cjs.yaml'),

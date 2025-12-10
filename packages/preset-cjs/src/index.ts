@@ -14,6 +14,7 @@ const DIR = fileURLToPath(dirname(import.meta.url));
 const OVERRIDES = resolve(DIR, '..', 'overrides');
 
 export default preset('presetter-preset-cjs', {
+  root: resolve(import.meta.dirname, '..'),
   extends: [essentials],
   override: {
     assets: {

@@ -27,6 +27,7 @@ const DIR = fileURLToPath(dirname(import.meta.url));
 const TEMPLATES = resolve(DIR, '..', 'templates');
 
 export default preset(name, {
+  root: resolve(import.meta.dirname, '..'),
   extends: [esm, strict, react],
   variables: DEFAULT_VARIABLES,
   assets: ({ variables }) => ({

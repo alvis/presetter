@@ -21,9 +21,7 @@ vi.mock(
 describe('fn:getScripts', () => {
   it('should be able to resolves scripts templates', async () => {
     const result = await getScripts();
-    const expected = {
-      test: 'exit 0',
-    };
+    const expected = { paths: [], scripts: { test: 'exit 0' } };
 
     expect(result).toEqual(expected);
   });

@@ -18,6 +18,7 @@ const DIR = dirname(fileURLToPath(import.meta.url));
 const OVERRIDES = resolve(DIR, '..', 'overrides');
 
 export default preset('presetter-preset-strict', {
+  root: resolve(import.meta.dirname, '..'),
   assets: {
     'eslint.config.ts': eslintTemplate,
   },

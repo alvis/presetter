@@ -30,12 +30,15 @@ vi.mock('#context', () => ({
 
 vi.mock('#preset', () => ({
   getScripts: vi.fn(async () => ({
-    'custom': 'template command',
-    'task': 'command --arg-template',
-    'other': 'other --arg-template',
-    'subtask': 'run-s subtask:*',
-    'subtask:task1': 'command1 --arg',
-    'subtask:task2': 'command2 --arg',
+    paths: [],
+    scripts: {
+      'custom': 'template command',
+      'task': 'command --arg-template',
+      'other': 'other --arg-template',
+      'subtask': 'run-s subtask:*',
+      'subtask:task1': 'command1 --arg',
+      'subtask:task2': 'command2 --arg',
+    },
   })),
 }));
 

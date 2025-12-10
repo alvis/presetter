@@ -1,3 +1,5 @@
+import { resolve } from 'node:path';
+
 import essentials from 'presetter-preset-esm';
 import strict from 'presetter-preset-strict';
 import { preset } from 'presetter-types';
@@ -11,6 +13,7 @@ export { DEFAULT_VARIABLES } from 'presetter-preset-esm';
 export type { Variables } from 'presetter-preset-esm';
 
 export default preset('presetter-preset-monorepo', {
+  root: resolve(import.meta.dirname, '..'),
   extends: [essentials, strict],
   override: {
     assets: (context) =>

@@ -24,6 +24,7 @@ export const DEFAULT_VARIABLES = {
 } satisfies Variables;
 
 export default preset('presetter-preset-rollup', {
+  root: resolve(import.meta.dirname, '..'),
   variables: DEFAULT_VARIABLES,
   scripts: resolve(TEMPLATES, 'scripts.yaml'),
   assets: {

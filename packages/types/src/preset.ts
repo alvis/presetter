@@ -28,6 +28,8 @@ export interface PresetDefinition {
   extends?: Preset[];
   /** optional name, typically used for debugging purposes */
   id: string;
+  /** optional root path of the preset package for binary resolution */
+  root?: string;
 
   /** substitution variables used within the preset */
   variables?: PresetContent<Variables>;

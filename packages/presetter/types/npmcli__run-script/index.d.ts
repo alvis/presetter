@@ -8,6 +8,7 @@ declare module '@npmcli/run-script' {
     event: string;
     args: string[];
     pkg: PackageJson;
+    env?: Record<string, string>;
     path?: string;
     stdio?: T;
     stdioString?: S;

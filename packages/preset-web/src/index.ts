@@ -26,6 +26,7 @@ const IMAGE_TYPE = 'image.d.ts';
 const STYLE_TYPE = 'style.d.ts';
 
 export default preset('presetter-preset-web', {
+  root: resolve(import.meta.dirname, '..'),
   variables: DEFAULT_VARIABLES,
   assets: ({ variables }) => ({
     '.gitignore': (current, { variables }) => [
