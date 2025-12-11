@@ -1,0 +1,20 @@
+{
+  "name": "example-standalone",
+  "type": "module",
+  "scripts": {
+    "build": "run build",
+    "coverage": "run coverage --",
+    "lint": "run lint --",
+    "prepare": "run prepare",
+    "test": "run test --",
+    "typecheck": "run typecheck --",
+    "watch": "run watch --"
+  },
+  "devDependencies": {
+    "@types/node": "*",
+    "@vitest/coverage-v8": "*",
+    "presetter": "*",
+    "presetter-preset-esm": "*",
+    "typescript": "*"
+  }
+}

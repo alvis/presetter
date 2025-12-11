@@ -1,0 +1,27 @@
+{
+  "name": "example-dual-format",
+  "version": "1.0.0",
+  "type": "module",
+  "exports": {
+    "import": "./lib/index.mjs",
+    "require": "./lib/index.cjs"
+  },
+  "main": "./lib/index.cjs",
+  "module": "./lib/index.mjs",
+  "scripts": {
+    "build": "run build",
+    "coverage": "run coverage --",
+    "lint": "run lint --",
+    "prepare": "run prepare",
+    "test": "run test --",
+    "typecheck": "run typecheck --",
+    "watch": "run watch --"
+  },
+  "devDependencies": {
+    "@types/node": "*",
+    "@vitest/coverage-v8": "*",
+    "presetter": "*",
+    "presetter-preset-hybrid": "*",
+    "typescript": "*"
+  }
+}

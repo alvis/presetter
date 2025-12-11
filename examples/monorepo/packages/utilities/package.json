@@ -1,0 +1,19 @@
+{
+  "name": "@example/utilities",
+  "version": "1.0.0",
+  "type": "module",
+  "exports": "./lib/index.js",
+  "devDependencies": {
+    "presetter": "*",
+    "presetter-preset-esm": "*"
+  },
+  "scripts": {
+    "build": "run build",
+    "coverage": "run coverage --",
+    "lint": "run lint --",
+    "prepare": "run prepare",
+    "test": "run test --",
+    "typecheck": "run typecheck --",
+    "watch": "run watch --"
+  }
+}

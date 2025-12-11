@@ -1,0 +1,30 @@
+{
+  "name": "example-bundled",
+  "version": "1.0.0",
+  "type": "module",
+  "exports": {
+    "import": "./lib/index.mjs",
+    "require": "./lib/index.cjs"
+  },
+  "main": "./lib/index.cjs",
+  "module": "./lib/index.mjs",
+  "browser": "./lib/index.umd.js",
+  "scripts": {
+    "build": "run build",
+    "coverage": "run coverage --",
+    "lint": "run lint --",
+    "prepare": "run prepare",
+    "test": "run test --",
+    "typecheck": "run typecheck --",
+    "watch": "run watch --"
+  },
+  "devDependencies": {
+    "@types/node": "*",
+    "@vitest/coverage-v8": "*",
+    "presetter": "*",
+    "presetter-preset-esm": "*",
+    "presetter-preset-rollup": "*",
+    "presetter-preset-strict": "*",
+    "typescript": "*"
+  }
+}

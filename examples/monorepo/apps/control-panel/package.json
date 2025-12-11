@@ -1,0 +1,25 @@
+{
+  "name": "@example/control-panel",
+  "version": "1.0.0",
+  "type": "module",
+  "scripts": {
+    "build": "run build",
+    "coverage": "run coverage --",
+    "dev": "next dev",
+    "lint": "run lint --",
+    "prepare": "run prepare",
+    "start": "next start",
+    "test": "run test --",
+    "typecheck": "run typecheck --",
+    "watch": "run watch --"
+  },
+  "dependencies": {
+    "next": "*",
+    "react": "*",
+    "react-dom": "*"
+  },
+  "devDependencies": {
+    "@types/react": "*",
+    "@types/react-dom": "*"
+  }
+}

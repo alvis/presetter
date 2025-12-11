@@ -1,0 +1,22 @@
+{
+  "name": "example-monorepo",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "build": "pnpm --recursive run build",
+    "coverage": "run coverage",
+    "install": "presetter bootstrap --projects . --projects */*/",
+    "lint": "run lint -- packages",
+    "prepare": "husky || true",
+    "test": "run test --",
+    "watch": "run watch --"
+  },
+  "devDependencies": {
+    "@types/node": "*",
+    "@vitest/coverage-v8": "*",
+    "presetter": "*",
+    "presetter-preset-monorepo": "*",
+    "presetter-preset-next": "*",
+    "typescript": "*"
+  }
+}
