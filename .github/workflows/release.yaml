@@ -4,9 +4,14 @@ on:
   push:
     tags:
       - v*
+  workflow_dispatch:
 
 jobs:
+  e2e:
+    uses: ./.github/workflows/e2e.yaml
+
   release:
+    needs: e2e
     runs-on: ubuntu-latest
     permissions:
       contents: write

@@ -8,7 +8,7 @@ const vitest = asset<{ default: ViteUserConfig }>({
     test: {
       coverage: {
         provider: 'v8',
-        exclude: ['examples', '**/*.template.ts', '**/*.override.ts'],
+        exclude: ['e2e', 'examples', '**/*.template.ts', '**/*.override.ts'],
       },
     },
   },

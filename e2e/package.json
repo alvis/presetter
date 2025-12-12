@@ -1,0 +1,43 @@
+{
+  "name": "presetter-e2e",
+  "version": "8.2.0",
+  "private": true,
+  "description": "End-to-end tests for presetter packages",
+  "keywords": [
+    "presetter",
+    "e2e",
+    "testing"
+  ],
+  "homepage": "https://github.com/alvis/presetter#readme",
+  "bugs": {
+    "url": "https://github.com/alvis/presetter/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/alvis/presetter.git"
+  },
+  "license": "MIT",
+  "author": "Alvis HT Tang <alvis@hilbert.space>",
+  "type": "module",
+  "imports": {
+    "#*": "./src/*.ts"
+  },
+  "scripts": {
+    "lint": "run lint --",
+    "test:e2e": "vitest --passWithNoTests --config vitest.config.e2e.ts",
+    "typecheck": "run typecheck --"
+  },
+  "devDependencies": {
+    "debug": "catalog:runtime",
+    "execa": "catalog:runtime",
+    "presetter": "workspace:*",
+    "presetter-preset-esm": "workspace:*",
+    "presetter-preset-strict": "workspace:*",
+    "type-fest": "catalog:types",
+    "verdaccio": "^6.0.0",
+    "vitest": "catalog:testing"
+  },
+  "engines": {
+    "node": ">=20.0.0"
+  }
+}

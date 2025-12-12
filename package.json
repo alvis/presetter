@@ -20,7 +20,7 @@
     "coverage": "pnpm run test --coverage",
     "e2e": "pnpm --filter presetter-e2e test",
     "install": "npx -y only-allow pnpm && husky",
-    "postinstall": "presetter bootstrap --projects . --projects packages/*",
+    "postinstall": "presetter bootstrap --projects . --projects e2e --projects packages/*",
     "lint": "run-s \"lint:* -- packages/*/src/** packages/*/spec/**\"",
     "lint:eslint": "NODE_OPTIONS=--max-old-space-size=8096 eslint --flag unstable_config_lookup_from_file --fix --format stylish --no-error-on-unmatched-pattern --no-warn-ignored --cache --cache-strategy content",
     "lint:fixme": "leasot --skip-unsupported --exit-nicely package.json",
@@ -36,6 +36,7 @@
     "release:root": "standard-version --preset metahub --skip.commit --skip.tag",
     "stage": "pnpm --recursive exec lint-staged -- --concurrent=false",
     "test": "vitest --passWithNoTests",
+    "test:e2e": "pnpm --filter presetter-e2e test:e2e",
     "typecheck": "pnpm --recursive exec tsc --noEmit --skipLibCheck",
     "watch": "npm run test -- --watch"
   },
