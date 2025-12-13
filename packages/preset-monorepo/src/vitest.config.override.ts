@@ -8,11 +8,7 @@ export default asset<{ default: ViteUserConfig }>((_, { variables }) => {
     default: {
       test: {
         name: 'root',
-        projects: [
-          '*/*/vitest.config.ts',
-          '*/*/vitest.config.int.ts',
-          '*/*/vitest.config.e2e.ts',
-        ],
+        projects: ['*/*/vitest.config{,.int,.e2e}.ts'],
         watch: false,
         // NOTE: setting coverage here is needed in order to report coverage at the workspace level
         coverage: {
