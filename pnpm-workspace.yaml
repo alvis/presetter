@@ -67,7 +67,7 @@ catalogs:
     js-yaml: ^4.1.0
     '@types/js-yaml': ^4.0.0
     listr2: ^9.0.0
-    mvdan-sh: ^0.10.0
+    sh-syntax: ^0.5.0
     pupa: ^3.1.0
     source-map-support: ^0.5.0
     yargs: ^18.0.0

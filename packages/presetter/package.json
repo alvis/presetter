@@ -93,7 +93,7 @@
     "jiti": "catalog:runtime",
     "js-yaml": "catalog:runtime",
     "listr2": "catalog:runtime",
-    "mvdan-sh": "catalog:runtime",
+    "sh-syntax": "catalog:runtime",
     "presetter-types": "workspace:*",
     "pupa": "catalog:runtime",
     "source-map-support": "catalog:runtime",

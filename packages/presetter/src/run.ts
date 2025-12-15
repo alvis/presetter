@@ -53,15 +53,19 @@ function createListrTask(_: {
         const globalArgs = [...parseGlobalArgs(argv), ...args];
 
         // get subtasks based on the task specifications and global arguments
-        const subTasks = taskSpecs.flatMap((taskSpec) =>
-          getListrTasksBySpec({
-            template,
-            context,
-            paths,
-            taskSpec,
-            globalArgs,
-          }),
-        );
+        const subTasks = (
+          await Promise.all(
+            taskSpecs.map(async (taskSpec) =>
+              getListrTasksBySpec({
+                template,
+                context,
+                paths,
+                taskSpec,
+                globalArgs,
+              }),
+            ),
+          )
+        ).flat();
 
         const concurrent = executable === 'run-p';
 
@@ -84,15 +88,15 @@ function createListrTask(_: {
  * @param _.paths additional binary paths from preset roots
  * @param _.taskSpec task specification string
  * @param _.globalArgs array of global arguments
- * @returns array of Listr tasks
+ * @returns a promise resolving to an array of Listr tasks
  */
-function getListrTasksBySpec(_: {
+async function getListrTasksBySpec(_: {
   template: Record<string, string>;
   context: ProjectContext;
   paths: string[];
   taskSpec: string;
   globalArgs: string[];
-}): Array<ListrTask<never, typeof SimpleRenderer>> {
+}): Promise<Array<ListrTask<never, typeof SimpleRenderer>>> {
   const { template, context, paths, taskSpec, globalArgs } = _;
 
   // parse the task specification and remove any quotes
@@ -119,22 +123,22 @@ function getListrTasksBySpec(_: {
  * @param _.paths additional binary paths from preset roots
  * @param _.selector task selector string
  * @param _.args array of arguments
- * @returns array of Listr tasks
+ * @returns a promise resolving to an array of Listr tasks
  */
-function getListrTasks(_: {
+async function getListrTasks(_: {
   paths: string[];
   template: Record<string, string>;
   context: ProjectContext;
   selector: string;
   args: string[];
-}): Array<ListrTask<never, typeof SimpleRenderer>> {
+}): Promise<Array<ListrTask<never, typeof SimpleRenderer>>> {
   const { paths, template, context, selector, args } = _;
 
   // clone the content for immutability
   const target = { ...context.packageJson.scripts } as Record<string, string>;
 
   // compose the script using the provided template and target
-  const scripts = composeScripts({ template, target });
+  const scripts = await composeScripts({ template, target });
 
   // select tasks based on the composed script and selector
   const tasks = selectTasks(Object.keys(scripts), selector);
@@ -213,9 +217,19 @@ export async function run(
   const { paths, scripts: template } = await getScripts();
 
   // get Listr tasks based on the provided tasks and package information
-  const listTasks = tasks.flatMap((task) =>
-    getListrTasks({ paths, template, context: distilled, ...task }),
-  );
+  const listTasks = (
+    await Promise.all(
+      tasks.map(async (taskItem) =>
+        getListrTasks({
+          paths,
+          template,
+          context: distilled,
+          selector: taskItem.selector,
+          args: taskItem.args,
+        }),
+      ),
+    )
+  ).flat();
 
   // create a Listr instance with the list of tasks and configuration options
   const listr = new Listr<never, 'simple'>(listTasks, {

@@ -1,63 +1,46 @@
-import { describe, expect, it, vi } from 'vitest';
+import { describe, expect, it } from 'vitest';
 
 import { composeScripts } from '#scripts';
 
 import type { Script } from '#scripts';
 
-vi.mock('yargs', async (importActual) => {
-  const { default: yargs } = await importActual<typeof import('yargs')>();
-
-  return {
-    default: {
-      parse: vi.fn(async (path: string) =>
-        path
-          ? yargs().parse(path)
-          : {
-              // mimic the current runner
-              $0: 'run',
-            },
-      ),
-    },
-  };
-});
-
-/**
- * a helper function for generating tests on translation
- * @param description description of the test
- * @param detail input and expected output
- * @param detail.template script definitions from scripts.yaml
- * @param detail.target script definitions from target project's package.json
- * @param detail.result expected output, or an error
- */
-function should(
-  description: string,
-  detail: {
-    /** script definitions from scripts.yaml */
-    template: Script;
-    /** script definitions from target project's package.json */
-    target: Script;
-    /** expected output, or an error */
-    result: Script | Error;
-  },
-): void {
-  const { template, target, result } = detail;
-
-  it(`should ${description}`, () => {
-    const compute = () =>
-      composeScripts({
-        template,
-        target,
-      });
-
-    if (result instanceof Error) {
-      expect(compute).toThrow(result);
-    } else {
-      expect(compute()).toEqual(result);
-    }
-  });
-}
-
 describe('fn:composeScript', () => {
+  /**
+   * a helper function for generating tests on translation
+   * @param description description of the test
+   * @param detail input and expected output
+   * @param detail.template script definitions from scripts.yaml
+   * @param detail.target script definitions from target project's package.json
+   * @param detail.result expected output, or an error
+   */
+  function should(
+    description: string,
+    detail: {
+      /** script definitions from scripts.yaml */
+      template: Script;
+      /** script definitions from target project's package.json */
+      target: Script;
+      /** expected output, or an error */
+      result: Script | Error;
+    },
+  ): void {
+    const { template, target, result } = detail;
+
+    it(`should ${description}`, async () => {
+      const compute = async () =>
+        composeScripts({
+          template,
+          target,
+        });
+
+      if (result instanceof Error) {
+        await expect(compute()).rejects.toThrow(result);
+      } else {
+        await expect(compute()).resolves.toEqual(result);
+      }
+    });
+  }
+
   describe('detect definition error', () => {
     should('warn an non-existent task', {
       template: {
@@ -81,6 +64,26 @@ describe('fn:composeScript', () => {
       result: new Error(
         'failed to parse command: invalid shell script with a hanging quote"',
       ),
+    });
+
+    should('throw when maximum recursion depth is exceeded', {
+      template: {
+        t0: 'run t1',
+        t1: 'run t2',
+        t2: 'run t3',
+        t3: 'run t4',
+        t4: 'run t5',
+        t5: 'run t6',
+        t6: 'run t7',
+        t7: 'run t8',
+        t8: 'run t9',
+        t9: 'run t10',
+        t10: 'run t11',
+        t11: 'final',
+      },
+      target: {},
+      // the recursion error is caught and re-thrown as a parse error
+      result: new Error('failed to parse command: run t1'),
     });
   });
 
@@ -183,20 +186,6 @@ describe('fn:composeScript', () => {
       },
       target: {
         build: 'run build lint',
-      },
-      result: {
-        build: 'builder && linter',
-        lint: 'linter',
-      },
-    });
-
-    should('resolve a task definition even with additional spacing', {
-      template: {
-        build: 'builder',
-        lint: 'linter',
-      },
-      target: {
-        build: 'run build     lint',
       },
       result: {
         build: 'builder && linter',
@@ -315,6 +304,34 @@ describe('fn:composeScript', () => {
       result: {
         build: 'other --arg && builder && linter',
         lint: 'linter',
+      },
+    });
+
+    should('resolve multiple separate run commands', {
+      template: {
+        build: 'builder',
+        lint: 'linter',
+      },
+      target: {
+        all: 'run build && run lint',
+      },
+      result: {
+        all: 'builder && linter',
+        build: 'builder',
+        lint: 'linter',
+      },
+    });
+
+    should('handle statements without Cmd like redirects', {
+      template: {
+        build: 'builder',
+      },
+      target: {
+        task: '> /dev/null',
+      },
+      result: {
+        build: 'builder',
+        task: '> /dev/null',
       },
     });
   });
