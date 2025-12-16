@@ -12,7 +12,7 @@ clean:coverage: zx --eval "fs.remove('coverage')"
 clean:tsc: zx --eval "fs.remove('tsconfig.build.tsbuildinfo')"
 lint: run-s "lint:* -- {@:{source} {test}}" --
 lint:prettier: prettier --write --no-error-on-unmatched-pattern
-lint:eslint: eslint --fix --format stylish --no-error-on-unmatched-pattern --no-warn-ignored --cache --cache-strategy content
+lint:eslint: eslint --flag v10_config_lookup_from_file --fix --format stylish --no-error-on-unmatched-pattern --no-warn-ignored --cache --cache-strategy content
 lint:fixme: leasot --ignore '**/node_modules' --skip-unsupported --exit-nicely package.json
 prepare: run-s setup
 prepublishOnly: run-s clean build
