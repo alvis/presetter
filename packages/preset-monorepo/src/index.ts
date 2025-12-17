@@ -1,4 +1,6 @@
-import { resolve } from 'node:path';
+import { dirname, resolve } from 'node:path';
+
+import { fileURLToPath } from 'node:url';
 
 import essentials from 'presetter-preset-esm';
 import strict from 'presetter-preset-strict';
@@ -12,9 +14,15 @@ export { DEFAULT_VARIABLES } from 'presetter-preset-esm';
 
 export type { Variables } from 'presetter-preset-esm';
 
+const DIR = dirname(fileURLToPath(import.meta.url));
+
+// paths to the template directory
+const TEMPLATES = resolve(DIR, '..', 'templates');
+
 export default preset('presetter-preset-monorepo', {
   root: resolve(import.meta.dirname, '..'),
   extends: [essentials, strict],
+  scripts: resolve(TEMPLATES, 'scripts.yaml'),
   override: {
     assets: (context) =>
       context.isRepoRoot

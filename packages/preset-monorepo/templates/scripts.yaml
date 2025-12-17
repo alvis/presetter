@@ -1,0 +1,1 @@
+lint: run-s "lint:* -- {@:**/{source}/**/*.ts **/{source}/**/*.tsx **/{test}/**/*.ts **/{test}/**/*.tsx}" --

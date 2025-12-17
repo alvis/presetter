@@ -1,7 +1,7 @@
 import { existsSync, readdirSync } from 'node:fs';
-import { resolve } from 'node:path';
+import { relative, resolve } from 'node:path';
 
-import { listAssetNames, resolveAssets, resolvePreset } from 'presetter';
+import { resolveAssets, resolvePreset } from 'presetter';
 import { describe, expect, it, vi } from 'vitest';
 
 import preset, { DEFAULT_VARIABLES as variables } from '#index';
@@ -22,7 +22,7 @@ const rootContext = {
   packageJson: {},
 } satisfies ProjectContext;
 
-const packageContext = {
+const context = {
   isRepoRoot: false,
   relativeProjectRoot: 'packages/example',
   relativeRepoRoot: '../..',
@@ -33,17 +33,33 @@ const packageContext = {
 
 describe('fn:preset', () => {
   it('should use all templates', async () => {
-    const node = await resolvePreset(preset, rootContext);
-    listAssetNames(node, { ...rootContext, variables });
+    const node = await resolvePreset(preset, context);
 
     const overrides = existsSync(OVERRIDES) ? readdirSync(OVERRIDES) : [];
     const templates = existsSync(TEMPLATES) ? readdirSync(TEMPLATES) : [];
 
+    const consumedOverrides = [
+      node.definition.override?.scripts,
+      ...Object.values({ ...node.definition.override?.assets }),
+    ]
+      .filter((item) => typeof item === 'string')
+      .map((path) => relative(OVERRIDES, path));
+    const consumedTemplates = [
+      node.definition.scripts,
+      ...Object.values({
+        ...(node.definition.assets instanceof Function
+          ? node.definition.assets({ ...context, variables })
+          : node.definition.assets),
+      }),
+    ]
+      .filter((item) => typeof item === 'string')
+      .map((path) => relative(TEMPLATES, path));
+
     for (const path of overrides) {
-      expect(vi.mocked(resolve)).toHaveBeenCalledWith(OVERRIDES, path);
+      expect(consumedOverrides).contain(path);
     }
     for (const path of templates) {
-      expect(vi.mocked(resolve)).toHaveBeenCalledWith(TEMPLATES, path);
+      expect(consumedTemplates).contain(path);
     }
   });
 
@@ -54,8 +70,8 @@ describe('fn:preset', () => {
     await expect(repoResult).resolves.not.toThrow();
 
     // Test package context
-    const packageNode = await resolvePreset(preset, packageContext);
-    const packageResult = resolveAssets(packageNode, packageContext);
+    const packageNode = await resolvePreset(preset, context);
+    const packageResult = resolveAssets(packageNode, context);
     await expect(packageResult).resolves.not.toThrow();
   });
 });
