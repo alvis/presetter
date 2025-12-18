@@ -299,6 +299,46 @@ Presetter uses a sophisticated **two-pass resolution system** that makes configu
 - **Deep Merging**: Sophisticated algorithms handle complex inheritance
 - **Script Composition**: Local scripts merge with preset scripts intelligently
 
+### 🔧 Binary Path Resolution
+
+When running tasks via `run`, `run-s`, or `run-p`, Presetter automatically prepends binary paths from preset packages to the PATH environment variable. This makes tools in each preset's `node_modules/.bin` directory available without additional configuration.
+
+**How it works:**
+
+- Direct preset binaries are checked first
+- Extended preset binaries are checked next
+- Finally, the existing PATH is checked
+
+**Benefits:**
+
+- No need to install shared dev tools at the repository root
+- No need for pnpm's `shamefullyHoist: true` or `public-hoist-pattern` for every tool
+- Preset dependencies are automatically available to templated scripts
+
+**Limitation - Dynamic Imports:**
+
+Libraries loaded via dynamic `import()` may fail because dynamic imports are resolved from the project root, not the preset. This affects libraries that are loaded at runtime rather than through direct imports.
+
+**Notable example:** `@vitest/coverage-v8` - required by vitest when using v8 as the coverage engine.
+
+**Workarounds:**
+
+1. **Install directly:** Add the library to your project's `package.json` (or monorepo root):
+
+   ```bash
+   npm install -D @vitest/coverage-v8
+   ```
+
+2. **Use pnpm hoisting:** Add the library to pnpm's `public-hoist-pattern` in `pnpm-workspace.yaml`:
+
+   ```yaml
+   packages:
+     - 'packages/*'
+   settings:
+     public-hoist-pattern:
+       - '@vitest/coverage-v8'
+   ```
+
 ---
 
 ## 🛠️ Advanced Usage
@@ -442,6 +482,10 @@ Absolutely! Presets are just npm packages that export configuration templates. S
 ### Does this work with monorepos?
 
 Yes! Presetter supports monorepo setups and can bootstrap multiple projects with glob patterns. Use [presetter-preset-monorepo](https://github.com/alvis/presetter/blob/master/packages/preset-monorepo) for monorepo-specific configurations.
+
+### Why do some dynamically imported libraries fail to resolve?
+
+While Presetter makes preset tools available via PATH, libraries loaded through dynamic `import()` (like `@vitest/coverage-v8`) resolve from your project root, not the preset. Install such libraries directly at your project root or add them to pnpm's `public-hoist-pattern` in `pnpm-workspace.yaml`.
 
 ---
 

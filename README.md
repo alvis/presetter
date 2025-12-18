@@ -185,6 +185,9 @@ Presetter handles two main responsibilities:
    - Merges preset scripts with local `package.json` scripts
    - Provides intelligent script composition and execution
    - Enables `run`, `run-s`, and `run-p` commands for enhanced workflows
+   - **Binary Path Resolution**: Automatically discovers executables in each preset's `node_modules/.bin` and prepends them to PATH, allowing preset tools to take priority without requiring `shamefullyHoist` or `public-hoist-pattern` configuration
+
+   > **Note**: Libraries loaded via dynamic import (like `@vitest/coverage-v8`) may still need to be installed at root or hoisted. See the [presetter package docs](packages/presetter) for details.
 
 ### 📋 Preset Architecture
 
