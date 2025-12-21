@@ -22,10 +22,11 @@ jobs:
       - name: setup pnpm
         uses: pnpm/action-setup@v4
       - name: use node LTS
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@v6
         with:
           node-version: lts/*
           cache: pnpm
+          registry-url: https://registry.npmjs.org
       - name: install dependencies
         run: pnpm install
       - name: publish the release note
@@ -33,9 +34,10 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       - name: login to npm
-        run: npm config set //registry.npmjs.org/:_authToken $NPM_AUTH_TOKEN
         env:
           NPM_AUTH_TOKEN: ${{ secrets.NPM_AUTH_TOKEN }}
+        if: env.NPM_AUTH_TOKEN
+        run: npm config set //registry.npmjs.org/:_authToken $NPM_AUTH_TOKEN
       - name: publish the package
         run: pnpm --recursive publish --no-git-checks --access public
         env:
