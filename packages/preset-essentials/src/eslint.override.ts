@@ -38,7 +38,7 @@ export default asset<{ default: Linter.Config[] }>(
             `${variables.test!}/**`,
             `${variables.types!}/**`,
             '**/*.e2e.ts',
-            '**/*.integration.ts',
+            '**/*.int.ts',
             '**/*.spec.ts',
             '**/*.spec-d.ts',
             '**/*.test.ts',
