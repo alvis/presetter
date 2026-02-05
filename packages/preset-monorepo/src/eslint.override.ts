@@ -6,7 +6,7 @@ export default asset<{ default: Linter.Config[] }>((current, { variables }) => {
   // NOTE: no rules for non-project-specific files
   return {
     default: [
-     ...current!.default,
+      ...current!.default,
       {
         ignores: [
           `**/${variables.generated}/**`,

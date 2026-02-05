@@ -39,7 +39,10 @@ export async function resolveContent<T>(_: {
     typeof content === 'string' ? (loadFile(content, variables) as T) : content;
 
   // merge the current content with the RESOLVED content
-  return merge(current, resolvedContent) as T | null | undefined;
+  return merge<typeof current, typeof resolvedContent, T | null | undefined>(
+    current,
+    resolvedContent,
+  );
 }
 
 /**
