@@ -4,14 +4,14 @@
   "type": "module",
   "scripts": {
     "build": "run build",
-    "coverage": "run coverage --",
     "dev": "next dev",
     "lint": "run lint --",
     "prepare": "run prepare",
     "start": "next start",
     "test": "run test --",
-    "typecheck": "run typecheck --",
-    "watch": "run watch --"
+    "test:coverage": "run test:coverage --",
+    "test:watch": "run test:watch --",
+    "typecheck": "run typecheck --"
   },
   "dependencies": {
     "next": "*",

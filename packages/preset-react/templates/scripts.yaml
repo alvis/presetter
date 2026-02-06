@@ -1,1 +1,1 @@
-coverage: npm run --if-present test -- --coverage
+test:coverage: npm run --if-present test -- --coverage

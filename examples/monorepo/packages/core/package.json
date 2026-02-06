@@ -9,11 +9,11 @@
   },
   "scripts": {
     "build": "run build",
-    "coverage": "run coverage --",
     "lint": "run lint --",
     "prepare": "run prepare",
     "test": "run test --",
-    "typecheck": "run typecheck --",
-    "watch": "run watch --"
+    "test:coverage": "run test:coverage --",
+    "test:watch": "run test:watch --",
+    "typecheck": "run typecheck --"
   }
 }

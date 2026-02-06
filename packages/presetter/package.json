@@ -72,15 +72,15 @@
   "scripts": {
     "build": "npm run script -- build",
     "clean": "npm run script -- clean",
-    "coverage": "npm run script -- coverage --",
-    "lint": "npm run script -- lint",
+    "lint": "npm run script -- lint --",
     "prepare": "tsx --conditions=development --eval \"import('./src/preset/bootstrap.ts').then(({ bootstrap }) => bootstrap())\" && npm run build",
     "prepublishOnly": "npm run prepare && npm run script -- prepublishOnly",
     "script": "tsx --conditions=development --eval \"process.argv = [...process.argv.slice(0, 2), 'run', ...process.argv.slice(2)]; import('./src/executable/index.ts');\" -- run --template",
     "stage": "npm run script -- stage --",
     "test": "npm run script -- test --",
-    "typecheck": "npm run script -- typecheck --",
-    "watch": "npm run script -- watch --"
+    "test:coverage": "npm run script -- test:coverage --",
+    "test:watch": "npm run script -- test:watch --",
+    "typecheck": "npm run script -- typecheck --"
   },
   "dependencies": {
     "@npmcli/run-script": "catalog:runtime",

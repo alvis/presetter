@@ -17,7 +17,6 @@
   "type": "module",
   "scripts": {
     "build": "pnpm --recursive run build",
-    "coverage": "pnpm run test --coverage",
     "e2e": "pnpm --filter presetter-e2e test",
     "install": "npx -y only-allow pnpm && husky",
     "postinstall": "presetter bootstrap --projects . --projects e2e --projects packages/*",
@@ -35,10 +34,11 @@
     "release:packages": "pnpm --recursive --shell-mode exec \"standard-version --path \\$(pwd) --preset metahub --skip.commit --skip.tag  --release-as $(npx -c 'echo $npm_package_version')\"",
     "release:root": "standard-version --preset metahub --skip.commit --skip.tag",
     "stage": "pnpm --recursive exec lint-staged -- --concurrent=false",
-    "test": "vitest --passWithNoTests",
+    "test": "run test --",
+    "test:coverage": "run test:coverage --",
+    "test:watch": "run test:watch --",
     "test:e2e": "pnpm --filter presetter-e2e test:e2e",
-    "typecheck": "pnpm --recursive exec tsc --noEmit --skipLibCheck",
-    "watch": "npm run test -- --watch"
+    "typecheck": "pnpm --recursive exec tsc --noEmit --skipLibCheck"
   },
   "devDependencies": {
     "@types/node": "catalog:types",

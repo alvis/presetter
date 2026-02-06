@@ -24,7 +24,7 @@ jobs:
       - name: install dependencies
         run: pnpm install
       - name: run coverage
-        run: pnpm run coverage
+        run: pnpm run test:coverage
         env:
           CI: true
       - name: upload coverage
