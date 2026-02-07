@@ -11,8 +11,8 @@ import { getScripts } from './preset';
 import { composeScripts } from './scripts';
 import { parseGlobalArgs, parseTaskSpec, selectTasks } from './task';
 
+import type { ProjectContext } from '@presetter/types';
 import type { ListrTask, SimpleRenderer } from 'listr2';
-import type { ProjectContext } from 'presetter-types';
 
 import type { Task } from './task';
 

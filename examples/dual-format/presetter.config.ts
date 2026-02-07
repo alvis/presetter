@@ -1,1 +1,1 @@
-export { default } from 'presetter-preset-hybrid';
+export { default } from '@presetter/preset-hybrid';

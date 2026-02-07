@@ -2,6 +2,10 @@
   "name": "example-monorepo",
   "private": true,
   "type": "module",
+  "workspaces": [
+    "packages/*",
+    "apps/*"
+  ],
   "scripts": {
     "build": "npm run build --workspaces --if-present",
     "coverage": "run coverage",
@@ -12,14 +16,10 @@
     "watch": "run watch --"
   },
   "devDependencies": {
+    "@presetter/preset-monorepo": "*",
+    "@presetter/preset-next": "*",
     "@types/node": "*",
     "presetter": "*",
-    "presetter-preset-monorepo": "*",
-    "presetter-preset-next": "*",
     "typescript": "*"
-  },
-  "workspaces": [
-    "packages/*",
-    "apps/*"
-  ]
+  }
 }

@@ -3,7 +3,7 @@ import { describe, expect, it, vi } from 'vitest';
 import { resolvePresetterConfig } from '#preset/config';
 import { resolveProjectPreset } from '#preset/project';
 
-import type { PresetNode, ProjectContext } from 'presetter-types';
+import type { PresetNode, ProjectContext } from '@presetter/types';
 
 vi.mock('#preset/config', () => ({
   resolvePresetterConfig: vi.fn(),

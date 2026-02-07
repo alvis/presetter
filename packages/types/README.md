@@ -1,15 +1,15 @@
-# 🚀 presetter-types
+# 🚀 @presetter/types
 
 ![Logo](https://github.com/alvis/presetter/raw/master/assets/logo.svg)
 
 <div align="center">
 
-[![npm](https://img.shields.io/npm/v/presetter-types?style=flat-square)](https://github.com/alvis/presetter/releases)
+[![npm](https://img.shields.io/npm/v/@presetter/types?style=flat-square)](https://github.com/alvis/presetter/releases)
 [![build](https://img.shields.io/github/actions/workflow/status/alvis/presetter/test.yaml?branch=master&style=flat-square)](https://github.com/alvis/presetter/actions)
 [![maintainability](https://img.shields.io/codeclimate/maintainability/alvis/presetter?style=flat-square)](https://codeclimate.com/github/alvis/presetter/maintainability)
 [![coverage](https://img.shields.io/codeclimate/coverage/alvis/presetter?style=flat-square)](https://codeclimate.com/github/alvis/presetter/test_coverage)
 [![vulnerabilities](https://img.shields.io/sonar/vulnerabilities/presetter/master?server=https%3A%2F%2Fsonarcloud.io&style=flat-square)](https://sonarcloud.io/summary/new_code?id=presetter)
-[![dependencies](https://img.shields.io/librariesio/release/npm/presetter-types?style=flat-square)](https://libraries.io/npm/presetter-types)
+[![dependencies](https://img.shields.io/librariesio/release/npm/@presetter/types?style=flat-square)](https://libraries.io/npm/@presetter/types)
 
 TypeScript definitions for the Presetter ecosystem — type-safe preset development
 
@@ -25,12 +25,12 @@ TypeScript definitions for the Presetter ecosystem — type-safe preset developm
 
 ```bash
 # Install types (usually included with presetter)
-npm i -D presetter-types
+npm i -D @presetter/types
 
 # Use in your preset development
-import { preset } from 'presetter-types';
+import { preset } from '@presetter/types';
 
-import type { PresetDefinition } from 'presetter-types';
+import type { PresetDefinition } from '@presetter/types';
 ```
 
 **Note**: These types are automatically included when you install `presetter`. You typically don't need to install this package directly.
@@ -47,7 +47,7 @@ Developing presets for the Presetter ecosystem requires working with complex con
 
 ### The preset development challenge
 
-| Development Need           | Without Types                      | With presetter-types               |
+| Development Need           | Without Types                      | With @presetter/types               |
 | -------------------------- | ---------------------------------- | ---------------------------------- |
 | **Preset Configuration**   | ❌ No validation, runtime errors   | ✅ Compile-time type checking      |
 | **IDE Support**            | ❌ No autocomplete or IntelliSense | ✅ Full IDE integration            |
@@ -58,7 +58,7 @@ Developing presets for the Presetter ecosystem requires working with complex con
 
 ### What you get instead
 
-**presetter-types provides comprehensive TypeScript definitions for the entire Presetter ecosystem.**
+**@presetter/types provides comprehensive TypeScript definitions for the entire Presetter ecosystem.**
 
 This package serves as the foundation for type-safe preset development, offering complete IntelliSense support, compile-time validation, and consistent interfaces across all Presetter packages.
 
@@ -78,13 +78,13 @@ This package serves as the foundation for type-safe preset development, offering
 | Component                                                                          | Role                          | What it does                                                         |
 | ---------------------------------------------------------------------------------- | ----------------------------- | -------------------------------------------------------------------- |
 | **[Presetter](https://github.com/alvis/presetter/blob/master/packages/presetter)** | Configuration management tool | CLI that processes presets, generates config files, executes scripts |
-| **presetter-types**                                                                | Type definitions package      | Provides TypeScript types for the entire ecosystem                   |
+| **@presetter/types**                                                                | Type definitions package      | Provides TypeScript types for the entire ecosystem                   |
 | **Preset Packages**                                                                | Configuration templates       | Use these types to ensure type safety                                |
 
 **Think of it like:**
 
 - **Presetter** = The engine that builds houses
-- **presetter-types** = The blueprint specifications and building codes
+- **@presetter/types** = The blueprint specifications and building codes
 - **Preset packages** = The actual blueprints that follow the specifications
 
 This package enables type-safe development across the entire Presetter ecosystem. For general usage, **[visit the main Presetter documentation](https://github.com/alvis/presetter/blob/master/packages/presetter)**.
@@ -96,13 +96,13 @@ This package enables type-safe development across the entire Presetter ecosystem
 ### 🟢 Basic Type-Safe Preset Development
 
 ```typescript
-import { preset } from 'presetter-types';
+import { preset } from '@presetter/types';
 
-import type { PresetDefinition } from 'presetter-types';
+import type { PresetDefinition } from '@presetter/types';
 
 // Type-safe preset creation with preset() helper
 const myPreset: PresetDefinition = preset('my-preset', {
-  extends: ['presetter-preset-essentials'],
+  extends: ['@presetter/preset-essentials'],
   variables: {
     NODE_ENV: 'development',
     OUTPUT_DIR: 'dist',
@@ -130,9 +130,9 @@ export default myPreset;
 ### 🧑‍🔬 Advanced: Dynamic Content Generation
 
 ```typescript
-import { preset } from 'presetter-types';
+import { preset } from '@presetter/types';
 
-import type { PresetDefinition, PresetContentContext } from 'presetter-types';
+import type { PresetDefinition, PresetContentContext } from '@presetter/types';
 
 const dynamicPreset: PresetDefinition = preset('dynamic-preset', {
   // Type-safe variable generation
@@ -158,9 +158,9 @@ const dynamicPreset: PresetDefinition = preset('dynamic-preset', {
 ### 🔧 Custom Asset Types with `asset()` Helper
 
 ```typescript
-import { asset } from 'presetter-types';
+import { asset } from '@presetter/types';
 
-import type { PresetAssets } from 'presetter-types';
+import type { PresetAssets } from '@presetter/types';
 import type { UserConfig as ViteUserConfig } from 'vite';
 
 // Define custom asset configuration with explicit types
@@ -336,7 +336,7 @@ function asset<T>(content: PresetContent<T>): PresetContent<T>;
 ### Example 1: ESLint Configuration Preset
 
 ```typescript
-import { preset, asset } from 'presetter-types';
+import { preset, asset } from '@presetter/types';
 
 import type { Linter } from 'eslint';
 
@@ -366,9 +366,9 @@ export default preset('eslint-preset', {
 ### Example 2: Dynamic Package.json Generator
 
 ```typescript
-import { preset, asset } from 'presetter-types';
+import { preset, asset } from '@presetter/types';
 
-import type { PresetContentContext } from 'presetter-types';
+import type { PresetContentContext } from '@presetter/types';
 import type { PackageJson } from 'type-fest';
 
 export default preset('package-preset', {
@@ -392,12 +392,12 @@ export default preset('package-preset', {
 ### Example 3: Multi-File Configuration Preset
 
 ```typescript
-import { preset, asset } from 'presetter-types';
+import { preset, asset } from '@presetter/types';
 
-import type { ProjectContext } from 'presetter-types';
+import type { ProjectContext } from '@presetter/types';
 
 export default preset('full-stack-preset', {
-  extends: ['presetter-preset-essentials'],
+  extends: ['@presetter/preset-essentials'],
   variables: (current, context: ProjectContext) => ({
     ...current,
     DATABASE_URL: process.env.DATABASE_URL || 'sqlite:memory:',
@@ -434,9 +434,9 @@ export default preset('full-stack-preset', {
 ### Example 4: Conditional Configuration
 
 ```typescript
-import { preset, asset } from 'presetter-types';
+import { preset, asset } from '@presetter/types';
 
-import type { PresetContentContext } from 'presetter-types';
+import type { PresetContentContext } from '@presetter/types';
 import type { Configuration as WebpackConfig } from 'webpack';
 
 export default preset('conditional-preset', {
@@ -471,20 +471,20 @@ export default preset('conditional-preset', {
 ### Used By
 
 - [`presetter`](https://github.com/alvis/presetter/blob/master/) - Main Presetter package (re-exports all types)
-- [`presetter-preset-essentials`](../preset-essentials) - Uses types for preset definition
-- [`presetter-preset-esm`](../preset-esm) - Uses types for preset definition
-- [`presetter-preset-cjs`](../preset-cjs) - Uses types for preset definition
-- [`presetter-preset-hybrid`](../preset-hybrid) - Uses types for preset definition
-- [`presetter-preset-strict`](../preset-strict) - Uses types for preset definition
-- [`presetter-preset-web`](../preset-web) - Uses types for preset definition
-- [`presetter-preset-react`](../preset-react) - Uses types for preset definition
-- [`presetter-preset-rollup`](../preset-rollup) - Uses types for preset definition
+- [`@presetter/preset-essentials`](../preset-essentials) - Uses types for preset definition
+- [`@presetter/preset-esm`](../preset-esm) - Uses types for preset definition
+- [`@presetter/preset-cjs`](../preset-cjs) - Uses types for preset definition
+- [`@presetter/preset-hybrid`](../preset-hybrid) - Uses types for preset definition
+- [`@presetter/preset-strict`](../preset-strict) - Uses types for preset definition
+- [`@presetter/preset-web`](../preset-web) - Uses types for preset definition
+- [`@presetter/preset-react`](../preset-react) - Uses types for preset definition
+- [`@presetter/preset-rollup`](../preset-rollup) - Uses types for preset definition
 
 ---
 
 ## ❓ FAQ
 
-### Do I need to install presetter-types separately?
+### Do I need to install @presetter/types separately?
 
 No! When you install `presetter`, these types are automatically included:
 
@@ -498,9 +498,9 @@ import { preset } from 'presetter';
 Use the provided type definitions and guard functions:
 
 ```typescript
-import { preset } from 'presetter-types';
+import { preset } from '@presetter/types';
 
-import type { PresetDefinition } from 'presetter-types';
+import type { PresetDefinition } from '@presetter/types';
 
 const myPreset: PresetDefinition = preset('my-preset', {
   // TypeScript will validate this configuration
@@ -513,7 +513,7 @@ Yes! The type system validates preset extension:
 
 ```typescript
 export default preset('my-preset', {
-  extends: ['presetter-preset-essentials'], // Type-checked
+  extends: ['@presetter/preset-essentials'], // Type-checked
   // Additional configuration
 });
 ```
@@ -523,9 +523,9 @@ export default preset('my-preset', {
 Generator functions receive typed context and must return the expected type:
 
 ```typescript
-import { asset } from 'presetter-types';
+import { asset } from '@presetter/types';
 
-import type { PresetContentContext } from 'presetter-types';
+import type { PresetContentContext } from '@presetter/types';
 
 assets: {
   'config.json': asset((current, context: PresetContentContext) => {
@@ -551,7 +551,7 @@ The `asset()` function is optional but recommended for:
 Use the generic type parameter to specify the expected configuration shape:
 
 ```typescript
-import { asset } from 'presetter-types';
+import { asset } from '@presetter/types';
 
 import type { UserConfig as ViteUserConfig } from 'vite';
 import type { Linter } from 'eslint';

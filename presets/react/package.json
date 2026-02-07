@@ -1,0 +1,72 @@
+{
+  "name": "@presetter/preset-react",
+  "version": "8.3.0",
+  "description": "An opinionated presetter preset for a React project",
+  "keywords": [
+    "presetter",
+    "preset"
+  ],
+  "homepage": "https://github.com/alvis/presetter#readme",
+  "bugs": {
+    "url": "https://github.com/alvis/presetter/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/alvis/presetter.git"
+  },
+  "license": "MIT",
+  "author": "Alvis HT Tang <alvis@hilbert.space>",
+  "type": "module",
+  "imports": {
+    "#*": {
+      "types": "./src/*.ts",
+      "development": "./src/*.ts",
+      "import": "./lib/*.js"
+    }
+  },
+  "exports": {
+    ".": {
+      "development": "./src/index.ts",
+      "import": "./lib/index.js"
+    }
+  },
+  "main": "lib/index.js",
+  "types": "lib/index.d.ts",
+  "scripts": {
+    "build": "run build",
+    "lint": "run lint --",
+    "prepublishOnly": "run prepare && run prepublishOnly",
+    "test": "run test --",
+    "test:coverage": "run test:coverage --",
+    "test:watch": "run test:watch --",
+    "typecheck": "run typecheck --"
+  },
+  "dependencies": {
+    "@presetter/types": "workspace:*"
+  },
+  "devDependencies": {
+    "presetter": "workspace:*"
+  },
+  "peerDependencies": {
+    "eslint-plugin-react": "catalog:lint",
+    "presetter": "workspace:*"
+  },
+  "engines": {
+    "node": ">=20.0.0"
+  },
+  "publishConfig": {
+    "access": "public",
+    "exports": {
+      ".": {
+        "types": "./lib/index.d.ts",
+        "import": "./lib/index.js"
+      }
+    },
+    "imports": {
+      "#*": {
+        "types": "./lib/*.d.ts",
+        "import": "./lib/*.js"
+      }
+    }
+  }
+}

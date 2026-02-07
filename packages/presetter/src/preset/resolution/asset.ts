@@ -12,7 +12,7 @@ import type {
   ResolvedPresetAsset,
   ResolvedPresetAssets,
   Variables,
-} from 'presetter-types';
+} from '@presetter/types';
 
 /**
  * lists all asset names in a preset node

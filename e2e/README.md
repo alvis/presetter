@@ -28,16 +28,16 @@ The E2E test suite:
 
 ```bash
 # Run all E2E tests
-pnpm --filter presetter-e2e test
+pnpm --filter @presetter/e2e test
 
 # Run with debug output
-DEBUG=presetter:e2e pnpm --filter presetter-e2e test
+DEBUG=presetter:e2e pnpm --filter @presetter/e2e test
 
 # Run specific example
-pnpm --filter presetter-e2e test -- --grep "standalone"
+pnpm --filter @presetter/e2e test -- --grep "standalone"
 
 # Run with verbose output
-pnpm --filter presetter-e2e test -- --reporter=verbose
+pnpm --filter @presetter/e2e test -- --reporter=verbose
 ```
 
 ## Examples Tested
@@ -88,7 +88,7 @@ To debug test failures:
 1. Enable debug logging:
 
    ```bash
-   DEBUG=presetter:e2e pnpm --filter presetter-e2e test
+   DEBUG=presetter:e2e pnpm --filter @presetter/e2e test
    ```
 
 2. Check the temporary directory for:

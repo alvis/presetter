@@ -3,10 +3,6 @@
   "version": "1.0.0",
   "type": "module",
   "exports": "./lib/index.js",
-  "devDependencies": {
-    "presetter": "*",
-    "presetter-preset-react": "*"
-  },
   "scripts": {
     "build": "run build",
     "lint": "run lint --",
@@ -15,5 +11,9 @@
     "test:coverage": "run test:coverage --",
     "test:watch": "run test:watch --",
     "typecheck": "run typecheck --"
+  },
+  "devDependencies": {
+    "@presetter/preset-react": "*",
+    "presetter": "*"
   }
 }

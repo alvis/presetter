@@ -62,22 +62,22 @@ my-project/
 # Choose your development style and get everything instantly:
 
 # 🟢 Modern ESM development
-npx presetter use presetter-preset-esm
+npx presetter use @presetter/preset-esm
 
 # 🔗 Legacy CommonJS compatibility
-npx presetter use presetter-preset-cjs
+npx presetter use @presetter/preset-cjs
 
 # 🌐 Dual-module library publishing
-npx presetter use presetter-preset-hybrid
+npx presetter use @presetter/preset-hybrid
 
 # 🎨 Modern web development with TailwindCSS + Storybook
-npx presetter use presetter-preset-esm presetter-preset-web
+npx presetter use @presetter/preset-esm @presetter/preset-web
 
 # ⚛️ React application with optimized toolchain
-npx presetter use presetter-preset-esm presetter-preset-react
+npx presetter use @presetter/preset-esm @presetter/preset-react
 
 # 🏢 Production-grade with security hardening + 100% coverage
-npx presetter use presetter-preset-esm presetter-preset-strict
+npx presetter use @presetter/preset-esm @presetter/preset-strict
 ```
 
 **That's it.** TypeScript, ESLint, Vitest, build scripts, git hooks, formatter, linter, bundler — everything configured perfectly and working together.
@@ -104,10 +104,10 @@ Mix and match presets like building blocks:
 ```typescript
 // presetter.config.ts - Build your perfect development environment
 import { preset } from 'presetter';
-import essentials from 'presetter-preset-essentials';
-import web from 'presetter-preset-web';
-import react from 'presetter-preset-react';
-import strict from 'presetter-preset-strict';
+import essentials from '@presetter/preset-essentials';
+import web from '@presetter/preset-web';
+import react from '@presetter/preset-react';
+import strict from '@presetter/preset-strict';
 
 export default preset('my-perfect-app', {
   extends: [essentials, web, react, strict], // 🚀 Ultimate React stack
@@ -151,7 +151,7 @@ export default preset('my-perfect-app', {
 
 ```bash
 # 1. Choose and adopt a preset (creates presetter.config.ts automatically)
-npx presetter use presetter-preset-esm
+npx presetter use @presetter/preset-esm
 
 # 2. Install dependencies (presetter bootstrap runs automatically)
 npm install
@@ -173,7 +173,7 @@ ls -la *.config.* .*rc.* tsconfig*.json
 npm uninstall babel eslint prettier typescript vitest # ...and 30+ more
 
 # 3. Adopt presetter
-npx presetter use presetter-preset-esm
+npx presetter use @presetter/preset-esm
 
 # 4. Cleanup and enjoy zero-config development
 ```
@@ -207,7 +207,7 @@ Options:
 
 ```bash
 # Adopt presets (automatically bootstraps)
-presetter use presetter-preset-esm presetter-preset-strict
+presetter use @presetter/preset-esm @presetter/preset-strict
 
 # Manually bootstrap (if needed)
 presetter bootstrap
@@ -236,19 +236,19 @@ Presetter comes with a comprehensive ecosystem of official presets:
 
 | Preset                                                                                                       | Purpose                        | Best For                                  |
 | ------------------------------------------------------------------------------------------------------------ | ------------------------------ | ----------------------------------------- |
-| **[presetter-preset-essentials](https://github.com/alvis/presetter/blob/master/packages/preset-essentials)** | 🏗️ Complete TypeScript toolkit | Foundation for all TypeScript projects    |
-| **[presetter-preset-esm](https://github.com/alvis/presetter/blob/master/packages/preset-esm)**               | 🚀 ESM-first development       | Modern Node.js projects, libraries        |
-| **[presetter-preset-cjs](https://github.com/alvis/presetter/blob/master/packages/preset-cjs)**               | 🔗 CommonJS compatibility      | Legacy environments, enterprise           |
-| **[presetter-preset-hybrid](https://github.com/alvis/presetter/blob/master/packages/preset-hybrid)**         | 🌐 Dual-module packages        | npm libraries needing broad compatibility |
+| **[@presetter/preset-essentials](https://github.com/alvis/presetter/blob/master/packages/preset-essentials)** | 🏗️ Complete TypeScript toolkit | Foundation for all TypeScript projects    |
+| **[@presetter/preset-esm](https://github.com/alvis/presetter/blob/master/packages/preset-esm)**               | 🚀 ESM-first development       | Modern Node.js projects, libraries        |
+| **[@presetter/preset-cjs](https://github.com/alvis/presetter/blob/master/packages/preset-cjs)**               | 🔗 CommonJS compatibility      | Legacy environments, enterprise           |
+| **[@presetter/preset-hybrid](https://github.com/alvis/presetter/blob/master/packages/preset-hybrid)**         | 🌐 Dual-module packages        | npm libraries needing broad compatibility |
 
 ### Specialized Extension Presets
 
 | Preset                                                                                               | Purpose                     | Extends         |
 | ---------------------------------------------------------------------------------------------------- | --------------------------- | --------------- |
-| **[presetter-preset-strict](https://github.com/alvis/presetter/blob/master/packages/preset-strict)** | 🏢 Production-grade quality | Any base preset |
-| **[presetter-preset-web](https://github.com/alvis/presetter/blob/master/packages/preset-web)**       | 🎨 Modern web development   | Any base preset |
-| **[presetter-preset-react](https://github.com/alvis/presetter/blob/master/packages/preset-react)**   | ⚛️ React development        | Any base preset |
-| **[presetter-preset-rollup](https://github.com/alvis/presetter/blob/master/packages/preset-rollup)** | 📦 Library bundling         | Any base preset |
+| **[@presetter/preset-strict](https://github.com/alvis/presetter/blob/master/packages/preset-strict)** | 🏢 Production-grade quality | Any base preset |
+| **[@presetter/preset-web](https://github.com/alvis/presetter/blob/master/packages/preset-web)**       | 🎨 Modern web development   | Any base preset |
+| **[@presetter/preset-react](https://github.com/alvis/presetter/blob/master/packages/preset-react)**   | ⚛️ React development        | Any base preset |
+| **[@presetter/preset-rollup](https://github.com/alvis/presetter/blob/master/packages/preset-rollup)** | 📦 Library bundling         | Any base preset |
 
 ### 🎯 Preset Combination Examples
 
@@ -348,7 +348,7 @@ Libraries loaded via dynamic `import()` may fail because dynamic imports are res
 ```typescript
 // presetter.config.ts
 import { preset } from 'presetter';
-import esm from 'presetter-preset-esm';
+import esm from '@presetter/preset-esm';
 
 export default preset('my-project', {
   extends: [esm],
@@ -477,11 +477,11 @@ Simply update the preset package version in your projects. Presetter will regene
 
 ### Can I create my own presets?
 
-Absolutely! Presets are just npm packages that export configuration templates. See [presetter-types](https://github.com/alvis/presetter/blob/master/packages/types) for TypeScript definitions.
+Absolutely! Presets are just npm packages that export configuration templates. See [@presetter/types](https://github.com/alvis/presetter/blob/master/packages/types) for TypeScript definitions.
 
 ### Does this work with monorepos?
 
-Yes! Presetter supports monorepo setups and can bootstrap multiple projects with glob patterns. Use [presetter-preset-monorepo](https://github.com/alvis/presetter/blob/master/packages/preset-monorepo) for monorepo-specific configurations.
+Yes! Presetter supports monorepo setups and can bootstrap multiple projects with glob patterns. Use [@presetter/preset-monorepo](https://github.com/alvis/presetter/blob/master/packages/preset-monorepo) for monorepo-specific configurations.
 
 ### Why do some dynamically imported libraries fail to resolve?
 

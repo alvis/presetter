@@ -1,6 +1,6 @@
 import { resolve } from 'node:path';
 
-import type { PresetContentContext } from 'presetter-types';
+import type { PresetContentContext } from '@presetter/types';
 
 export const context = {
   isRepoRoot: false,

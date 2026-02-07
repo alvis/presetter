@@ -45,7 +45,11 @@ const VERDACCIO_CONFIG = new Config({
     },
   },
   packages: {
-    'presetter*': {
+    '@presetter/*': {
+      access: ['$all'],
+      publish: ['$all'],
+    },
+    'presetter': {
       access: ['$all'],
       publish: ['$all'],
     },

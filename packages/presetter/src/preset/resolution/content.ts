@@ -10,7 +10,7 @@ import type {
   PresetNode,
   ProjectContext,
   Variables,
-} from 'presetter-types';
+} from '@presetter/types';
 
 /**
  * loads a potentially dynamic content

@@ -7,6 +7,7 @@
 [![maintainability](https://img.shields.io/codeclimate/maintainability/alvis/presetter?style=flat-square)](https://codeclimate.com/github/alvis/presetter/maintainability)
 [![coverage](https://img.shields.io/codeclimate/coverage/alvis/presetter?style=flat-square)](https://codeclimate.com/github/alvis/presetter/test_coverage)
 [![dependencies](https://img.shields.io/librariesio/release/npm/presetter?style=flat-square)](https://libraries.io/npm/presetter)
+[![docs](https://img.shields.io/badge/docs-presetter.dev-blue?style=flat-square)](https://alvis.github.io/presetter/)
 
 _Transform 40+ dev dependencies into 2 packages — template-driven configuration management for modern TypeScript development_
 
@@ -28,25 +29,25 @@ This monorepo contains the **Presetter engine** and a comprehensive ecosystem of
 
 ```bash
 # 🟢 Modern ESM development
-npx presetter use presetter-preset-esm
+npx presetter use @presetter/preset-esm
 
 # 🔗 Legacy CommonJS compatibility
-npx presetter use presetter-preset-cjs
+npx presetter use @presetter/preset-cjs
 
 # 🌐 Dual-module library publishing
-npx presetter use presetter-preset-hybrid
+npx presetter use @presetter/preset-hybrid
 
 # 🎨 Modern web development (TailwindCSS + Storybook)
-npx presetter use presetter-preset-esm presetter-preset-web
+npx presetter use @presetter/preset-esm @presetter/preset-web
 
 # ⚛️ React application with optimized toolchain
-npx presetter use presetter-preset-esm presetter-preset-react
+npx presetter use @presetter/preset-esm @presetter/preset-react
 
 # 🏢 Production-grade (security + 100% coverage)
-npx presetter use presetter-preset-esm presetter-preset-strict
+npx presetter use @presetter/preset-esm @presetter/preset-strict
 
 # ⚡ Next.js application with full-stack support
-npx presetter use presetter-preset-next
+npx presetter use @presetter/preset-next
 ```
 
 ### 🔧 Or Set It Up Manually
@@ -60,19 +61,19 @@ npx presetter use presetter-preset-next
   },
   devDependencies: {
     'presetter': 'latest',
-    'presetter-preset-esm': 'latest',
+    '@presetter/preset-esm': 'latest',
   },
 }
 ```
 
-2. **Create preset configuration:**
+1. **Create preset configuration:**
 
 ```typescript
 // presetter.config.ts
-export { default } from 'presetter-preset-esm';
+export { default } from '@presetter/preset-esm';
 ```
 
-3. **Install and start developing:**
+1. **Install and start developing:**
 
 ```bash
 npm install  # Configurations generated automatically
@@ -90,33 +91,37 @@ This repository is organized as a TypeScript monorepo containing the core Preset
 ```
 presetter/
 ├── packages/
-│   ├── presetter/              🎛️ Core configuration management engine
-│   ├── types/                  📋 TypeScript definitions for preset development
-│   │
-│   ├── preset-essentials/      🏗️ Foundation toolkit (TypeScript, ESLint, Vitest)
-│   ├── preset-monorepo/        📦 Monorepo project management
-│   │
-│   ├── preset-esm/             🚀 ESM-first development
-│   ├── preset-cjs/             🔗 CommonJS compatibility
-│   ├── preset-hybrid/          🌐 Dual CommonJS/ESM packages
-│   │
-│   ├── preset-strict/          🏢 Production-grade quality enforcement
-│   ├── preset-web/             🎨 Modern web development stack
-│   ├── preset-react/           ⚛️ React development excellence
-│   ├── preset-next/            ⚡ Next.js full-stack development
-│   └── preset-rollup/          📦 Professional library bundling
+│   ├── presetter/          🎛️ Core engine
+│   └── types/              📋 TypeScript definitions
 │
-└── assets/                     🎨 Logos, demos, and documentation assets
+├── presets/
+│   ├── essentials/         🏗️ Foundation toolkit
+│   ├── monorepo/           📦 Monorepo management
+│   │
+│   ├── esm/                🚀 ESM-first
+│   ├── cjs/                🔗 CommonJS
+│   ├── hybrid/             🌐 Dual CJS/ESM
+│   │
+│   ├── strict/             🏢 Production-grade quality
+│   ├── web/                🎨 Web dev stack
+│   ├── react/              ⚛️ React
+│   ├── next/               ⚡ Next.js
+│   └── rollup/             📦 Library bundling
+│
+├── website/                📖 Docusaurus documentation site
+├── e2e/                    🧪 End-to-end integration tests
+├── examples/               🔬 Example consumer projects
+└── assets/                 🎨 Logos and demo assets
 ```
 
 ### 🎯 Package Categories
 
-| **Category**       | **Packages**                                                   | **Purpose**                              |
-| ------------------ | -------------------------------------------------------------- | ---------------------------------------- |
-| **Core Engine**    | `presetter`, `types`                                           | Configuration management infrastructure  |
-| **Foundation**     | `preset-essentials`, `preset-monorepo`                                | Base TypeScript development toolkit      |
-| **Module Systems** | `preset-esm`, `preset-cjs`, `preset-hybrid`                           | JavaScript module format specializations |
-| **Extensions**     | `preset-strict`, `preset-web`, `preset-react`, `preset-next`, `preset-rollup` | Specialized development environments     |
+| **Category**       | **Packages**                                                                  | **Purpose**                                        |
+| ------------------ | ----------------------------------------------------------------------------- | -------------------------------------------------- |
+| **Core Engine**    | `presetter`, `types`                                                          | Configuration management infrastructure            |
+| **Foundation**     | `preset-essentials`, `preset-monorepo`                                        | Base TypeScript development toolkit                |
+| **Module Systems** | `preset-esm`, `preset-cjs`, `preset-hybrid`                                   | JavaScript module format & runtime specializations |
+| **Extensions**     | `preset-strict`, `preset-web`, `preset-react`, `preset-next`, `preset-rollup` | Specialized development environments               |
 
 ---
 
@@ -124,28 +129,28 @@ presetter/
 
 ### 🏗️ Foundation Presets
 
-| Preset                                                        | Purpose                                 | Dependencies                                | Best For                               |
-| ------------------------------------------------------------- | --------------------------------------- | ------------------------------------------- | -------------------------------------- |
-| **[presetter-preset-essentials](packages/preset-essentials)** | Complete TypeScript development toolkit | TypeScript, ESLint, Vitest, Prettier, Husky | Foundation for all TypeScript projects |
-| **[presetter-preset-monorepo](packages/preset-monorepo)**     | Monorepo project management             | Workspace tools, cross-package scripts      | Multi-package repositories             |
+| Preset                                                 | Purpose                                 | Dependencies                                | Best For                               |
+| ------------------------------------------------------ | --------------------------------------- | ------------------------------------------- | -------------------------------------- |
+| **[@presetter/preset-essentials](presets/essentials)** | Complete TypeScript development toolkit | TypeScript, ESLint, Vitest, Prettier, Husky | Foundation for all TypeScript projects |
+| **[@presetter/preset-monorepo](presets/monorepo)**     | Monorepo project management             | Workspace tools, cross-package scripts      | Multi-package repositories             |
 
-### 🚀 Module System Presets
+### 🚀 Module System & Runtime Presets
 
-| Preset                                                | Purpose                    | Extends    | Best For                                  |
-| ----------------------------------------------------- | -------------------------- | ---------- | ----------------------------------------- |
-| **[presetter-preset-esm](packages/preset-esm)**       | ESM-first development      | essentials | Modern Node.js projects, libraries        |
-| **[presetter-preset-cjs](packages/preset-cjs)**       | CommonJS compatibility     | essentials | Legacy environments, enterprise           |
-| **[presetter-preset-hybrid](packages/preset-hybrid)** | Dual CommonJS/ESM packages | essentials | npm libraries needing broad compatibility |
+| Preset                                         | Purpose                    | Extends    | Best For                                  |
+| ---------------------------------------------- | -------------------------- | ---------- | ----------------------------------------- |
+| **[@presetter/preset-esm](presets/esm)**       | ESM-first development      | essentials | Modern Node.js projects, libraries        |
+| **[@presetter/preset-cjs](presets/cjs)**       | CommonJS compatibility     | essentials | Legacy environments, enterprise           |
+| **[@presetter/preset-hybrid](presets/hybrid)** | Dual CommonJS/ESM packages | essentials | npm libraries needing broad compatibility |
 
 ### 🎨 Specialized Extension Presets
 
-| Preset                                                | Purpose                              | Extends         | Best For                                  |
-| ----------------------------------------------------- | ------------------------------------ | --------------- | ----------------------------------------- |
-| **[presetter-preset-strict](packages/preset-strict)** | Production-grade quality enforcement | Any base preset | Enterprise applications, critical systems |
-| **[presetter-preset-web](packages/preset-web)**       | Modern web development stack         | Any base preset | Web applications, SPAs                    |
-| **[presetter-preset-react](packages/preset-react)**   | React development excellence         | Any base preset | React applications, component libraries   |
-| **[presetter-preset-next](packages/preset-next)**     | Next.js full-stack development       | esm + strict + react | Next.js apps with App Router, Server Components |
-| **[presetter-preset-rollup](packages/preset-rollup)** | Professional library bundling        | Any base preset | npm packages, open-source libraries       |
+| Preset                                         | Purpose                              | Extends              | Best For                                        |
+| ---------------------------------------------- | ------------------------------------ | -------------------- | ----------------------------------------------- |
+| **[@presetter/preset-strict](presets/strict)** | Production-grade quality enforcement | Any base preset      | Enterprise applications, critical systems       |
+| **[@presetter/preset-web](presets/web)**       | Modern web development stack         | Any base preset      | Web applications, SPAs                          |
+| **[@presetter/preset-react](presets/react)**   | React development excellence         | Any base preset      | React applications, component libraries         |
+| **[@presetter/preset-next](presets/next)**     | Next.js full-stack development       | esm + strict + react | Next.js apps with App Router, Server Components |
+| **[@presetter/preset-rollup](presets/rollup)** | Professional library bundling        | Any base preset      | npm packages, open-source libraries             |
 
 ### 🎯 Common Preset Combinations
 
@@ -163,7 +168,7 @@ extends: [cjs]
 extends: [monorepo]
 
 // Next.js application (includes everything)
-export { default } from 'presetter-preset-next';
+export { default } from '@presetter/preset-next';
 ```
 
 ---
@@ -177,7 +182,6 @@ export { default } from 'presetter-preset-next';
 Presetter handles two main responsibilities:
 
 1. **🏗️ Environment Setup:**
-
    - Installs development dependencies defined by presets
    - Generates configuration files using sophisticated templates
 
@@ -206,6 +210,8 @@ Presetter uses a sophisticated resolution process:
 2. **🎯 Asset Generation**: Process templates with context-aware variable substitution
 3. **⚡ Override Application**: Apply customizations while preserving preset benefits
 
+> Want the full diagrammed walkthrough? See **[ARCHITECTURE.md](ARCHITECTURE.md)**.
+
 ---
 
 ## 🛠️ Usage
@@ -214,7 +220,7 @@ Presetter uses a sophisticated resolution process:
 
 ```typescript
 // presetter.config.ts - Use a preset as-is
-export { default } from 'presetter-preset-esm';
+export { default } from '@presetter/preset-esm';
 ```
 
 ### 🎨 Advanced Customization
@@ -222,8 +228,8 @@ export { default } from 'presetter-preset-esm';
 ```typescript
 // presetter.config.ts - Customize and extend presets
 import { preset } from 'presetter';
-import esm from 'presetter-preset-esm';
-import strict from 'presetter-preset-strict';
+import esm from '@presetter/preset-esm';
+import strict from '@presetter/preset-strict';
 
 export default preset('my-project', {
   extends: [esm, strict],
@@ -297,7 +303,7 @@ graph TD
   H[preset-hybrid]
   W[preset-web]
   R[preset-react]
-  N[preset-next]
+  X[preset-next]
   U[preset-rollup]
   O[preset-monorepo]
 
@@ -309,9 +315,9 @@ graph TD
   S --> T
   W --> T
   R --> W
-  N --> M
-  N --> S
-  N --> R
+  X --> M
+  X --> S
+  X --> R
   U --> T
   O --> M
   O --> S
@@ -348,7 +354,7 @@ Each package contains comprehensive documentation:
 | **Getting Started** | [Core Engine Quick Start](packages/presetter#quick-start) |
 | **Preset Creation** | [Types Package Guide](packages/types)                     |
 | **Advanced Usage**  | [Configuration Customization](#-advanced-customization)   |
-| **Monorepo Setup**  | [Monorepo Preset Guide](packages/preset-monorepo)         |
+| **Monorepo Setup**  | [Monorepo Preset Guide](presets/monorepo)                 |
 
 ---
 
@@ -395,7 +401,7 @@ Use the `override` field to modify preset configurations:
 
 ```typescript
 import { preset } from 'presetter';
-import esm from 'presetter-preset-esm';
+import esm from '@presetter/preset-esm';
 
 export default preset('custom', {
   extends: [esm],
@@ -417,10 +423,10 @@ Yes! Presets are designed to be composable:
 
 ```typescript
 import { preset } from 'presetter';
-import essentials from 'presetter-preset-essentials';
-import web from 'presetter-preset-web';
-import react from 'presetter-preset-react';
-import strict from 'presetter-preset-strict';
+import essentials from '@presetter/preset-essentials';
+import web from '@presetter/preset-web';
+import react from '@presetter/preset-react';
+import strict from '@presetter/preset-strict';
 
 export default preset('ultimate-react', {
   extends: [essentials, web, react, strict],

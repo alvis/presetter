@@ -3,7 +3,7 @@ import { dirname, relative } from 'node:path';
 
 import { findUp } from 'find-up-simple';
 
-import type { ProjectContext } from 'presetter-types';
+import type { ProjectContext } from '@presetter/types';
 import type { PackageJson } from 'type-fest';
 
 /**

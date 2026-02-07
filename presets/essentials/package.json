@@ -1,0 +1,96 @@
+{
+  "name": "@presetter/preset-essentials",
+  "version": "8.3.0",
+  "description": "A collection of opinionated preset configurations for typescript projects",
+  "keywords": [
+    "presetter",
+    "preset"
+  ],
+  "homepage": "https://github.com/alvis/presetter#readme",
+  "bugs": {
+    "url": "https://github.com/alvis/presetter/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/alvis/presetter.git"
+  },
+  "license": "MIT",
+  "author": "Alvis HT Tang <alvis@hilbert.space>",
+  "type": "module",
+  "imports": {
+    "#*": {
+      "types": "./src/*.ts",
+      "development": "./src/*.ts",
+      "import": "./lib/*.js"
+    }
+  },
+  "exports": {
+    ".": {
+      "development": "./src/index.ts",
+      "import": "./lib/index.js"
+    }
+  },
+  "main": "lib/index.js",
+  "types": "lib/index.d.ts",
+  "scripts": {
+    "bootstrap": "presetter bootstrap",
+    "build": "run build",
+    "lint": "run lint --",
+    "prepare": "tsc --skipLibCheck --declaration --moduleResolution bundler --module esnext --target esnext --skipLibCheck --outdir lib src/index.ts && tsc-esm-fix --sourceMap --target lib",
+    "prepublishOnly": "run prepare && run prepublishOnly",
+    "test": "run test --",
+    "test:coverage": "run test:coverage --",
+    "test:watch": "run test:watch --",
+    "typecheck": "run typecheck --"
+  },
+  "dependencies": {
+    "@presetter/types": "workspace:*"
+  },
+  "peerDependencies": {
+    "@eslint-community/eslint-plugin-eslint-comments": "catalog:lint",
+    "@eslint/compat": "catalog:lint",
+    "@eslint/js": "catalog:lint",
+    "@vitest/coverage-v8": "catalog:testing",
+    "conventional-changelog-metahub": "catalog:build",
+    "cross-env": "catalog:utilities",
+    "dotenv-cli": "catalog:utilities",
+    "eslint": "catalog:lint",
+    "eslint-config-prettier": "catalog:lint",
+    "eslint-import-resolver-typescript": "catalog:lint",
+    "eslint-plugin-compat": "catalog:lint",
+    "eslint-plugin-import": "catalog:lint",
+    "eslint-plugin-jsdoc": "catalog:lint",
+    "husky": "catalog:lint",
+    "jiti": "catalog:runtime",
+    "leasot": "catalog:lint",
+    "lint-staged": "catalog:lint",
+    "prettier": "catalog:lint",
+    "standard-version": "catalog:build",
+    "tsc-alias": "catalog:build",
+    "tsc-esm-fix": "catalog:build",
+    "tsconfig-paths": "catalog:build",
+    "tsx": "catalog:build",
+    "typescript": "catalog:build",
+    "typescript-eslint": "catalog:lint",
+    "vitest": "catalog:testing",
+    "zx": "catalog:utilities"
+  },
+  "engines": {
+    "node": ">=20.0.0"
+  },
+  "publishConfig": {
+    "access": "public",
+    "exports": {
+      ".": {
+        "types": "./lib/index.d.ts",
+        "import": "./lib/index.js"
+      }
+    },
+    "imports": {
+      "#*": {
+        "types": "./lib/*.d.ts",
+        "import": "./lib/*.js"
+      }
+    }
+  }
+}

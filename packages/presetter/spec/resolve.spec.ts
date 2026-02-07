@@ -5,7 +5,7 @@ import { describe, expect, it, vi } from 'vitest';
 import { resolveProjectContext } from '#context';
 import { resolve } from '#resolve';
 
-import type { ProjectContext } from 'presetter-types';
+import type { ProjectContext } from '@presetter/types';
 
 const { configTs } = vi.hoisted(() => ({ configTs: { foo: () => 'bar' } }));
 

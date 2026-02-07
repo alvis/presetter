@@ -258,21 +258,27 @@ importers:
 
   .:
     devDependencies:
+      '@presetter/preset-monorepo':
+        specifier: workspace:*
+        version: link:presets/monorepo
       '@types/node':
         specifier: catalog:types
         version: 24.10.4
       presetter:
         specifier: workspace:*
         version: link:packages/presetter
-      presetter-preset-monorepo:
-        specifier: workspace:*
-        version: link:packages/preset-monorepo
       typescript:
         specifier: catalog:build
         version: 5.9.3
 
   e2e:
     devDependencies:
+      '@presetter/preset-esm':
+        specifier: workspace:*
+        version: link:../presets/esm
+      '@presetter/preset-strict':
+        specifier: workspace:*
+        version: link:../presets/strict
       debug:
         specifier: catalog:runtime
         version: 4.4.3
@@ -282,12 +288,6 @@ importers:
       presetter:
         specifier: workspace:*
         version: link:../packages/presetter
-      presetter-preset-esm:
-        specifier: workspace:*
-        version: link:../packages/preset-esm
-      presetter-preset-strict:
-        specifier: workspace:*
-        version: link:../packages/preset-strict
       type-fest:
         specifier: catalog:types
         version: 5.3.1
@@ -298,25 +298,107 @@ importers:
         specifier: catalog:testing
         version: 4.0.16(@types/node@25.0.3)(@vitest/browser-playwright@4.0.16)(jiti@2.6.1)(lightningcss@1.30.2)(tsx@4.21.0)(yaml@2.8.2)
 
-  packages/preset-cjs:
+  packages/presetter:
     dependencies:
-      presetter-preset-essentials:
-        specifier: workspace:*
-        version: link:../preset-essentials
-      presetter-types:
+      '@npmcli/run-script':
+        specifier: catalog:runtime
+        version: 10.0.3
+      '@presetter/types':
         specifier: workspace:*
         version: link:../types
+      callsite-record:
+        specifier: catalog:runtime
+        version: 4.1.5
+      chalk:
+        specifier: catalog:runtime
+        version: 5.6.2
+      debug:
+        specifier: catalog:runtime
+        version: 4.4.3
+      execa:
+        specifier: catalog:runtime
+        version: 9.6.1
+      find-up-simple:
+        specifier: catalog:runtime
+        version: 1.0.1
+      globby:
+        specifier: catalog:runtime
+        version: 16.0.0
+      jiti:
+        specifier: catalog:runtime
+        version: 2.6.1
+      js-yaml:
+        specifier: catalog:runtime
+        version: 4.1.1
+      listr2:
+        specifier: catalog:runtime
+        version: 9.0.5
+      pupa:
+        specifier: catalog:runtime
+        version: 3.3.0
+      sh-syntax:
+        specifier: catalog:runtime
+        version: 0.5.8
+      source-map-support:
+        specifier: catalog:runtime
+        version: 0.5.21
+      yargs:
+        specifier: catalog:runtime
+        version: 18.0.0
+      yargs-parser:
+        specifier: catalog:runtime
+        version: 22.0.0
+    devDependencies:
+      '@presetter/preset-esm':
+        specifier: workspace:*
+        version: link:../../presets/esm
+      '@presetter/preset-essentials':
+        specifier: workspace:*
+        version: link:../../presets/essentials
+      '@presetter/preset-strict':
+        specifier: workspace:*
+        version: link:../../presets/strict
+      '@types/debug':
+        specifier: catalog:runtime
+        version: 4.1.12
+      '@types/js-yaml':
+        specifier: catalog:runtime
+        version: 4.0.9
+      '@types/node':
+        specifier: catalog:types
+        version: 24.10.4
+      '@types/yargs':
+        specifier: catalog:runtime
+        version: 17.0.35
+      type-fest:
+        specifier: catalog:types
+        version: 5.3.1
 
-  packages/preset-esm:
+  packages/types:
     dependencies:
-      presetter-preset-essentials:
-        specifier: workspace:*
-        version: link:../preset-essentials
-      presetter-types:
-        specifier: workspace:*
-        version: link:../types
+      type-fest:
+        specifier: catalog:types
+        version: 5.3.1
 
-  packages/preset-essentials:
+  presets/cjs:
+    dependencies:
+      '@presetter/preset-essentials':
+        specifier: workspace:*
+        version: link:../essentials
+      '@presetter/types':
+        specifier: workspace:*
+        version: link:../../packages/types
+
+  presets/esm:
+    dependencies:
+      '@presetter/preset-essentials':
+        specifier: workspace:*
+        version: link:../essentials
+      '@presetter/types':
+        specifier: workspace:*
+        version: link:../../packages/types
+
+  presets/essentials:
     dependencies:
       '@eslint-community/eslint-plugin-eslint-comments':
         specifier: catalog:lint
@@ -327,6 +409,9 @@ importers:
       '@eslint/js':
         specifier: catalog:lint
         version: 9.39.2
+      '@presetter/types':
+        specifier: workspace:*
+        version: link:../../packages/types
       '@vitest/coverage-v8':
         specifier: catalog:testing
         version: 4.0.16(@vitest/browser@4.0.16(vite@7.3.0(@types/node@25.0.3)(jiti@2.6.1)(lightningcss@1.30.2)(tsx@4.21.0)(yaml@2.8.2))(vitest@4.0.16))(vitest@4.0.16)
@@ -369,9 +454,6 @@ importers:
       lint-staged:
         specifier: catalog:lint
         version: 16.2.7
-      presetter-types:
-        specifier: workspace:*
-        version: link:../types
       prettier:
         specifier: catalog:lint
         version: 3.7.4
@@ -403,40 +485,55 @@ importers:
         specifier: catalog:utilities
         version: 8.8.5
 
-  packages/preset-hybrid:
+  presets/hybrid:
     dependencies:
-      presetter-preset-essentials:
+      '@presetter/preset-essentials':
         specifier: workspace:*
-        version: link:../preset-essentials
-      presetter-types:
+        version: link:../essentials
+      '@presetter/types':
         specifier: workspace:*
-        version: link:../types
+        version: link:../../packages/types
     devDependencies:
       presetter:
         specifier: workspace:*
-        version: link:../presetter
+        version: link:../../packages/presetter
 
-  packages/preset-monorepo:
+  presets/monorepo:
     dependencies:
-      presetter-preset-esm:
+      '@presetter/preset-esm':
         specifier: workspace:*
-        version: link:../preset-esm
-      presetter-preset-strict:
+        version: link:../esm
+      '@presetter/preset-strict':
         specifier: workspace:*
-        version: link:../preset-strict
-      presetter-types:
+        version: link:../strict
+      '@presetter/types':
         specifier: workspace:*
-        version: link:../types
+        version: link:../../packages/types
     devDependencies:
       presetter:
         specifier: workspace:*
-        version: link:../presetter
+        version: link:../../packages/presetter
 
-  packages/preset-next:
+  presets/next:
     dependencies:
       '@next/eslint-plugin-next':
         specifier: catalog:nextjs
         version: 16.0.10
+      '@presetter/preset-esm':
+        specifier: workspace:*
+        version: link:../esm
+      '@presetter/preset-react':
+        specifier: workspace:*
+        version: link:../react
+      '@presetter/preset-strict':
+        specifier: workspace:*
+        version: link:../strict
+      '@presetter/preset-web':
+        specifier: workspace:*
+        version: link:../web
+      '@presetter/types':
+        specifier: workspace:*
+        version: link:../../packages/types
       '@storybook/nextjs-vite':
         specifier: catalog:storybook
         version: 10.1.10(@babel/core@7.28.5)(esbuild@0.27.2)(next@16.0.10(@babel/core@7.28.5)(react-dom@19.2.3(react@19.2.3))(react@19.2.3))(react-dom@19.2.3(react@19.2.3))(react@19.2.3)(rollup@4.53.5)(storybook@10.1.10(@testing-library/dom@10.4.1)(prettier@3.7.4)(react-dom@19.2.3(react@19.2.3))(react@19.2.3))(typescript@5.9.3)(vite@7.3.0(@types/node@25.0.3)(jiti@2.6.1)(lightningcss@1.30.2)(tsx@4.21.0)(yaml@2.8.2))
@@ -451,22 +548,7 @@ importers:
         version: 10.5.0(postcss@8.5.6)
       presetter:
         specifier: workspace:*
-        version: link:../presetter
-      presetter-preset-esm:
-        specifier: workspace:*
-        version: link:../preset-esm
-      presetter-preset-react:
-        specifier: workspace:*
-        version: link:../preset-react
-      presetter-preset-strict:
-        specifier: workspace:*
-        version: link:../preset-strict
-      presetter-preset-web:
-        specifier: workspace:*
-        version: link:../preset-web
-      presetter-types:
-        specifier: workspace:*
-        version: link:../types
+        version: link:../../packages/presetter
       sharp:
         specifier: catalog:image
         version: 0.34.5
@@ -474,21 +556,24 @@ importers:
         specifier: catalog:types
         version: 5.3.1
 
-  packages/preset-react:
+  presets/react:
     dependencies:
+      '@presetter/types':
+        specifier: workspace:*
+        version: link:../../packages/types
       eslint-plugin-react:
         specifier: catalog:lint
         version: 7.37.5(eslint@9.39.2(jiti@2.6.1))
-      presetter-types:
-        specifier: workspace:*
-        version: link:../types
     devDependencies:
       presetter:
         specifier: workspace:*
-        version: link:../presetter
+        version: link:../../packages/presetter
 
-  packages/preset-rollup:
+  presets/rollup:
     dependencies:
+      '@presetter/types':
+        specifier: workspace:*
+        version: link:../../packages/types
       '@rollup/plugin-commonjs':
         specifier: catalog:rollup
         version: 29.0.0(rollup@4.53.5)
@@ -510,9 +595,6 @@ importers:
       '@rollup/plugin-yaml':
         specifier: catalog:rollup
         version: 4.1.2(rollup@4.53.5)
-      presetter-types:
-        specifier: workspace:*
-        version: link:../types
       rollup:
         specifier: catalog:rollup
         version: 4.53.5
@@ -531,25 +613,28 @@ importers:
     devDependencies:
       presetter:
         specifier: workspace:*
-        version: link:../presetter
+        version: link:../../packages/presetter
 
-  packages/preset-strict:
+  presets/strict:
     dependencies:
+      '@presetter/types':
+        specifier: workspace:*
+        version: link:../../packages/types
       eslint-plugin-no-secrets:
         specifier: catalog:lint
         version: 2.2.1(eslint@9.39.2(jiti@2.6.1))
       eslint-plugin-sonarjs:
         specifier: catalog:lint
         version: 3.0.5(eslint@9.39.2(jiti@2.6.1))
-      presetter-types:
-        specifier: workspace:*
-        version: link:../types
       sort-package-json:
         specifier: catalog:lint
         version: 3.6.0
 
-  packages/preset-web:
+  presets/web:
     dependencies:
+      '@presetter/types':
+        specifier: workspace:*
+        version: link:../../packages/types
       '@storybook/addon-a11y':
         specifier: catalog:storybook
         version: 10.1.10(storybook@10.1.10(@testing-library/dom@10.4.1)(prettier@3.7.4)(react-dom@19.2.3(react@19.2.3))(react@19.2.3))
@@ -574,9 +659,6 @@ importers:
       postcss:
         specifier: catalog:web
         version: 8.5.6
-      presetter-types:
-        specifier: workspace:*
-        version: link:../types
       storybook:
         specifier: catalog:storybook
         version: 10.1.10(@testing-library/dom@10.4.1)(prettier@3.7.4)(react-dom@19.2.3(react@19.2.3))(react@19.2.3)
@@ -590,94 +672,12 @@ importers:
         specifier: catalog:web
         version: 4.1.18
     devDependencies:
+      '@presetter/preset-essentials':
+        specifier: workspace:*
+        version: link:../essentials
       presetter:
         specifier: workspace:*
-        version: link:../presetter
-      presetter-preset-essentials:
-        specifier: workspace:*
-        version: link:../preset-essentials
-
-  packages/presetter:
-    dependencies:
-      '@npmcli/run-script':
-        specifier: catalog:runtime
-        version: 10.0.3
-      callsite-record:
-        specifier: catalog:runtime
-        version: 4.1.5
-      chalk:
-        specifier: catalog:runtime
-        version: 5.6.2
-      debug:
-        specifier: catalog:runtime
-        version: 4.4.3
-      execa:
-        specifier: catalog:runtime
-        version: 9.6.1
-      find-up-simple:
-        specifier: catalog:runtime
-        version: 1.0.1
-      globby:
-        specifier: catalog:runtime
-        version: 16.0.0
-      jiti:
-        specifier: catalog:runtime
-        version: 2.6.1
-      js-yaml:
-        specifier: catalog:runtime
-        version: 4.1.1
-      listr2:
-        specifier: catalog:runtime
-        version: 9.0.5
-      presetter-types:
-        specifier: workspace:*
-        version: link:../types
-      pupa:
-        specifier: catalog:runtime
-        version: 3.3.0
-      sh-syntax:
-        specifier: catalog:runtime
-        version: 0.5.8
-      source-map-support:
-        specifier: catalog:runtime
-        version: 0.5.21
-      yargs:
-        specifier: catalog:runtime
-        version: 18.0.0
-      yargs-parser:
-        specifier: catalog:runtime
-        version: 22.0.0
-    devDependencies:
-      '@types/debug':
-        specifier: catalog:runtime
-        version: 4.1.12
-      '@types/js-yaml':
-        specifier: catalog:runtime
-        version: 4.0.9
-      '@types/node':
-        specifier: catalog:types
-        version: 24.10.4
-      '@types/yargs':
-        specifier: catalog:runtime
-        version: 17.0.35
-      presetter-preset-esm:
-        specifier: workspace:*
-        version: link:../preset-esm
-      presetter-preset-essentials:
-        specifier: workspace:*
-        version: link:../preset-essentials
-      presetter-preset-strict:
-        specifier: workspace:*
-        version: link:../preset-strict
-      type-fest:
-        specifier: catalog:types
-        version: 5.3.1
-
-  packages/types:
-    dependencies:
-      type-fest:
-        specifier: catalog:types
-        version: 5.3.1
+        version: link:../../packages/presetter
 
 packages:
 
@@ -12151,7 +12151,7 @@ snapshots:
 
   refa@0.12.1:
     dependencies:
-      '@eslint-community/regexpp': 4.12.1
+      '@eslint-community/regexpp': 4.12.2
 
   reflect.getprototypeof@1.0.10:
     dependencies:
@@ -12166,7 +12166,7 @@ snapshots:
 
   regexp-ast-analysis@0.7.1:
     dependencies:
-      '@eslint-community/regexpp': 4.12.1
+      '@eslint-community/regexpp': 4.12.2
       refa: 0.12.1
 
   regexp.prototype.flags@1.5.4:
@@ -12325,7 +12325,7 @@ snapshots:
 
   scslre@0.3.0:
     dependencies:
-      '@eslint-community/regexpp': 4.12.1
+      '@eslint-community/regexpp': 4.12.2
       refa: 0.12.1
       regexp-ast-analysis: 0.7.1
 

@@ -12,11 +12,11 @@
     "watch": "run watch --"
   },
   "devDependencies": {
+    "@presetter/preset-monorepo": "*",
+    "@presetter/preset-next": "*",
     "@types/node": "*",
     "@vitest/coverage-v8": "*",
     "presetter": "*",
-    "presetter-preset-monorepo": "*",
-    "presetter-preset-next": "*",
     "typescript": "*"
   }
 }

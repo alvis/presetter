@@ -7,7 +7,7 @@ import Debug from './debugger';
 import { extractPresetRoots } from './roots';
 import { resolveVariables } from './variable';
 
-import type { PresetNode, ProjectContext, Scripts } from 'presetter-types';
+import type { PresetNode, ProjectContext, Scripts } from '@presetter/types';
 
 /**
  * resolves all scripts for a given preset node

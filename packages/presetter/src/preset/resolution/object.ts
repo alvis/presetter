@@ -1,4 +1,4 @@
-import type { PresetContentContext, PresetObject } from 'presetter-types';
+import type { PresetContentContext, PresetObject } from '@presetter/types';
 
 /**
  * resolve an object

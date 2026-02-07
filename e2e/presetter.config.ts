@@ -12,11 +12,12 @@
  * -------------------------------------------------------------------------
  */
 
-import { preset } from 'presetter';
-import esm from 'presetter-preset-esm';
-import strict from 'presetter-preset-strict';
+import esm from '@presetter/preset-esm';
+import strict from '@presetter/preset-strict';
 
-export default preset('presetter-e2e', {
+import { preset } from 'presetter';
+
+export default preset('@presetter/e2e', {
   extends: [esm, strict],
   override: {
     assets: {

@@ -1,8 +1,0 @@
-*
-!/bin/**
-!/types/**
-!/lib/**
-!/generated/**
-
-!/overrides/**
-!/templates/**

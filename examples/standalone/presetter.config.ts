@@ -1,1 +1,1 @@
-export { default } from 'presetter-preset-esm';
+export { default } from '@presetter/preset-esm';

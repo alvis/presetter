@@ -1,5 +1,5 @@
 {
-  "name": "presetter-e2e",
+  "name": "@presetter/e2e",
   "version": "8.3.0",
   "private": true,
   "description": "End-to-end tests for presetter packages",
@@ -28,11 +28,11 @@
     "typecheck": "run typecheck --"
   },
   "devDependencies": {
+    "@presetter/preset-esm": "workspace:*",
+    "@presetter/preset-strict": "workspace:*",
     "debug": "catalog:runtime",
     "execa": "catalog:runtime",
     "presetter": "workspace:*",
-    "presetter-preset-esm": "workspace:*",
-    "presetter-preset-strict": "workspace:*",
     "type-fest": "catalog:types",
     "verdaccio": "^6.0.0",
     "vitest": "catalog:testing"

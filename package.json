@@ -1,5 +1,5 @@
 {
-  "name": "presetter-monorepo",
+  "name": "@presetter/monorepo",
   "version": "8.3.0",
   "private": true,
   "description": "Make project configurations clean with presets",
@@ -17,10 +17,10 @@
   "type": "module",
   "scripts": {
     "build": "pnpm --recursive run build",
-    "e2e": "pnpm --filter presetter-e2e test",
+    "e2e": "pnpm --filter @presetter/e2e test",
     "install": "npx -y only-allow pnpm && husky",
-    "postinstall": "presetter bootstrap --projects . --projects e2e --projects packages/*",
-    "lint": "run-s \"lint:* -- packages/*/src/** packages/*/spec/**\"",
+    "postinstall": "presetter bootstrap --projects . --projects e2e --projects packages/* --projects presets/*",
+    "lint": "run-s \"lint:* -- packages/*/src/** packages/*/spec/** presets/*/src/** presets/*/spec/**\"",
     "lint:eslint": "NODE_OPTIONS=--max-old-space-size=8096 eslint --flag unstable_config_lookup_from_file --fix --format stylish --no-error-on-unmatched-pattern --no-warn-ignored --cache --cache-strategy content",
     "lint:fixme": "leasot --skip-unsupported --exit-nicely package.json",
     "lint:prettier": "prettier --write --no-error-on-unmatched-pattern",
@@ -36,14 +36,14 @@
     "stage": "pnpm --recursive exec lint-staged -- --concurrent=false",
     "test": "run test --",
     "test:coverage": "run test:coverage --",
+    "test:e2e": "pnpm --filter @presetter/e2e test:e2e",
     "test:watch": "run test:watch --",
-    "test:e2e": "pnpm --filter presetter-e2e test:e2e",
     "typecheck": "pnpm --recursive exec tsc --noEmit --skipLibCheck"
   },
   "devDependencies": {
+    "@presetter/preset-monorepo": "workspace:*",
     "@types/node": "catalog:types",
     "presetter": "workspace:*",
-    "presetter-preset-monorepo": "workspace:*",
     "typescript": "catalog:build"
   },
   "packageManager": "pnpm@10.25.0",

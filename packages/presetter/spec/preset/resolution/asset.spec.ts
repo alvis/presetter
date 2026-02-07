@@ -14,7 +14,7 @@ import type {
   PresetContentContext,
   PresetNode,
   ResolvedPresetAsset,
-} from 'presetter-types';
+} from '@presetter/types';
 
 vi.mock('#preset/resolution/content', { spy: true });
 

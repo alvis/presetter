@@ -2,7 +2,7 @@ import pupa from 'pupa';
 
 import { isJsonObject } from '../utilities';
 
-import type { Variables } from 'presetter-types';
+import type { Variables } from '@presetter/types';
 
 /**
  * replace parameters in the template

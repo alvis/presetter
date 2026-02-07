@@ -1,1 +1,1 @@
-export { default } from 'presetter-preset-monorepo';
+export { default } from '@presetter/preset-monorepo';

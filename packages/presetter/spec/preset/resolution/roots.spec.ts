@@ -2,7 +2,7 @@ import { describe, expect, it } from 'vitest';
 
 import { extractPresetRoots } from '#preset/resolution/roots';
 
-import type { PresetNode } from 'presetter-types';
+import type { PresetNode } from '@presetter/types';
 
 describe('fn:extractPresetRoots', () => {
   it('should return empty array for node without root and no children', () => {

@@ -4,7 +4,7 @@ import { resolvePreset } from '#preset/resolution/preset';
 
 import { context } from './fixture';
 
-import type { Preset, PresetNode } from 'presetter-types';
+import type { Preset, PresetNode } from '@presetter/types';
 
 describe('fn:resolvePreset', () => {
   it('should able to resolve a plan object preset successfully', async () => {

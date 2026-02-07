@@ -5,7 +5,7 @@ import { resolveContent, resolveNodeContent } from '#preset/resolution/content';
 
 import { context } from './fixture';
 
-import type { PresetDefinition, PresetNode } from 'presetter-types';
+import type { PresetDefinition, PresetNode } from '@presetter/types';
 
 vi.mock('#io', () => ({
   loadFile: vi.fn(),

@@ -1,6 +1,6 @@
 import debug from './debugger';
 
-import type { Preset, PresetNode, ProjectContext } from 'presetter-types';
+import type { Preset, PresetNode, ProjectContext } from '@presetter/types';
 
 /**
  * resolve a preset

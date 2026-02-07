@@ -5,7 +5,7 @@ import { load } from 'js-yaml';
 
 import { substitute } from './template';
 
-import type { Variables } from 'presetter-types';
+import type { Variables } from '@presetter/types';
 import type { JsonObject } from 'type-fest';
 
 /**

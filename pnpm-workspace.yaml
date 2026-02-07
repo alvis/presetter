@@ -1,6 +1,7 @@
 packages:
   - e2e
   - packages/*
+  - presets/*
 
 catalogs:
   build:

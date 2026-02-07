@@ -1,7 +1,7 @@
 import { resolveNodeContent } from './content';
 import Debug from './debugger';
 
-import type { PresetNode, ProjectContext, Variables } from 'presetter-types';
+import type { PresetNode, ProjectContext, Variables } from '@presetter/types';
 
 /**
  * resolves all variables for a given preset node

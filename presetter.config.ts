@@ -1,5 +1,5 @@
 import { asset, preset } from 'presetter';
-import monorepo from 'presetter-preset-monorepo';
+import monorepo from '@presetter/preset-monorepo';
 
 import type { ViteUserConfig } from 'vitest/config';
 
@@ -14,7 +14,7 @@ const vitest = asset<{ default: ViteUserConfig }>({
   },
 });
 
-export default preset('presetter-monorepo', {
+export default preset('@presetter/monorepo', {
   extends: [monorepo],
   override: {
     assets: ({ isRepoRoot }) => ({
@@ -26,7 +26,7 @@ export default preset('presetter-monorepo', {
             'eslint.config.ts': {
               default: [
                 {
-                  name: 'presetter-monorepo:template-files',
+                  name: '@presetter/monorepo:template-files',
                   files: ['**/*.override.ts', '**/*.template.ts'],
                   rules: {
                     'max-lines': 'off',

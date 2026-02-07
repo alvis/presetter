@@ -3,7 +3,7 @@ import debug from '../debugger';
 import { resolvePresetterConfig } from './config';
 import { resolvePreset } from './resolution';
 
-import type { PresetNode, ProjectContext } from 'presetter-types';
+import type { PresetNode, ProjectContext } from '@presetter/types';
 
 /**
  * resolve the project preset

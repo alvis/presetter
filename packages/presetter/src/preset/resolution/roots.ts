@@ -1,4 +1,4 @@
-import type { PresetNode } from 'presetter-types';
+import type { PresetNode } from '@presetter/types';
 
 /**
  * recursively extracts all preset root paths from a preset node tree (pure function)

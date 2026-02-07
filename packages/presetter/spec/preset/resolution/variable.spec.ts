@@ -5,7 +5,7 @@ import { resolveVariables } from '#preset/resolution/variable';
 
 import { context } from './fixture';
 
-import type { PresetNode } from 'presetter-types';
+import type { PresetNode } from '@presetter/types';
 
 vi.mock('#preset/resolution/content', { spy: true });
 

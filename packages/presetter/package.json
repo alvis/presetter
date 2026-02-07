@@ -84,6 +84,7 @@
   },
   "dependencies": {
     "@npmcli/run-script": "catalog:runtime",
+    "@presetter/types": "workspace:*",
     "callsite-record": "catalog:runtime",
     "chalk": "catalog:runtime",
     "debug": "catalog:runtime",
@@ -93,7 +94,6 @@
     "jiti": "catalog:runtime",
     "js-yaml": "catalog:runtime",
     "listr2": "catalog:runtime",
-    "presetter-types": "workspace:*",
     "pupa": "catalog:runtime",
     "sh-syntax": "catalog:runtime",
     "source-map-support": "catalog:runtime",
@@ -101,13 +101,13 @@
     "yargs-parser": "catalog:runtime"
   },
   "devDependencies": {
+    "@presetter/preset-esm": "workspace:*",
+    "@presetter/preset-essentials": "workspace:*",
+    "@presetter/preset-strict": "workspace:*",
     "@types/debug": "catalog:runtime",
     "@types/js-yaml": "catalog:runtime",
     "@types/node": "catalog:types",
     "@types/yargs": "catalog:runtime",
-    "presetter-preset-esm": "workspace:*",
-    "presetter-preset-essentials": "workspace:*",
-    "presetter-preset-strict": "workspace:*",
     "type-fest": "catalog:types"
   },
   "engines": {

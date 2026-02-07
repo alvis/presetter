@@ -4,7 +4,7 @@ import debug from '../../debugger';
 
 import { searchPresetterConfigs } from './search';
 
-import type { Preset } from 'presetter-types';
+import type { Preset } from '@presetter/types';
 
 const jiti = createJiti(import.meta.url, {
   moduleCache: false, // NOTE: disable module cache to fix a bug in jiti that importing the same file multiple times simtaneously would result in some of the imports resolved as undefined

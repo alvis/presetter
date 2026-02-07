@@ -31,7 +31,7 @@ export const PACKAGES_DIR = resolve(ROOT_DIR, 'packages');
 export const EXAMPLES_DIR = resolve(ROOT_DIR, 'examples');
 
 /** temporary working directory path (outside monorepo for isolation) */
-export const TEMP_DIR = resolve(tmpdir(), `presetter-e2e`);
+export const TEMP_DIR = resolve(tmpdir(), `@presetter/e2e`);
 
 // REGISTRY CONFIGURATION //
 

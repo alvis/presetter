@@ -27,8 +27,8 @@ Packages without `presetter.config.ts` inherit configuration from the monorepo r
 
 ```typescript
 import { preset } from 'presetter';
-import monorepo from 'presetter-preset-monorepo';
-import react from 'presetter-preset-react';
+import monorepo from '@presetter/preset-monorepo';
+import react from '@presetter/preset-react';
 
 export default preset('@example/ui', {
   extends: [monorepo, react],
@@ -38,7 +38,7 @@ export default preset('@example/ui', {
 ### 3. Standalone (packages/utilities)
 
 ```typescript
-export { default } from 'presetter-preset-esm';
+export { default } from '@presetter/preset-esm';
 ```
 
 Completely independent configuration - does not inherit from root.
@@ -49,8 +49,8 @@ A single `apps/presetter.config.ts` is shared by all app packages:
 
 ```typescript
 import { preset } from 'presetter';
-import monorepo from 'presetter-preset-monorepo';
-import next from 'presetter-preset-next';
+import monorepo from '@presetter/preset-monorepo';
+import next from '@presetter/preset-next';
 
 export default preset('@example/apps', {
   extends: [monorepo, next],

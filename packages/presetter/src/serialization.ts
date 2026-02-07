@@ -2,7 +2,7 @@ import { extname } from 'node:path';
 
 import { dump } from 'js-yaml';
 
-import type { ResolvedPresetAsset } from 'presetter-types';
+import type { ResolvedPresetAsset } from '@presetter/types';
 
 // JSON format
 const INDENT = 2;

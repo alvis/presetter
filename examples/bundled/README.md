@@ -6,7 +6,7 @@ This example demonstrates how to use presetter with the Rollup preset to create 
 
 ```typescript
 // presetter.config.ts
-export { default } from 'presetter-preset-rollup';
+export { default } from '@presetter/preset-rollup';
 ```
 
 ## Output Formats
@@ -35,7 +35,7 @@ After building, you get three bundle formats:
 
 ## When to Use
 
-Use `presetter-preset-rollup` when you need:
+Use `@presetter/preset-rollup` when you need:
 
 - A library consumable in multiple environments (Node.js, browsers, bundlers)
 - Optimized, tree-shakeable bundles

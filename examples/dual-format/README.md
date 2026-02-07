@@ -6,7 +6,7 @@ This example demonstrates how to use presetter with the Hybrid preset to compile
 
 ```typescript
 // presetter.config.ts
-export { default } from 'presetter-preset-hybrid';
+export { default } from '@presetter/preset-hybrid';
 ```
 
 ## Output Formats
@@ -30,7 +30,7 @@ After building, you get two compiled formats:
 
 ## When to Use
 
-Use `presetter-preset-hybrid` when you need:
+Use `@presetter/preset-hybrid` when you need:
 
 - Dual ESM/CJS output without bundling overhead
 - Faster builds for internal libraries

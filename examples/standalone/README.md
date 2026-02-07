@@ -7,7 +7,7 @@ This example demonstrates how to use presetter in a single-package project with 
 The entire configuration is just one line in `presetter.config.ts`:
 
 ```typescript
-export { default } from 'presetter-preset-esm';
+export { default } from '@presetter/preset-esm';
 ```
 
 Install dependencies to bootstrap presetter:
@@ -37,4 +37,4 @@ Presetter automatically generates all configuration files:
 
 ## Key Benefit
 
-**Zero configuration complexity** - Just install `presetter` and `presetter-preset-esm`, and you get a fully configured TypeScript development environment.
+**Zero configuration complexity** - Just install `presetter` and `@presetter/preset-esm`, and you get a fully configured TypeScript development environment.
