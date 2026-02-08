@@ -1,5 +1,6 @@
-import { asset, preset } from 'presetter';
 import monorepo from '@presetter/preset-monorepo';
+import node from '@presetter/preset-node';
+import { asset, preset } from 'presetter';
 
 import type { ViteUserConfig } from 'vitest/config';
 
@@ -15,7 +16,7 @@ const vitest = asset<{ default: ViteUserConfig }>({
 });
 
 export default preset('@presetter/monorepo', {
-  extends: [monorepo],
+  extends: [monorepo, node],
   override: {
     assets: ({ isRepoRoot }) => ({
       'vitest.config.ts': vitest,

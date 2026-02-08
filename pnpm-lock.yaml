@@ -261,6 +261,9 @@ importers:
       '@presetter/preset-monorepo':
         specifier: workspace:*
         version: link:presets/monorepo
+      '@presetter/preset-node':
+        specifier: workspace:*
+        version: link:presets/node
       '@types/node':
         specifier: catalog:types
         version: 24.10.4
@@ -555,6 +558,12 @@ importers:
       type-fest:
         specifier: catalog:types
         version: 5.3.1
+
+  presets/node:
+    dependencies:
+      '@presetter/types':
+        specifier: workspace:*
+        version: link:../../packages/types
 
   presets/react:
     dependencies:

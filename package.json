@@ -42,6 +42,7 @@
   },
   "devDependencies": {
     "@presetter/preset-monorepo": "workspace:*",
+    "@presetter/preset-node": "workspace:*",
     "@types/node": "catalog:types",
     "presetter": "workspace:*",
     "typescript": "catalog:build"

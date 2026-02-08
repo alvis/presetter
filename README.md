@@ -37,6 +37,9 @@ npx presetter use @presetter/preset-cjs
 # 🌐 Dual-module library publishing
 npx presetter use @presetter/preset-hybrid
 
+# 🟩 Node.js runtime
+npx presetter use @presetter/preset-node
+
 # 🎨 Modern web development (TailwindCSS + Storybook)
 npx presetter use @presetter/preset-esm @presetter/preset-web
 
@@ -101,6 +104,7 @@ presetter/
 │   ├── esm/                🚀 ESM-first
 │   ├── cjs/                🔗 CommonJS
 │   ├── hybrid/             🌐 Dual CJS/ESM
+│   ├── node/               🟩 Node.js runtime
 │   │
 │   ├── strict/             🏢 Production-grade quality
 │   ├── web/                🎨 Web dev stack
@@ -120,7 +124,7 @@ presetter/
 | ------------------ | ----------------------------------------------------------------------------- | -------------------------------------------------- |
 | **Core Engine**    | `presetter`, `types`                                                          | Configuration management infrastructure            |
 | **Foundation**     | `preset-essentials`, `preset-monorepo`                                        | Base TypeScript development toolkit                |
-| **Module Systems** | `preset-esm`, `preset-cjs`, `preset-hybrid`                                   | JavaScript module format & runtime specializations |
+| **Module Systems** | `preset-esm`, `preset-cjs`, `preset-hybrid`, `preset-node`                    | JavaScript module format & runtime specializations |
 | **Extensions**     | `preset-strict`, `preset-web`, `preset-react`, `preset-next`, `preset-rollup` | Specialized development environments               |
 
 ---
@@ -141,6 +145,7 @@ presetter/
 | **[@presetter/preset-esm](presets/esm)**       | ESM-first development      | essentials | Modern Node.js projects, libraries        |
 | **[@presetter/preset-cjs](presets/cjs)**       | CommonJS compatibility     | essentials | Legacy environments, enterprise           |
 | **[@presetter/preset-hybrid](presets/hybrid)** | Dual CommonJS/ESM packages | essentials | npm libraries needing broad compatibility |
+| **[@presetter/preset-node](presets/node)**     | Node.js runtime tooling    | essentials | Node.js apps, CLIs, services              |
 
 ### 🎨 Specialized Extension Presets
 
@@ -157,6 +162,9 @@ presetter/
 ```typescript
 // Modern web application
 extends: [esm, web]
+
+// Node.js service
+extends: [esm, node]
 
 // React component library
 extends: [react, rollup]
@@ -301,6 +309,7 @@ graph TD
   M[preset-esm]
   C[preset-cjs]
   H[preset-hybrid]
+  N[preset-node]
   W[preset-web]
   R[preset-react]
   X[preset-next]
