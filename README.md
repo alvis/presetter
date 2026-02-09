@@ -40,6 +40,9 @@ npx presetter use @presetter/preset-hybrid
 # 🟩 Node.js runtime
 npx presetter use @presetter/preset-node
 
+# 🥟 Bun runtime
+npx presetter use @presetter/preset-bun
+
 # 🎨 Modern web development (TailwindCSS + Storybook)
 npx presetter use @presetter/preset-esm @presetter/preset-web
 
@@ -104,6 +107,7 @@ presetter/
 │   ├── esm/                🚀 ESM-first
 │   ├── cjs/                🔗 CommonJS
 │   ├── hybrid/             🌐 Dual CJS/ESM
+│   ├── bun/                🥟 Bun runtime
 │   ├── node/               🟩 Node.js runtime
 │   │
 │   ├── strict/             🏢 Production-grade quality
@@ -124,7 +128,7 @@ presetter/
 | ------------------ | ----------------------------------------------------------------------------- | -------------------------------------------------- |
 | **Core Engine**    | `presetter`, `types`                                                          | Configuration management infrastructure            |
 | **Foundation**     | `preset-essentials`, `preset-monorepo`                                        | Base TypeScript development toolkit                |
-| **Module Systems** | `preset-esm`, `preset-cjs`, `preset-hybrid`, `preset-node`                    | JavaScript module format & runtime specializations |
+| **Module Systems** | `preset-esm`, `preset-cjs`, `preset-hybrid`, `preset-bun`, `preset-node`      | JavaScript module format & runtime specializations |
 | **Extensions**     | `preset-strict`, `preset-web`, `preset-react`, `preset-next`, `preset-rollup` | Specialized development environments               |
 
 ---
@@ -140,12 +144,13 @@ presetter/
 
 ### 🚀 Module System & Runtime Presets
 
-| Preset                                         | Purpose                    | Extends    | Best For                                  |
-| ---------------------------------------------- | -------------------------- | ---------- | ----------------------------------------- |
-| **[@presetter/preset-esm](presets/esm)**       | ESM-first development      | essentials | Modern Node.js projects, libraries        |
-| **[@presetter/preset-cjs](presets/cjs)**       | CommonJS compatibility     | essentials | Legacy environments, enterprise           |
-| **[@presetter/preset-hybrid](presets/hybrid)** | Dual CommonJS/ESM packages | essentials | npm libraries needing broad compatibility |
-| **[@presetter/preset-node](presets/node)**     | Node.js runtime tooling    | essentials | Node.js apps, CLIs, services              |
+| Preset                                         | Purpose                    | Extends         | Best For                                  |
+| ---------------------------------------------- | -------------------------- | --------------- | ----------------------------------------- |
+| **[@presetter/preset-esm](presets/esm)**       | ESM-first development      | essentials      | Modern Node.js projects, libraries        |
+| **[@presetter/preset-cjs](presets/cjs)**       | CommonJS compatibility     | essentials      | Legacy environments, enterprise           |
+| **[@presetter/preset-hybrid](presets/hybrid)** | Dual CommonJS/ESM packages | essentials      | npm libraries needing broad compatibility |
+| **[@presetter/preset-bun](presets/bun)**       | Bun runtime and build flow | Any base preset | Bun applications, CLIs, services          |
+| **[@presetter/preset-node](presets/node)**     | Node.js runtime tooling    | essentials      | Node.js apps, CLIs, services              |
 
 ### 🎨 Specialized Extension Presets
 
@@ -162,6 +167,9 @@ presetter/
 ```typescript
 // Modern web application
 extends: [esm, web]
+
+// Bun application
+extends: [esm, bun]
 
 // Node.js service
 extends: [esm, node]
@@ -309,6 +317,7 @@ graph TD
   M[preset-esm]
   C[preset-cjs]
   H[preset-hybrid]
+  B[preset-bun]
   N[preset-node]
   W[preset-web]
   R[preset-react]

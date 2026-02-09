@@ -89,6 +89,7 @@ catalogs:
     vitest: ^4.0.0
 
   types:
+    '@types/bun': ^1.3.0
     type-fest: ^5.0.0
     '@types/node': ^24.0.0
 

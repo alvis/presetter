@@ -1,0 +1,22 @@
+{
+  "name": "example-bun",
+  "version": "1.0.0",
+  "type": "module",
+  "scripts": {
+    "build": "run build",
+    "lint": "run lint --",
+    "prepare": "run prepare",
+    "test": "run test --",
+    "test:coverage": "run test:coverage --",
+    "test:watch": "run test:watch --",
+    "typecheck": "run typecheck --"
+  },
+  "devDependencies": {
+    "@presetter/preset-bun": "*",
+    "@presetter/preset-esm": "*",
+    "@types/bun": "*",
+    "@vitest/coverage-v8": "*",
+    "presetter": "*",
+    "typescript": "*"
+  }
+}
