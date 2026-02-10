@@ -271,10 +271,6 @@ Customize your project structure:
     "declaration": true,
     "declarationMap": true,
     "sourceMap": true,
-    "baseUrl": ".",
-    "paths": {
-      "#*": ["./src/*"]
-    }
   }
 }
 ```

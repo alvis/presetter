@@ -154,7 +154,7 @@ monorepo/
 | Component                                                                          | Role                          | What it does                                                         |
 | ---------------------------------------------------------------------------------- | ----------------------------- | -------------------------------------------------------------------- |
 | **[Presetter](https://github.com/alvis/presetter/blob/master/packages/presetter)** | Configuration management tool | CLI that processes presets, generates config files, executes scripts |
-| **@presetter/preset-monorepo**                                                      | Configuration template        | Defines what configs to generate for monorepos                       |
+| **@presetter/preset-monorepo**                                                     | Configuration template        | Defines what configs to generate for monorepos                       |
 
 **Think of it like:**
 
@@ -376,8 +376,7 @@ Inherited from `@presetter/preset-essentials`:
   "compilerOptions": {
     "module": "ESNext",
     "moduleResolution": "bundler",
-    "target": "ES2022",
-    "baseUrl": "."
+    "target": "ES2022"
   }
 }
 ```

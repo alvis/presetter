@@ -95,7 +95,9 @@ export async function resolveAsset(_: {
     context,
     variables,
     select: ({ assets }) =>
-      resolveObject(assets, { ...context, variables })?.[name],
+      resolveObject(assets, { ...context, variables })?.[
+        name
+      ] as ResolvedPresetAsset,
   });
 
   debug(

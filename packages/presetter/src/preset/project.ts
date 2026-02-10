@@ -6,7 +6,7 @@ import { resolvePreset } from './resolution';
 import type { PresetNode, ProjectContext } from '@presetter/types';
 
 /**
- * resolve the project preset
+ * build the full preset graph for a project
  * @param context context about the target project and customization in .presetterrc
  * @returns assets from the preset
  */
@@ -25,7 +25,7 @@ export async function resolveProjectPreset(
 
     return await resolvePreset(preset, context);
   } catch (cause) {
-    debug(`failed to resolve preset at ${projectRoot}: ${cause}`);
+    debug(`failed to resolve preset at ${projectRoot}:`, cause);
 
     throw cause;
     /* v8 ignore start */

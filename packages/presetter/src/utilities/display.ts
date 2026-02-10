@@ -24,7 +24,7 @@ export function display(content: unknown, level = 0): string {
                 // indent the content based on the level
                 '  '.repeat(level + 1) +
                 `${key}: ` +
-                display(content[key], level + 1),
+                display((content as Record<string, unknown>)[key], level + 1),
             )
             .join('\n') +
           '\n' +

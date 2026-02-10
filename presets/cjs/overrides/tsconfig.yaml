@@ -1,4 +1,3 @@
 compilerOptions:
   module: commonjs
   target: ES2017
-  moduleResolution: node

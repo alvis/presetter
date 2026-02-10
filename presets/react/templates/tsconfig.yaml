@@ -17,7 +17,6 @@ compilerOptions:
   # module resolution
   moduleResolution: bundler
   resolveJsonModule: true
-  baseUrl: .
 
   # libraries
   lib:

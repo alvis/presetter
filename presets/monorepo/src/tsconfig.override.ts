@@ -13,7 +13,6 @@ export default asset<TsConfigJson>((_, { variables }) => {
         TsConfigJson['compilerOptions']
       >['target'],
       moduleResolution: 'bundler',
-      baseUrl: '.',
     },
   };
 });
