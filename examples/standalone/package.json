@@ -11,10 +11,10 @@
     "typecheck": "run typecheck --"
   },
   "devDependencies": {
+    "@presetter/preset-esm": "*",
     "@types/node": "*",
     "@vitest/coverage-v8": "*",
     "presetter": "*",
-    "presetter-preset-esm": "*",
     "typescript": "*"
   }
 }

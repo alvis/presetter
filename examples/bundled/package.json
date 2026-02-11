@@ -19,12 +19,12 @@
     "typecheck": "run typecheck --"
   },
   "devDependencies": {
+    "@presetter/preset-esm": "*",
+    "@presetter/preset-rollup": "*",
+    "@presetter/preset-strict": "*",
     "@types/node": "*",
     "@vitest/coverage-v8": "*",
     "presetter": "*",
-    "presetter-preset-esm": "*",
-    "presetter-preset-rollup": "*",
-    "presetter-preset-strict": "*",
     "typescript": "*"
   }
 }

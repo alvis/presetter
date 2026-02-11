@@ -18,10 +18,10 @@
     "typecheck": "run typecheck --"
   },
   "devDependencies": {
+    "@presetter/preset-hybrid": "*",
     "@types/node": "*",
     "@vitest/coverage-v8": "*",
     "presetter": "*",
-    "presetter-preset-hybrid": "*",
     "typescript": "*"
   }
 }
