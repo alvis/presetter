@@ -14,9 +14,9 @@ import type {
 
 /**
  * loads a potentially dynamic content
- * @param _ collection of arguments
+ * @param _ options describing the content source and merge target
  * @param _.content content to be loaded
- * @param _.current the current content
+ * @param _.current existing value that should be merged with resolved content
  * @param _.variables the variables to use during resolution
  * @param _.context the context in which the content is being resolved
  * @returns a promise that resolves to the RESOLVED content

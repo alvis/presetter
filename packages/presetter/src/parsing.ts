@@ -147,7 +147,7 @@ const updateQuotes = (
  * @param char current character
  * @param nextChar next character
  * @param parenDepth parenthesis depth
- * @param braceDepth brace depth
+ * @param braceDepth number of nested braces currently open
  * @returns operator match or null
  */
 const checkBinaryOp = (

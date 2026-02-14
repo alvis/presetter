@@ -12,7 +12,7 @@ export interface Task {
 
 /**
  * parse global arguments from an argv object
- * @param argv - an arguments object containing the command line arguments
+ * @param argv an arguments object containing the command line arguments
  * @returns an array of cleaned up global arguments as strings
  */
 export function parseGlobalArgs(argv: Arguments): string[] {
@@ -37,6 +37,10 @@ const ARG_PLACEHOLDER_REGEX = /^{@:?(.*)$/;
  * - {\@} gets replaced with globalArgs
  * - {\@:default} uses "default" if no globalArgs, otherwise uses globalArgs
  * - {\@:arg1 arg2} splits into ["arg1", "arg2"] if no globalArgs
+ * @param rawArgs array of raw arguments
+ * @param startIndex starting index of the placeholder
+ * @param globalArgs global arguments to use if available
+ * @returns object with expanded args and next index to continue from
  * @example
  * // with globalArgs available
  * expandPlaceholderArgs(['{\@:--verbose}'], 0, ['--quiet', '--force'])
@@ -49,10 +53,6 @@ const ARG_PLACEHOLDER_REGEX = /^{@:?(.*)$/;
  * // empty placeholder
  * expandPlaceholderArgs(['{\@:}'], 0, [])
  * // returns: { args: [], nextIndex: 1 }
- * @param rawArgs array of raw arguments
- * @param startIndex starting index of the placeholder
- * @param globalArgs global arguments to use if available
- * @returns object with expanded args and next index to continue from
  */
 function expandPlaceholderArgs(
   rawArgs: string[],
@@ -117,8 +117,8 @@ interface ProcessingState {
 
 /**
  * parse task string and return a parsed task object with selector and args
- * @param spec - the task string to parse
- * @param globalArgs - the global arguments to be added to each task
+ * @param spec the task string to parse
+ * @param globalArgs the global arguments to be added to each task
  * @returns parsed task object with selector and args
  */
 export function parseTaskSpec(spec: string, globalArgs: string[]): Task {

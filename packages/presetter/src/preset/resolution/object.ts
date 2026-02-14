@@ -1,7 +1,7 @@
 import type { PresetContentContext, PresetObject } from '@presetter/types';
 
 /**
- * resolve an object
+ * evaluate a static value or content factory
  * @param object the object to resolve
  * @param context the context in which the object is being resolved
  * @returns the resolved object

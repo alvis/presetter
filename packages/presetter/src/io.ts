@@ -46,7 +46,7 @@ export function loadFile(
 /**
  * ensure that there is a file at the given path with the given content
  * @param path path where the file should be created
- * @param content content of the file
+ * @param content data that should be written to disk
  */
 export function ensureFile(path: string, content: string | Buffer): void {
   // ensure that all parent folders exist to avoid errors from writeFile

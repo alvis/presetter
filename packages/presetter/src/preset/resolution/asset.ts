@@ -70,8 +70,8 @@ export async function resolveAssets(
 
 /**
  * resolves a specific asset for a given preset node
- * @param _ collection of arguments
- * @param _.name the name of the asset
+ * @param _ options describing the asset lookup
+ * @param _.name key used to select the asset from the preset node
  * @param _.node the preset node
  * @param _.context the context in which the node is being resolved
  * @param _.variables the variables to use during resolution
