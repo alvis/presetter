@@ -59,7 +59,7 @@ export default asset<{ default: Linter.Config[] }>(
             mode: 'typescript',
           },
           'targets':
-            (packageJson.browserslist as string[] | undefined) ??
+            packageJson.browserslist ??
             (Object.keys({
               ...packageJson.dependencies,
               ...packageJson.devDependencies,
@@ -77,7 +77,17 @@ export default asset<{ default: Linter.Config[] }>(
 
           // Documentation //
 
-          'jsdoc/tag-lines': ['error', 'never'], // doesn't need a new line after each description
+          'jsdoc/informative-docs': 'warn', // descriptions must add information beyond the name
+          'jsdoc/multiline-blocks': [
+            'warn',
+            {
+              minimumLengthForMultiline: 80,
+              noMultilineBlocks: true,
+              requireSingleLineUnderCount: 80,
+            },
+          ],
+          'jsdoc/no-blank-blocks': 'warn', // forbid empty jsdoc blocks
+          'jsdoc/no-blank-block-descriptions': 'warn', // forbid blank-line-only descriptions
           'jsdoc/require-description': [
             // a description is a must
             'warn',
@@ -87,6 +97,7 @@ export default asset<{ default: Linter.Config[] }>(
               checkSetters: false,
             },
           ],
+          'jsdoc/require-hyphen-before-param-description': ['warn', 'never'],
           'jsdoc/require-jsdoc': [
             // all functions must be documented
             'warn',
@@ -122,6 +133,8 @@ export default asset<{ default: Linter.Config[] }>(
             },
           ],
           'jsdoc/require-returns-type': 'off', // don't need type information as we use typescript
+          'jsdoc/sort-tags': 'warn', // enforce a consistent tag order
+          'jsdoc/tag-lines': ['error', 'never'], // doesn't need a new line after each description
 
           // ECMAScript //
           '@typescript-eslint/prefer-for-of': 'warn', // use `for of` if possible
@@ -323,6 +336,13 @@ export default asset<{ default: Linter.Config[] }>(
             },
           ],
           '@typescript-eslint/no-unsafe-return': 'off', // skip the hassle of casting return to its expected types all the time
+          'no-warning-comments': [
+            'warn',
+            {
+              terms: ['todo', 'fixme'],
+              location: 'anywhere',
+            },
+          ],
 
           // Error Prevention //
           '@typescript-eslint/no-non-null-assertion': 'off', // allow non-null assertions
