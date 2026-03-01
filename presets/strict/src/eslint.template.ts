@@ -20,7 +20,7 @@ export default asset<{ default: Linter.Config[] }>((current, context) => {
   return {
     default: [
       ...currentConfigs,
-      sonarjs.configs.recommended,
+      sonarjs.configs.recommended as Linter.Config,
       {
         name: '@presetter/preset-strict:generic',
         rules: {
@@ -115,6 +115,7 @@ export default asset<{ default: Linter.Config[] }>((current, context) => {
         rules: {
           // Best Practices //
           'sonarjs/arguments-order': 'off', // handled by typescript natively
+          'sonarjs/argument-type': 'off', // handled by typescript natively
           'sonarjs/different-types-comparison': 'off', // rely on TypeScript for type safety and comparison checks
           'sonarjs/function-return-type': 'off', // handled more effectively by @typescript-eslint/explicit-function-return-type
           'sonarjs/no-async-constructor': 'off', // allow async constructors when necessary
@@ -129,6 +130,7 @@ export default asset<{ default: Linter.Config[] }>((current, context) => {
           'sonarjs/no-throw-literal': 'off', // managed by @typescript-eslint/no-throw-literal
           'sonarjs/no-unused-expressions': 'off', // handled by @typescript-eslint/no-unused-expressions
           'sonarjs/no-redundant-type-constituents': 'off', // handled by @typescript-eslint/no-redundant-type-constituents
+          'sonarjs/null-dereference': 'off', // handled by typescript natively
           'sonarjs/pseudo-random': 'off', // unnecessary unless dealing with cryptography
           'sonarjs/prefer-nullish-coalescing': 'off', // defer to @typescript-eslint/prefer-nullish-coalescing
           'sonarjs/redundant-type-aliases': 'off', // allow for improved readability
@@ -162,6 +164,6 @@ export default asset<{ default: Linter.Config[] }>((current, context) => {
           'sonarjs/assertions-in-tests': 'off', // disabled due to frequent false positives in test code
         },
       },
-    ] satisfies Linter.Config[] as Linter.Config[],
+    ],
   };
 });
