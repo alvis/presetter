@@ -57,6 +57,7 @@ export default preset('@presetter/preset-essentials', (context) => ({
       ? {
           '.husky/pre-commit': resolve(TEMPLATES, 'pre-commit'),
           '.husky/pre-push': resolve(TEMPLATES, 'pre-push'),
+          'cliff.yaml': resolve(TEMPLATES, 'cliff.yaml'),
         }
       : {}),
     '.gitignore': resolve(TEMPLATES, 'gitignore'),

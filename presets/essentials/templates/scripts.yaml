@@ -17,7 +17,17 @@ lint:fixme: leasot --ignore '**/node_modules' --skip-unsupported --exit-nicely p
 lint-staged: lint-staged
 prepare: run-s setup
 prepublishOnly: run-s clean build
-release: standard-version --preset metahub
+release: run-s release:changelog release:commit
+release:changelog: >-
+  V="${VERSION:-$(git-cliff --config $(git rev-parse --show-toplevel)/cliff.yaml ${PRERELEASE:+--prerelease "$PRERELEASE"} --bumped-version | sed 's/^v//')}" &&
+  npm pkg set version="$V" &&
+  P=$(git rev-parse --show-prefix) && git-cliff --config $(git rev-parse --show-toplevel)/cliff.yaml --tag "v$V"
+  ${P:+--include-path "${P}**"} --output CHANGELOG.md &&
+  git add package.json CHANGELOG.md
+release:commit: >-
+  V=$(npm pkg get version | tr -d '"') &&
+  git commit -m "chore(release): publish v$V" && git tag "v$V"
+release:notes: git-cliff --config $(git rev-parse --show-toplevel)/cliff.yaml --latest --strip header
 setup: run-p setup:*
 setup:husky: husky || true
 setup:presetter: presetter bootstrap

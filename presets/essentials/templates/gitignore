@@ -4,6 +4,7 @@
 /.lintstagedrc.json
 /.npmignore
 /.prettierrc.json
+/cliff.yaml
 /eslint.config.ts
 /tsconfig.json
 /tsconfig.build.json

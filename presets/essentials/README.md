@@ -463,6 +463,27 @@ export default preset('my-project', {
 
 ---
 
+## 📦 Release
+
+`preset-essentials` provides standalone release scripts for single-package projects: `release:changelog`, `release:notes`, `release:commit`.
+
+### Environment variables
+
+| Variable     | Effect                                                                     |
+| ------------ | -------------------------------------------------------------------------- |
+| `VERSION`    | Use this version instead of computing via `git-cliff --bumped-version`.    |
+| `PRERELEASE` | Inject `--prerelease <value>` into the version bump (e.g. `next`, `beta`). |
+
+```bash
+npm run release:changelog                      # auto-bumped version
+VERSION=2.1.0 npm run release:changelog        # explicit
+PRERELEASE=next npm run release:changelog      # prerelease
+```
+
+For monorepos, use [`@presetter/preset-monorepo`](../preset-monorepo) which orchestrates lock-step bumping across all packages.
+
+---
+
 ## 🤝 Contributing
 
 We'd love your ideas and contributions!

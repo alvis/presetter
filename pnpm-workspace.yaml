@@ -5,8 +5,7 @@ packages:
 
 catalogs:
   build:
-    conventional-changelog-metahub: ^4.0.0
-    standard-version: ^9.0.0
+    git-cliff: ^2.12.0
     tsc-alias: ^1.0.0
     tsc-esm-fix: ^3.0.0
     tsconfig-paths: ^4.0.0

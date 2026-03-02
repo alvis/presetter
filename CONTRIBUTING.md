@@ -197,6 +197,24 @@ $ npm run next
 $ npm run release
 ```
 
+All packages in the monorepo are released in lock-step at one version per cycle.
+
+#### Flags
+
+| Flag       | Purpose                                                                                      | Example                               |
+| ---------- | -------------------------------------------------------------------------------------------- | ------------------------------------- |
+| `--ignore` | Skip matching sub-packages by repo-relative path glob or package-name glob. Can be repeated. | `npm run release -- --ignore ./e2e/*` |
+
+#### Environment variables
+
+| Variable       | Purpose                                                                                                             | Example                                       |
+| -------------- | ------------------------------------------------------------------------------------------------------------------- | --------------------------------------------- |
+| `VERSION`      | Force a specific version instead of letting `git-cliff` compute the next one from commits.                          | `VERSION=9.1.0 npm run release`               |
+| `PRERELEASE`   | Append a prerelease identifier (e.g. `next`, `beta`). `npm run next` sets this to `next` automatically.             | `PRERELEASE=beta npm run release`             |
+| `IGNORE_PATHS` | Comma-delimited list of path prefixes to exclude from lock-step version bumping in environment-driven release jobs. | `IGNORE_PATHS=examples,tools npm run release` |
+
+`--ignore` can match any discovered sub-package by directory or `package.json` path (`./e2e/*`) or by package name (`@acme/e2e-*`). `IGNORE_PATHS` preserves the older path-prefix behavior (`examples` also skips `examples/monorepo/packages/core`). Paths are repo-relative, with no spaces.
+
 **NOTE**:
 Upon releasing, automatically a versioning tag is issued and the change logs got updated.
 When the commit is pushed to the origin, the automated CI/CD system will then

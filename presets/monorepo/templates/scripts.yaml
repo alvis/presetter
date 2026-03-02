@@ -1,1 +1,44 @@
 lint: run-s "lint:* -- {@:**/{source}/**/*.ts **/{source}/**/*.tsx **/{test}/**/*.ts **/{test}/**/*.tsx}" --
+release: run-s "release:changelog -- {@}" release:commit --
+release:changelog: >-
+  sh -c '
+  CONFIG="$(git rev-parse --show-toplevel)/cliff.yaml" &&
+  V="${VERSION:-$(git-cliff --config "$CONFIG" ${PRERELEASE:+--prerelease "$PRERELEASE"} --bumped-version | sed "s/^v//")}" &&
+  IGNORE="$(printf "%s" "${IGNORE_PATHS:-}" | tr "," " ")" &&
+  while [ "$#" -gt 0 ]; do
+    case "$1" in
+      --ignore)
+        if [ "$#" -lt 2 ]; then echo "release:changelog requires a value for --ignore" >&2; exit 1; fi;
+        shift;
+        while [ "$#" -gt 0 ]; do
+          case "$1" in --*) break;; esac;
+          IGNORE="$IGNORE $1";
+          shift;
+        done;;
+      --ignore=*)
+        IGNORE="$IGNORE ${1#--ignore=}";
+        shift;;
+      *)
+        shift;;
+    esac;
+  done &&
+  npm pkg set version="$V" &&
+  git-cliff --config "$CONFIG" --tag "v$V" --output CHANGELOG.md &&
+  git add package.json CHANGELOG.md &&
+  for pkg in $(find . -name node_modules -prune -o -type f -name package.json -not -path "./package.json" -print); do
+    P="$(dirname "${pkg#./}")";
+    NAME="$(node -e "const fs = require(\"node:fs\"); const path = process.argv[1]; console.log(JSON.parse(fs.readFileSync(path, \"utf8\")).name || \"\")" "$P/package.json")";
+    skip=0;
+    for ignore in $IGNORE; do
+      NORMALIZED="${ignore#./}";
+      case "$P" in $NORMALIZED|$NORMALIZED/*) skip=1; break;; esac;
+      case "$P/package.json" in $NORMALIZED) skip=1; break;; esac;
+      case "$NAME" in $ignore) skip=1; break;; esac;
+    done;
+    [ "$skip" = 1 ] && continue;
+    (cd "$P" && npm pkg set version="$V");
+    git-cliff --config "$CONFIG" --tag "v$V" --include-path "$P/**" --output "$P/CHANGELOG.md";
+    git add "$P/package.json" "$P/CHANGELOG.md";
+  done
+  ' --
+release:notes: git-cliff --config $(git rev-parse --show-toplevel)/cliff.yaml --latest --strip header

@@ -328,6 +328,65 @@ This ensures configs are regenerated from the preset template whenever someone r
 
 ---
 
+## 📦 Release (Lock-Step Versioning)
+
+This preset ships a `release:changelog` script that computes **one global version per cycle** and propagates it to every `package.json` in the repo (root + all discovered sub-packages). A per-package `CHANGELOG.md` is generated with [`git-cliff`](https://git-cliff.org) scoped via `--include-path`.
+
+Invoke from the monorepo root via the preset's `run`:
+
+```bash
+npm run release:changelog           # bump + write all CHANGELOG.md + git add
+npm run release -- --ignore ./e2e/* # skip matching sub-packages
+```
+
+### Flags
+
+| Flag       | Effect                                                                                                   |
+| ---------- | -------------------------------------------------------------------------------------------------------- |
+| `--ignore` | Skip matching sub-packages. Can be repeated, and accepts repo-relative path globs or package-name globs. |
+
+```bash
+# skip every package under e2e/
+npm run release -- --ignore ./e2e/*
+
+# skip packages named with an @acme/e2e- prefix
+npm run release -- --ignore @acme/e2e-*
+
+# combine filters
+npm run release -- --ignore ./e2e/* --ignore @acme/e2e-*
+```
+
+### Environment variables
+
+| Variable       | Effect                                                                                                                        |
+| -------------- | ----------------------------------------------------------------------------------------------------------------------------- |
+| `VERSION`      | Use this version instead of computing via `git-cliff --bumped-version`.                                                       |
+| `PRERELEASE`   | Inject `--prerelease <value>` into the version bump (e.g. `next`, `beta`).                                                    |
+| `IGNORE_PATHS` | Comma-delimited path prefixes to exclude from bumping. Kept for environment-driven release jobs; use `--ignore` for CLI runs. |
+
+```bash
+# explicit version
+VERSION=9.1.0 npm run release:changelog
+
+# prerelease
+PRERELEASE=next npm run release:changelog
+
+# skip example fixtures and internal tools by path prefix
+IGNORE_PATHS=examples,tools npm run release:changelog
+```
+
+### Discovery
+
+Sub-packages are discovered via `find` (excluding `node_modules` and the root `package.json`) — any layout works: `packages/*`, `apps/*`, `libs/*`, or deeply nested. Path ignores are repo-relative and may include a leading `./`; package-name ignores match the `name` field in each discovered `package.json`. Paths should not contain spaces.
+
+### Flow
+
+1. Compute `V` (from `VERSION` env or `git-cliff --bumped-version`).
+2. Root: `npm pkg set version=$V` + regenerate root `CHANGELOG.md` + `git add`.
+3. For each discovered sub-package (skipping any matching `--ignore` or `IGNORE_PATHS`): `npm pkg set version=$V` + scoped `CHANGELOG.md` + `git add`.
+
+---
+
 ## 📖 API Reference
 
 ### Core Configuration Template
