@@ -2,7 +2,7 @@ import { asset } from 'presetter';
 
 import type { Linter } from 'eslint';
 
-export default asset<{ default: Linter.Config[] }>((current) => {
+export default asset<{ default: Linter.Config[] }>((current, { variables }) => {
   const configs = current?.default ?? [];
 
   const hasTypescriptEslint = configs.some(
@@ -95,6 +95,20 @@ export default asset<{ default: Linter.Config[] }>((current) => {
                 ],
               },
             ],
+          }),
+        },
+      },
+      {
+        name: 'presetter-preset-react:override:test-files',
+        files: [`${variables.test!}/**/*.[jt]sx`],
+        // disable rules that are not suitable for test files
+        rules: {
+          'max-lines-per-function': 'off', // allows longer functions in tests, especially when handling complex expected values
+          ...(hasTypescriptEslint && {
+            '@typescript-eslint/naming-convention': 'off', // ignores strict naming conventions in tests for flexibility with expected values
+          }),
+          ...(hasTypescriptEslint && {
+            'jsdoc/require-returns': 'off', // does not require return documentation for test functions
           }),
         },
       },
