@@ -9,6 +9,7 @@ export default asset<TsConfigJson>((_, { variables }) => {
     compilerOptions: {
       module: 'ESNext',
       strictNullChecks: true,
+      skipLibCheck: true,
       target: variables.target as NonNullable<
         TsConfigJson['compilerOptions']
       >['target'],
