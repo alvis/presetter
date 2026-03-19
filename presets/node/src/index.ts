@@ -3,6 +3,11 @@ import { fileURLToPath } from 'node:url';
 
 import { preset } from '@presetter/types';
 
+/** list of configurable variables */
+export interface Variables {}
+
+export const DEFAULT_VARIABLES = {} satisfies Variables;
+
 const DIR = fileURLToPath(dirname(import.meta.url));
 
 // paths to the template directory
