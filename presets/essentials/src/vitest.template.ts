@@ -1,14 +1,13 @@
 import { asset } from '@presetter/types';
-
-import { mergeConfig } from 'vitest/config';
+import { merge } from 'presetter';
 
 import type { ViteUserConfig } from 'vitest/config';
 
 export default asset<{ default: ViteUserConfig }>((current, context) => {
   const { packageJson, variables } = context;
 
-  return {
-    default: mergeConfig(current?.default ?? {}, {
+  return merge(current, {
+    default: {
       esbuild: { target: 'es2022' }, // required for using `using` statement
       test: {
         name: `${packageJson.name!}:UNIT`,
@@ -35,6 +34,6 @@ export default asset<{ default: ViteUserConfig }>((current, context) => {
           reporter: ['text', 'html', 'clover', 'json', 'lcov'],
         },
       },
-    }),
-  };
+    },
+  });
 });
