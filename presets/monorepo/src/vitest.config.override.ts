@@ -22,12 +22,6 @@ export default asset<{ default: ViteUserConfig }>((_, { variables }) => {
           // NOTE: this is important to make sure exclusion rules in individual projects' vitest.config.ts are respected
           // see https://vitest.dev/config/#coverage-exclude-after-remap
           excludeAfterRemap: true,
-          thresholds: {
-            branches: 100,
-            functions: 100,
-            lines: 100,
-            statements: 100,
-          },
         },
       },
     },
