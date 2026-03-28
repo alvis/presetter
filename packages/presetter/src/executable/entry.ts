@@ -72,7 +72,11 @@ const runCommand: CommandModule<
       .demandCommand(),
   handler: async (argv) => {
     // get the options
-    const [, selector] = argv._.map((arg) => arg.toString());
+    const [, selector] = argv._.map((arg) => arg.toString()) as [
+      string,
+      string,
+      ...Array<string | undefined>,
+    ];
     const args = parseGlobalArgs(argv);
 
     await run([{ selector, args }], { templateOnly: argv.template });

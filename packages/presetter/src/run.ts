@@ -40,13 +40,15 @@ function createListrTask(_: {
   return {
     title: `Running ${task}...`,
     task: async (_, taskControl) => {
-      const command = scripts[task];
+      const command = scripts[task]!;
 
       // parse the command and extract the executable and task specifications
       const argv = parse(command, {
         configuration: { 'populate--': true, 'unknown-options-as-args': true },
       });
-      const [executable, ...taskSpecs] = argv._.map((arg) => arg.toString());
+      const [executable, ...taskSpecs] = argv._.map((arg) =>
+        arg.toString(),
+      ) as [string, ...string[]];
 
       // check if the executable is 'run-s' or 'run-p'
       if (['run-s', 'run-p'].includes(executable)) {

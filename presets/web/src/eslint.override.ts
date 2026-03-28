@@ -28,7 +28,7 @@ export default [
       },
     },
     rules: {
-      ...tailwind.configs['recommended-warn'].rules,
+      ...tailwind.configs['recommended-warn']!.rules,
       'better-tailwindcss/no-conflicting-classes': 'warn',
       'better-tailwindcss/no-unregistered-classes': [
         'warn',

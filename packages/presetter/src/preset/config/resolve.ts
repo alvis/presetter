@@ -28,7 +28,7 @@ export async function resolvePresetterConfig(root: string): Promise<Preset> {
   }
 
   // NOTE: the priority is given to the configuration file closest to the project root, from mts, ts, mjs then js
-  const closestConfigPath = configPaths[0];
+  const closestConfigPath = configPaths[0]!;
 
   debug(`loading presetter configuration from ${closestConfigPath}`);
 

@@ -137,7 +137,7 @@ async function checkTailwindImportRecursively(
     let match: RegExpExecArray | null;
 
     while ((match = importRegex.exec(content)) !== null) {
-      const importPath = match[1];
+      const importPath = match[1]!;
 
       // skip URL imports (http/https)
       if (/^https?:\/\//.test(importPath)) {

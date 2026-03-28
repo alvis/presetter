@@ -185,7 +185,7 @@ const findTopLevelOperator = (text: string): OperatorMatch | null => {
   let escaped = false;
 
   for (let i = 0; i < text.length; i++) {
-    const char = text[i];
+    const char = text[i]!;
     const nextChar = text[i + 1];
 
     if (escaped) {
