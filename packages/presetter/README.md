@@ -203,6 +203,16 @@ Options:
   --version                 Show version number
 ```
 
+#### Bootstrap flags
+
+| Flag                | Alias | Default | Purpose                                                                                          |
+| ------------------- | ----- | ------- | ------------------------------------------------------------------------------------------------ |
+| `--projects <glob>` | `-p`  | `.`     | Path globs to project directories containing a `package.json` (e.g. `packages/*`, `presets/next`) |
+| `--packages <glob>` | `-P`  | _none_  | Package-name globs matching `package.json#name` across the workspace (e.g. `@presetter/preset-*`) |
+| `--only <file>`     |       | _none_  | Only proceed when the specified file exists                                                       |
+
+Both `--projects` and `--packages` accept comma-separated values; the wildcard `*` in `--packages` does not cross the npm-scope boundary (so `@presetter/preset-*` will not match `@other/foo`).
+
 ### 🎯 Common Commands
 
 ```bash
@@ -211,6 +221,15 @@ presetter use @presetter/preset-esm @presetter/preset-strict
 
 # Manually bootstrap (if needed)
 presetter bootstrap
+
+# Bootstrap specific projects by path glob
+presetter bootstrap --projects packages/*
+
+# Bootstrap by package name (e.g. every preset package in a monorepo)
+presetter bootstrap --packages "@presetter/preset-*"
+
+# Mix path and name globs; both flags accept comma-separated values
+presetter bootstrap --projects .,e2e,packages/* --packages "@presetter/preset-*"
 
 # Run development tasks
 run build                 # Build your project

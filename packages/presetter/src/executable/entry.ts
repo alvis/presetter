@@ -1,4 +1,4 @@
-import { existsSync } from 'node:fs';
+import { existsSync, readFileSync } from 'node:fs';
 import { dirname, posix, resolve } from 'node:path';
 
 import { globby } from 'globby';
@@ -8,11 +8,29 @@ import { bootstrap } from '../preset';
 import { run } from '../run';
 import { parseGlobalArgs, parseTaskSpec } from '../task';
 
-import type { CommandModule } from 'yargs';
+import type { PackageJson } from 'type-fest';
+import type { Argv, CommandModule } from 'yargs';
+
+interface BootstrapArgs {
+  only?: string;
+  projects: string[];
+  packages: string[];
+}
+
+interface ResolveProjectRootsOptions {
+  readonly projects: readonly string[];
+  readonly packages: readonly string[];
+}
+
+const DEFAULT_LIST_DELIMITER = ',';
+const WORKSPACE_GLOB_OPTIONS = {
+  gitignore: true,
+  ignore: ['**/node_modules/**'],
+};
 
 const bootstrapCommand: CommandModule<
   Record<string, unknown>,
-  { only?: string; projects: string[] }
+  BootstrapArgs
 > = {
   command: 'bootstrap',
   describe: 'setup the project according to the specified preset',
@@ -27,30 +45,30 @@ const bootstrapCommand: CommandModule<
         alias: 'p',
         array: true,
         default: ['.'],
+        coerce: (values: string[]): string[] => expandDelimitedValues(values),
         description:
-          'a glob pattern matching any target project folders containing package.json',
+          'a glob pattern matching any target project folders containing package.json (comma-separated values supported)',
       })
-      .help(),
+      .option('packages', {
+        type: 'string',
+        alias: 'P',
+        array: true,
+        default: [] as string[],
+        coerce: (values: string[]): string[] => expandDelimitedValues(values),
+        description:
+          'a glob pattern matching any target package names (e.g. @presetter/preset-*; comma-separated values supported)',
+      })
+      .help() as Argv<BootstrapArgs>,
   handler: async (argv) => {
-    const { only, projects } = argv;
+    const { only, projects, packages } = argv;
 
-    // only proceed if the specified file exists
-    if (!only || existsSync(only)) {
-      // look for all projects by looking for the `preset.json` file
-      const packageJsons = await globby(
-        projects.map((project) => posix.join(project, 'package.json')),
-        {
-          gitignore: true,
-          ignore: ['**/node_modules/**'],
-        },
-      );
+    if (only && !existsSync(only)) {
+      return;
+    }
 
-      const projectRoots = packageJsons.map(dirname);
-
-      // bootstrap all projects
-      for (const root of projectRoots) {
-        await bootstrap(resolve(root));
-      }
+    const projectRoots = await resolveProjectRoots({ projects, packages });
+    for (const root of projectRoots) {
+      await bootstrap(root);
     }
   },
 };
@@ -71,7 +89,6 @@ const runCommand: CommandModule<
       .usage('run <task>')
       .demandCommand(),
   handler: async (argv) => {
-    // get the options
     const [, selector] = argv._.map((arg) => arg.toString()) as [
       string,
       string,
@@ -116,7 +133,6 @@ const runPCommand: CommandModule = {
 /**
  * provide a command line interface
  * @param args command line arguments
- * @returns the command entered together with its options
  */
 export async function entry(args: string[]): Promise<void> {
   await yargs()
@@ -133,4 +149,83 @@ export async function entry(args: string[]): Promise<void> {
     .command(runPCommand)
     .demandCommand()
     .parse(args);
+}
+
+/**
+ * resolve target project roots from path globs and package-name globs
+ * @param options resolution inputs
+ * @param options.projects path globs (e.g. `presets/next`, `packages/*`)
+ * @param options.packages package-name globs (e.g. `@presetter/preset-*`)
+ * @returns deduped absolute project root paths
+ */
+export async function resolveProjectRoots(
+  options: ResolveProjectRootsOptions,
+): Promise<string[]> {
+  const { projects, packages } = options;
+  const roots = new Set<string>();
+
+  if (projects.length > 0) {
+    const files = await globby(
+      projects.map((project) => posix.join(project, 'package.json')),
+      WORKSPACE_GLOB_OPTIONS,
+    );
+    for (const file of files) {
+      roots.add(resolve(dirname(file)));
+    }
+  }
+
+  if (packages.length > 0) {
+    const candidates = await globby('**/package.json', WORKSPACE_GLOB_OPTIONS);
+    const isMatchingName = compileNameMatcher(packages);
+    await Promise.all(
+      candidates.map(async (path) => {
+        const { name } = JSON.parse(
+          readFileSync(path, { encoding: 'utf8' }),
+        ) as PackageJson;
+
+        if (name && isMatchingName(name)) {
+          roots.add(resolve(dirname(path)));
+        }
+      }),
+    );
+  }
+
+  return [...roots];
+}
+
+/**
+ * expand each entry by splitting on a delimiter and trimming the parts
+ * @param values raw flag values, each possibly containing the delimiter
+ * @param delimiter delimiter character (defaults to `,`)
+ * @returns flattened, trimmed, non-empty values
+ */
+export function expandDelimitedValues(
+  values: readonly string[],
+  delimiter: string = DEFAULT_LIST_DELIMITER,
+): string[] {
+  return values.flatMap((value) =>
+    value
+      .split(delimiter)
+      .map((part) => part.trim())
+      .filter(Boolean),
+  );
+}
+
+/**
+ * compile a list of package-name globs into a single predicate
+ * @param patterns package-name globs (`*` matches anything except `/`)
+ * @returns predicate returning true when a name matches any pattern
+ */
+function compileNameMatcher(
+  patterns: readonly string[],
+): (name: string) => boolean {
+  const expressions = patterns.map((pattern) => {
+    const escaped = pattern
+      .replace(/[.+?^${}()|[\]\\]/g, '\\$&')
+      .replace(/\*/g, '[^/]*');
+
+    return new RegExp(`^${escaped}$`);
+  });
+
+  return (name) => expressions.some((expression) => expression.test(name));
 }
