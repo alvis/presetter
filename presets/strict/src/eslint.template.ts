@@ -44,7 +44,8 @@ export default asset<{ default: Linter.Config[] }>((current, context) => {
               IIFEs: true, // allow longer lengths for IIFEs due to their self-contained nature
             },
           ],
-          'no-console': 'warn', // discourage console usage in production code, but allow it for debugging
+          'max-params': ['warn', { max: 3 }], // encourage object parameter instead
+          'no-console': ['warn', { allow: ['warn', 'error'] }], // discourage console usage in production code, but allow it for debugging
           'no-eval': 'error', // disallow eval due to its security risks and performance concerns
         },
       },
