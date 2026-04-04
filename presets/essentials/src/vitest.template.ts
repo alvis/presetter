@@ -10,6 +10,7 @@ export default asset<{ default: ViteUserConfig }>((current, context) => {
     default: {
       esbuild: { target: 'es2022' }, // required for using `using` statement
       test: {
+        projects: ['vitest.config{,.*}.ts'],
         name: `${packageJson.name!}:UNIT`,
         passWithNoTests: true,
         typecheck: {
