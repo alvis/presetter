@@ -3,6 +3,11 @@ packages:
   - packages/*
   - presets/*
 
+allowBuilds:
+  esbuild: true
+  sharp: true
+  unrs-resolver: true
+
 catalogs:
   build:
     git-cliff: ^2.12.0
