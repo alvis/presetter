@@ -20,7 +20,7 @@ export default asset<{ default: Linter.Config[] }>((current, context) => {
   return {
     default: [
       ...currentConfigs,
-      sonarjs.configs.recommended as Linter.Config,
+      sonarjs.configs!.recommended as Linter.Config,
       {
         name: '@presetter/preset-strict:generic',
         rules: {

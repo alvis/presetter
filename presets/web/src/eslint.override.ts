@@ -1,12 +1,22 @@
 import tailwind from 'eslint-plugin-better-tailwindcss';
-import { getDefaultCallees } from 'eslint-plugin-better-tailwindcss/api/defaults';
+import { getDefaultSelectors } from 'eslint-plugin-better-tailwindcss/api/defaults';
 
 import storybook from 'eslint-plugin-storybook';
 
 import type { Linter } from 'eslint';
-import type { Callees } from 'eslint-plugin-better-tailwindcss/api/types';
+import type {
+  CalleeSelector,
+  Selector,
+  SelectorKind,
+} from 'eslint-plugin-better-tailwindcss/types';
 
-const callees = [...getDefaultCallees(), 'classnames'] satisfies Callees;
+const selectors = [
+  ...getDefaultSelectors(),
+  {
+    kind: 'callee' as SelectorKind.Callee,
+    name: 'classnames',
+  } satisfies CalleeSelector,
+] satisfies Selector[];
 
 export default [
   ...storybook.configs['flat/recommended'],
@@ -24,11 +34,11 @@ export default [
     },
     settings: {
       'better-tailwindcss': {
-        callees,
+        selectors,
       },
     },
     rules: {
-      ...tailwind.configs['recommended-warn']!.rules,
+      ...tailwind.configs['recommended-warn'].rules,
       'better-tailwindcss/no-conflicting-classes': 'warn',
       'better-tailwindcss/no-unregistered-classes': [
         'warn',
