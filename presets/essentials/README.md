@@ -233,7 +233,7 @@ This preset template provides essential development tools:
 
 | Tool            | Purpose                | Key Features                                            |
 | --------------- | ---------------------- | ------------------------------------------------------- |
-| **TypeScript**  | Type-safe JavaScript   | ES2022 target, incremental builds, path mapping         |
+| **TypeScript**  | Type-safe JavaScript   | ES2024 target, incremental builds, path mapping         |
 | **ESLint**      | Code linting           | TypeScript integration, import rules, JSDoc enforcement |
 | **Prettier**    | Code formatting        | Consistent style, ESLint integration                    |
 | **Vitest**      | Testing framework      | Fast tests, TypeScript support, coverage reporting      |
@@ -251,7 +251,7 @@ Customize your project structure:
 | `test`      | `"spec"`      | Test files directory          |
 | `types`     | `"types"`     | TypeScript declarations       |
 | `generated` | `"generated"` | Generated files directory     |
-| `target`    | `"ES2022"`    | TypeScript compilation target |
+| `target`    | `"ES2024"`    | TypeScript compilation target |
 
 ---
 
@@ -265,7 +265,7 @@ Customize your project structure:
   "compilerOptions": {
     "module": "ESNext",
     "moduleResolution": "bundler",
-    "target": "ES2022",
+    "target": "ES2024",
     "strict": true,
     "incremental": true,
     "declaration": true,

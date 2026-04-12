@@ -150,7 +150,7 @@ my-web-app/
 | ---------------------------------------------------------------------------------- | ----------------------------- | -------------------------------------------------------------------------------- |
 | **[Presetter](https://github.com/alvis/presetter/blob/master/packages/presetter)** | Configuration management tool | CLI that processes presets, generates config files, executes scripts             |
 | **Base Preset**                                                                    | Core development template     | Provides TypeScript, testing, building capabilities (essentials, esm, cjs, etc.) |
-| **@presetter/preset-web**                                                           | Web development extension     | Adds TailwindCSS, Storybook, browser optimization, CSS workflows                 |
+| **@presetter/preset-web**                                                          | Web development extension     | Adds TailwindCSS, Storybook, browser optimization, CSS workflows                 |
 
 **Think of it like:**
 
@@ -223,7 +223,7 @@ export default preset('advanced-web-app', {
       'tsconfig.json': {
         compilerOptions: {
           lib: ['DOM', 'DOM.Iterable', 'ES2023'], // Latest features
-          target: 'ES2022', // Modern browser target
+          target: 'ES2024', // Modern browser target
         },
       },
       'eslint.config.ts': {
@@ -396,7 +396,7 @@ compilerOptions:
 | Environment  | Support                                 |
 | ------------ | --------------------------------------- |
 | Base Presets | Works with essentials, esm, cjs, hybrid |
-| Browsers     | Modern browsers (ES2022+)               |
+| Browsers     | Modern browsers (ES2024+)               |
 | Node.js      | ≥ 18                                    |
 | TypeScript   | ≥ 5.0                                   |
 

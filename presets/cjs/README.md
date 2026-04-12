@@ -79,7 +79,7 @@ When used with [Presetter](https://github.com/alvis/presetter/blob/master/packag
 Setting up TypeScript for CommonJS seems simple until you hit the edge cases:
 
 - **Module resolution**: Should you use `node` or `bundler`?
-- **Target compatibility**: ES2022? ES2017? What works everywhere?
+- **Target compatibility**: ES2024? ES2017? What works everywhere?
 - **Build pipeline**: How do you handle paths, aliases, and declarations?
 - **Tool integration**: Will ESLint, Vitest, and other tools work correctly?
 
@@ -134,7 +134,7 @@ my-project/
 | Component                                                                          | Role                            | What it does                                                         |
 | ---------------------------------------------------------------------------------- | ------------------------------- | -------------------------------------------------------------------- |
 | **[Presetter](https://github.com/alvis/presetter/blob/master/packages/presetter)** | Configuration management tool   | CLI that processes presets, generates config files, executes scripts |
-| **@presetter/preset-cjs**                                                           | CommonJS configuration template | Extends essentials with CommonJS-specific optimizations              |
+| **@presetter/preset-cjs**                                                          | CommonJS configuration template | Extends essentials with CommonJS-specific optimizations              |
 
 **Think of it like:**
 

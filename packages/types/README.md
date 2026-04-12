@@ -47,7 +47,7 @@ Developing presets for the Presetter ecosystem requires working with complex con
 
 ### The preset development challenge
 
-| Development Need           | Without Types                      | With @presetter/types               |
+| Development Need           | Without Types                      | With @presetter/types              |
 | -------------------------- | ---------------------------------- | ---------------------------------- |
 | **Preset Configuration**   | ❌ No validation, runtime errors   | ✅ Compile-time type checking      |
 | **IDE Support**            | ❌ No autocomplete or IntelliSense | ✅ Full IDE integration            |
@@ -78,7 +78,7 @@ This package serves as the foundation for type-safe preset development, offering
 | Component                                                                          | Role                          | What it does                                                         |
 | ---------------------------------------------------------------------------------- | ----------------------------- | -------------------------------------------------------------------- |
 | **[Presetter](https://github.com/alvis/presetter/blob/master/packages/presetter)** | Configuration management tool | CLI that processes presets, generates config files, executes scripts |
-| **@presetter/types**                                                                | Type definitions package      | Provides TypeScript types for the entire ecosystem                   |
+| **@presetter/types**                                                               | Type definitions package      | Provides TypeScript types for the entire ecosystem                   |
 | **Preset Packages**                                                                | Configuration templates       | Use these types to ensure type safety                                |
 
 **Think of it like:**
@@ -407,7 +407,7 @@ export default preset('full-stack-preset', {
     // TypeScript configuration
     'tsconfig.json': asset({
       compilerOptions: {
-        target: 'ES2022',
+        target: 'ES2024',
         module: 'ESNext',
         strict: true,
       },

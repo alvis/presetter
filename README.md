@@ -405,7 +405,7 @@ export default preset('my-preset', {
   assets: {
     'tsconfig.json': {
       compilerOptions: {
-        target: 'ES2022',
+        target: 'ES2024',
         module: 'ESNext',
       },
     },

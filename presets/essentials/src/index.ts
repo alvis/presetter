@@ -37,7 +37,7 @@ export const DEFAULT_VARIABLES = {
   types: 'types',
   output: 'lib',
   test: 'spec',
-  target: 'ES2022',
+  target: 'ES2024',
 } satisfies Variables;
 
 /**

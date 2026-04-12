@@ -13,7 +13,7 @@
 
 Node.js-ready TypeScript development — built-in types, zero friction, full essentials toolkit
 
-•   [Usage](#-usage)   •   [Configuration](#-configuration-details)   •   [Comparison](#-comparison)   •   [FAQ](#-faq)   •
+• [Usage](#-usage) • [Configuration](#-configuration-details) • [Comparison](#-comparison) • [FAQ](#-faq) •
 
 </div>
 
@@ -46,8 +46,8 @@ You open a fresh TypeScript project, import `node:fs`, and immediately get squig
 
 ```typescript
 import { readFile } from 'node:fs/promises'; // ❌ Cannot find module 'node:fs/promises'
-process.env.NODE_ENV;                         // ❌ Cannot find name 'process'
-Buffer.from('hello');                         // ❌ Cannot find name 'Buffer'
+process.env.NODE_ENV; // ❌ Cannot find name 'process'
+Buffer.from('hello'); // ❌ Cannot find name 'Buffer'
 ```
 
 Every Node.js developer has been here. You install `@types/node`, then tweak `tsconfig.json`, then debug why globals still don't resolve.
@@ -56,14 +56,14 @@ Every Node.js developer has been here. You install `@types/node`, then tweak `ts
 
 ### The Node.js TypeScript setup tax
 
-| Pain Point                | Manual Setup                                    | With preset-node                  |
-| ------------------------- | ----------------------------------------------- | --------------------------------- |
-| **Node Type Resolution**  | Install `@types/node`, edit `tsconfig`          | ✅ Resolved automatically         |
-| **Globals (`process`)**   | Manually add `types: ['node']` to compiler opts | ✅ Recognized out of the box      |
-| **Built-in Modules**      | `node:fs`, `node:path` often missing types      | ✅ Fully typed                    |
-| **Dev Toolkit**           | Wire up ESLint, Prettier, Vitest, Husky by hand | ✅ Inherits from essentials       |
-| **Build Pipeline**        | Assemble TypeScript → JS build yourself         | ✅ Provided by essentials         |
-| **Version Discipline**    | Each project drifts apart                       | ✅ Unified across all Node repos  |
+| Pain Point               | Manual Setup                                    | With preset-node                 |
+| ------------------------ | ----------------------------------------------- | -------------------------------- |
+| **Node Type Resolution** | Install `@types/node`, edit `tsconfig`          | ✅ Resolved automatically        |
+| **Globals (`process`)**  | Manually add `types: ['node']` to compiler opts | ✅ Recognized out of the box     |
+| **Built-in Modules**     | `node:fs`, `node:path` often missing types      | ✅ Fully typed                   |
+| **Dev Toolkit**          | Wire up ESLint, Prettier, Vitest, Husky by hand | ✅ Inherits from essentials      |
+| **Build Pipeline**       | Assemble TypeScript → JS build yourself         | ✅ Provided by essentials        |
+| **Version Discipline**   | Each project drifts apart                       | ✅ Unified across all Node repos |
 
 ### What you get instead
 
@@ -138,9 +138,9 @@ my-node-api/
 
 **Important distinction:**
 
-| Component                                                                          | Role                          | What it does                                                         |
-| ---------------------------------------------------------------------------------- | ----------------------------- | -------------------------------------------------------------------- |
-| **[Presetter](https://github.com/alvis/presetter/blob/master/packages/presetter)** | Configuration management tool | CLI that processes presets, generates config files, executes scripts |
+| Component                                                                          | Role                           | What it does                                                         |
+| ---------------------------------------------------------------------------------- | ------------------------------ | -------------------------------------------------------------------- |
+| **[Presetter](https://github.com/alvis/presetter/blob/master/packages/presetter)** | Configuration management tool  | CLI that processes presets, generates config files, executes scripts |
 | **@presetter/preset-node**                                                         | Node.js configuration template | Extends essentials with Node.js-specific TypeScript support          |
 
 **Think of it like:**
@@ -229,24 +229,24 @@ export default preset('my-node-service', {
 
 This preset extends [preset-essentials](https://github.com/alvis/presetter/blob/master/packages/preset-essentials) with a single targeted addition:
 
-| Configuration   | Purpose                 | Node.js Addition                             |
-| --------------- | ----------------------- | -------------------------------------------- |
-| **TypeScript**  | Type resolution         | `compilerOptions.types: ['node']`            |
-| **Build**       | TypeScript compilation  | Inherited from essentials                    |
-| **Linting**     | Code quality            | Inherited from essentials (ESLint, Prettier) |
-| **Testing**     | Test runner & coverage  | Inherited from essentials (Vitest)           |
-| **Release**     | Changelog & publishing  | Inherited from essentials                    |
+| Configuration  | Purpose                | Node.js Addition                             |
+| -------------- | ---------------------- | -------------------------------------------- |
+| **TypeScript** | Type resolution        | `compilerOptions.types: ['node']`            |
+| **Build**      | TypeScript compilation | Inherited from essentials                    |
+| **Linting**    | Code quality           | Inherited from essentials (ESLint, Prettier) |
+| **Testing**    | Test runner & coverage | Inherited from essentials (Vitest)           |
+| **Release**    | Changelog & publishing | Inherited from essentials                    |
 
 ### Configuration Variables
 
 Inherited from [preset-essentials](https://github.com/alvis/presetter/blob/master/packages/preset-essentials):
 
-| Variable | Default    | Description                          |
-| -------- | ---------- | ------------------------------------ |
-| `source` | `"src"`    | Source code directory                |
-| `output` | `"lib"`    | Build output directory               |
-| `test`   | `"spec"`   | Test files directory                 |
-| `target` | `"ES2022"` | TypeScript compilation target        |
+| Variable | Default    | Description                   |
+| -------- | ---------- | ----------------------------- |
+| `source` | `"src"`    | Source code directory         |
+| `output` | `"lib"`    | Build output directory        |
+| `test`   | `"spec"`   | Test files directory          |
+| `target` | `"ES2024"` | TypeScript compilation target |
 
 ---
 
@@ -270,11 +270,11 @@ This single override means Node.js built-in modules and globals are recognized b
 {
   "compilerOptions": {
     "module": "ESNext",
-    "target": "ES2022",
+    "target": "ES2024",
     "strict": true,
     "declaration": true,
     "sourceMap": true,
-    "types": ["node"],  // ← from preset-node
+    "types": ["node"], // ← from preset-node
   },
 }
 ```
@@ -293,23 +293,23 @@ npm run typecheck   # Type-only checks (no emit)
 
 ## 🏎️ Performance
 
-| Metric              | Hand-rolled Setup            | With preset-node                |
-| ------------------- | ---------------------------- | ------------------------------- |
-| Setup time          | Hours per new project        | **Seconds**                     |
-| Config drift        | Inevitable across projects   | **Zero — single source of truth** |
-| Type coverage       | Partial if types misconfig'd | **Complete Node.js typings**    |
-| Toolchain upgrades  | Manual, per project          | **Bump preset version once**    |
+| Metric             | Hand-rolled Setup            | With preset-node                  |
+| ------------------ | ---------------------------- | --------------------------------- |
+| Setup time         | Hours per new project        | **Seconds**                       |
+| Config drift       | Inevitable across projects   | **Zero — single source of truth** |
+| Type coverage      | Partial if types misconfig'd | **Complete Node.js typings**      |
+| Toolchain upgrades | Manual, per project          | **Bump preset version once**      |
 
 ---
 
 ## 🌐 Compatibility
 
-| Environment | Support                           |
-| ----------- | --------------------------------- |
-| Node.js     | ≥ 20 (preset engine requirement)  |
-| TypeScript  | ≥ 5.0                             |
-| Module Type | ESM (inherits from essentials)    |
-| Package Mgr | npm, pnpm, yarn                   |
+| Environment | Support                          |
+| ----------- | -------------------------------- |
+| Node.js     | ≥ 20 (preset engine requirement) |
+| TypeScript  | ≥ 5.0                            |
+| Module Type | ESM (inherits from essentials)   |
+| Package Mgr | npm, pnpm, yarn                  |
 
 ### Extends
 
@@ -325,13 +325,13 @@ npm run typecheck   # Type-only checks (no emit)
 
 ## 🆚 Comparison
 
-| Feature                 | preset-node          | preset-essentials only | preset-bun             |
-| ----------------------- | -------------------- | ---------------------- | ---------------------- |
-| **Runtime Target**      | ✅ Node.js           | ⚠️ Runtime-agnostic    | ✅ Bun                 |
-| **Node.js Types**       | ✅ Built-in          | ❌ You add manually    | ❌ Uses Bun types      |
-| **Build Toolchain**     | ✅ tsc via essentials | ✅ tsc via essentials  | ✅ Bun native builder  |
-| **Best For**            | Node.js apps/libs    | Generic TypeScript     | Bun apps/executables   |
-| **Dev Toolkit**         | ✅ Full (inherited)  | ✅ Full                | ⚠️ Build-focused       |
+| Feature             | preset-node           | preset-essentials only | preset-bun            |
+| ------------------- | --------------------- | ---------------------- | --------------------- |
+| **Runtime Target**  | ✅ Node.js            | ⚠️ Runtime-agnostic    | ✅ Bun                |
+| **Node.js Types**   | ✅ Built-in           | ❌ You add manually    | ❌ Uses Bun types     |
+| **Build Toolchain** | ✅ tsc via essentials | ✅ tsc via essentials  | ✅ Bun native builder |
+| **Best For**        | Node.js apps/libs     | Generic TypeScript     | Bun apps/executables  |
+| **Dev Toolkit**     | ✅ Full (inherited)   | ✅ Full                | ⚠️ Build-focused      |
 
 ### When to Use
 
@@ -357,12 +357,12 @@ npm run typecheck   # Type-only checks (no emit)
 
 ### Node.js-Specific Issues
 
-| Issue                            | Symptoms                                   | Solution                                                       |
-| -------------------------------- | ------------------------------------------ | -------------------------------------------------------------- |
-| **`process` not found**          | TypeScript errors on Node globals          | Re-run `npx presetter bootstrap` to regenerate `tsconfig.json` |
-| **`node:*` imports unresolved**  | `Cannot find module 'node:fs'`             | Ensure `@types/node` is installed (transitive via essentials)  |
-| **Engine mismatch warning**      | `engines.node` violation on install        | Use Node.js ≥ 20 (required by the preset itself)               |
-| **Custom `types` array reset**   | Your additions overwritten                 | Spread base in override: `types: ['node', 'vitest/globals']`   |
+| Issue                           | Symptoms                            | Solution                                                       |
+| ------------------------------- | ----------------------------------- | -------------------------------------------------------------- |
+| **`process` not found**         | TypeScript errors on Node globals   | Re-run `npx presetter bootstrap` to regenerate `tsconfig.json` |
+| **`node:*` imports unresolved** | `Cannot find module 'node:fs'`      | Ensure `@types/node` is installed (transitive via essentials)  |
+| **Engine mismatch warning**     | `engines.node` violation on install | Use Node.js ≥ 20 (required by the preset itself)               |
+| **Custom `types` array reset**  | Your additions overwritten          | Spread base in override: `types: ['node', 'vitest/globals']`   |
 
 > **Need help with Presetter CLI commands?** Check the [CLI reference](https://github.com/alvis/presetter/blob/master/README.md#cli-reference) in the main documentation.
 

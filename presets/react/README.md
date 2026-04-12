@@ -152,7 +152,7 @@ my-react-app/
 | **[Presetter](https://github.com/alvis/presetter/blob/master/packages/presetter)** | Configuration management tool | CLI that processes presets, generates config files, executes scripts             |
 | **Base Preset**                                                                    | Core development template     | Provides TypeScript, testing, building capabilities (essentials, esm, cjs, etc.) |
 | **[preset-web](../preset-web)**                                                    | Web development extension     | Adds TailwindCSS, Storybook, browser optimization                                |
-| **@presetter/preset-react**                                                         | React development extension   | Adds JSX/TSX, React linting, asset types, component patterns                     |
+| **@presetter/preset-react**                                                        | React development extension   | Adds JSX/TSX, React linting, asset types, component patterns                     |
 
 **Think of it like:**
 
@@ -476,7 +476,7 @@ overrides: [
 | ------------ | --------------------------------------- |
 | React        | ≥ 18 (with React 16.14+ support)        |
 | Base Presets | Works with essentials, esm, cjs, hybrid |
-| Browsers     | Modern browsers (ES2022+)               |
+| Browsers     | Modern browsers (ES2024+)               |
 | Node.js      | ≥ 18                                    |
 | TypeScript   | ≥ 5.0                                   |
 

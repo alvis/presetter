@@ -141,7 +141,7 @@ my-library/
 | Component                                                                          | Role                               | What it does                                                         |
 | ---------------------------------------------------------------------------------- | ---------------------------------- | -------------------------------------------------------------------- |
 | **[Presetter](https://github.com/alvis/presetter/blob/master/packages/presetter)** | Configuration management tool      | CLI that processes presets, generates config files, executes scripts |
-| **@presetter/preset-hybrid**                                                        | Dual-module configuration template | Extends essentials with sophisticated dual CommonJS/ESM builds       |
+| **@presetter/preset-hybrid**                                                       | Dual-module configuration template | Extends essentials with sophisticated dual CommonJS/ESM builds       |
 
 **Think of it like:**
 
@@ -219,7 +219,7 @@ export default preset('my-hybrid-library', {
       },
       'tsconfig.mjs.json': {
         compilerOptions: {
-          target: 'ES2022', // Modern ESM target
+          target: 'ES2024', // Modern ESM target
         },
       },
     },
@@ -265,8 +265,8 @@ This preset extends [preset-essentials](https://github.com/alvis/presetter/blob/
 {
   "extends": "./tsconfig.build",
   "compilerOptions": {
-    "module": "ES2022",
-    "target": "ES2022"
+    "module": "ES2024",
+    "target": "ES2024"
   }
 }
 ```
@@ -280,7 +280,7 @@ Inherited from [preset-essentials](https://github.com/alvis/presetter/blob/maste
 | `source` | `"src"`    | Source code directory              |
 | `output` | `"lib"`    | Build output directory             |
 | `test`   | `"spec"`   | Test files directory               |
-| `target` | `"ES2022"` | Base TypeScript compilation target |
+| `target` | `"ES2024"` | Base TypeScript compilation target |
 
 ---
 

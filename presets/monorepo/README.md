@@ -419,7 +419,7 @@ Inherited from `@presetter/preset-essentials`:
 | `test`      | `"spec"`      | Test files directory          |
 | `types`     | `"types"`     | TypeScript declarations       |
 | `generated` | `"generated"` | Generated files directory     |
-| `target`    | `"ES2022"`    | TypeScript compilation target |
+| `target`    | `"ES2024"`    | TypeScript compilation target |
 
 ---
 
@@ -435,7 +435,7 @@ Inherited from `@presetter/preset-essentials`:
   "compilerOptions": {
     "module": "ESNext",
     "moduleResolution": "bundler",
-    "target": "ES2022"
+    "target": "ES2024"
   }
 }
 ```

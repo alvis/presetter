@@ -63,7 +63,7 @@ sequenceDiagram
 **How to read the passes:**
 
 - **Pass 1 — inheritance.** `preset/resolvePreset` walks every `extends` edge depth-first, merging child preset content on top of parents. The output is a single flattened preset object; no `{variable}` tokens have been substituted yet.
-- **Pass 2 — templating + override.** `template/substitute` replaces `{variable}` tokens in every asset using the resolved variable map, then `template/merge` applies any local `override` block from the caller. Templating runs *after* inheritance so parents can define variables and children (or the end user) can redefine them.
+- **Pass 2 — templating + override.** `template/substitute` replaces `{variable}` tokens in every asset using the resolved variable map, then `template/merge` applies any local `override` block from the caller. Templating runs _after_ inheritance so parents can define variables and children (or the end user) can redefine them.
 - **Pass 3 — serialisation (implicit).** The caller (typically `executable/entry.ts bootstrap`) takes the result of `resolve` and writes it to disk via `serialization.ts` + `io.ts`. The engine core never writes files itself.
 
 ---
@@ -88,18 +88,18 @@ Everything shippable is in `packages/` and `presets/`. The other directories sup
 
 Files live under `packages/presetter/src/`. One-line gloss each:
 
-| File | Responsibility |
-| --- | --- |
-| `index.ts` | Public entry point; re-exports the stable API surface. |
-| `context.ts` | Locates project root and loads `package.json` + `presetter.config.ts`. |
-| `resolve.ts` | Orchestrates the two-pass resolution pipeline. |
-| `parsing.ts` | Parses and normalises preset definitions (YAML, JSON, JS). |
-| `serialization.ts` | Serialises resolved assets back to the correct on-disk formats. |
-| `io.ts` | Low-level file system helpers (read/write/diff). |
-| `scripts.ts` | Merges preset scripts with local `package.json` scripts. |
-| `run.ts` | `run` / `run-s` / `run-p` command runner; resolves preset `.bin` paths. |
-| `task.ts` | Task graph and execution primitives used by `run.ts`. |
-| `debugger.ts` | Shared `debug` namespace for engine tracing. |
+| File               | Responsibility                                                          |
+| ------------------ | ----------------------------------------------------------------------- |
+| `index.ts`         | Public entry point; re-exports the stable API surface.                  |
+| `context.ts`       | Locates project root and loads `package.json` + `presetter.config.ts`.  |
+| `resolve.ts`       | Orchestrates the two-pass resolution pipeline.                          |
+| `parsing.ts`       | Parses and normalises preset definitions (YAML, JSON, JS).              |
+| `serialization.ts` | Serialises resolved assets back to the correct on-disk formats.         |
+| `io.ts`            | Low-level file system helpers (read/write/diff).                        |
+| `scripts.ts`       | Merges preset scripts with local `package.json` scripts.                |
+| `run.ts`           | `run` / `run-s` / `run-p` command runner; resolves preset `.bin` paths. |
+| `task.ts`          | Task graph and execution primitives used by `run.ts`.                   |
+| `debugger.ts`      | Shared `debug` namespace for engine tracing.                            |
 
 **Subsystems** (each has its own directory):
 
@@ -135,7 +135,9 @@ import essentials from '@presetter/preset-essentials';
 export default preset('node', {
   extends: [essentials],
   variables: { target: 'ES2023' },
-  scripts: { /* preset-defined lifecycle scripts */ },
+  scripts: {
+    /* preset-defined lifecycle scripts */
+  },
 });
 ```
 
@@ -182,7 +184,7 @@ graph TD
   O --> S
 ```
 
-**Edge legend:** `A --> B` means *A depends on B* (either as `peerDependency`, `dependency`, or as a `preset.extends` target). `preset-essentials` is the de facto base for runtime/module-system presets; `preset-next` is a composite that fans in from `esm`, `strict`, and `react`.
+**Edge legend:** `A --> B` means _A depends on B_ (either as `peerDependency`, `dependency`, or as a `preset.extends` target). `preset-essentials` is the de facto base for runtime/module-system presets; `preset-next` is a composite that fans in from `esm`, `strict`, and `react`.
 
 ---
 
@@ -224,7 +226,7 @@ export default preset('my-preset', {
   scripts: { build: 'tsc', test: 'vitest' },
   assets: {
     'tsconfig.json': {
-      compilerOptions: { target: 'ES2022', module: 'ESNext' },
+      compilerOptions: { target: 'ES2024', module: 'ESNext' },
     },
   },
 });

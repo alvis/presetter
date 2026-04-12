@@ -64,7 +64,7 @@ JavaScript has evolved. ES Modules are the standard. Yet many developers are sti
 When used with [Presetter](https://github.com/alvis/presetter/blob/master/packages/presetter) (the configuration management tool), this preset extends [preset-essentials](https://github.com/alvis/presetter/blob/master/packages/preset-essentials) with ESM-specific optimizations, ensuring your project uses native ECMAScript modules throughout the entire development and build pipeline.
 
 - 🎯 **ESM-Native**: Pure ECMAScript modules without CommonJS compatibility layers
-- ⚡ **Modern Targets**: ES2022+ compilation for current Node.js and browsers
+- ⚡ **Modern Targets**: ES2024+ compilation for current Node.js and browsers
 - 🔧 **Zero Config**: TypeScript ESM compilation works perfectly out of the box
 - 🌳 **Tree Shaking**: Optimal bundler optimization with static module analysis
 - 🚀 **Future Ready**: Aligned with web platform standards and best practices
@@ -139,7 +139,7 @@ my-project/
 | Component                                                                          | Role                          | What it does                                                         |
 | ---------------------------------------------------------------------------------- | ----------------------------- | -------------------------------------------------------------------- |
 | **[Presetter](https://github.com/alvis/presetter/blob/master/packages/presetter)** | Configuration management tool | CLI that processes presets, generates config files, executes scripts |
-| **@presetter/preset-esm**                                                           | ESM configuration template    | Extends essentials with ESM-specific optimizations                   |
+| **@presetter/preset-esm**                                                          | ESM configuration template    | Extends essentials with ESM-specific optimizations                   |
 
 **Think of it like:**
 
@@ -233,7 +233,7 @@ This preset extends [preset-essentials](https://github.com/alvis/presetter/blob/
 
 | Configuration         | Purpose         | ESM Optimizations                                          |
 | --------------------- | --------------- | ---------------------------------------------------------- |
-| **TypeScript**        | ESM compilation | `module: "ESNext"`, `target: "ES2022"`, bundler resolution |
+| **TypeScript**        | ESM compilation | `module: "ESNext"`, `target: "ES2024"`, bundler resolution |
 | **Build Pipeline**    | Import fixing   | `tsc-esm-fix` integration for correct .js extensions       |
 | **Package Structure** | ESM exports     | Proper `exports` field and module type                     |
 | **Source Maps**       | Debugging       | Accurate mapping for ESM output                            |
@@ -247,7 +247,7 @@ Inherited from [preset-essentials](https://github.com/alvis/presetter/blob/maste
 | `source` | `"src"`    | Source code directory                |
 | `output` | `"lib"`    | Build output directory               |
 | `test`   | `"spec"`   | Test files directory                 |
-| `target` | `"ES2022"` | Modern TypeScript compilation target |
+| `target` | `"ES2024"` | Modern TypeScript compilation target |
 
 ---
 
@@ -261,7 +261,7 @@ Inherited from [preset-essentials](https://github.com/alvis/presetter/blob/maste
   "compilerOptions": {
     "module": "ESNext",
     "moduleResolution": "bundler",
-    "target": "ES2022",
+    "target": "ES2024",
     "strict": true,
     "declaration": true,
     "sourceMap": true
@@ -312,7 +312,7 @@ build:typescript:mjs:fix: tsc-esm-fix --sourceMap --target {output}
 | Environment | Support                           |
 | ----------- | --------------------------------- |
 | Node.js     | ≥ 16 (ESM stable)                 |
-| Browsers    | Modern (ES2022)                   |
+| Browsers    | Modern (ES2024)                   |
 | Bundlers    | Vite, Webpack 5+, Rollup, esbuild |
 | TypeScript  | ≥ 5.0                             |
 
