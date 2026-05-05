@@ -1,5 +1,5 @@
 import { info } from 'node:console';
-import { relative, resolve } from 'node:path';
+import { resolve } from 'node:path';
 
 import { resolveProjectContext } from '../context';
 import { ensureFile } from '../io';
@@ -14,8 +14,15 @@ import { resolveAssets } from './resolution';
  */
 export async function bootstrap(cwd?: string): Promise<void> {
   const context = await resolveProjectContext(cwd);
+  const packageName = context.packageJson.name;
 
-  info(`Bootstrapping ${relative(process.cwd(), context.projectRoot)}`);
+  if (!packageName) {
+    throw new Error(
+      `failed to bootstrap unnamed package at ${context.relativeProjectRoot}`,
+    );
+  }
+
+  info(`Bootstrapping ${packageName} (${context.relativeProjectRoot})`);
 
   // generate configurations
   const node = await resolveProjectPreset(context);
