@@ -3,9 +3,9 @@ import { fileURLToPath } from 'node:url';
 
 import { preset } from '@presetter/types';
 
-import eslintOverride from './eslint.override';
-import eslintTemplate from './eslint.template';
-import vitest from './vitest.template';
+import eslintOverride from './eslint/override';
+import eslintTemplate from './eslint/template';
+import vitest from './vitest/template';
 
 const DIR = dirname(fileURLToPath(import.meta.url));
 

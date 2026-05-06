@@ -3,7 +3,7 @@ import { fileURLToPath } from 'node:url';
 
 import { preset } from '@presetter/types';
 
-import rollup from './rollup.template';
+import rollup from './rollup/template';
 
 const DIR = fileURLToPath(dirname(import.meta.url));
 

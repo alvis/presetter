@@ -5,9 +5,9 @@ import essentials from '@presetter/preset-esm';
 import strict from '@presetter/preset-strict';
 import { preset } from '@presetter/types';
 
-import eslintOverride from './eslint.override';
-import tsconfigOverride from './tsconfig.override';
-import vitestOverride from './vitest.config.override';
+import eslintOverride from './eslint/override';
+import tsconfigOverride from './tsconfig/override';
+import vitestOverride from './vitest/config/override';
 
 export { DEFAULT_VARIABLES } from '@presetter/preset-esm';
 

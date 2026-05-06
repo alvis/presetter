@@ -10,7 +10,7 @@ import { preset } from 'presetter';
 
 import { name } from '../package.json';
 
-import * as eslintTemplate from './eslint.template';
+import * as eslintTemplate from './eslint/template';
 
 import type { Variables } from '@presetter/preset-react';
 

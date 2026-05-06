@@ -9,7 +9,7 @@ const vitest = asset<{ default: ViteUserConfig }>({
     test: {
       coverage: {
         provider: 'v8',
-        exclude: ['e2e', 'examples', '**/*.template.ts', '**/*.override.ts'],
+        exclude: ['e2e', 'examples', '**/template.ts', '**/override.ts'],
       },
     },
   },
@@ -28,7 +28,12 @@ export default preset('@presetter/monorepo', {
               default: [
                 {
                   name: '@presetter/monorepo:template-files',
-                  files: ['**/*.override.ts', '**/*.template.ts'],
+                  files: [
+                    '**/override.ts',
+                    '**/*.override.ts',
+                    '**/template.ts',
+                    '**/*.template.ts',
+                  ],
                   rules: {
                     'max-lines': 'off',
                     'max-lines-per-function': 'off',

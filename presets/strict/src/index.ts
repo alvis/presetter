@@ -3,9 +3,9 @@ import { fileURLToPath } from 'node:url';
 
 import { preset } from '@presetter/types';
 
-import * as eslintOverride from './eslint.override';
-import eslintTemplate from './eslint.template';
-import * as vitestOverride from './vitest.override';
+import * as eslintOverride from './eslint/override';
+import eslintTemplate from './eslint/template';
+import * as vitestOverride from './vitest/override';
 
 /** list of configurable variables */
 export interface Variables {}
