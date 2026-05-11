@@ -18,6 +18,9 @@ const vitest = asset<{ default: ViteUserConfig }>({
 export default preset('@presetter/monorepo', {
   extends: [monorepo, node],
   override: {
+    scripts: {
+      'build:typescript:tsc': 'tsgo -p tsconfig.build.json',
+    },
     assets: ({ isRepoRoot }) => ({
       'vitest.config.ts': vitest,
       ...(isRepoRoot

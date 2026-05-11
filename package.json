@@ -32,12 +32,13 @@
     "test:coverage": "run test:coverage --",
     "test:e2e": "pnpm --filter @presetter/e2e test:e2e",
     "test:watch": "run test:watch --",
-    "typecheck": "pnpm --recursive exec tsc --noEmit --skipLibCheck"
+    "typecheck": "pnpm --recursive exec tsgo --noEmit --skipLibCheck"
   },
   "devDependencies": {
     "@presetter/preset-monorepo": "workspace:*",
     "@presetter/preset-node": "workspace:*",
     "@types/node": "catalog:types",
+    "@typescript/native-preview": "latest",
     "git-cliff": "catalog:build",
     "presetter": "workspace:*",
     "typescript": "catalog:build"
