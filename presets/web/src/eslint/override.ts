@@ -30,7 +30,7 @@ export default [
     rules: {
       ...tailwind.configs['recommended-warn'].rules,
       'better-tailwindcss/no-conflicting-classes': 'warn',
-      'better-tailwindcss/no-unregistered-classes': [
+      'better-tailwindcss/no-unknown-classes': [
         'warn',
         { detectComponentClasses: true },
       ],
