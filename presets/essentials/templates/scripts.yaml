@@ -38,7 +38,7 @@ pretest: run-s pretest:unit:*
 test: 'run-s "test:vitest -- {@:--project=*:UNIT}" --'
 test:vitest: vitest --passWithNoTests
 test:coverage: 'run-s "test -- --project=*:UNIT --coverage {@}" --'
-test:watch: 'run-s "test -- --watch {@}" --'
+test:watch: 'run-s "test -- --project=*:UNIT --watch {@}" --'
 pretest:unit: run-s pretest:unit:*
 test:unit: run-s "test -- --project=*:UNIT {@}" --
 pretest:int: run-s pretest:int:*
