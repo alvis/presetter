@@ -1,8 +1,6 @@
 import tailwind from 'eslint-plugin-better-tailwindcss';
 import { getDefaultSelectors } from 'eslint-plugin-better-tailwindcss/api/defaults';
 
-import storybook from 'eslint-plugin-storybook';
-
 import type { Linter } from 'eslint';
 import type {
   CalleeSelector,
@@ -19,14 +17,6 @@ const selectors = [
 ] satisfies Selector[];
 
 export default [
-  ...storybook.configs['flat/recommended'],
-  {
-    name: '@presetter/preset-web:override:storybook',
-    files: ['**/*.stories.[jt]sx'],
-    rules: {
-      'compat/compat': 'off',
-    },
-  },
   {
     name: '@presetter/preset-web:override:tailwindcss',
     plugins: {

@@ -13,14 +13,27 @@ export default asset<{ default: ViteUserConfig }>((current, context) => {
 
   const setupPath = join(projectRoot, '.storybook', 'vitest.setup.ts');
 
-  const browserProvider = playwright();
-  const storybook = storybookTest({
-    configDir: join(projectRoot, '.storybook'),
-    storybookScript: 'npx storybook --no-open',
-  });
+  // NOTE: during bootstraping, .storybook/main.ts doesn't exist yet
+  const isBootstrapping = !existsSync(
+    join(projectRoot, '.storybook', 'main.ts'),
+  );
+
+  const { plugins, provider } = isBootstrapping
+    ? { plugins: [], provider: undefined }
+    : {
+        plugins: [
+          // by detecting the existing of .storybook/main.ts first, it avoid the config not found error when initializing storybookTest
+          storybookTest({
+            configDir: join(projectRoot, '.storybook'),
+            storybookScript: 'npx storybook --no-open',
+          }),
+        ],
+        provider: playwright(),
+      };
 
   return merge(current, {
     default: {
+      plugins,
       optimizeDeps: {
         include: ['react/jsx-dev-runtime'],
       },
@@ -35,17 +48,16 @@ export default asset<{ default: ViteUserConfig }>((current, context) => {
         browser: {
           enabled: true,
           headless: true,
-          provider: browserProvider,
+          provider,
           instances: [{ browser: 'chromium' }],
         },
-        plugins: [storybook],
         setupFiles: existsSync(setupPath) ? [setupPath] : undefined,
         /**
          * suppress specific console warnings that are known false positives
          *
-         * intent: filter out React `act()` warnings that occur in async test contexts.
-         * These warnings appear when React state updates happen inside event handlers
-         * (e.g., setFocus() after a button click), which is correct production behavior.
+         * intent: filter out React `act()` warnings that occur in async test contexts
+         * these warnings appear when React state updates happen inside event handlers
+         * (e.g., setFocus() after a button click), which is correct production behavior
          *
          * context:
          * - storybook itself intentionally disables act() warnings in its renderer
@@ -55,7 +67,7 @@ export default asset<{ default: ViteUserConfig }>((current, context) => {
          * - our code correctly represents real user interactions
          *
          * these warnings don't indicate bugs - they're artifacts of React's test
-         * environment detecting async updates that are intentional side effects.
+         * environment detecting async updates that are intentional side effects
          * @param log the console log message
          * @param type the output stream type ('stdout' or 'stderr')
          * @returns false to suppress the log, void to allow it

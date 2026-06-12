@@ -6,7 +6,7 @@ import { preset } from '@presetter/types';
 import * as eslintOverride from './eslint/override';
 import eslintTemplate from './eslint/template';
 
-const DIR = fileURLToPath(dirname(import.meta.url));
+const DIR = dirname(fileURLToPath(import.meta.url));
 
 // paths to the template directories
 const TEMPLATES = resolve(DIR, '..', 'templates');
@@ -25,11 +25,15 @@ export const DEFAULT_VARIABLES = {
 const IMAGE_TYPE = 'image.d.ts';
 const STYLE_TYPE = 'style.d.ts';
 
+/**
+ * get the list of templates provided by this preset
+ * @returns list of preset templates
+ */
 export default preset('@presetter/preset-web', {
   root: resolve(import.meta.dirname, '..'),
   variables: DEFAULT_VARIABLES,
   assets: ({ variables }) => ({
-    '.gitignore': (current, { variables }) => [
+    '.gitignore': (current) => [
       ...(current ?? []),
       `/${variables.types!}/${IMAGE_TYPE}`,
       `/${variables.types!}/${STYLE_TYPE}`,
@@ -46,7 +50,7 @@ export default preset('@presetter/preset-web', {
   }),
   override: {
     assets: {
-      '.tsconfig.json': resolve(OVERRIDES, 'tsconfig.yaml'),
+      'tsconfig.json': resolve(OVERRIDES, 'tsconfig.yaml'),
       'eslint.config.ts': eslintOverride,
     },
   },

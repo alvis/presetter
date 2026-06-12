@@ -54,19 +54,13 @@
     "presetter": "workspace:*"
   },
   "peerDependencies": {
-    "@storybook/addon-a11y": "catalog:storybook",
-    "@storybook/addon-vitest": "catalog:storybook",
-    "@vitest/browser-playwright": "catalog:testing",
     "autoprefixer": "catalog:web",
     "eslint-plugin-better-tailwindcss": "catalog:lint",
-    "eslint-plugin-storybook": "catalog:lint",
     "globals": "catalog:web",
     "postcss": "catalog:web",
     "presetter": "workspace:*",
-    "storybook": "catalog:storybook",
-    "storybook-addon-pseudo-states": "catalog:storybook",
-    "storybook-addon-test-codegen": "catalog:storybook",
-    "tailwindcss": "catalog:web"
+    "tailwindcss": "catalog:web",
+    "vitest": "catalog:testing"
   },
   "engines": {
     "node": ">=20.0.0"

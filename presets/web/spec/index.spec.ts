@@ -70,6 +70,19 @@ describe('fn:preset', () => {
     await expect(result).resolves.not.toThrow();
   });
 
+  it('should not provide storybook scripts or assets', async () => {
+    const node = await resolvePreset(preset, context);
+    const result = await resolveAssets(node, context);
+
+    expect(node.definition.scripts).toBeUndefined();
+    expect(result).not.toHaveProperty('.storybook/main.ts');
+    expect(result).not.toHaveProperty('.storybook/preview.ts');
+    expect(result).not.toHaveProperty('.storybook/vitest.setup.ts');
+    expect(node.definition.override?.assets).not.toHaveProperty(
+      'vitest.config.ts',
+    );
+  });
+
   it('should add add additional files to existing ignore list', async () => {
     const node = await resolvePreset(preset, context);
     const result = await resolveAssets(node, context);
