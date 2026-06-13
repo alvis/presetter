@@ -1,0 +1,48 @@
+{
+  "name": "example-next",
+  "version": "1.0.0",
+  "type": "module",
+  "imports": {
+    "#components/*": [
+      "./src/components/*/index.ts",
+      "./src/components/*.tsx"
+    ],
+    "#*": "./src/*.ts"
+  },
+  "scripts": {
+    "build": "next build",
+    "dev": "next dev",
+    "lint": "run lint --",
+    "prepare": "run prepare",
+    "start": "next start",
+    "storybook": "run storybook",
+    "test": "run test --",
+    "test:coverage": "run test:coverage --",
+    "test:watch": "run test:watch --",
+    "typecheck": "run typecheck --"
+  },
+  "dependencies": {
+    "next": "*",
+    "react": "*",
+    "react-dom": "*"
+  },
+  "devDependencies": {
+    "@presetter/preset-next": "*",
+    "@presetter/preset-node": "*",
+    "@presetter/preset-storybook": "*",
+    "@storybook/addon-a11y": "*",
+    "@storybook/addon-vitest": "*",
+    "@storybook/nextjs-vite": "*",
+    "@types/node": "*",
+    "@types/react": "*",
+    "@types/react-dom": "*",
+    "@vitest/browser-playwright": "*",
+    "eslint": "^9",
+    "globals": "*",
+    "playwright": "*",
+    "presetter": "*",
+    "storybook": "*",
+    "typescript": "*",
+    "vitest": "*"
+  }
+}

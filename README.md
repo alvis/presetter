@@ -43,8 +43,11 @@ npx presetter use @presetter/preset-node
 # 🥟 Bun runtime
 npx presetter use @presetter/preset-bun
 
-# 🎨 Modern web development (TailwindCSS + Storybook)
+# 🎨 Modern web development (TailwindCSS)
 npx presetter use @presetter/preset-esm @presetter/preset-web
+
+# 📚 Storybook for next.js development
+npx presetter use @presetter/preset-next @presetter/preset-storybook
 
 # ⚛️ React application with optimized toolchain
 npx presetter use @presetter/preset-esm @presetter/preset-react
@@ -112,6 +115,7 @@ presetter/
 │   │
 │   ├── strict/             🏢 Production-grade quality
 │   ├── web/                🎨 Web dev stack
+│   ├── storybook/          📚 Storybook
 │   ├── react/              ⚛️ React
 │   ├── next/               ⚡ Next.js
 │   └── rollup/             📦 Library bundling
@@ -124,12 +128,12 @@ presetter/
 
 ### 🎯 Package Categories
 
-| **Category**       | **Packages**                                                                  | **Purpose**                                        |
-| ------------------ | ----------------------------------------------------------------------------- | -------------------------------------------------- |
-| **Core Engine**    | `presetter`, `types`                                                          | Configuration management infrastructure            |
-| **Foundation**     | `preset-essentials`, `preset-monorepo`                                        | Base TypeScript development toolkit                |
-| **Module Systems** | `preset-esm`, `preset-cjs`, `preset-hybrid`, `preset-bun`, `preset-node`      | JavaScript module format & runtime specializations |
-| **Extensions**     | `preset-strict`, `preset-web`, `preset-react`, `preset-next`, `preset-rollup` | Specialized development environments               |
+| **Category**       | **Packages**                                                                                      | **Purpose**                                        |
+| ------------------ | ------------------------------------------------------------------------------------------------- | -------------------------------------------------- |
+| **Core Engine**    | `presetter`, `types`                                                                              | Configuration management infrastructure            |
+| **Foundation**     | `preset-essentials`, `preset-monorepo`                                                            | Base TypeScript development toolkit                |
+| **Module Systems** | `preset-esm`, `preset-cjs`, `preset-hybrid`, `preset-bun`, `preset-node`                          | JavaScript module format & runtime specializations |
+| **Extensions**     | `preset-strict`, `preset-web`, `preset-storybook`, `preset-react`, `preset-next`, `preset-rollup` | Specialized development environments               |
 
 ---
 
@@ -154,19 +158,23 @@ presetter/
 
 ### 🎨 Specialized Extension Presets
 
-| Preset                                         | Purpose                              | Extends              | Best For                                        |
-| ---------------------------------------------- | ------------------------------------ | -------------------- | ----------------------------------------------- |
-| **[@presetter/preset-strict](presets/strict)** | Production-grade quality enforcement | Any base preset      | Enterprise applications, critical systems       |
-| **[@presetter/preset-web](presets/web)**       | Modern web development stack         | Any base preset      | Web applications, SPAs                          |
-| **[@presetter/preset-react](presets/react)**   | React development excellence         | Any base preset      | React applications, component libraries         |
-| **[@presetter/preset-next](presets/next)**     | Next.js full-stack development       | esm + strict + react | Next.js apps with App Router, Server Components |
-| **[@presetter/preset-rollup](presets/rollup)** | Professional library bundling        | Any base preset      | npm packages, open-source libraries             |
+| Preset                                               | Purpose                              | Extends              | Best For                                        |
+| ---------------------------------------------------- | ------------------------------------ | -------------------- | ----------------------------------------------- |
+| **[@presetter/preset-strict](presets/strict)**       | Production-grade quality enforcement | Any base preset      | Enterprise applications, critical systems       |
+| **[@presetter/preset-web](presets/web)**             | Modern web development stack         | Any base preset      | Web applications, SPAs                          |
+| **[@presetter/preset-storybook](presets/storybook)** | Storybook component workflow         | Any UI preset        | Component development and interaction tests     |
+| **[@presetter/preset-react](presets/react)**         | React development excellence         | Any base preset      | React applications, component libraries         |
+| **[@presetter/preset-next](presets/next)**           | Next.js full-stack development       | esm + strict + react | Next.js apps with App Router, Server Components |
+| **[@presetter/preset-rollup](presets/rollup)**       | Professional library bundling        | Any base preset      | npm packages, open-source libraries             |
 
 ### 🎯 Common Preset Combinations
 
 ```typescript
 // Modern web application
 extends: [esm, web]
+
+// Next.js with Storybook
+extends: [next, storybook]
 
 // Bun application
 extends: [esm, bun]
@@ -464,6 +472,44 @@ export default preset('custom', {
     },
   },
 });
+```
+
+### How do I customize Storybook?
+
+Override the generated `.storybook/main.ts` asset with a local file. Storybook uses the `addons` field for addon changes and `framework` for renderer changes:
+
+```typescript
+// presetter.config.ts
+import { resolve } from 'node:path';
+
+import next from '@presetter/preset-next';
+import storybook from '@presetter/preset-storybook';
+import { preset } from 'presetter';
+
+export default preset('custom-next-storybook', {
+  extends: [next, storybook],
+  override: {
+    assets: {
+      '.storybook/main.ts': resolve(import.meta.dirname, '.storybook/main.ts'),
+    },
+  },
+});
+```
+
+```typescript
+// .storybook/main.ts
+import type { StorybookConfig } from 'storybook/internal/types';
+
+const config = {
+  stories: ['../src/**/*.stories.@(ts|tsx|js|jsx|mdx)'],
+  addons: ['@storybook/addon-a11y', '@storybook/addon-vitest'],
+  framework: {
+    name: '@storybook/nextjs-vite',
+    options: {},
+  },
+} satisfies StorybookConfig;
+
+export default config;
 ```
 
 ---

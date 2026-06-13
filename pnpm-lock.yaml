@@ -11333,7 +11333,7 @@ snapshots:
       lodash.isstring: 4.0.1
       lodash.once: 4.1.1
       ms: 2.1.3
-      semver: 7.8.0
+      semver: 7.8.4
 
   jsprim@2.0.2:
     dependencies:
