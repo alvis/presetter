@@ -15,6 +15,7 @@ compilerOptions:
   strict: false
   plugins:
     - name: next
-  types:
-    - next
-    - next/image-types/global
+  lib:
+    - DOM
+    - DOM.Iterable
+    - ESNext
