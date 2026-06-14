@@ -1,5 +1,7 @@
+import esm from '@presetter/preset-esm';
 import monorepo from '@presetter/preset-monorepo';
 import node from '@presetter/preset-node';
+
 import { asset, preset } from 'presetter';
 
 import type { ViteUserConfig } from 'vitest/config';
@@ -23,7 +25,7 @@ const vitest = asset<{ default: ViteUserConfig }>({
 });
 
 export default preset('@presetter/monorepo', {
-  extends: [monorepo, node],
+  extends: [monorepo, esm, node],
   override: {
     scripts: {
       'build:typescript:tsc': 'tsgo -p tsconfig.build.json',

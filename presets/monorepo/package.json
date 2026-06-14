@@ -44,7 +44,6 @@
     "typecheck": "run typecheck --"
   },
   "dependencies": {
-    "@presetter/preset-esm": "workspace:*",
     "@presetter/preset-strict": "workspace:*",
     "@presetter/types": "workspace:*"
   },
@@ -52,7 +51,7 @@
     "presetter": "workspace:*"
   },
   "peerDependencies": {
-    "@presetter/preset-esm": "workspace:*",
+    "@presetter/preset-essentials": "workspace:*",
     "@presetter/preset-strict": "workspace:*",
     "presetter": "workspace:*"
   },

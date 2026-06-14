@@ -35,6 +35,7 @@
     "typecheck": "pnpm --recursive exec tsgo --noEmit --skipLibCheck"
   },
   "devDependencies": {
+    "@presetter/preset-esm": "workspace:*",
     "@presetter/preset-monorepo": "workspace:*",
     "@presetter/preset-node": "workspace:*",
     "@types/node": "catalog:types",

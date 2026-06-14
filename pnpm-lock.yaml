@@ -255,6 +255,9 @@ importers:
 
   .:
     devDependencies:
+      '@presetter/preset-esm':
+        specifier: workspace:*
+        version: link:presets/esm
       '@presetter/preset-monorepo':
         specifier: workspace:*
         version: link:presets/monorepo
@@ -516,9 +519,9 @@ importers:
 
   presets/monorepo:
     dependencies:
-      '@presetter/preset-esm':
+      '@presetter/preset-essentials':
         specifier: workspace:*
-        version: link:../esm
+        version: link:../essentials
       '@presetter/preset-strict':
         specifier: workspace:*
         version: link:../strict
