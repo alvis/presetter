@@ -50,6 +50,7 @@
   "peerDependencies": {
     "@next/eslint-plugin-next": "catalog:nextjs",
     "@presetter/preset-esm": "workspace:*",
+    "@presetter/preset-node": "workspace:*",
     "@presetter/preset-react": "workspace:*",
     "@presetter/preset-strict": "workspace:*",
     "@presetter/preset-web": "workspace:*",

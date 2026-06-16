@@ -2,10 +2,13 @@ import { dirname, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
 import esm from '@presetter/preset-esm';
+import node from '@presetter/preset-node';
 import react, {
   DEFAULT_VARIABLES as REACT_DEFAULT_VARIABLES,
 } from '@presetter/preset-react';
 import strict from '@presetter/preset-strict';
+import web from '@presetter/preset-web';
+
 import { preset } from 'presetter';
 
 import { name } from '../package.json';
@@ -28,7 +31,7 @@ const TEMPLATES = resolve(DIR, '..', 'templates');
 
 export default preset(name, {
   root: resolve(import.meta.dirname, '..'),
-  extends: [esm, strict, react],
+  extends: [esm, node, strict, web, react],
   variables: DEFAULT_VARIABLES,
   assets: ({ variables }) => ({
     '.gitignore': resolve(TEMPLATES, 'gitignore'),

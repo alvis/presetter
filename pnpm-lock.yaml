@@ -541,6 +541,9 @@ importers:
       '@presetter/preset-esm':
         specifier: workspace:*
         version: link:../esm
+      '@presetter/preset-node':
+        specifier: workspace:*
+        version: link:../node
       '@presetter/preset-react':
         specifier: workspace:*
         version: link:../react
