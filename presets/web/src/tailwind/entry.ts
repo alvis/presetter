@@ -29,6 +29,7 @@ const commonSourceDirectories = [
   'source',
   'src',
   'app',
+  'src/app',
   'styles',
   'assets',
   'public',
