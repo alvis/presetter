@@ -1,1 +1,12 @@
-export { default } from '@presetter/preset-monorepo';
+import esm from '@presetter/preset-esm';
+
+import monorepo from '@presetter/preset-monorepo';
+import node from '@presetter/preset-node';
+
+import { preset } from 'presetter';
+
+import { name } from './package.json' with { type: 'json' };
+
+export default preset(name, {
+  extends: [monorepo, esm, node],
+});

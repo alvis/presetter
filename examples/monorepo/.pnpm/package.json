@@ -13,6 +13,7 @@
   },
   "devDependencies": {
     "@presetter/preset-monorepo": "*",
+    "@presetter/preset-node": "*",
     "@presetter/preset-next": "*",
     "@types/node": "*",
     "@vitest/coverage-v8": "*",

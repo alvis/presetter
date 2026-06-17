@@ -18,6 +18,7 @@
     "typecheck": "run typecheck --"
   },
   "devDependencies": {
+    "@presetter/preset-node": "*",
     "@presetter/preset-hybrid": "*",
     "@types/node": "*",
     "@vitest/coverage-v8": "*",

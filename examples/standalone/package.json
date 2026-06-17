@@ -12,6 +12,7 @@
   },
   "devDependencies": {
     "@presetter/preset-esm": "*",
+    "@presetter/preset-node": "*",
     "@types/node": "*",
     "@vitest/coverage-v8": "*",
     "presetter": "*",

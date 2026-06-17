@@ -20,6 +20,7 @@
   },
   "devDependencies": {
     "@presetter/preset-esm": "*",
+    "@presetter/preset-node": "*",
     "@presetter/preset-rollup": "*",
     "@presetter/preset-strict": "*",
     "@types/node": "*",
