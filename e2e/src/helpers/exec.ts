@@ -179,33 +179,41 @@ export async function runInstall(
 
   switch (manager) {
     case 'npm':
-      return exec('corepack', {
+      return exec('npx', {
         ...options,
         args: ['npm', '--verbose', 'install', registry],
         env: NPM_ENV,
       });
     case 'pnpm': {
-      const resolution = await exec('corepack', {
+      const resolution = await exec('npx', {
         ...options,
-        args: ['pnpm', '--verbose', 'install', '--lockfile-only', registry],
+        args: [
+          'corepack',
+          'pnpm',
+          '--verbose',
+          'install',
+          '--lockfile-only',
+          registry,
+        ],
         env: PNPM_ENV,
       });
 
-      // const list0 = await exec('env', {
-      //   ...options,
-      //   env: PNPM_ENV,
-      // });
+      const envs = await exec('env', {
+        ...options,
+        env: PNPM_ENV,
+      });
 
-      // const list1 = await exec('corepack', {
-      //   ...options,
-      //   args: ['pnpm', 'config', 'list'],
-      //   env: PNPM_ENV,
-      // });
+      const configs = await exec('npx', {
+        ...options,
+        args: ['corepack', 'pnpm', 'config', 'list'],
+        env: PNPM_ENV,
+      });
 
-      const install = await exec('corepack', {
+      const install = await exec('npx', {
         ...options,
         shell: true,
         args: [
+          'corepack',
           'pnpm',
           '--verbose',
           'install',
@@ -216,20 +224,13 @@ export async function runInstall(
         // env: PNPM_ENV,
       });
 
-      // const list2 = await exec('ls', {
-      //   ...options,
-      //   args: ['-al', 'node_modules/.bin'],
-      //   // env: PNPM_ENV,
-      // });
+      const bins = await exec('ls', {
+        ...options,
+        args: ['-al', 'node_modules/.bin'],
+        env: PNPM_ENV,
+      });
 
-      return [
-        resolution,
-        // JSON.stringify(process.env, null, 2),
-        install,
-        // list0,
-        // list1,
-        // list2,
-      ].join('\n\n---\n\n');
+      return [resolution, install, envs, configs, bins].join('\n\n---\n\n');
     }
     default:
       throw new Error(`unsupported package manager: ${manager}`);
@@ -251,17 +252,17 @@ export async function runScript(
 
   switch (manager) {
     case 'npm':
-      await exec('corepack', {
+      await exec('npx', {
         ...options,
-        args: ['npm', '--verbose', 'run', script],
+        args: ['corepack', 'npm', '--verbose', 'run', script],
         env: NPM_ENV,
       });
 
       return;
     case 'pnpm': {
-      await exec('corepack', {
+      await exec('npx', {
         ...options,
-        args: ['pnpm', '--verbose', 'run', script],
+        args: ['corepack', 'pnpm', '--verbose', 'run', script],
         env: PNPM_ENV,
       });
 
