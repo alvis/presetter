@@ -135,7 +135,7 @@ vi.mock('node:fs/promises', () => ({
       );
     }
 
-    return mockFileContents[normalizedPath] || '.class { color: red; }';
+    return mockFileContents[normalizedPath] ?? '.class { color: red; }';
   }),
   readdir: vi.fn(async (path: string) => {
     const normalizedPath = posix(path);

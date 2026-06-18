@@ -1,6 +1,5 @@
-import { beforeEach, describe, expect, it, vi } from 'vitest';
-
 import { handleError } from '#executable/error';
+import { beforeEach, describe, expect, it, vi } from 'vitest';
 
 const { warn } = vi.hoisted(() => ({
   warn: vi.fn(),
@@ -51,7 +50,7 @@ describe.sequential('fn:handleError', () => {
 
     expect(warn).toHaveBeenCalledTimes(3);
 
-    const message = warn.mock.calls[0][0] as string;
+    const message = warn.mock.calls[0]![0] as string;
     expect(message.replace(ansi, '')).toEqual(`[Error] tty`);
   });
 
@@ -65,7 +64,7 @@ describe.sequential('fn:handleError', () => {
 
     expect(warn).toHaveBeenCalledTimes(1);
 
-    const message = warn.mock.calls[0][0] as string;
+    const message = warn.mock.calls[0]![0] as string;
     expect(message.replace(ansi, '')).toEqual(`[Error] no record`);
   });
 });

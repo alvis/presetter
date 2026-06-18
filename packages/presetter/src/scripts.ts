@@ -113,7 +113,7 @@ const resolveRunner = (
   return destinations
     .map((destination) => {
       const expandedCommand =
-        context.template[destination] ||
+        context.template[destination] ??
         (context.target[destination] === originalCommand
           ? undefined
           : context.target[destination]);

@@ -144,18 +144,21 @@ const updateQuotes = (
 
 /**
  * checks for binary operators at current position
- * @param char current character
- * @param nextChar next character
- * @param parenDepth parenthesis depth
- * @param braceDepth number of nested braces currently open
+ * @param params collection of parameters
+ * @param params.char current character
+ * @param params.nextChar next character
+ * @param params.parenDepth parenthesis depth
+ * @param params.braceDepth number of nested braces currently open
  * @returns operator match or null
  */
-const checkBinaryOp = (
-  char: string,
-  nextChar: string | undefined,
-  parenDepth: number,
-  braceDepth: number,
-): { op: BinaryOperator } | null => {
+const checkBinaryOp = (params: {
+  char: string;
+  nextChar: string | undefined;
+  parenDepth: number;
+  braceDepth: number;
+}): { op: BinaryOperator } | null => {
+  const { char, nextChar, parenDepth, braceDepth } = params;
+
   if (parenDepth !== 0 || braceDepth !== 0) {
     return null;
   }
@@ -210,7 +213,7 @@ const findTopLevelOperator = (text: string): OperatorMatch | null => {
 
     [parenDepth, braceDepth] = updateDepths(char, parenDepth, braceDepth);
 
-    const opMatch = checkBinaryOp(char, nextChar, parenDepth, braceDepth);
+    const opMatch = checkBinaryOp({ char, nextChar, parenDepth, braceDepth });
     if (opMatch) {
       return { ...opMatch, index: i };
     }
