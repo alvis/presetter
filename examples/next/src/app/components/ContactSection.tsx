@@ -2,6 +2,7 @@
 
 import { useState } from 'react';
 
+import { classnames } from '#classnames';
 import { Button } from '#components/primitives';
 
 import { ContactField } from './ContactField';
@@ -55,34 +56,34 @@ export const ContactSection: FC = () => {
   return (
     <section
       aria-labelledby="contact-title"
-      className={
-        'w-full max-w-[1120px] mx-auto ' +
-        '[padding-block:clamp(var(--spacing)*16,8vw,var(--spacing)*24)] ' +
-        'max-[620px]:[padding-block:calc(var(--spacing)*16)] ' +
-        'grid grid-cols-[0.9fr_1fr] gap-8 items-start rounded-xl text-paper ' +
-        '[padding:clamp(var(--spacing)*10,7vw,var(--spacing)*20)] ' +
-        '[background:linear-gradient(145deg,var(--color-ink),var(--color-moss)),var(--color-ink)] ' +
-        'max-[900px]:grid-cols-1 ' +
-        'max-[620px]:p-6'
-      }
+      className={classnames(
+        'w-full max-w-[1120px] mx-auto',
+        '[padding-block:clamp(var(--spacing)*16,8vw,var(--spacing)*24)]',
+        'max-[620px]:[padding-block:calc(var(--spacing)*16)]',
+        'grid grid-cols-[0.9fr_1fr] gap-8 items-start rounded-xl text-paper',
+        '[padding:clamp(var(--spacing)*10,7vw,var(--spacing)*20)]',
+        '[background:linear-gradient(145deg,var(--color-ink),var(--color-moss)),var(--color-ink)]',
+        'max-[900px]:grid-cols-1',
+        'max-[620px]:p-6',
+      )}
       id="contact">
       <div>
         <p
-          className={
-            'mt-0 mb-4 font-black uppercase tracking-[0.08em] ' +
-            'text-eyebrow text-moss ' +
-            'max-[620px]:max-w-[30ch] max-[620px]:text-base ' +
-            'max-[620px]:leading-[1.45] max-[620px]:tracking-[0.06em] ' +
-            '!text-paper'
-          }>
+          className={classnames(
+            'mt-0 mb-4 font-black uppercase tracking-[0.08em]',
+            'text-eyebrow text-moss',
+            'max-[620px]:max-w-[30ch] max-[620px]:text-base',
+            'max-[620px]:leading-[1.45] max-[620px]:tracking-[0.06em]',
+            '!text-paper',
+          )}>
           Start here
         </p>
         <h2
-          className={
-            'mb-0 font-display text-paper leading-[1.05] [text-wrap:balance] ' +
-            'text-9xl ' +
-            'max-[620px]:text-4xl max-[620px]:leading-[1.04]'
-          }
+          className={classnames(
+            'mb-0 font-display text-paper leading-[1.05] [text-wrap:balance]',
+            'text-9xl',
+            'max-[620px]:text-4xl max-[620px]:leading-[1.04]',
+          )}
           id="contact-title">
           Bring the messy launch plan. Leave with the sharp one.
         </h2>
@@ -97,10 +98,10 @@ export const ContactSection: FC = () => {
       <form
         aria-describedby="contact-form-note"
         aria-label="Launch brief"
-        className={
-          'grid gap-4 p-5 rounded-lg ' +
-          'bg-surface-on-paper text-ink shadow-crisp'
-        }
+        className={classnames(
+          'grid gap-4 p-5 rounded-lg',
+          'bg-surface-on-paper text-ink shadow-crisp',
+        )}
         onSubmit={(event) => {
           event.preventDefault();
           setStatus('sent');

@@ -22,9 +22,11 @@
     "typecheck": "run typecheck --"
   },
   "dependencies": {
+    "clsx": "*",
     "next": "*",
     "react": "*",
-    "react-dom": "*"
+    "react-dom": "*",
+    "tailwind-merge": "*"
   },
   "devDependencies": {
     "@presetter/preset-next": "*",
@@ -37,11 +39,12 @@
     "@types/react": "*",
     "@types/react-dom": "*",
     "@vitest/browser-playwright": "*",
+    "eslint": "^9",
     "globals": "*",
     "playwright": "*",
     "presetter": "*",
     "storybook": "*",
-    "typescript": "*",
+    "typescript": "^5",
     "vitest": "*"
   }
 }

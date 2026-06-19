@@ -1,3 +1,5 @@
+import { classnames } from '#classnames';
+
 import type { FC, PropsWithChildren } from 'react';
 
 /** props accepted by the {@link ContactField} component */
@@ -27,17 +29,17 @@ export const ContactField: FC<ContactFieldProps> = ({
 }) => {
   return (
     <label
-      className={
-        'grid gap-2 text-ink text-ui font-bold ' +
-        '[&_input]:w-full [&_textarea]:w-full ' +
-        '[&_input]:border [&_input]:border-line ' +
-        '[&_textarea]:border [&_textarea]:border-line ' +
-        '[&_input]:rounded-sm [&_textarea]:rounded-sm ' +
-        '[&_input]:bg-surface-bright [&_textarea]:bg-surface-bright ' +
-        '[&_input]:text-ink [&_textarea]:text-ink ' +
-        '[&_input]:px-4 [&_input]:py-3 ' +
-        '[&_textarea]:px-4 [&_textarea]:py-3'
-      }
+      className={classnames(
+        'grid gap-2 text-ink text-ui font-bold',
+        '[&_input]:w-full [&_textarea]:w-full',
+        '[&_input]:border [&_input]:border-line',
+        '[&_textarea]:border [&_textarea]:border-line',
+        '[&_input]:rounded-sm [&_textarea]:rounded-sm',
+        '[&_input]:bg-surface-bright [&_textarea]:bg-surface-bright',
+        '[&_input]:text-ink [&_textarea]:text-ink',
+        '[&_input]:px-4 [&_input]:py-3',
+        '[&_textarea]:px-4 [&_textarea]:py-3',
+      )}
       htmlFor={htmlFor}>
       {label}
       {children}

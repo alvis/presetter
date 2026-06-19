@@ -1,3 +1,5 @@
+import { classnames } from '#classnames';
+
 import type { FC } from 'react';
 
 /** props accepted by the {@link CapabilityCard} component */
@@ -38,15 +40,19 @@ export const CapabilityCard: FC<CapabilityCardProps> = ({
   title,
 }) => {
   const cardClassName = featured
-    ? 'flex flex-col min-h-[220px] p-8 rounded-xl overflow-hidden ' +
-      'bg-surface-on-paper-veil ' +
-      'shadow-[inset_0_1px_0_var(--color-surface-bright-veil),var(--shadow-soft)] ' +
-      'row-span-2 min-h-[456px] text-paper ' +
-      '[background:linear-gradient(160deg,var(--color-ink-soft),var(--color-moss)),var(--color-ink)] ' +
-      'max-[900px]:row-auto max-[900px]:min-h-[260px]'
-    : 'flex flex-col min-h-[220px] p-8 rounded-xl overflow-hidden ' +
-      'bg-surface-on-paper-veil ' +
-      'shadow-[inset_0_1px_0_var(--color-surface-bright-veil),var(--shadow-soft)]';
+    ? classnames(
+        'flex flex-col min-h-[220px] p-8 rounded-xl overflow-hidden',
+        'bg-surface-on-paper-veil',
+        'shadow-[inset_0_1px_0_var(--color-surface-bright-veil),var(--shadow-soft)]',
+        'row-span-2 min-h-[456px] text-paper',
+        '[background:linear-gradient(160deg,var(--color-ink-soft),var(--color-moss)),var(--color-ink)]',
+        'max-[900px]:row-auto max-[900px]:min-h-[260px]',
+      )
+    : classnames(
+        'flex flex-col min-h-[220px] p-8 rounded-xl overflow-hidden',
+        'bg-surface-on-paper-veil',
+        'shadow-[inset_0_1px_0_var(--color-surface-bright-veil),var(--shadow-soft)]',
+      );
 
   const headingClassName = featured
     ? 'mb-2 text-paper text-3xl leading-[1.2]'
@@ -56,12 +62,13 @@ export const CapabilityCard: FC<CapabilityCardProps> = ({
     ? 'mb-0 text-paper text-base leading-[1.58] [text-wrap:pretty]'
     : 'mb-0 text-ink-soft text-base leading-[1.58] [text-wrap:pretty]';
 
-  const imageClassName =
-    'mt-6 block w-full rounded-lg object-cover ' +
-    'aspect-[3/2] shadow-[0_18px_42px_var(--color-shadow-soft)] ' +
-    (featured
+  const imageClassName = classnames(
+    'mt-6 block w-full rounded-lg object-cover',
+    'aspect-[3/2] shadow-[0_18px_42px_var(--color-shadow-soft)]',
+    featured
       ? 'min-h-[236px] flex-1 border border-surface-bright-veil'
-      : 'max-h-[180px] border border-line');
+      : 'max-h-[180px] border border-line',
+  );
 
   return (
     <article className={cardClassName}>

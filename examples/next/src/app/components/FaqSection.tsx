@@ -1,3 +1,4 @@
+import { classnames } from '#classnames';
 import { SectionHeading } from '#components/primitives';
 
 import { FaqItem } from './FaqItem';
@@ -27,14 +28,14 @@ export const FaqSection: FC<FaqSectionProps> = ({ faqs }) => {
   return (
     <section
       aria-labelledby="faq-title"
-      className={
-        'w-full max-w-[1120px] mx-auto ' +
-        '[padding-block:clamp(var(--spacing)*16,8vw,var(--spacing)*24)] ' +
-        'max-[620px]:[padding-block:calc(var(--spacing)*16)] ' +
-        'grid grid-cols-[0.8fr_1fr] gap-8 ' +
-        'max-[900px]:grid-cols-1 ' +
-        '[&_>_div:first-child]:!block [&_>_div:first-child]:!mb-0'
-      }>
+      className={classnames(
+        'w-full max-w-[1120px] mx-auto',
+        '[padding-block:clamp(var(--spacing)*16,8vw,var(--spacing)*24)]',
+        'max-[620px]:[padding-block:calc(var(--spacing)*16)]',
+        'grid grid-cols-[0.8fr_1fr] gap-8',
+        'max-[900px]:grid-cols-1',
+        '[&_>_div:first-child]:!block [&_>_div:first-child]:!mb-0',
+      )}>
       <SectionHeading
         eyebrow="Questions"
         title="What teams ask before bringing us in."

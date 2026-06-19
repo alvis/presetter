@@ -1,3 +1,5 @@
+import { classnames } from '#classnames';
+
 import { expect } from 'storybook/test';
 
 import { MarketingLayout } from './MarketingLayout';
@@ -26,10 +28,10 @@ export const Default: Story = {
     children: (
       <section
         aria-labelledby="layout-demo-title"
-        className={
-          'w-full max-w-[1120px] mx-auto ' +
-          '[padding-block:clamp(var(--spacing)*16,8vw,var(--spacing)*24)]'
-        }>
+        className={classnames(
+          'w-full max-w-[1120px] mx-auto',
+          '[padding-block:clamp(var(--spacing)*16,8vw,var(--spacing)*24)]',
+        )}>
         <h1
           className="font-display text-ink text-7xl leading-none"
           id="layout-demo-title">

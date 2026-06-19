@@ -1,3 +1,5 @@
+import { classnames } from '#classnames';
+
 import type { FC } from 'react';
 
 /** props accepted by the {@link SectionHeading} component */
@@ -30,25 +32,25 @@ export const SectionHeading: FC<SectionHeadingProps> = ({
 }) => {
   return (
     <div
-      className={
-        'grid grid-cols-[minmax(180px,0.38fr)_1fr] gap-8 mb-8 items-start ' +
-        'max-[900px]:grid-cols-1'
-      }>
+      className={classnames(
+        'grid grid-cols-[minmax(180px,0.38fr)_1fr] gap-8 mb-8 items-start',
+        'max-[900px]:grid-cols-1',
+      )}>
       <p
-        className={
-          'mt-0 mb-4 font-black uppercase tracking-[0.08em] ' +
-          'text-eyebrow text-moss ' +
-          'max-[620px]:max-w-[30ch] max-[620px]:text-base ' +
-          'max-[620px]:leading-[1.45] max-[620px]:tracking-[0.06em]'
-        }>
+        className={classnames(
+          'mt-0 mb-4 font-black uppercase tracking-[0.08em]',
+          'text-eyebrow text-moss',
+          'max-[620px]:max-w-[30ch] max-[620px]:text-base',
+          'max-[620px]:leading-[1.45] max-[620px]:tracking-[0.06em]',
+        )}>
         {eyebrow}
       </p>
       <h2
-        className={
-          'mb-0 font-display text-ink leading-[1.05] [text-wrap:balance] ' +
-          'text-9xl ' +
-          'max-[620px]:text-4xl max-[620px]:leading-[1.04]'
-        }
+        className={classnames(
+          'mb-0 font-display text-ink leading-[1.05] [text-wrap:balance]',
+          'text-9xl',
+          'max-[620px]:text-4xl max-[620px]:leading-[1.04]',
+        )}
         id={titleId}>
         {title}
       </h2>

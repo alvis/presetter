@@ -1,3 +1,5 @@
+import { classnames } from '#classnames';
+
 import { ServiceChip } from './ServiceChip';
 
 import type { FC } from 'react';
@@ -21,11 +23,11 @@ export const ServiceTicker: FC<ServiceTickerProps> = ({ services }) => {
   return (
     <section
       aria-label="ACME services"
-      className={
-        'flex flex-wrap justify-center gap-2 ' +
-        'w-full max-w-[980px] mx-auto mt-8 p-3 rounded-lg ' +
-        'bg-surface-on-paper-veil'
-      }>
+      className={classnames(
+        'flex flex-wrap justify-center gap-2',
+        'w-full max-w-[980px] mx-auto mt-8 p-3 rounded-lg',
+        'bg-surface-on-paper-veil',
+      )}>
       {services.map((service) => (
         <ServiceChip key={service}>{service}</ServiceChip>
       ))}

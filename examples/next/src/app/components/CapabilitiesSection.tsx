@@ -1,3 +1,4 @@
+import { classnames } from '#classnames';
 import { SectionHeading } from '#components/primitives';
 
 import { CapabilityCard } from './CapabilityCard';
@@ -28,11 +29,11 @@ export const CapabilitiesSection: FC<CapabilitiesSectionProps> = ({
   return (
     <section
       aria-labelledby="services-title"
-      className={
-        'w-full max-w-[1120px] mx-auto ' +
-        '[padding-block:clamp(var(--spacing)*16,8vw,var(--spacing)*24)] ' +
-        'max-[620px]:[padding-block:calc(var(--spacing)*16)]'
-      }
+      className={classnames(
+        'w-full max-w-[1120px] mx-auto',
+        '[padding-block:clamp(var(--spacing)*16,8vw,var(--spacing)*24)]',
+        'max-[620px]:[padding-block:calc(var(--spacing)*16)]',
+      )}
       id="services">
       <SectionHeading
         eyebrow="Services"
@@ -40,9 +41,10 @@ export const CapabilitiesSection: FC<CapabilitiesSectionProps> = ({
         titleId="services-title"
       />
       <div
-        className={
-          'grid grid-cols-[1.15fr_0.85fr] gap-4 ' + 'max-[900px]:grid-cols-1'
-        }>
+        className={classnames(
+          'grid grid-cols-[1.15fr_0.85fr] gap-4',
+          'max-[900px]:grid-cols-1',
+        )}>
         {capabilities.map((item, index) => (
           <CapabilityCard featured={index === 0} key={item.title} {...item} />
         ))}

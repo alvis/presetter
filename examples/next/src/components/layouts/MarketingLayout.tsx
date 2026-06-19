@@ -1,3 +1,4 @@
+import { classnames } from '#classnames';
 import { SiteFooter, SiteNav } from '#components/composites';
 
 import type { FC, PropsWithChildren } from 'react';
@@ -36,26 +37,26 @@ export const MarketingLayout: FC<MarketingLayoutProps> = ({
   return (
     <>
       <a
-        className={
-          'absolute top-3 left-3 z-[999] ' +
-          'inline-flex items-center min-h-11 ' +
-          'px-5 py-3 rounded-md ' +
-          'bg-ink text-paper font-bold ' +
-          '-translate-y-[200%] focus:translate-y-0 ' +
-          'focus-visible:translate-y-0 ' +
-          'transition-transform duration-[180ms] ease-out'
-        }
+        className={classnames(
+          'absolute top-3 left-3 z-[999]',
+          'inline-flex items-center min-h-11',
+          'px-5 py-3 rounded-md',
+          'bg-ink text-paper font-bold',
+          '-translate-y-[200%] focus:translate-y-0',
+          'focus-visible:translate-y-0',
+          'transition-transform duration-[180ms] ease-out',
+        )}
         href="#main-content">
         Skip to main content
       </a>
       <SiteNav navItems={navItems} />
       <main
-        className={
-          'page-shell-grid ' +
-          'relative min-h-svh overflow-hidden ' +
-          'px-4 pb-12 max-[620px]:px-3 max-[620px]:pb-8 ' +
-          'sm:px-6 lg:px-16'
-        }
+        className={classnames(
+          'page-shell-grid',
+          'relative min-h-svh overflow-hidden',
+          'px-4 pb-12 max-[620px]:px-3 max-[620px]:pb-8',
+          'sm:px-6 lg:px-16',
+        )}
         id="main-content"
         tabIndex={-1}>
         {children}

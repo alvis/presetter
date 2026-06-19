@@ -1,3 +1,4 @@
+import { classnames } from '#classnames';
 import { SectionHeading } from '#components/primitives';
 
 import { WorkItem } from './WorkItem';
@@ -25,11 +26,11 @@ export const FeaturedWork: FC<FeaturedWorkProps> = ({ work }) => {
   return (
     <section
       aria-labelledby="work-title"
-      className={
-        'w-full max-w-[1120px] mx-auto ' +
-        '[padding-block:clamp(var(--spacing)*16,8vw,var(--spacing)*24)] ' +
-        'max-[620px]:[padding-block:calc(var(--spacing)*16)]'
-      }
+      className={classnames(
+        'w-full max-w-[1120px] mx-auto',
+        '[padding-block:clamp(var(--spacing)*16,8vw,var(--spacing)*24)]',
+        'max-[620px]:[padding-block:calc(var(--spacing)*16)]',
+      )}
       id="work">
       <SectionHeading
         eyebrow="Selected work"

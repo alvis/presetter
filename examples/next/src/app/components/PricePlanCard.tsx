@@ -1,3 +1,5 @@
+import { classnames } from '#classnames';
+
 import type { FC } from 'react';
 
 /** props accepted by the {@link PricePlanCard} component */
@@ -33,51 +35,63 @@ export const PricePlanCard: FC<PricePlanCardProps> = ({
   price,
 }) => {
   const cardClassName = featured
-    ? 'relative grid gap-4 content-start min-h-[360px] p-6 rounded-lg ' +
-      'shadow-soft [background:var(--color-ink)] ' +
-      'max-[620px]:min-h-0 ' +
-      'text-paper'
-    : 'relative grid gap-4 content-start min-h-[360px] p-6 rounded-lg ' +
-      'bg-surface-on-paper-veil shadow-soft ' +
-      'max-[620px]:min-h-0';
+    ? classnames(
+        'relative grid gap-4 content-start min-h-[360px] p-6 rounded-lg',
+        'shadow-soft [background:var(--color-ink)]',
+        'max-[620px]:min-h-0',
+        'text-paper',
+      )
+    : classnames(
+        'relative grid gap-4 content-start min-h-[360px] p-6 rounded-lg',
+        'bg-surface-on-paper-veil shadow-soft',
+        'max-[620px]:min-h-0',
+      );
 
   const headingClassName = featured
     ? 'mb-2 text-3xl leading-[1.2] text-paper'
     : 'mb-2 text-3xl leading-[1.2] text-ink';
 
   const priceClassName = featured
-    ? 'm-0 text-paper font-display font-black leading-none ' +
-      '[font-variant-numeric:tabular-nums] ' +
-      'text-8xl max-[620px]:text-6xl'
-    : 'm-0 text-coral font-display font-black leading-none ' +
-      '[font-variant-numeric:tabular-nums] ' +
-      'text-8xl max-[620px]:text-6xl';
+    ? classnames(
+        'm-0 text-paper font-display font-black leading-none',
+        '[font-variant-numeric:tabular-nums]',
+        'text-8xl max-[620px]:text-6xl',
+      )
+    : classnames(
+        'm-0 text-coral font-display font-black leading-none',
+        '[font-variant-numeric:tabular-nums]',
+        'text-8xl max-[620px]:text-6xl',
+      );
 
   const detailClassName = featured
     ? 'mb-0 text-paper text-base leading-[1.58] [text-wrap:pretty]'
     : 'mb-0 text-ink-soft text-base leading-[1.58] [text-wrap:pretty]';
 
   const ctaClassName = featured
-    ? 'inline-flex items-center justify-center min-h-11 px-4 rounded-sm ' +
-      'bg-paper text-ink text-ui font-bold whitespace-nowrap ' +
-      'transition-[transform,background-color,color,box-shadow] ' +
-      'duration-[180ms] ease-out ' +
-      'hover:[@media(hover:hover)]:-translate-y-0.5 active:scale-[0.97]'
-    : 'inline-flex items-center justify-center min-h-11 px-4 rounded-sm ' +
-      'bg-chip-bg text-ink text-ui font-bold whitespace-nowrap ' +
-      'transition-[transform,background-color,color,box-shadow] ' +
-      'duration-[180ms] ease-out ' +
-      'hover:[@media(hover:hover)]:-translate-y-0.5 active:scale-[0.97]';
+    ? classnames(
+        'inline-flex items-center justify-center min-h-11 px-4 rounded-sm',
+        'bg-paper text-ink text-ui font-bold whitespace-nowrap',
+        'transition-[transform,background-color,color,box-shadow]',
+        'duration-[180ms] ease-out',
+        'hover:[@media(hover:hover)]:-translate-y-0.5 active:scale-[0.97]',
+      )
+    : classnames(
+        'inline-flex items-center justify-center min-h-11 px-4 rounded-sm',
+        'bg-chip-bg text-ink text-ui font-bold whitespace-nowrap',
+        'transition-[transform,background-color,color,box-shadow]',
+        'duration-[180ms] ease-out',
+        'hover:[@media(hover:hover)]:-translate-y-0.5 active:scale-[0.97]',
+      );
 
   return (
     <article className={cardClassName}>
       {featured ? (
         <span
-          className={
-            'inline-flex items-center min-h-8 rounded-full ' +
-            'bg-chip-bg text-moss text-eyebrow font-bold ' +
-            'w-max px-3'
-          }>
+          className={classnames(
+            'inline-flex items-center min-h-8 rounded-full',
+            'bg-chip-bg text-moss text-eyebrow font-bold',
+            'w-max px-3',
+          )}>
           Most requested
         </span>
       ) : null}

@@ -1,3 +1,5 @@
+import { classnames } from '#classnames';
+
 import type { CSSProperties, FC, PropsWithChildren } from 'react';
 
 /** props accepted by the {@link PressableAction} component */
@@ -52,18 +54,16 @@ export const PressableAction: FC<PressableActionProps> = ({
     return (
       <a
         aria-label={ariaLabel}
-        className={[
-          'inline-flex items-center justify-center min-h-11 ' +
-            'transition-[transform,background-color,color,box-shadow] ' +
-            'duration-[180ms] ease-out ' +
-            'hover:[@media(hover:hover)]:-translate-y-0.5 ' +
-            'active:scale-[0.97] ' +
-            'disabled:cursor-not-allowed disabled:opacity-[0.58] ' +
-            'disabled:transform-none',
+        className={classnames(
+          'inline-flex items-center justify-center min-h-11',
+          'transition-[transform,background-color,color,box-shadow]',
+          'duration-[180ms] ease-out',
+          'hover:[@media(hover:hover)]:-translate-y-0.5',
+          'active:scale-[0.97]',
+          'disabled:cursor-not-allowed disabled:opacity-[0.58]',
+          'disabled:transform-none',
           className,
-        ]
-          .filter(Boolean)
-          .join(' ')}
+        )}
         href={href}
         style={style}>
         {children}
@@ -74,18 +74,16 @@ export const PressableAction: FC<PressableActionProps> = ({
   return (
     <button
       aria-label={ariaLabel}
-      className={[
-        'inline-flex items-center justify-center min-h-11 ' +
-          'transition-[transform,background-color,color,box-shadow] ' +
-          'duration-[180ms] ease-out ' +
-          'hover:[@media(hover:hover)]:-translate-y-0.5 ' +
-          'active:scale-[0.97] ' +
-          'disabled:cursor-not-allowed disabled:opacity-[0.58] ' +
-          'disabled:transform-none',
+      className={classnames(
+        'inline-flex items-center justify-center min-h-11',
+        'transition-[transform,background-color,color,box-shadow]',
+        'duration-[180ms] ease-out',
+        'hover:[@media(hover:hover)]:-translate-y-0.5',
+        'active:scale-[0.97]',
+        'disabled:cursor-not-allowed disabled:opacity-[0.58]',
+        'disabled:transform-none',
         className,
-      ]
-        .filter(Boolean)
-        .join(' ')}
+      )}
       disabled={disabled}
       style={style}
       type={type === 'submit' ? 'submit' : 'button'}

@@ -1,3 +1,5 @@
+import { classnames } from '#classnames';
+
 import type { FC, PropsWithChildren } from 'react';
 
 /** props accepted by the {@link ServiceChip} component */
@@ -17,11 +19,11 @@ export type ServiceChipProps = PropsWithChildren;
 export const ServiceChip: FC<ServiceChipProps> = ({ children }) => {
   return (
     <span
-      className={
-        'inline-flex items-center min-h-8 rounded-full ' +
-        'bg-chip-bg text-moss text-eyebrow font-bold ' +
-        'px-4'
-      }>
+      className={classnames(
+        'inline-flex items-center min-h-8 rounded-full',
+        'bg-chip-bg text-moss text-eyebrow font-bold',
+        'px-4',
+      )}>
       {children}
     </span>
   );

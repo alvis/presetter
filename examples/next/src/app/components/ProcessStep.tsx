@@ -1,3 +1,5 @@
+import { classnames } from '#classnames';
+
 import type { FC } from 'react';
 
 /** props accepted by the {@link ProcessStep} component */
@@ -25,17 +27,18 @@ export interface ProcessStepProps {
 export const ProcessStep: FC<ProcessStepProps> = ({ body, phase, title }) => {
   return (
     <li
-      className={
-        'grid grid-cols-[96px_1fr] gap-6 w-full max-w-[860px] ' +
-        'py-6 border-t border-line ' +
-        'even:ml-auto ' +
-        'max-[620px]:grid-cols-1 max-[620px]:gap-3 ' +
-        'max-[620px]:even:ml-0'
-      }>
+      className={classnames(
+        'grid grid-cols-[96px_1fr] gap-6 w-full max-w-[860px]',
+        'py-6 border-t border-line',
+        'even:ml-auto',
+        'max-[620px]:grid-cols-1 max-[620px]:gap-3',
+        'max-[620px]:even:ml-0',
+      )}>
       <span
-        className={
-          'text-coral font-display font-black leading-none ' + 'text-5xl'
-        }>
+        className={classnames(
+          'text-coral font-display font-black leading-none',
+          'text-5xl',
+        )}>
         {phase}
       </span>
       <div>

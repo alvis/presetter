@@ -1,3 +1,5 @@
+import { classnames } from '#classnames';
+
 import { PressableAction } from './PressableAction';
 
 import type { FC, PropsWithChildren } from 'react';
@@ -37,15 +39,19 @@ export const LinkButton: FC<LinkButtonProps> = ({
 }) => {
   const variantClassName =
     variant === 'secondary'
-      ? 'px-6 rounded-md cursor-pointer ' +
-        'border border-line bg-surface-on-paper-veil text-ink font-bold'
-      : 'px-6 rounded-md border-0 cursor-pointer ' +
-        'bg-ink text-paper font-bold shadow-crisp';
+      ? classnames(
+          'px-6 rounded-md cursor-pointer',
+          'border border-line bg-surface-on-paper-veil text-ink font-bold',
+        )
+      : classnames(
+          'px-6 rounded-md border-0 cursor-pointer',
+          'bg-ink text-paper font-bold shadow-crisp',
+        );
 
   return (
     <PressableAction
       ariaLabel={ariaLabel}
-      className={[variantClassName, className].filter(Boolean).join(' ')}
+      className={classnames(variantClassName, className)}
       href={href}>
       {children}
     </PressableAction>

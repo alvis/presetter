@@ -1,3 +1,5 @@
+import { classnames } from '#classnames';
+
 import type { FC } from 'react';
 
 /** props accepted by the {@link FaqItem} component */
@@ -23,13 +25,13 @@ export const FaqItem: FC<FaqItemProps> = ({ answer, question }) => {
   return (
     <details className="py-5 border-t border-line last:border-b">
       <summary
-        className={
-          'min-h-11 text-ink cursor-pointer ' +
-          'text-lg font-bold ' +
-          'transition-[transform,background-color,color,box-shadow] ' +
-          'duration-[180ms] ease-out ' +
-          'hover:[@media(hover:hover)]:text-coral'
-        }>
+        className={classnames(
+          'min-h-11 text-ink cursor-pointer',
+          'text-lg font-bold',
+          'transition-[transform,background-color,color,box-shadow]',
+          'duration-[180ms] ease-out',
+          'hover:[@media(hover:hover)]:text-coral',
+        )}>
         {question}
       </summary>
       <p
