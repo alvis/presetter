@@ -69,7 +69,6 @@
     "tsc-esm-fix": "catalog:build",
     "tsconfig-paths": "catalog:build",
     "tsx": "catalog:build",
-    "typescript": "catalog:build",
     "typescript-eslint": "catalog:lint",
     "vitest": "catalog:testing",
     "zx": "catalog:utilities"

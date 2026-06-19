@@ -50,7 +50,6 @@
   "peerDependencies": {
     "@storybook/addon-a11y": "catalog:storybook",
     "@storybook/addon-vitest": "catalog:storybook",
-    "@storybook/nextjs-vite": "catalog:storybook",
     "@vitest/browser-playwright": "catalog:testing",
     "eslint-plugin-storybook": "catalog:lint",
     "playwright": "catalog:testing",

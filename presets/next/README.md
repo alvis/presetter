@@ -248,7 +248,6 @@ You get everything from:
 Automatically configured tools:
 
 - `@next/eslint-plugin-next` - Next.js specific linting
-- `@storybook/nextjs-vite` - Storybook Next.js integration
 - `sharp` - Image optimization
 - `postcss-preset-env` - Modern CSS features
 - All tools from ESM, Strict, and React presets

@@ -37,7 +37,6 @@
     "@types/react": "*",
     "@types/react-dom": "*",
     "@vitest/browser-playwright": "*",
-    "eslint": "^9",
     "globals": "*",
     "playwright": "*",
     "presetter": "*",

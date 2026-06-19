@@ -54,7 +54,6 @@
     "@presetter/preset-react": "workspace:*",
     "@presetter/preset-strict": "workspace:*",
     "@presetter/preset-web": "workspace:*",
-    "@storybook/nextjs-vite": "catalog:storybook",
     "@tailwindcss/postcss": "catalog:web",
     "next": "catalog:nextjs",
     "postcss-preset-env": "catalog:web",
