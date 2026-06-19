@@ -32,7 +32,10 @@ const WARNING_PATTERNS = [
 ];
 
 /** patterns for warnings we can ignore (third-party subdependency issues) */
-const IGNORABLE_PATTERNS = [/deprecated/i];
+const IGNORABLE_PATTERNS = [
+  /request took/i,
+  /not found and will be installed/i,
+];
 
 /**
  * finds warning messages in installation output
