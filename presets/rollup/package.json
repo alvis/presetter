@@ -61,7 +61,7 @@
     "@rollup/plugin-yaml": "catalog:rollup",
     "presetter": "workspace:*",
     "rollup": "catalog:rollup",
-    "rollup-plugin-postcss": "catalog:rollup",
+    "rollup-plugin-import-css": "catalog:rollup",
     "rollup-plugin-tsconfig-paths": "catalog:rollup",
     "rollup-plugin-visualizer": "catalog:rollup"
   },

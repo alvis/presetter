@@ -284,7 +284,7 @@ This preset extends any base preset with professional Rollup 4 bundling:
 - **@rollup/plugin-yaml**: YAML file imports
 - **@rollup/plugin-graphql**: GraphQL file imports
 - **@rollup/plugin-image**: Image asset handling
-- **rollup-plugin-postcss**: CSS processing with PostCSS
+- **rollup-plugin-import-css**: CSS processing with PostCSS
 
 #### Development & Analysis
 
@@ -350,7 +350,7 @@ import json from '@rollup/plugin-json';
 import yaml from '@rollup/plugin-yaml';
 import graphql from '@rollup/plugin-graphql';
 import image from '@rollup/plugin-image';
-import postcss from 'rollup-plugin-postcss';
+import css from 'rollup-plugin-import-css';
 import { visualizer } from 'rollup-plugin-visualizer';
 
 export default defineConfig({

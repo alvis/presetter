@@ -6,7 +6,7 @@ import json from '@rollup/plugin-json';
 import resolve from '@rollup/plugin-node-resolve';
 import typescript from '@rollup/plugin-typescript';
 import yaml from '@rollup/plugin-yaml';
-import postcss from 'rollup-plugin-postcss';
+import css from 'rollup-plugin-import-css';
 import tsconfigPaths from 'rollup-plugin-tsconfig-paths';
 import visualizer from 'rollup-plugin-visualizer';
 
@@ -22,11 +22,7 @@ const jsonPlugin = json();
 const graphqlPlugin = graphql();
 const imagePlugin = image();
 const yamlPlugin = yaml();
-const postcssPlugin = postcss({
-  inject: {
-    insertAt: 'top',
-  },
-});
+const cssPlugin = css();
 const visualizerPlugin = visualizer();
 
 const plugins = [
@@ -38,7 +34,7 @@ const plugins = [
   graphqlPlugin,
   imagePlugin,
   yamlPlugin,
-  postcssPlugin,
+  cssPlugin,
   visualizerPlugin,
 ];
 
