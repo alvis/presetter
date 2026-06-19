@@ -181,23 +181,16 @@ export async function runInstall(
     case 'npm':
       return exec('npx', {
         ...options,
-        args: ['npm', '--verbose', 'install', registry],
+        args: [
+          'npm@latest',
+          'install',
+          '--dangerously-allow-all-scripts',
+          '--strict-peer-deps',
+          registry,
+        ],
         env: NPM_ENV,
       });
     case 'pnpm': {
-      const resolution = await exec('npx', {
-        ...options,
-        args: [
-          'corepack',
-          'pnpm',
-          '--verbose',
-          'install',
-          '--lockfile-only',
-          registry,
-        ],
-        env: PNPM_ENV,
-      });
-
       const envs = await exec('env', {
         ...options,
         env: PNPM_ENV,
@@ -205,7 +198,7 @@ export async function runInstall(
 
       const configs = await exec('npx', {
         ...options,
-        args: ['corepack', 'pnpm', 'config', 'list'],
+        args: ['corepack', 'pnpm@latest', 'config', 'list'],
         env: PNPM_ENV,
       });
 
@@ -214,14 +207,12 @@ export async function runInstall(
         shell: true,
         args: [
           'corepack',
-          'pnpm',
-          '--verbose',
+          'pnpm@latest',
           'install',
           '--dangerously-allow-all-builds',
           registry,
         ],
-        env: { PATH: process.env.PATH! },
-        // env: PNPM_ENV,
+        env: PNPM_ENV,
       });
 
       const bins = await exec('ls', {
@@ -230,7 +221,7 @@ export async function runInstall(
         env: PNPM_ENV,
       });
 
-      return [resolution, install, envs, configs, bins].join('\n\n---\n\n');
+      return [install, envs, configs, bins].join('\n\n---\n\n');
     }
     default:
       throw new Error(`unsupported package manager: ${manager}`);
