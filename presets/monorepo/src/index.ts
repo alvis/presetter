@@ -15,14 +15,14 @@ export type { Variables } from '@presetter/preset-essentials';
 
 const DIR = dirname(fileURLToPath(import.meta.url));
 
-// paths to the template directory
-const TEMPLATES = resolve(DIR, '..', 'templates');
+// paths to the override directory
+const OVERRIDES = resolve(DIR, '..', 'overrides');
 
 export default preset('@presetter/preset-monorepo', {
   root: resolve(import.meta.dirname, '..'),
   extends: [essentials, strict],
-  scripts: resolve(TEMPLATES, 'scripts.yaml'),
   override: {
+    scripts: resolve(OVERRIDES, 'scripts.yaml'),
     assets: (context) =>
       context.isRepoRoot
         ? {

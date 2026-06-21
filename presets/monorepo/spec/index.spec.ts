@@ -174,7 +174,7 @@ describe('fn:preset', () => {
 function readReleaseChangelogScript(): string {
   // normalize CRLF so marker matching and the extracted shell body work on Windows checkouts
   const template = readFileSync(
-    resolve(TEMPLATES, 'scripts.yaml'),
+    resolve(OVERRIDES, 'scripts.yaml'),
     'utf8',
   ).replace(/\r\n/g, '\n');
   const marker = 'release:changelog: >-\n';
