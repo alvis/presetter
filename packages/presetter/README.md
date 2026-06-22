@@ -1,14 +1,14 @@
 # 🚀 Presetter
 
-![Logo](https://github.com/alvis/presetter/raw/master/assets/logo.svg)
+[logo.svg](https://github.com/alvis/presetter/blob/master/assets/logo.svg)
 
 <div align="center">
 
 [![npm](https://img.shields.io/npm/v/presetter?style=flat-square)](https://github.com/alvis/presetter/releases)
-[![build](https://img.shields.io/github/actions/workflow/status/alvis/presetter/test.yaml?branch=master&style=flat-square)](https://github.com/alvis/presetter/actions)
+[![build](https://img.shields.io/github/actions/workflow/status/alvis/presetter/test.yaml?branch=main&style=flat-square)](https://github.com/alvis/presetter/actions)
 [![maintainability](https://img.shields.io/codeclimate/maintainability/alvis/presetter?style=flat-square)](https://codeclimate.com/github/alvis/presetter/maintainability)
 [![coverage](https://img.shields.io/codeclimate/coverage/alvis/presetter?style=flat-square)](https://codeclimate.com/github/alvis/presetter/test_coverage)
-[![vulnerabilities](https://img.shields.io/sonar/vulnerabilities/presetter/master?server=https%3A%2F%2Fsonarcloud.io&style=flat-square)](https://sonarcloud.io/summary/new_code?id=presetter)
+[![vulnerabilities](https://img.shields.io/sonar/vulnerabilities/presetter/main?server=https%3A%2F%2Fsonarcloud.io&style=flat-square)](https://sonarcloud.io/summary/new_code?id=presetter)
 [![dependencies](https://img.shields.io/librariesio/release/npm/presetter?style=flat-square)](https://libraries.io/npm/presetter)
 
 Template-driven configuration management — transform 40+ dev dependencies into 2 packages ⚡
@@ -82,7 +82,7 @@ npx presetter use @presetter/preset-esm @presetter/preset-strict
 
 **That's it.** TypeScript, ESLint, Vitest, build scripts, git hooks, formatter, linter, bundler — everything configured perfectly and working together.
 
-![Demo](https://raw.githubusercontent.com/alvis/presetter/master/assets/demo.gif)
+![Demo](https://raw.githubusercontent.com/alvis/presetter/main/assets/demo.gif)
 
 ---
 
@@ -253,21 +253,21 @@ Presetter comes with a comprehensive ecosystem of official presets:
 
 ### Core Development Presets
 
-| Preset                                                                                                       | Purpose                        | Best For                                  |
-| ------------------------------------------------------------------------------------------------------------ | ------------------------------ | ----------------------------------------- |
-| **[@presetter/preset-essentials](https://github.com/alvis/presetter/blob/master/packages/preset-essentials)** | 🏗️ Complete TypeScript toolkit | Foundation for all TypeScript projects    |
-| **[@presetter/preset-esm](https://github.com/alvis/presetter/blob/master/packages/preset-esm)**               | 🚀 ESM-first development       | Modern Node.js projects, libraries        |
-| **[@presetter/preset-cjs](https://github.com/alvis/presetter/blob/master/packages/preset-cjs)**               | 🔗 CommonJS compatibility      | Legacy environments, enterprise           |
-| **[@presetter/preset-hybrid](https://github.com/alvis/presetter/blob/master/packages/preset-hybrid)**         | 🌐 Dual-module packages        | npm libraries needing broad compatibility |
+| Preset                                                                                                      | Purpose                        | Best For                                  |
+| ----------------------------------------------------------------------------------------------------------- | ------------------------------ | ----------------------------------------- |
+| **[@presetter/preset-essentials](https://github.com/alvis/presetter/blob/main/packages/preset-essentials)** | 🏗️ Complete TypeScript toolkit | Foundation for all TypeScript projects    |
+| **[@presetter/preset-esm](https://github.com/alvis/presetter/blob/main/packages/preset-esm)**               | 🚀 ESM-first development       | Modern Node.js projects, libraries        |
+| **[@presetter/preset-cjs](https://github.com/alvis/presetter/blob/main/packages/preset-cjs)**               | 🔗 CommonJS compatibility      | Legacy environments, enterprise           |
+| **[@presetter/preset-hybrid](https://github.com/alvis/presetter/blob/main/packages/preset-hybrid)**         | 🌐 Dual-module packages        | npm libraries needing broad compatibility |
 
 ### Specialized Extension Presets
 
-| Preset                                                                                               | Purpose                     | Extends         |
-| ---------------------------------------------------------------------------------------------------- | --------------------------- | --------------- |
-| **[@presetter/preset-strict](https://github.com/alvis/presetter/blob/master/packages/preset-strict)** | 🏢 Production-grade quality | Any base preset |
-| **[@presetter/preset-web](https://github.com/alvis/presetter/blob/master/packages/preset-web)**       | 🎨 Modern web development   | Any base preset |
-| **[@presetter/preset-react](https://github.com/alvis/presetter/blob/master/packages/preset-react)**   | ⚛️ React development        | Any base preset |
-| **[@presetter/preset-rollup](https://github.com/alvis/presetter/blob/master/packages/preset-rollup)** | 📦 Library bundling         | Any base preset |
+| Preset                                                                                              | Purpose                     | Extends         |
+| --------------------------------------------------------------------------------------------------- | --------------------------- | --------------- |
+| **[@presetter/preset-strict](https://github.com/alvis/presetter/blob/main/packages/preset-strict)** | 🏢 Production-grade quality | Any base preset |
+| **[@presetter/preset-web](https://github.com/alvis/presetter/blob/main/packages/preset-web)**       | 🎨 Modern web development   | Any base preset |
+| **[@presetter/preset-react](https://github.com/alvis/presetter/blob/main/packages/preset-react)**   | ⚛️ React development        | Any base preset |
+| **[@presetter/preset-rollup](https://github.com/alvis/presetter/blob/main/packages/preset-rollup)** | 📦 Library bundling         | Any base preset |
 
 ### 🎯 Preset Combination Examples
 
@@ -496,11 +496,11 @@ Simply update the preset package version in your projects. Presetter will regene
 
 ### Can I create my own presets?
 
-Absolutely! Presets are just npm packages that export configuration templates. See [@presetter/types](https://github.com/alvis/presetter/blob/master/packages/types) for TypeScript definitions.
+Absolutely! Presets are just npm packages that export configuration templates. See [@presetter/types](https://github.com/alvis/presetter/blob/main/packages/types) for TypeScript definitions.
 
 ### Does this work with monorepos?
 
-Yes! Presetter supports monorepo setups and can bootstrap multiple projects with glob patterns. Use [@presetter/preset-monorepo](https://github.com/alvis/presetter/blob/master/packages/preset-monorepo) for monorepo-specific configurations.
+Yes! Presetter supports monorepo setups and can bootstrap multiple projects with glob patterns. Use [@presetter/preset-monorepo](https://github.com/alvis/presetter/blob/main/packages/preset-monorepo) for monorepo-specific configurations.
 
 ### Why do some dynamically imported libraries fail to resolve?
 
@@ -512,13 +512,13 @@ While Presetter makes preset tools available via PATH, libraries loaded through 
 
 We'd love your ideas and contributions!
 Submit issues or suggestions via [GitHub Issues](https://github.com/alvis/presetter/issues).
-See the [Contribution Guide](https://github.com/alvis/presetter/blob/master/CONTRIBUTING.md) for more details.
+See the [Contribution Guide](https://github.com/alvis/presetter/blob/main/CONTRIBUTING.md) for more details.
 
 ---
 
 ## 📄 License
 
-Released under the [MIT License](https://github.com/alvis/presetter/blob/master/LICENSE).
+Released under the [MIT License](https://github.com/alvis/presetter/blob/main/LICENSE).
 © 2020, [Alvis Tang](https://github.com/alvis).
 
-[![License](https://img.shields.io/github/license/alvis/presetter.svg?style=flat-square)](https://github.com/alvis/presetter/blob/master/LICENSE)
+[![License](https://img.shields.io/github/license/alvis/presetter.svg?style=flat-square)](https://github.com/alvis/presetter/blob/main/LICENSE)

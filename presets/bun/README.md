@@ -1,25 +1,25 @@
 # 🚀 @presetter/preset-bun
 
-![Logo](https://github.com/alvis/presetter/raw/master/assets/logo.svg)
+[logo.svg](https://github.com/alvis/presetter/blob/master/assets/logo.svg)
 
 <div align="center">
 
 [![npm](https://img.shields.io/npm/v/@presetter/preset-bun?style=flat-square)](https://github.com/alvis/presetter/releases)
-[![build](https://img.shields.io/github/actions/workflow/status/alvis/presetter/test.yaml?branch=master&style=flat-square)](https://github.com/alvis/presetter/actions)
+[![build](https://img.shields.io/github/actions/workflow/status/alvis/presetter/test.yaml?branch=main&style=flat-square)](https://github.com/alvis/presetter/actions)
 [![maintainability](https://img.shields.io/codeclimate/maintainability/alvis/presetter?style=flat-square)](https://codeclimate.com/github/alvis/presetter/maintainability)
 [![coverage](https://img.shields.io/codeclimate/coverage/alvis/presetter?style=flat-square)](https://codeclimate.com/github/alvis/presetter/test_coverage)
-[![vulnerabilities](https://img.shields.io/sonar/vulnerabilities/presetter/master?server=https%3A%2F%2Fsonarcloud.io&style=flat-square)](https://sonarcloud.io/summary/new_code?id=presetter)
+[![vulnerabilities](https://img.shields.io/sonar/vulnerabilities/presetter/main?server=https%3A%2F%2Fsonarcloud.io&style=flat-square)](https://sonarcloud.io/summary/new_code?id=presetter)
 [![dependencies](https://img.shields.io/librariesio/release/npm/@presetter/preset-bun?style=flat-square)](https://libraries.io/npm/@presetter/preset-bun)
 
 Bun-native build workflow — lightning-fast transpile, bundles, and compiled executables
 
-•   [Usage](#-usage)   •   [Configuration](#-configuration-details)   •   [Comparison](#-comparison)   •   [FAQ](#-faq)   •
+• [Usage](#-usage) • [Configuration](#-configuration-details) • [Comparison](#-comparison) • [FAQ](#-faq) •
 
 </div>
 
 ---
 
-**This is a configuration extension that works with [Presetter](https://github.com/alvis/presetter/blob/master/packages/presetter), the configuration management tool.**
+**This is a configuration extension that works with [Presetter](https://github.com/alvis/presetter/blob/main/packages/presetter), the configuration management tool.**
 
 ## ⚡ TL;DR / Quick Start
 
@@ -58,20 +58,20 @@ The friction isn't Bun itself — it's that Bun's build commands don't integrate
 
 ### The Bun build integration headaches
 
-| Pain Point                    | Manual Bun Setup                                | With preset-bun                       |
-| ----------------------------- | ----------------------------------------------- | ------------------------------------- |
-| **Transpile speed**           | Hand-wired `bun build` globs in npm scripts     | ✅ One `npm run build` covers it      |
-| **Declaration files (`.d.ts`)** | Bun doesn't emit them — need `tsc` separately | ✅ Wired in as `build:typescript:types` |
-| **Single-entry bundles**      | Custom scripts per project                      | ✅ `npm run build:bundle`             |
-| **Standalone executables**    | Figure out `--compile --bytecode` flags         | ✅ `npm run build:compile`            |
-| **Bun globals typed**         | Install `@types/bun`, wire `tsconfig.json`      | ✅ `types: ['bun']` applied automatically |
-| **Toolchain consistency**     | Each Bun project reinvents its build            | ✅ Shared preset across all Bun repos |
+| Pain Point                      | Manual Bun Setup                              | With preset-bun                           |
+| ------------------------------- | --------------------------------------------- | ----------------------------------------- |
+| **Transpile speed**             | Hand-wired `bun build` globs in npm scripts   | ✅ One `npm run build` covers it          |
+| **Declaration files (`.d.ts`)** | Bun doesn't emit them — need `tsc` separately | ✅ Wired in as `build:typescript:types`   |
+| **Single-entry bundles**        | Custom scripts per project                    | ✅ `npm run build:bundle`                 |
+| **Standalone executables**      | Figure out `--compile --bytecode` flags       | ✅ `npm run build:compile`                |
+| **Bun globals typed**           | Install `@types/bun`, wire `tsconfig.json`    | ✅ `types: ['bun']` applied automatically |
+| **Toolchain consistency**       | Each Bun project reinvents its build          | ✅ Shared preset across all Bun repos     |
 
 ### What you get instead
 
 **@presetter/preset-bun is a configuration extension that adds a Bun-native build pipeline to any Presetter base preset.**
 
-When used with [Presetter](https://github.com/alvis/presetter/blob/master/packages/presetter) (the configuration management tool) and a base preset like [`preset-esm`](https://github.com/alvis/presetter/blob/master/packages/preset-esm), this extension swaps the TypeScript build step for Bun's native transpiler and unlocks Bun-specific workflows like bundling and executable compilation.
+When used with [Presetter](https://github.com/alvis/presetter/blob/main/packages/presetter) (the configuration management tool) and a base preset like [`preset-esm`](https://github.com/alvis/presetter/blob/main/packages/preset-esm), this extension swaps the TypeScript build step for Bun's native transpiler and unlocks Bun-specific workflows like bundling and executable compilation.
 
 - ⚡ **Bun-Native Transpile**: Source → output via `bun build` (vastly faster than `tsc`)
 - 📦 **Bundle Ready**: Opinionated `build:bundle` script for single-entry distributions
@@ -96,8 +96,8 @@ Adopting Bun's build toolchain usually means hand-editing `package.json`:
     "build:dts": "tsc -p tsconfig.build.json --emitDeclarationOnly",
     "build:bundle": "bun build --target bun --format esm",
     "build:compile": "bun build --compile --bytecode",
-    "build": "npm run build:ts && npm run build:dts"
-  }
+    "build": "npm run build:ts && npm run build:dts",
+  },
 }
 ```
 
@@ -145,11 +145,11 @@ my-bun-service/
 
 **Important distinction:**
 
-| Component                                                                          | Role                          | What it does                                                                     |
-| ---------------------------------------------------------------------------------- | ----------------------------- | -------------------------------------------------------------------------------- |
-| **[Presetter](https://github.com/alvis/presetter/blob/master/packages/presetter)** | Configuration management tool | CLI that processes presets, generates config files, executes scripts             |
-| **Base Preset**                                                                    | Core development template     | Provides TypeScript, testing, linting capabilities (esm, essentials, etc.)       |
-| **@presetter/preset-bun**                                                          | Bun build extension           | Replaces the TypeScript build step with Bun-native workflows                     |
+| Component                                                                        | Role                          | What it does                                                               |
+| -------------------------------------------------------------------------------- | ----------------------------- | -------------------------------------------------------------------------- |
+| **[Presetter](https://github.com/alvis/presetter/blob/main/packages/presetter)** | Configuration management tool | CLI that processes presets, generates config files, executes scripts       |
+| **Base Preset**                                                                  | Core development template     | Provides TypeScript, testing, linting capabilities (esm, essentials, etc.) |
+| **@presetter/preset-bun**                                                        | Bun build extension           | Replaces the TypeScript build step with Bun-native workflows               |
 
 **Think of it like:**
 
@@ -157,7 +157,7 @@ my-bun-service/
 - **Base preset** = The blueprint for a functional house
 - **This extension** = Swapping in a high-performance engine room — same house, Bun-powered builds
 
-This preset **extends** any base preset with Bun-native build scripts. For advanced usage, customization, and troubleshooting, **[visit the main Presetter documentation](https://github.com/alvis/presetter/blob/master/packages/presetter)**.
+This preset **extends** any base preset with Bun-native build scripts. For advanced usage, customization, and troubleshooting, **[visit the main Presetter documentation](https://github.com/alvis/presetter/blob/main/packages/presetter)**.
 
 ---
 
@@ -242,7 +242,7 @@ export default preset('my-bun-cli', {
 });
 ```
 
-> **Need more customization options?** Check the [main Presetter documentation](https://github.com/alvis/presetter/blob/master/packages/presetter) for complete guides on overrides, extensions, and advanced configurations.
+> **Need more customization options?** Check the [main Presetter documentation](https://github.com/alvis/presetter/blob/main/packages/presetter) for complete guides on overrides, extensions, and advanced configurations.
 
 ---
 
@@ -252,13 +252,13 @@ export default preset('my-bun-cli', {
 
 This preset adds Bun-specific build workflows on top of any base preset:
 
-| Enhancement                   | Purpose                     | Bun Features                                             |
-| ----------------------------- | --------------------------- | -------------------------------------------------------- |
-| **`build:typescript:bun`**    | Fast transpilation          | `bun build --no-bundle` over all `.ts/.tsx/.cts/.mts` |
-| **`build:typescript:types`**  | Declaration emission        | `tsc -p tsconfig.build.json --emitDeclarationOnly`       |
-| **`build:bundle`**            | Single-entry bundle         | `bun build --target bun --format esm`                    |
-| **`build:compile`**           | Standalone executable       | `bun build --compile --bytecode`                         |
-| **TypeScript types**          | Bun API resolution          | `compilerOptions.types: ['bun']`                         |
+| Enhancement                  | Purpose               | Bun Features                                          |
+| ---------------------------- | --------------------- | ----------------------------------------------------- |
+| **`build:typescript:bun`**   | Fast transpilation    | `bun build --no-bundle` over all `.ts/.tsx/.cts/.mts` |
+| **`build:typescript:types`** | Declaration emission  | `tsc -p tsconfig.build.json --emitDeclarationOnly`    |
+| **`build:bundle`**           | Single-entry bundle   | `bun build --target bun --format esm`                 |
+| **`build:compile`**          | Standalone executable | `bun build --compile --bytecode`                      |
+| **TypeScript types**         | Bun API resolution    | `compilerOptions.types: ['bun']`                      |
 
 ### Generated Scripts
 
@@ -273,10 +273,10 @@ build:compile: bun build --compile --bytecode
 
 ### Configuration Variables
 
-| Variable | Default | Description                         |
-| -------- | ------- | ----------------------------------- |
-| `source` | `"src"` | Source code directory               |
-| `output` | `"lib"` | Build output directory              |
+| Variable | Default | Description            |
+| -------- | ------- | ---------------------- |
+| `source` | `"src"` | Source code directory  |
+| `output` | `"lib"` | Build output directory |
 
 Additional variables come from whichever base preset you compose with.
 
@@ -323,30 +323,30 @@ npm exec run build:compile -- src/index.ts --outfile ./bin/cli
 
 ## 🏎️ Performance
 
-| Metric               | `tsc`-based build          | With preset-bun             |
-| -------------------- | -------------------------- | --------------------------- |
-| Transpile speed      | Baseline                   | **~10–30× faster**          |
-| Declaration emission | Included                   | **Still included (via tsc)** |
-| Bundle step          | Separate tooling needed    | **Built-in**                |
-| Executable output    | Not possible with `tsc`    | **`build:compile`**         |
-| Cold-start CLI       | Node.js start time         | **Bytecode-cached startup** |
+| Metric               | `tsc`-based build       | With preset-bun              |
+| -------------------- | ----------------------- | ---------------------------- |
+| Transpile speed      | Baseline                | **~10–30× faster**           |
+| Declaration emission | Included                | **Still included (via tsc)** |
+| Bundle step          | Separate tooling needed | **Built-in**                 |
+| Executable output    | Not possible with `tsc` | **`build:compile`**          |
+| Cold-start CLI       | Node.js start time      | **Bytecode-cached startup**  |
 
 ---
 
 ## 🌐 Compatibility
 
-| Environment   | Support                                  |
-| ------------- | ---------------------------------------- |
-| Bun runtime   | ≥ 1.0 (for `--compile --bytecode`)       |
-| Node.js       | ≥ 20 (Presetter engine requirement)      |
-| TypeScript    | ≥ 6.0                                    |
-| Base Presets  | Composes with essentials, esm, strict    |
+| Environment  | Support                               |
+| ------------ | ------------------------------------- |
+| Bun runtime  | ≥ 1.0 (for `--compile --bytecode`)    |
+| Node.js      | ≥ 20 (Presetter engine requirement)   |
+| TypeScript   | ≥ 6.0                                 |
+| Base Presets | Composes with essentials, esm, strict |
 
 ### Works With All Base Presets
 
-- [`@presetter/preset-essentials`](https://github.com/alvis/presetter/blob/master/packages/preset-essentials) + Bun build
-- [`@presetter/preset-esm`](https://github.com/alvis/presetter/blob/master/packages/preset-esm) + Bun build ← **recommended**
-- [`@presetter/preset-strict`](https://github.com/alvis/presetter/blob/master/packages/preset-strict) + Bun build
+- [`@presetter/preset-essentials`](https://github.com/alvis/presetter/blob/main/packages/preset-essentials) + Bun build
+- [`@presetter/preset-esm`](https://github.com/alvis/presetter/blob/main/packages/preset-esm) + Bun build ← **recommended**
+- [`@presetter/preset-strict`](https://github.com/alvis/presetter/blob/main/packages/preset-strict) + Bun build
 
 ### Required Peer Dependency
 
@@ -356,14 +356,14 @@ npm exec run build:compile -- src/index.ts --outfile ./bin/cli
 
 ## 🆚 Comparison
 
-| Feature                   | preset-bun            | `tsc`-only build     | esbuild/tsup          |
-| ------------------------- | --------------------- | -------------------- | --------------------- |
-| **Transpile speed**       | ✅ Bun-native (fastest) | ❌ Slowest           | ⚠️ Fast               |
-| **Declaration files**     | ✅ Via `tsc`          | ✅ Native            | ⚠️ Needs extra plugin |
-| **Single-entry bundle**   | ✅ `build:bundle`     | ❌ Not supported     | ✅                    |
-| **Standalone executable** | ✅ `build:compile`    | ❌ Not possible      | ❌ Not possible       |
-| **Runtime target**        | ✅ Bun                | ⚠️ Node/browser      | ✅ Node/browser       |
-| **Bundled toolchain**     | ✅ Single binary      | ❌ Multi-dep         | ❌ Multi-dep          |
+| Feature                   | preset-bun              | `tsc`-only build | esbuild/tsup          |
+| ------------------------- | ----------------------- | ---------------- | --------------------- |
+| **Transpile speed**       | ✅ Bun-native (fastest) | ❌ Slowest       | ⚠️ Fast               |
+| **Declaration files**     | ✅ Via `tsc`            | ✅ Native        | ⚠️ Needs extra plugin |
+| **Single-entry bundle**   | ✅ `build:bundle`       | ❌ Not supported | ✅                    |
+| **Standalone executable** | ✅ `build:compile`      | ❌ Not possible  | ❌ Not possible       |
+| **Runtime target**        | ✅ Bun                  | ⚠️ Node/browser  | ✅ Node/browser       |
+| **Bundled toolchain**     | ✅ Single binary        | ❌ Multi-dep     | ❌ Multi-dep          |
 
 ### When to Use
 
@@ -377,34 +377,34 @@ npm exec run build:compile -- src/index.ts --outfile ./bin/cli
 
 ❌ **Consider alternatives when:**
 
-- Targeting **Node.js** only → use [`@presetter/preset-node`](https://github.com/alvis/presetter/blob/master/packages/preset-node)
-- Publishing a **runtime-agnostic** library → stick with [`@presetter/preset-esm`](https://github.com/alvis/presetter/blob/master/packages/preset-esm)
-- You need **browser-first** bundling → use [`@presetter/preset-web`](https://github.com/alvis/presetter/blob/master/packages/preset-web)
+- Targeting **Node.js** only → use [`@presetter/preset-node`](https://github.com/alvis/presetter/blob/main/packages/preset-node)
+- Publishing a **runtime-agnostic** library → stick with [`@presetter/preset-esm`](https://github.com/alvis/presetter/blob/main/packages/preset-esm)
+- You need **browser-first** bundling → use [`@presetter/preset-web`](https://github.com/alvis/presetter/blob/main/packages/preset-web)
 - Bun isn't installed in your CI — this preset assumes Bun is on `PATH`
 
 ---
 
 ## 🛠️ Troubleshooting
 
-> **General Presetter issues?** See the [main troubleshooting guide](https://github.com/alvis/presetter/blob/master/README.md#troubleshooting) for common Presetter problems and solutions.
+> **General Presetter issues?** See the [main troubleshooting guide](https://github.com/alvis/presetter/blob/main/README.md#troubleshooting) for common Presetter problems and solutions.
 
 ### Bun-Specific Issues
 
-| Issue                                  | Symptoms                                        | Solution                                                                 |
-| -------------------------------------- | ----------------------------------------------- | ------------------------------------------------------------------------ |
-| **`bun: command not found`**           | Build fails on `build:typescript:bun`           | Install Bun: `curl -fsSL https://bun.sh/install \| bash`                 |
-| **`Bun.*` globals untyped**            | `Cannot find name 'Bun'` in TypeScript          | Ensure `@types/bun` is installed and re-run `npx presetter bootstrap`    |
-| **Missing `.d.ts` in output**          | Consumers can't see your types                  | Verify `build:typescript:types` ran; `tsconfig.build.json` must exist    |
-| **Executable won't run on target OS**  | `build:compile` binary fails on deploy          | Pass a platform flag: `bun build --compile --target=bun-linux-x64`       |
-| **Bundle includes node_modules**       | Bundle bigger than expected                     | Mark externals: `bun build --external <pkg>` in a `build:bundle` override |
+| Issue                                 | Symptoms                               | Solution                                                                  |
+| ------------------------------------- | -------------------------------------- | ------------------------------------------------------------------------- |
+| **`bun: command not found`**          | Build fails on `build:typescript:bun`  | Install Bun: `curl -fsSL https://bun.sh/install \| bash`                  |
+| **`Bun.*` globals untyped**           | `Cannot find name 'Bun'` in TypeScript | Ensure `@types/bun` is installed and re-run `npx presetter bootstrap`     |
+| **Missing `.d.ts` in output**         | Consumers can't see your types         | Verify `build:typescript:types` ran; `tsconfig.build.json` must exist     |
+| **Executable won't run on target OS** | `build:compile` binary fails on deploy | Pass a platform flag: `bun build --compile --target=bun-linux-x64`        |
+| **Bundle includes node_modules**      | Bundle bigger than expected            | Mark externals: `bun build --external <pkg>` in a `build:bundle` override |
 
-> **Need help with Presetter CLI commands?** Check the [CLI reference](https://github.com/alvis/presetter/blob/master/README.md#cli-reference) in the main documentation.
+> **Need help with Presetter CLI commands?** Check the [CLI reference](https://github.com/alvis/presetter/blob/main/README.md#cli-reference) in the main documentation.
 
 ---
 
 ## ❓ FAQ
 
-> **General Presetter questions?** Check the [main FAQ](https://github.com/alvis/presetter/blob/master/README.md#faq) for general usage, configuration, and customization questions.
+> **General Presetter questions?** Check the [main FAQ](https://github.com/alvis/presetter/blob/main/README.md#faq) for general usage, configuration, and customization questions.
 
 ### Bun-Specific FAQs
 
@@ -460,13 +460,13 @@ You'll get ESM output built via Bun with production-grade linting and 100% cover
 
 We'd love your ideas and contributions!
 Submit issues or suggestions via [GitHub Issues](https://github.com/alvis/presetter/issues).
-See the [Contribution Guide](https://github.com/alvis/presetter/blob/master/CONTRIBUTING.md) for more details.
+See the [Contribution Guide](https://github.com/alvis/presetter/blob/main/CONTRIBUTING.md) for more details.
 
 ---
 
 ## 📄 License
 
-Released under the [MIT License](https://github.com/alvis/presetter/blob/master/LICENSE).
+Released under the [MIT License](https://github.com/alvis/presetter/blob/main/LICENSE).
 © 2020, [Alvis Tang](https://github.com/alvis).
 
-[![License](https://img.shields.io/github/license/alvis/presetter.svg?style=flat-square)](https://github.com/alvis/presetter/blob/master/LICENSE)
+[![License](https://img.shields.io/github/license/alvis/presetter.svg?style=flat-square)](https://github.com/alvis/presetter/blob/main/LICENSE)

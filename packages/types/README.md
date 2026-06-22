@@ -1,14 +1,14 @@
 # 🚀 @presetter/types
 
-![Logo](https://github.com/alvis/presetter/raw/master/assets/logo.svg)
+[logo.svg](https://github.com/alvis/presetter/blob/master/assets/logo.svg)
 
 <div align="center">
 
 [![npm](https://img.shields.io/npm/v/@presetter/types?style=flat-square)](https://github.com/alvis/presetter/releases)
-[![build](https://img.shields.io/github/actions/workflow/status/alvis/presetter/test.yaml?branch=master&style=flat-square)](https://github.com/alvis/presetter/actions)
+[![build](https://img.shields.io/github/actions/workflow/status/alvis/presetter/test.yaml?branch=main&style=flat-square)](https://github.com/alvis/presetter/actions)
 [![maintainability](https://img.shields.io/codeclimate/maintainability/alvis/presetter?style=flat-square)](https://codeclimate.com/github/alvis/presetter/maintainability)
 [![coverage](https://img.shields.io/codeclimate/coverage/alvis/presetter?style=flat-square)](https://codeclimate.com/github/alvis/presetter/test_coverage)
-[![vulnerabilities](https://img.shields.io/sonar/vulnerabilities/presetter/master?server=https%3A%2F%2Fsonarcloud.io&style=flat-square)](https://sonarcloud.io/summary/new_code?id=presetter)
+[![vulnerabilities](https://img.shields.io/sonar/vulnerabilities/presetter/main?server=https%3A%2F%2Fsonarcloud.io&style=flat-square)](https://sonarcloud.io/summary/new_code?id=presetter)
 [![dependencies](https://img.shields.io/librariesio/release/npm/@presetter/types?style=flat-square)](https://libraries.io/npm/@presetter/types)
 
 TypeScript definitions for the Presetter ecosystem — type-safe preset development
@@ -19,7 +19,7 @@ TypeScript definitions for the Presetter ecosystem — type-safe preset developm
 
 ---
 
-**This package provides comprehensive TypeScript type definitions and type-safe preset and asset declaration tools for [Presetter](https://github.com/alvis/presetter/blob/master/packages/presetter), the configuration management tool.**
+**This package provides comprehensive TypeScript type definitions and type-safe preset and asset declaration tools for [Presetter](https://github.com/alvis/presetter/blob/main/packages/presetter), the configuration management tool.**
 
 ## ⚡ TL;DR / Quick Start
 
@@ -75,11 +75,11 @@ This package serves as the foundation for type-safe preset development, offering
 
 **Important context:**
 
-| Component                                                                          | Role                          | What it does                                                         |
-| ---------------------------------------------------------------------------------- | ----------------------------- | -------------------------------------------------------------------- |
-| **[Presetter](https://github.com/alvis/presetter/blob/master/packages/presetter)** | Configuration management tool | CLI that processes presets, generates config files, executes scripts |
-| **@presetter/types**                                                               | Type definitions package      | Provides TypeScript types for the entire ecosystem                   |
-| **Preset Packages**                                                                | Configuration templates       | Use these types to ensure type safety                                |
+| Component                                                                        | Role                          | What it does                                                         |
+| -------------------------------------------------------------------------------- | ----------------------------- | -------------------------------------------------------------------- |
+| **[Presetter](https://github.com/alvis/presetter/blob/main/packages/presetter)** | Configuration management tool | CLI that processes presets, generates config files, executes scripts |
+| **@presetter/types**                                                             | Type definitions package      | Provides TypeScript types for the entire ecosystem                   |
+| **Preset Packages**                                                              | Configuration templates       | Use these types to ensure type safety                                |
 
 **Think of it like:**
 
@@ -87,7 +87,7 @@ This package serves as the foundation for type-safe preset development, offering
 - **@presetter/types** = The blueprint specifications and building codes
 - **Preset packages** = The actual blueprints that follow the specifications
 
-This package enables type-safe development across the entire Presetter ecosystem. For general usage, **[visit the main Presetter documentation](https://github.com/alvis/presetter/blob/master/packages/presetter)**.
+This package enables type-safe development across the entire Presetter ecosystem. For general usage, **[visit the main Presetter documentation](https://github.com/alvis/presetter/blob/main/packages/presetter)**.
 
 ---
 
@@ -470,7 +470,7 @@ export default preset('conditional-preset', {
 
 ### Used By
 
-- [`presetter`](https://github.com/alvis/presetter/blob/master/) - Main Presetter package (re-exports all types)
+- [`presetter`](https://github.com/alvis/presetter/blob/main/) - Main Presetter package (re-exports all types)
 - [`@presetter/preset-essentials`](../preset-essentials) - Uses types for preset definition
 - [`@presetter/preset-esm`](../preset-esm) - Uses types for preset definition
 - [`@presetter/preset-cjs`](../preset-cjs) - Uses types for preset definition
@@ -607,13 +607,13 @@ export default preset('my-preset', {
 
 We'd love your ideas and contributions!
 Submit issues or suggestions via [GitHub Issues](https://github.com/alvis/presetter/issues).
-See the [Contribution Guide](https://github.com/alvis/presetter/blob/master/CONTRIBUTING.md) for more details.
+See the [Contribution Guide](https://github.com/alvis/presetter/blob/main/CONTRIBUTING.md) for more details.
 
 ---
 
 ## 📄 License
 
-Released under the [MIT License](https://github.com/alvis/presetter/blob/master/LICENSE).
+Released under the [MIT License](https://github.com/alvis/presetter/blob/main/LICENSE).
 © 2020, [Alvis Tang](https://github.com/alvis).
 
-[![License](https://img.shields.io/github/license/alvis/presetter.svg?style=flat-square)](https://github.com/alvis/presetter/blob/master/LICENSE)
+[![License](https://img.shields.io/github/license/alvis/presetter.svg?style=flat-square)](https://github.com/alvis/presetter/blob/main/LICENSE)

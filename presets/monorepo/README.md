@@ -1,14 +1,14 @@
 # 🚀 @presetter/preset-monorepo
 
-![Logo](https://github.com/alvis/presetter/raw/master/assets/logo.svg)
+[logo.svg](https://github.com/alvis/presetter/blob/master/assets/logo.svg)
 
 <div align="center">
 
 [![npm](https://img.shields.io/npm/v/@presetter/preset-monorepo?style=flat-square)](https://github.com/alvis/presetter/releases)
-[![build](https://img.shields.io/github/actions/workflow/status/alvis/presetter/test.yaml?branch=master&style=flat-square)](https://github.com/alvis/presetter/actions)
+[![build](https://img.shields.io/github/actions/workflow/status/alvis/presetter/test.yaml?branch=main&style=flat-square)](https://github.com/alvis/presetter/actions)
 [![maintainability](https://img.shields.io/codeclimate/maintainability/alvis/presetter?style=flat-square)](https://codeclimate.com/github/alvis/presetter/maintainability)
 [![coverage](https://img.shields.io/codeclimate/coverage/alvis/presetter?style=flat-square)](https://codeclimate.com/github/alvis/presetter/test_coverage)
-[![vulnerabilities](https://img.shields.io/sonar/vulnerabilities/presetter/master?server=https%3A%2F%2Fsonarcloud.io&style=flat-square)](https://sonarcloud.io/summary/new_code?id=presetter)
+[![vulnerabilities](https://img.shields.io/sonar/vulnerabilities/presetter/main?server=https%3A%2F%2Fsonarcloud.io&style=flat-square)](https://sonarcloud.io/summary/new_code?id=presetter)
 [![dependencies](https://img.shields.io/librariesio/release/npm/@presetter/preset-monorepo?style=flat-square)](https://libraries.io/npm/@presetter/preset-monorepo)
 
 Configuration template for TypeScript monorepos — unified tooling, zero duplication, maximum productivity
@@ -19,7 +19,7 @@ Configuration template for TypeScript monorepos — unified tooling, zero duplic
 
 ---
 
-**This is a configuration template that works with [Presetter](https://github.com/alvis/presetter/blob/master/packages/presetter), the configuration management tool.**
+**This is a configuration template that works with [Presetter](https://github.com/alvis/presetter/blob/main/packages/presetter), the configuration management tool.**
 
 ## ⚡ TL;DR / Quick Start
 
@@ -60,7 +60,7 @@ And when it's time to update those configurations across 20+ packages... 😩
 
 **@presetter/preset-monorepo is a configuration template that defines monorepo-specific development setups.**
 
-When used with [Presetter](https://github.com/alvis/presetter/blob/master/packages/presetter) (the configuration management tool), this preset automatically generates all your essential development tool configurations (TypeScript, ESLint, Vitest) in every package, with intelligent context-aware customization.
+When used with [Presetter](https://github.com/alvis/presetter/blob/main/packages/presetter) (the configuration management tool), this preset automatically generates all your essential development tool configurations (TypeScript, ESLint, Vitest) in every package, with intelligent context-aware customization.
 
 - 🎯 **Context-Aware**: Root gets monorepo configs, packages get package configs
 - 📦 **Zero Duplication**: Configurations generated from single source of truth
@@ -151,17 +151,17 @@ monorepo/
 
 **Important distinction:**
 
-| Component                                                                          | Role                          | What it does                                                         |
-| ---------------------------------------------------------------------------------- | ----------------------------- | -------------------------------------------------------------------- |
-| **[Presetter](https://github.com/alvis/presetter/blob/master/packages/presetter)** | Configuration management tool | CLI that processes presets, generates config files, executes scripts |
-| **@presetter/preset-monorepo**                                                     | Configuration template        | Defines what configs to generate for monorepos                       |
+| Component                                                                        | Role                          | What it does                                                         |
+| -------------------------------------------------------------------------------- | ----------------------------- | -------------------------------------------------------------------- |
+| **[Presetter](https://github.com/alvis/presetter/blob/main/packages/presetter)** | Configuration management tool | CLI that processes presets, generates config files, executes scripts |
+| **@presetter/preset-monorepo**                                                   | Configuration template        | Defines what configs to generate for monorepos                       |
 
 **Think of it like:**
 
 - **Presetter** = The engine that builds houses
 - **This preset** = The blueprint that defines what type of house to build
 
-This preset is just a template definition. It needs Presetter (the tool) to actually generate your configuration files. For advanced usage, customization, and troubleshooting, **[visit the main Presetter documentation](https://github.com/alvis/presetter/blob/master/packages/presetter)**.
+This preset is just a template definition. It needs Presetter (the tool) to actually generate your configuration files. For advanced usage, customization, and troubleshooting, **[visit the main Presetter documentation](https://github.com/alvis/presetter/blob/main/packages/presetter)**.
 
 ---
 
@@ -250,7 +250,7 @@ export default preset('my-monorepo', {
 });
 ```
 
-> **Need more customization options?** Check the [main Presetter documentation](https://github.com/alvis/presetter/blob/master/packages/presetter) for complete guides on overrides, extensions, and advanced configurations.
+> **Need more customization options?** Check the [main Presetter documentation](https://github.com/alvis/presetter/blob/main/packages/presetter) for complete guides on overrides, extensions, and advanced configurations.
 
 ---
 
@@ -259,7 +259,7 @@ export default preset('my-monorepo', {
 ```typescript
 // packages/special-package/presetter.config.ts
 import { preset } from 'presetter';
-import root from 'https://github.com/alvis/presetter/blob/master/presetter.config'; // Import root preset
+import root from 'https://github.com/alvis/presetter/blob/main/presetter.config'; // Import root preset
 
 export default preset('special-package', {
   extends: [root],
@@ -271,7 +271,7 @@ export default preset('special-package', {
 });
 ```
 
-> **Want to understand how preset inheritance works?** See the [preset composition guide](https://github.com/alvis/presetter/blob/master/packages/presetter) in the main documentation.
+> **Want to understand how preset inheritance works?** See the [preset composition guide](https://github.com/alvis/presetter/blob/main/packages/presetter) in the main documentation.
 
 ---
 
@@ -518,7 +518,7 @@ Inherited from `@presetter/preset-essentials`:
 
 ## 🛠️ Troubleshooting
 
-> **General Presetter issues?** See the [main troubleshooting guide](https://github.com/alvis/presetter/blob/master/packages/presetter#troubleshooting) for common Presetter problems and solutions.
+> **General Presetter issues?** See the [main troubleshooting guide](https://github.com/alvis/presetter/blob/main/packages/presetter#troubleshooting) for common Presetter problems and solutions.
 
 ### Monorepo-Specific Issues
 
@@ -526,13 +526,13 @@ Inherited from `@presetter/preset-essentials`:
 | ------------------------------------- | ------------------------------------------------ | -------------------------------------------------------------------------------------- |
 | **Configs not generated in packages** | No `.eslintrc.json`, `tsconfig.json` in packages | Run `npx presetter bootstrap --projects . --projects packages/*/` at **monorepo root** |
 
-> **Need help with Presetter CLI commands?** Check the [CLI reference](https://github.com/alvis/presetter/blob/master/packages/presetter#cli-reference) in the main documentation.
+> **Need help with Presetter CLI commands?** Check the [CLI reference](https://github.com/alvis/presetter/blob/main/packages/presetter#cli-reference) in the main documentation.
 
 ---
 
 ## ❓ FAQ
 
-> **General Presetter questions?** Check the [main FAQ](https://github.com/alvis/presetter/blob/master/packages/presetter#faq) for general usage, configuration, and customization questions.
+> **General Presetter questions?** Check the [main FAQ](https://github.com/alvis/presetter/blob/main/packages/presetter#faq) for general usage, configuration, and customization questions.
 
 ### Monorepo-Specific FAQs
 
@@ -585,7 +585,7 @@ Yes! Create a package-specific `presetter.config.ts`:
 ```typescript
 // packages/legacy-package/presetter.config.ts
 import { preset } from 'presetter';
-import root from 'https://github.com/alvis/presetter/blob/master/presetter.config'; // Import root preset
+import root from 'https://github.com/alvis/presetter/blob/main/presetter.config'; // Import root preset
 
 export default preset('legacy-package', {
   extends: [root],
@@ -609,7 +609,7 @@ Create package-specific configs for different environments:
 ```typescript
 // packages/node-service/presetter.config.ts
 import { preset } from 'presetter';
-import root from 'https://github.com/alvis/presetter/blob/master/presetter.config'; // Import root preset
+import root from 'https://github.com/alvis/presetter/blob/main/presetter.config'; // Import root preset
 
 export default preset('node-service', {
   extends: [root],
@@ -622,7 +622,7 @@ export default preset('node-service', {
 
 // packages/browser-lib/presetter.config.ts
 import { preset } from 'presetter';
-import root from 'https://github.com/alvis/presetter/blob/master/presetter.config'; // Import root preset
+import root from 'https://github.com/alvis/presetter/blob/main/presetter.config'; // Import root preset
 
 export default preset('browser-lib', {
   extends: [root],
@@ -801,7 +801,7 @@ export default preset('monorepo', { ... });
 
 // Package: only when you need different template settings
 import { preset } from 'presetter';
-import root from 'https://github.com/alvis/presetter/blob/master/presetter.config'; // Import root preset
+import root from 'https://github.com/alvis/presetter/blob/main/presetter.config'; // Import root preset
 
 export default preset('special-package', {
   extends: [root],
@@ -809,7 +809,7 @@ export default preset('special-package', {
 });
 ```
 
-> **Want to learn more about preset configuration?** Visit the [configuration guide](https://github.com/alvis/presetter/blob/master/packages/presetter) in the main documentation.
+> **Want to learn more about preset configuration?** Visit the [configuration guide](https://github.com/alvis/presetter/blob/main/packages/presetter) in the main documentation.
 
 ---
 
@@ -817,13 +817,13 @@ export default preset('special-package', {
 
 We'd love your ideas and contributions!
 Submit issues or suggestions via [GitHub Issues](https://github.com/alvis/presetter/issues).
-See the [Contribution Guide](https://github.com/alvis/presetter/blob/master/CONTRIBUTING.md) for more details.
+See the [Contribution Guide](https://github.com/alvis/presetter/blob/main/CONTRIBUTING.md) for more details.
 
 ---
 
 ## 📄 License
 
-Released under the [MIT License](https://github.com/alvis/presetter/blob/master/LICENSE).
+Released under the [MIT License](https://github.com/alvis/presetter/blob/main/LICENSE).
 © 2020, [Alvis Tang](https://github.com/alvis).
 
-[![License](https://img.shields.io/github/license/alvis/presetter.svg?style=flat-square)](https://github.com/alvis/presetter/blob/master/LICENSE)
+[![License](https://img.shields.io/github/license/alvis/presetter.svg?style=flat-square)](https://github.com/alvis/presetter/blob/main/LICENSE)

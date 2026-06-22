@@ -1,14 +1,14 @@
 # 🚀 @presetter/preset-next
 
-![Logo](https://github.com/alvis/presetter/raw/master/assets/logo.svg)
+[logo.svg](https://github.com/alvis/presetter/blob/master/assets/logo.svg)
 
 <div align="center">
 
 [![npm](https://img.shields.io/npm/v/@presetter/preset-next?style=flat-square)](https://github.com/alvis/presetter/releases)
-[![build](https://img.shields.io/github/actions/workflow/status/alvis/presetter/test.yaml?branch=master&style=flat-square)](https://github.com/alvis/presetter/actions)
+[![build](https://img.shields.io/github/actions/workflow/status/alvis/presetter/test.yaml?branch=main&style=flat-square)](https://github.com/alvis/presetter/actions)
 [![maintainability](https://img.shields.io/codeclimate/maintainability/alvis/presetter?style=flat-square)](https://codeclimate.com/github/alvis/presetter/maintainability)
 [![coverage](https://img.shields.io/codeclimate/coverage/alvis/presetter?style=flat-square)](https://codeclimate.com/github/alvis/presetter/test_coverage)
-[![vulnerabilities](https://img.shields.io/sonar/vulnerabilities/presetter/master?server=https%3A%2F%2Fsonarcloud.io&style=flat-square)](https://sonarcloud.io/summary/new_code?id=presetter)
+[![vulnerabilities](https://img.shields.io/sonar/vulnerabilities/presetter/main?server=https%3A%2F%2Fsonarcloud.io&style=flat-square)](https://sonarcloud.io/summary/new_code?id=presetter)
 [![dependencies](https://img.shields.io/librariesio/release/npm/@presetter/preset-next?style=flat-square)](https://libraries.io/npm/@presetter/preset-next)
 
 Combines preset-esm, preset-strict, and preset-react with Next.js-optimized configurations
@@ -19,7 +19,7 @@ Combines preset-esm, preset-strict, and preset-react with Next.js-optimized conf
 
 ---
 
-**This is a configuration template that works with [Presetter](https://github.com/alvis/presetter/blob/master/packages/presetter), the configuration management tool.**
+**This is a configuration template that works with [Presetter](https://github.com/alvis/presetter/blob/main/packages/presetter), the configuration management tool.**
 
 ## ⚡ TL;DR / Quick Start
 
@@ -61,7 +61,7 @@ Setting up a Next.js project with proper tooling requires configuring multiple p
 
 **@presetter/preset-next is a convenience configuration wrapper that combines multiple presets with Next.js-specific tweaks.**
 
-When used with [Presetter](https://github.com/alvis/presetter/blob/master/packages/presetter) (the configuration management tool), this preset combines [preset-esm](../preset-esm), [preset-strict](../preset-strict), and [preset-react](../preset-react) and adds Next.js-specific configuration adjustments.
+When used with [Presetter](https://github.com/alvis/presetter/blob/main/packages/presetter) (the configuration management tool), this preset combines [preset-esm](../preset-esm), [preset-strict](../preset-strict), and [preset-react](../preset-react) and adds Next.js-specific configuration adjustments.
 
 **What it actually provides:**
 
@@ -76,13 +76,13 @@ When used with [Presetter](https://github.com/alvis/presetter/blob/master/packag
 
 **Important distinction:**
 
-| Component                                                                          | Role                          | What it does                                                         |
-| ---------------------------------------------------------------------------------- | ----------------------------- | -------------------------------------------------------------------- |
-| **[Presetter](https://github.com/alvis/presetter/blob/master/packages/presetter)** | Configuration management tool | CLI that processes presets, generates config files, executes scripts |
-| **[preset-esm](../preset-esm)**                                                    | Base ES modules template      | Provides modern JavaScript/TypeScript with ES modules                |
-| **[preset-strict](../preset-strict)**                                              | Quality enforcement extension | Adds strict linting, type checking, quality rules                    |
-| **[preset-react](../preset-react)**                                                | React development extension   | Adds React 18+, JSX/TSX, TailwindCSS, Storybook                      |
-| **@presetter/preset-next**                                                          | Next.js complete template     | Combines all above + Next.js-specific optimizations                  |
+| Component                                                                        | Role                          | What it does                                                         |
+| -------------------------------------------------------------------------------- | ----------------------------- | -------------------------------------------------------------------- |
+| **[Presetter](https://github.com/alvis/presetter/blob/main/packages/presetter)** | Configuration management tool | CLI that processes presets, generates config files, executes scripts |
+| **[preset-esm](../preset-esm)**                                                  | Base ES modules template      | Provides modern JavaScript/TypeScript with ES modules                |
+| **[preset-strict](../preset-strict)**                                            | Quality enforcement extension | Adds strict linting, type checking, quality rules                    |
+| **[preset-react](../preset-react)**                                              | React development extension   | Adds React 18+, JSX/TSX, TailwindCSS, Storybook                      |
+| **@presetter/preset-next**                                                       | Next.js complete template     | Combines all above + Next.js-specific optimizations                  |
 
 **Think of it like:**
 
@@ -92,7 +92,7 @@ When used with [Presetter](https://github.com/alvis/presetter/blob/master/packag
 - **React preset** = The family-friendly features
 - **This preset** = The complete smart home with everything integrated
 
-This preset **combines** multiple presets to create the ultimate Next.js development experience. For advanced usage, customization, and troubleshooting, **[visit the main Presetter documentation](https://github.com/alvis/presetter/blob/master/packages/presetter)**.
+This preset **combines** multiple presets to create the ultimate Next.js development experience. For advanced usage, customization, and troubleshooting, **[visit the main Presetter documentation](https://github.com/alvis/presetter/blob/main/packages/presetter)**.
 
 ---
 
@@ -163,7 +163,7 @@ export default preset.extend({
 });
 ```
 
-> **Need more customization?** Check the [main Presetter documentation](https://github.com/alvis/presetter/blob/master/packages/presetter) for complete customization guides.
+> **Need more customization?** Check the [main Presetter documentation](https://github.com/alvis/presetter/blob/main/packages/presetter) for complete customization guides.
 
 ---
 
@@ -314,7 +314,7 @@ Automatically configured tools:
 
 ## 🛠️ Troubleshooting
 
-> **General issues?** See the [main troubleshooting guide](https://github.com/alvis/presetter/blob/master/README.md#troubleshooting).
+> **General issues?** See the [main troubleshooting guide](https://github.com/alvis/presetter/blob/main/README.md#troubleshooting).
 
 ### Next.js Specific Issues
 
@@ -329,7 +329,7 @@ Automatically configured tools:
 
 ## ❓ FAQ
 
-> **General questions?** Check the [main FAQ](https://github.com/alvis/presetter/blob/master/packages/presetter#faq).
+> **General questions?** Check the [main FAQ](https://github.com/alvis/presetter/blob/main/packages/presetter#faq).
 
 #### Why combine ESM + Strict + React?
 
@@ -382,13 +382,13 @@ Yes, it adds:
 
 We'd love your ideas and contributions!
 Submit issues or suggestions via [GitHub Issues](https://github.com/alvis/presetter/issues).
-See the [Contribution Guide](https://github.com/alvis/presetter/blob/master/CONTRIBUTING.md) for more details.
+See the [Contribution Guide](https://github.com/alvis/presetter/blob/main/CONTRIBUTING.md) for more details.
 
 ---
 
 ## 📄 License
 
-Released under the [MIT License](https://github.com/alvis/presetter/blob/master/LICENSE).
+Released under the [MIT License](https://github.com/alvis/presetter/blob/main/LICENSE).
 © 2020, [Alvis Tang](https://github.com/alvis).
 
-[![License](https://img.shields.io/github/license/alvis/presetter.svg?style=flat-square)](https://github.com/alvis/presetter/blob/master/LICENSE)
+[![License](https://img.shields.io/github/license/alvis/presetter.svg?style=flat-square)](https://github.com/alvis/presetter/blob/main/LICENSE)

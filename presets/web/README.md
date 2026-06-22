@@ -1,14 +1,14 @@
 # 🚀 @presetter/preset-web
 
-![Logo](https://github.com/alvis/presetter/raw/master/assets/logo.svg)
+[logo.svg](https://github.com/alvis/presetter/blob/master/assets/logo.svg)
 
 <div align="center">
 
 [![npm](https://img.shields.io/npm/v/@presetter/preset-web?style=flat-square)](https://github.com/alvis/presetter/releases)
-[![build](https://img.shields.io/github/actions/workflow/status/alvis/presetter/test.yaml?branch=master&style=flat-square)](https://github.com/alvis/presetter/actions)
+[![build](https://img.shields.io/github/actions/workflow/status/alvis/presetter/test.yaml?branch=main&style=flat-square)](https://github.com/alvis/presetter/actions)
 [![maintainability](https://img.shields.io/codeclimate/maintainability/alvis/presetter?style=flat-square)](https://codeclimate.com/github/alvis/presetter/maintainability)
 [![coverage](https://img.shields.io/codeclimate/coverage/alvis/presetter?style=flat-square)](https://codeclimate.com/github/alvis/presetter/test_coverage)
-[![vulnerabilities](https://img.shields.io/sonar/vulnerabilities/presetter/master?server=https%3A%2F%2Fsonarcloud.io&style=flat-square)](https://sonarcloud.io/summary/new_code?id=presetter)
+[![vulnerabilities](https://img.shields.io/sonar/vulnerabilities/presetter/main?server=https%3A%2F%2Fsonarcloud.io&style=flat-square)](https://sonarcloud.io/summary/new_code?id=presetter)
 [![dependencies](https://img.shields.io/librariesio/release/npm/@presetter/preset-web?style=flat-square)](https://libraries.io/npm/@presetter/preset-web)
 
 Modern web development — TailwindCSS, Storybook, browser-optimized TypeScript
@@ -19,7 +19,7 @@ Modern web development — TailwindCSS, Storybook, browser-optimized TypeScript
 
 ---
 
-**This is a configuration extension that works with [Presetter](https://github.com/alvis/presetter/blob/master/packages/presetter), the configuration management tool.**
+**This is a configuration extension that works with [Presetter](https://github.com/alvis/presetter/blob/main/packages/presetter), the configuration management tool.**
 
 ## ⚡ TL;DR / Quick Start
 
@@ -69,7 +69,7 @@ Modern web development requires an intricate stack: CSS frameworks, component li
 
 **@presetter/preset-web is a configuration extension that adds comprehensive modern web development tooling to any base preset.**
 
-When used with [Presetter](https://github.com/alvis/presetter/blob/master/packages/presetter) (the configuration management tool), this preset extends your chosen base preset with the complete modern web development stack, including TailwindCSS 4, Storybook 9, browser-optimized TypeScript, and intelligent styling workflows.
+When used with [Presetter](https://github.com/alvis/presetter/blob/main/packages/presetter) (the configuration management tool), this preset extends your chosen base preset with the complete modern web development stack, including TailwindCSS 4, Storybook 9, browser-optimized TypeScript, and intelligent styling workflows.
 
 - 💨 **TailwindCSS 4**: Latest utility-first CSS framework with intelligent auto-discovery
 - 📚 **Storybook 9**: Component-driven development with accessibility testing
@@ -146,11 +146,11 @@ my-web-app/
 
 **Important distinction:**
 
-| Component                                                                          | Role                          | What it does                                                                     |
-| ---------------------------------------------------------------------------------- | ----------------------------- | -------------------------------------------------------------------------------- |
-| **[Presetter](https://github.com/alvis/presetter/blob/master/packages/presetter)** | Configuration management tool | CLI that processes presets, generates config files, executes scripts             |
-| **Base Preset**                                                                    | Core development template     | Provides TypeScript, testing, building capabilities (essentials, esm, cjs, etc.) |
-| **@presetter/preset-web**                                                          | Web development extension     | Adds TailwindCSS, Storybook, browser optimization, CSS workflows                 |
+| Component                                                                        | Role                          | What it does                                                                     |
+| -------------------------------------------------------------------------------- | ----------------------------- | -------------------------------------------------------------------------------- |
+| **[Presetter](https://github.com/alvis/presetter/blob/main/packages/presetter)** | Configuration management tool | CLI that processes presets, generates config files, executes scripts             |
+| **Base Preset**                                                                  | Core development template     | Provides TypeScript, testing, building capabilities (essentials, esm, cjs, etc.) |
+| **@presetter/preset-web**                                                        | Web development extension     | Adds TailwindCSS, Storybook, browser optimization, CSS workflows                 |
 
 **Think of it like:**
 
@@ -158,7 +158,7 @@ my-web-app/
 - **Base preset** = The blueprint for a functional house
 - **This extension** = The modern kitchen, smart home systems, and designer finishes
 
-This preset **extends** any base preset with modern web development capabilities. For advanced usage, customization, and troubleshooting, **[visit the main Presetter documentation](https://github.com/alvis/presetter/blob/master/packages/presetter)**.
+This preset **extends** any base preset with modern web development capabilities. For advanced usage, customization, and troubleshooting, **[visit the main Presetter documentation](https://github.com/alvis/presetter/blob/main/packages/presetter)**.
 
 ---
 
@@ -237,7 +237,7 @@ export default preset('advanced-web-app', {
 });
 ```
 
-> **Need more customization options?** Check the [main Presetter documentation](https://github.com/alvis/presetter/blob/master/packages/presetter) for complete guides on overrides, extensions, and advanced configurations.
+> **Need more customization options?** Check the [main Presetter documentation](https://github.com/alvis/presetter/blob/main/packages/presetter) for complete guides on overrides, extensions, and advanced configurations.
 
 ---
 
@@ -451,7 +451,7 @@ compilerOptions:
 
 ## 🛠️ Troubleshooting
 
-> **General Presetter issues?** See the [main troubleshooting guide](https://github.com/alvis/presetter/blob/master/README.md#troubleshooting) for common Presetter problems and solutions.
+> **General Presetter issues?** See the [main troubleshooting guide](https://github.com/alvis/presetter/blob/main/README.md#troubleshooting) for common Presetter problems and solutions.
 
 ### Web Development Specific Issues
 
@@ -462,13 +462,13 @@ compilerOptions:
 | **Browser types missing**           | TypeScript errors with DOM APIs   | Ensure TypeScript override is applied correctly                |
 | **CSS conflicts undetected**        | TailwindCSS class conflicts       | Check ESLint TailwindCSS plugin configuration                  |
 
-> **Need help with Presetter CLI commands?** Check the [CLI reference](https://github.com/alvis/presetter/blob/master/README.md#cli-reference) in the main documentation.
+> **Need help with Presetter CLI commands?** Check the [CLI reference](https://github.com/alvis/presetter/blob/main/README.md#cli-reference) in the main documentation.
 
 ---
 
 ## ❓ FAQ
 
-> **General Presetter questions?** Check the [main FAQ](https://github.com/alvis/presetter/blob/master/README.md#faq) for general usage, configuration, and customization questions.
+> **General Presetter questions?** Check the [main FAQ](https://github.com/alvis/presetter/blob/main/README.md#faq) for general usage, configuration, and customization questions.
 
 ### Web Development Specific FAQs
 
@@ -531,13 +531,13 @@ extends: [essentials, web, react] // Full React + web stack
 
 We'd love your ideas and contributions!
 Submit issues or suggestions via [GitHub Issues](https://github.com/alvis/presetter/issues).
-See the [Contribution Guide](https://github.com/alvis/presetter/blob/master/CONTRIBUTING.md) for more details.
+See the [Contribution Guide](https://github.com/alvis/presetter/blob/main/CONTRIBUTING.md) for more details.
 
 ---
 
 ## 📄 License
 
-Released under the [MIT License](https://github.com/alvis/presetter/blob/master/LICENSE).
+Released under the [MIT License](https://github.com/alvis/presetter/blob/main/LICENSE).
 © 2020, [Alvis Tang](https://github.com/alvis).
 
-[![License](https://img.shields.io/github/license/alvis/presetter.svg?style=flat-square)](https://github.com/alvis/presetter/blob/master/LICENSE)
+[![License](https://img.shields.io/github/license/alvis/presetter.svg?style=flat-square)](https://github.com/alvis/presetter/blob/main/LICENSE)

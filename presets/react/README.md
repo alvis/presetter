@@ -1,14 +1,14 @@
 # 🚀 @presetter/preset-react
 
-![Logo](https://github.com/alvis/presetter/raw/master/assets/logo.svg)
+[logo.svg](https://github.com/alvis/presetter/blob/master/assets/logo.svg)
 
 <div align="center">
 
 [![npm](https://img.shields.io/npm/v/@presetter/preset-react?style=flat-square)](https://github.com/alvis/presetter/releases)
-[![build](https://img.shields.io/github/actions/workflow/status/alvis/presetter/test.yaml?branch=master&style=flat-square)](https://github.com/alvis/presetter/actions)
+[![build](https://img.shields.io/github/actions/workflow/status/alvis/presetter/test.yaml?branch=main&style=flat-square)](https://github.com/alvis/presetter/actions)
 [![maintainability](https://img.shields.io/codeclimate/maintainability/alvis/presetter?style=flat-square)](https://codeclimate.com/github/alvis/presetter/maintainability)
 [![coverage](https://img.shields.io/codeclimate/coverage/alvis/presetter?style=flat-square)](https://codeclimate.com/github/alvis/presetter/test_coverage)
-[![vulnerabilities](https://img.shields.io/sonar/vulnerabilities/presetter/master?server=https%3A%2F%2Fsonarcloud.io&style=flat-square)](https://sonarcloud.io/summary/new_code?id=presetter)
+[![vulnerabilities](https://img.shields.io/sonar/vulnerabilities/presetter/main?server=https%3A%2F%2Fsonarcloud.io&style=flat-square)](https://sonarcloud.io/summary/new_code?id=presetter)
 [![dependencies](https://img.shields.io/librariesio/release/npm/@presetter/preset-react?style=flat-square)](https://libraries.io/npm/@presetter/preset-react)
 
 React development perfected — JSX/TSX, React linting, component-first workflows
@@ -19,7 +19,7 @@ React development perfected — JSX/TSX, React linting, component-first workflow
 
 ---
 
-**This is a configuration extension that works with [Presetter](https://github.com/alvis/presetter/blob/master/packages/presetter), the configuration management tool.**
+**This is a configuration extension that works with [Presetter](https://github.com/alvis/presetter/blob/main/packages/presetter), the configuration management tool.**
 
 ## ⚡ TL;DR / Quick Start
 
@@ -69,7 +69,7 @@ React development requires specialized tooling: JSX compilation, React-specific 
 
 **@presetter/preset-react is a configuration extension that adds comprehensive React development capabilities to the modern web stack.**
 
-When used with [Presetter](https://github.com/alvis/presetter/blob/master/packages/presetter) (the configuration management tool), this preset extends [preset-web](../preset-web) with React-specific tooling, creating the complete React development environment with JSX/TSX support, React linting, asset type safety, and component-first workflows.
+When used with [Presetter](https://github.com/alvis/presetter/blob/main/packages/presetter) (the configuration management tool), this preset extends [preset-web](../preset-web) with React-specific tooling, creating the complete React development environment with JSX/TSX support, React linting, asset type safety, and component-first workflows.
 
 - ⚛️ **React 18+ Ready**: Modern JSX transform, latest React patterns
 - 🎯 **TypeScript JSX**: Perfect TSX compilation and type safety
@@ -147,12 +147,12 @@ my-react-app/
 
 **Important distinction:**
 
-| Component                                                                          | Role                          | What it does                                                                     |
-| ---------------------------------------------------------------------------------- | ----------------------------- | -------------------------------------------------------------------------------- |
-| **[Presetter](https://github.com/alvis/presetter/blob/master/packages/presetter)** | Configuration management tool | CLI that processes presets, generates config files, executes scripts             |
-| **Base Preset**                                                                    | Core development template     | Provides TypeScript, testing, building capabilities (essentials, esm, cjs, etc.) |
-| **[preset-web](../preset-web)**                                                    | Web development extension     | Adds TailwindCSS, Storybook, browser optimization                                |
-| **@presetter/preset-react**                                                        | React development extension   | Adds JSX/TSX, React linting, asset types, component patterns                     |
+| Component                                                                        | Role                          | What it does                                                                     |
+| -------------------------------------------------------------------------------- | ----------------------------- | -------------------------------------------------------------------------------- |
+| **[Presetter](https://github.com/alvis/presetter/blob/main/packages/presetter)** | Configuration management tool | CLI that processes presets, generates config files, executes scripts             |
+| **Base Preset**                                                                  | Core development template     | Provides TypeScript, testing, building capabilities (essentials, esm, cjs, etc.) |
+| **[preset-web](../preset-web)**                                                  | Web development extension     | Adds TailwindCSS, Storybook, browser optimization                                |
+| **@presetter/preset-react**                                                      | React development extension   | Adds JSX/TSX, React linting, asset types, component patterns                     |
 
 **Think of it like:**
 
@@ -161,7 +161,7 @@ my-react-app/
 - **Web preset** = The modern kitchen and smart home systems
 - **This extension** = The family room, entertainment center, and comfort features
 
-This preset **extends** [preset-web](../preset-web) with React-specific capabilities. For advanced usage, customization, and troubleshooting, **[visit the main Presetter documentation](https://github.com/alvis/presetter/blob/master/packages/presetter)**.
+This preset **extends** [preset-web](../preset-web) with React-specific capabilities. For advanced usage, customization, and troubleshooting, **[visit the main Presetter documentation](https://github.com/alvis/presetter/blob/main/packages/presetter)**.
 
 ---
 
@@ -250,7 +250,7 @@ export default preset('advanced-react-app', {
 });
 ```
 
-> **Need more customization options?** Check the [main Presetter documentation](https://github.com/alvis/presetter/blob/master/packages/presetter) for complete guides on overrides, extensions, and advanced configurations.
+> **Need more customization options?** Check the [main Presetter documentation](https://github.com/alvis/presetter/blob/main/packages/presetter) for complete guides on overrides, extensions, and advanced configurations.
 
 ---
 
@@ -530,7 +530,7 @@ overrides: [
 
 ## 🛠️ Troubleshooting
 
-> **General Presetter issues?** See the [main troubleshooting guide](https://github.com/alvis/presetter/blob/master/README.md#troubleshooting) for common Presetter problems and solutions.
+> **General Presetter issues?** See the [main troubleshooting guide](https://github.com/alvis/presetter/blob/main/README.md#troubleshooting) for common Presetter problems and solutions.
 
 ### React Development Specific Issues
 
@@ -541,13 +541,13 @@ overrides: [
 | **React linting not working** | No React-specific lint errors      | Verify ESLint React plugin is loaded           |
 | **Component naming errors**   | PascalCase component names flagged | Check naming convention overrides in ESLint    |
 
-> **Need help with Presetter CLI commands?** Check the [CLI reference](https://github.com/alvis/presetter/blob/master/README.md#cli-reference) in the main documentation.
+> **Need help with Presetter CLI commands?** Check the [CLI reference](https://github.com/alvis/presetter/blob/main/README.md#cli-reference) in the main documentation.
 
 ---
 
 ## ❓ FAQ
 
-> **General Presetter questions?** Check the [main FAQ](https://github.com/alvis/presetter/blob/master/README.md#faq) for general usage, configuration, and customization questions.
+> **General Presetter questions?** Check the [main FAQ](https://github.com/alvis/presetter/blob/main/README.md#faq) for general usage, configuration, and customization questions.
 
 ### React Development Specific FAQs
 
@@ -614,13 +614,13 @@ Absolutely! The preset integrates with:
 
 We'd love your ideas and contributions!
 Submit issues or suggestions via [GitHub Issues](https://github.com/alvis/presetter/issues).
-See the [Contribution Guide](https://github.com/alvis/presetter/blob/master/CONTRIBUTING.md) for more details.
+See the [Contribution Guide](https://github.com/alvis/presetter/blob/main/CONTRIBUTING.md) for more details.
 
 ---
 
 ## 📄 License
 
-Released under the [MIT License](https://github.com/alvis/presetter/blob/master/LICENSE).
+Released under the [MIT License](https://github.com/alvis/presetter/blob/main/LICENSE).
 © 2020, [Alvis Tang](https://github.com/alvis).
 
-[![License](https://img.shields.io/github/license/alvis/presetter.svg?style=flat-square)](https://github.com/alvis/presetter/blob/master/LICENSE)
+[![License](https://img.shields.io/github/license/alvis/presetter.svg?style=flat-square)](https://github.com/alvis/presetter/blob/main/LICENSE)

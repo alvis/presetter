@@ -1,14 +1,14 @@
 # 🚀 @presetter/preset-node
 
-![Logo](https://github.com/alvis/presetter/raw/master/assets/logo.svg)
+[logo.svg](https://github.com/alvis/presetter/blob/master/assets/logo.svg)
 
 <div align="center">
 
 [![npm](https://img.shields.io/npm/v/@presetter/preset-node?style=flat-square)](https://github.com/alvis/presetter/releases)
-[![build](https://img.shields.io/github/actions/workflow/status/alvis/presetter/test.yaml?branch=master&style=flat-square)](https://github.com/alvis/presetter/actions)
+[![build](https://img.shields.io/github/actions/workflow/status/alvis/presetter/test.yaml?branch=main&style=flat-square)](https://github.com/alvis/presetter/actions)
 [![maintainability](https://img.shields.io/codeclimate/maintainability/alvis/presetter?style=flat-square)](https://codeclimate.com/github/alvis/presetter/maintainability)
 [![coverage](https://img.shields.io/codeclimate/coverage/alvis/presetter?style=flat-square)](https://codeclimate.com/github/alvis/presetter/test_coverage)
-[![vulnerabilities](https://img.shields.io/sonar/vulnerabilities/presetter/master?server=https%3A%2F%2Fsonarcloud.io&style=flat-square)](https://sonarcloud.io/summary/new_code?id=presetter)
+[![vulnerabilities](https://img.shields.io/sonar/vulnerabilities/presetter/main?server=https%3A%2F%2Fsonarcloud.io&style=flat-square)](https://sonarcloud.io/summary/new_code?id=presetter)
 [![dependencies](https://img.shields.io/librariesio/release/npm/@presetter/preset-node?style=flat-square)](https://libraries.io/npm/@presetter/preset-node)
 
 Node.js-ready TypeScript development — built-in types, zero friction, full essentials toolkit
@@ -19,7 +19,7 @@ Node.js-ready TypeScript development — built-in types, zero friction, full ess
 
 ---
 
-**This is a configuration template that works with [Presetter](https://github.com/alvis/presetter/blob/master/packages/presetter), the configuration management tool.**
+**This is a configuration template that works with [Presetter](https://github.com/alvis/presetter/blob/main/packages/presetter), the configuration management tool.**
 
 ## ⚡ TL;DR / Quick Start
 
@@ -67,9 +67,9 @@ Every Node.js developer has been here. You install `@types/node`, then tweak `ts
 
 ### What you get instead
 
-**@presetter/preset-node is a configuration template that layers Node.js-specific TypeScript support on top of [preset-essentials](https://github.com/alvis/presetter/blob/master/packages/preset-essentials).**
+**@presetter/preset-node is a configuration template that layers Node.js-specific TypeScript support on top of [preset-essentials](https://github.com/alvis/presetter/blob/main/packages/preset-essentials).**
 
-When used with [Presetter](https://github.com/alvis/presetter/blob/master/packages/presetter) (the configuration management tool), this preset gives you the complete essentials toolkit — linting, formatting, testing, building, release automation — plus first-class Node.js types.
+When used with [Presetter](https://github.com/alvis/presetter/blob/main/packages/presetter) (the configuration management tool), this preset gives you the complete essentials toolkit — linting, formatting, testing, building, release automation — plus first-class Node.js types.
 
 - 🟢 **Node Types Built-in**: `types: ['node']` wired into TypeScript automatically
 - 🧰 **Full Toolkit Inherited**: ESLint, Prettier, Vitest, Husky, release scripts from essentials
@@ -138,17 +138,17 @@ my-node-api/
 
 **Important distinction:**
 
-| Component                                                                          | Role                           | What it does                                                         |
-| ---------------------------------------------------------------------------------- | ------------------------------ | -------------------------------------------------------------------- |
-| **[Presetter](https://github.com/alvis/presetter/blob/master/packages/presetter)** | Configuration management tool  | CLI that processes presets, generates config files, executes scripts |
-| **@presetter/preset-node**                                                         | Node.js configuration template | Extends essentials with Node.js-specific TypeScript support          |
+| Component                                                                        | Role                           | What it does                                                         |
+| -------------------------------------------------------------------------------- | ------------------------------ | -------------------------------------------------------------------- |
+| **[Presetter](https://github.com/alvis/presetter/blob/main/packages/presetter)** | Configuration management tool  | CLI that processes presets, generates config files, executes scripts |
+| **@presetter/preset-node**                                                       | Node.js configuration template | Extends essentials with Node.js-specific TypeScript support          |
 
 **Think of it like:**
 
 - **Presetter** = The engine that builds houses
 - **This preset** = The blueprint for a Node.js-ready home with utilities pre-wired
 
-This preset extends [preset-essentials](https://github.com/alvis/presetter/blob/master/packages/preset-essentials) with Node.js type support. For advanced usage, customization, and troubleshooting, **[visit the main Presetter documentation](https://github.com/alvis/presetter/blob/master/packages/presetter)**.
+This preset extends [preset-essentials](https://github.com/alvis/presetter/blob/main/packages/preset-essentials) with Node.js type support. For advanced usage, customization, and troubleshooting, **[visit the main Presetter documentation](https://github.com/alvis/presetter/blob/main/packages/presetter)**.
 
 ---
 
@@ -219,7 +219,7 @@ export default preset('my-node-service', {
 });
 ```
 
-> **Need more customization options?** Check the [main Presetter documentation](https://github.com/alvis/presetter/blob/master/packages/presetter) for complete guides on overrides, extensions, and advanced configurations.
+> **Need more customization options?** Check the [main Presetter documentation](https://github.com/alvis/presetter/blob/main/packages/presetter) for complete guides on overrides, extensions, and advanced configurations.
 
 ---
 
@@ -227,7 +227,7 @@ export default preset('my-node-service', {
 
 ### Core Node.js Configuration Template
 
-This preset extends [preset-essentials](https://github.com/alvis/presetter/blob/master/packages/preset-essentials) with a single targeted addition:
+This preset extends [preset-essentials](https://github.com/alvis/presetter/blob/main/packages/preset-essentials) with a single targeted addition:
 
 | Configuration  | Purpose                | Node.js Addition                             |
 | -------------- | ---------------------- | -------------------------------------------- |
@@ -239,7 +239,7 @@ This preset extends [preset-essentials](https://github.com/alvis/presetter/blob/
 
 ### Configuration Variables
 
-Inherited from [preset-essentials](https://github.com/alvis/presetter/blob/master/packages/preset-essentials):
+Inherited from [preset-essentials](https://github.com/alvis/presetter/blob/main/packages/preset-essentials):
 
 | Variable | Default    | Description                   |
 | -------- | ---------- | ----------------------------- |
@@ -313,13 +313,13 @@ npm run typecheck   # Type-only checks (no emit)
 
 ### Extends
 
-- [`@presetter/preset-essentials`](https://github.com/alvis/presetter/blob/master/packages/preset-essentials) — Core TypeScript development toolkit
+- [`@presetter/preset-essentials`](https://github.com/alvis/presetter/blob/main/packages/preset-essentials) — Core TypeScript development toolkit
 
 ### Pairs Well With
 
-- [`@presetter/preset-strict`](https://github.com/alvis/presetter/blob/master/packages/preset-strict) — Production-grade quality enforcement
-- [`@presetter/preset-rollup`](https://github.com/alvis/presetter/blob/master/packages/preset-rollup) — Bundled library builds
-- [`@presetter/preset-monorepo`](https://github.com/alvis/presetter/blob/master/packages/preset-monorepo) — Workspace-level coordination
+- [`@presetter/preset-strict`](https://github.com/alvis/presetter/blob/main/packages/preset-strict) — Production-grade quality enforcement
+- [`@presetter/preset-rollup`](https://github.com/alvis/presetter/blob/main/packages/preset-rollup) — Bundled library builds
+- [`@presetter/preset-monorepo`](https://github.com/alvis/presetter/blob/main/packages/preset-monorepo) — Workspace-level coordination
 
 ---
 
@@ -344,16 +344,16 @@ npm run typecheck   # Type-only checks (no emit)
 
 ❌ **Consider alternatives when:**
 
-- Targeting **Bun** runtime → use [`@presetter/preset-bun`](https://github.com/alvis/presetter/blob/master/packages/preset-bun)
-- Building for the **browser** only → use [`@presetter/preset-web`](https://github.com/alvis/presetter/blob/master/packages/preset-web)
-- Writing **React** components → use [`@presetter/preset-react`](https://github.com/alvis/presetter/blob/master/packages/preset-react)
-- Building **runtime-agnostic** TypeScript → use [`@presetter/preset-essentials`](https://github.com/alvis/presetter/blob/master/packages/preset-essentials) directly
+- Targeting **Bun** runtime → use [`@presetter/preset-bun`](https://github.com/alvis/presetter/blob/main/packages/preset-bun)
+- Building for the **browser** only → use [`@presetter/preset-web`](https://github.com/alvis/presetter/blob/main/packages/preset-web)
+- Writing **React** components → use [`@presetter/preset-react`](https://github.com/alvis/presetter/blob/main/packages/preset-react)
+- Building **runtime-agnostic** TypeScript → use [`@presetter/preset-essentials`](https://github.com/alvis/presetter/blob/main/packages/preset-essentials) directly
 
 ---
 
 ## 🛠️ Troubleshooting
 
-> **General Presetter issues?** See the [main troubleshooting guide](https://github.com/alvis/presetter/blob/master/README.md#troubleshooting) for common Presetter problems and solutions.
+> **General Presetter issues?** See the [main troubleshooting guide](https://github.com/alvis/presetter/blob/main/README.md#troubleshooting) for common Presetter problems and solutions.
 
 ### Node.js-Specific Issues
 
@@ -364,13 +364,13 @@ npm run typecheck   # Type-only checks (no emit)
 | **Engine mismatch warning**     | `engines.node` violation on install | Use Node.js ≥ 20 (required by the preset itself)               |
 | **Custom `types` array reset**  | Your additions overwritten          | Spread base in override: `types: ['node', 'vitest/globals']`   |
 
-> **Need help with Presetter CLI commands?** Check the [CLI reference](https://github.com/alvis/presetter/blob/master/README.md#cli-reference) in the main documentation.
+> **Need help with Presetter CLI commands?** Check the [CLI reference](https://github.com/alvis/presetter/blob/main/README.md#cli-reference) in the main documentation.
 
 ---
 
 ## ❓ FAQ
 
-> **General Presetter questions?** Check the [main FAQ](https://github.com/alvis/presetter/blob/master/README.md#faq) for general usage, configuration, and customization questions.
+> **General Presetter questions?** Check the [main FAQ](https://github.com/alvis/presetter/blob/main/README.md#faq) for general usage, configuration, and customization questions.
 
 ### Node.js-Specific FAQs
 
@@ -389,7 +389,7 @@ No. It's pulled in transitively through essentials. The preset simply enables it
 
 #### Can I use this for a library that runs in both Node.js and browsers?
 
-Yes — but understand the trade-off. Enabling Node.js types means your code can reference `process` or `Buffer`, which won't exist in browsers. For truly isomorphic libraries, use [`@presetter/preset-essentials`](https://github.com/alvis/presetter/blob/master/packages/preset-essentials) and add types explicitly per environment.
+Yes — but understand the trade-off. Enabling Node.js types means your code can reference `process` or `Buffer`, which won't exist in browsers. For truly isomorphic libraries, use [`@presetter/preset-essentials`](https://github.com/alvis/presetter/blob/main/packages/preset-essentials) and add types explicitly per environment.
 
 #### How do I target a specific Node.js version?
 
@@ -423,13 +423,13 @@ Yes — replace `@presetter/preset-node` with `@presetter/preset-bun` in your co
 
 We'd love your ideas and contributions!
 Submit issues or suggestions via [GitHub Issues](https://github.com/alvis/presetter/issues).
-See the [Contribution Guide](https://github.com/alvis/presetter/blob/master/CONTRIBUTING.md) for more details.
+See the [Contribution Guide](https://github.com/alvis/presetter/blob/main/CONTRIBUTING.md) for more details.
 
 ---
 
 ## 📄 License
 
-Released under the [MIT License](https://github.com/alvis/presetter/blob/master/LICENSE).
+Released under the [MIT License](https://github.com/alvis/presetter/blob/main/LICENSE).
 © 2020, [Alvis Tang](https://github.com/alvis).
 
-[![License](https://img.shields.io/github/license/alvis/presetter.svg?style=flat-square)](https://github.com/alvis/presetter/blob/master/LICENSE)
+[![License](https://img.shields.io/github/license/alvis/presetter.svg?style=flat-square)](https://github.com/alvis/presetter/blob/main/LICENSE)
