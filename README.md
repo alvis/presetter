@@ -1,4 +1,6 @@
-# ![Logo](assets/logo.svg)
+<p align="center">
+  <img src="https://raw.githubusercontent.com/alvis/presetter/master/assets/logo.svg" alt="Presetter logo" height="128">
+</p>
 
 <div align="center">
 
