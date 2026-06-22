@@ -8,6 +8,7 @@
 - [Development](#development)
 - [Pull Request Submission](#pull-request-submission)
 - [Useful Commands](#useful-commands)
+  - [Getting npm to trust github actions](#getting-npm-to-trust-github-actions)
 
 ## The Essential
 
@@ -198,6 +199,22 @@ $ npm run release
 ```
 
 All packages in the monorepo are released in lock-step at one version per cycle.
+
+### Getting npm to trust github actions
+
+Trusted publishing is configured through npm's GitHub Actions OIDC support.
+Run the trust script from the repository root when the package set changes, the release workflow changes, or npm trusted publishing needs to be repaired.
+
+```shell
+$ npm run trust
+```
+
+The script requires `jq` and `npm` 11.16.0 or newer.
+It signs in to npm if needed, opens the system browser for npm's web authentication flow, and then configures every package under `packages/**` and `presets/**` to trust the `alvis/presetter` GitHub repository with the `release.yaml` workflow.
+When npm prompts for authentication, press Enter to open the browser and enable the 5-minute 2FA skip window so the bulk update can finish.
+
+The script revokes any existing trusted publisher configuration for each package before creating the GitHub Actions trusted publisher with publish permission.
+Because this mutates npm registry settings, only run it from an npm account that has write access to all published packages.
 
 #### Flags
 

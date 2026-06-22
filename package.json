@@ -32,6 +32,7 @@
     "test:coverage": "run test:coverage --",
     "test:e2e": "pnpm --filter @presetter/e2e test:e2e",
     "test:watch": "run test:watch --",
+    "trust": "command -v jq >/dev/null || { echo 'jq is required for the trust script' >&2; exit 1; }; npm_version=$(npm --version); npm_major=${npm_version%%.*}; npm_rest=${npm_version#*.}; npm_minor=${npm_rest%%.*}; if [ \"$npm_major\" -lt 11 ] || { [ \"$npm_major\" -eq 11 ] && [ \"$npm_minor\" -lt 16 ]; }; then echo \"npm >=11.16.0 is required for npm trust --allow-publish (found $npm_version)\" >&2; exit 1; fi; (npm whoami --registry=https://registry.npmjs.org >/dev/null 2>&1 || npm login --auth-type=web --registry=https://registry.npmjs.org) && echo 'Authorize npm trust once and enable the 5-minute 2FA skip when prompted.' >&2 && npm trust list @presetter/types && pnpm --filter './packages/**' --filter './presets/**' --workspace-concurrency=4 exec sh -ec 'json=$(npm trust list --json) || exit $?; id=$(printf \"%s\\n\" \"$json\" | jq -r '\\''if type == \"object\" and has(\"error\") then error(.error.summary // .error.code) elif type == \"array\" then .[0].id // empty else .id // empty end'\\'') || exit $?; if [ -n \"$id\" ]; then npm trust revoke --id=\"$id\"; fi; npm trust github --repository alvis/presetter --file release.yaml --allow-publish --yes; sleep 2'",
     "typecheck": "pnpm --recursive exec tsgo --noEmit --skipLibCheck"
   },
   "devDependencies": {
