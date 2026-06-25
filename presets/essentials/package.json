@@ -18,17 +18,10 @@
   "author": "Alvis HT Tang <alvis@hilbert.space>",
   "type": "module",
   "imports": {
-    "#*": {
-      "types": "./src/*.ts",
-      "development": "./src/*.ts",
-      "import": "./lib/*.js"
-    }
+    "#*": "./src/*.ts"
   },
   "exports": {
-    ".": {
-      "development": "./src/index.ts",
-      "import": "./lib/index.js"
-    }
+    ".": "./src/index.ts"
   },
   "main": "lib/index.js",
   "types": "lib/index.d.ts",
@@ -79,16 +72,10 @@
   "publishConfig": {
     "access": "public",
     "exports": {
-      ".": {
-        "types": "./lib/index.d.ts",
-        "import": "./lib/index.js"
-      }
+      ".": "./lib/index.js"
     },
     "imports": {
-      "#*": {
-        "types": "./lib/*.d.ts",
-        "import": "./lib/*.js"
-      }
+      "#*": "./lib/*.js"
     }
   }
 }

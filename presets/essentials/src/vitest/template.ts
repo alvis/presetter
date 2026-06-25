@@ -8,7 +8,6 @@ export default asset<{ default: ViteUserConfig }>((current, context) => {
 
   return merge(current, {
     default: {
-      esbuild: { target: 'es2022' }, // required for using `using` statement
       test: {
         projects: ['vitest.config{,.*}.ts'],
         name: `${packageJson.name!}:UNIT`,
