@@ -1,0 +1,323 @@
+.wrapper {
+  position: relative;
+  padding: var(--space-10) 0 var(--space-11);
+  overflow: hidden;
+}
+
+.glyphBackdrop {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  background-image:
+    radial-gradient(
+      circle at 18% 22%,
+      rgba(48, 199, 243, 0.18) 0,
+      transparent 38%
+    ),
+    radial-gradient(
+      circle at 82% 12%,
+      rgba(167, 234, 99, 0.18) 0,
+      transparent 42%
+    ),
+    radial-gradient(
+      circle at 50% 92%,
+      rgba(255, 179, 71, 0.12) 0,
+      transparent 46%
+    );
+}
+
+.container {
+  position: relative;
+  z-index: 1;
+  display: grid;
+  gap: var(--space-7);
+  max-width: 760px;
+  margin: 0 auto;
+  padding: 0 var(--space-5);
+  text-align: center;
+}
+
+.eyebrow {
+  margin: 0;
+  color: var(--presetter-accent-text);
+  text-transform: uppercase;
+  letter-spacing: 0.14em;
+  font-size: var(--font-size-caption);
+  font-weight: 700;
+}
+
+.title {
+  margin: 0;
+  font-family: var(
+    --presetter-font-display,
+    'Space Grotesk',
+    system-ui,
+    sans-serif
+  );
+  font-size: var(--font-size-h1);
+  line-height: 1.05;
+  letter-spacing: -0.02em;
+  color: var(--presetter-ink);
+  text-wrap: balance;
+}
+
+.subtitle {
+  margin: 0 auto;
+  max-width: 60ch;
+  color: var(--presetter-muted-strong);
+  font-size: var(--font-size-body-lg);
+  line-height: 1.6;
+}
+
+.primaryActions {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: var(--space-3);
+}
+
+.primaryCta,
+.secondaryCta {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 44px;
+  min-width: 44px;
+  padding: var(--space-3) var(--space-6);
+  border-radius: var(--radius-lg);
+  font-family: var(
+    --presetter-font-display,
+    'Space Grotesk',
+    system-ui,
+    sans-serif
+  );
+  font-size: var(--font-size-body);
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  text-decoration: none;
+  cursor: pointer;
+  transition:
+    transform 180ms ease,
+    box-shadow 180ms ease,
+    background 180ms ease,
+    border-color 180ms ease;
+}
+
+.primaryCta {
+  border: 1px solid transparent;
+  background: linear-gradient(
+    135deg,
+    var(--presetter-spark) 0%,
+    var(--presetter-accent) 100%
+  );
+  color: var(--presetter-ink);
+  box-shadow: var(--shadow-soft);
+}
+
+.primaryCta:hover,
+.primaryCta:focus-visible {
+  transform: translateY(-1px);
+  box-shadow: var(--shadow-strong);
+}
+
+.secondaryCta {
+  border: 1px solid var(--presetter-border-strong);
+  background: var(--presetter-glass-surface);
+  color: var(--presetter-ink);
+}
+
+.secondaryCta:hover,
+.secondaryCta:focus-visible {
+  transform: translateY(-1px);
+  border-color: var(--presetter-border-strong-accent);
+  color: var(--presetter-ink);
+  text-decoration: none;
+}
+
+.searchSection {
+  display: grid;
+  gap: var(--space-3);
+  justify-items: center;
+  padding: var(--space-6);
+  border: 1px solid var(--presetter-border);
+  border-radius: var(--radius-lg);
+  background: var(--presetter-glass-surface);
+  box-shadow: var(--shadow-soft);
+}
+
+.searchBarWrapper {
+  width: 100%;
+  max-width: 420px;
+}
+
+.sectionTitle {
+  margin: 0;
+  font-family: var(
+    --presetter-font-display,
+    'Space Grotesk',
+    system-ui,
+    sans-serif
+  );
+  color: var(--presetter-ink);
+  font-size: var(--font-size-h3);
+}
+
+.popular {
+  display: grid;
+  gap: var(--space-5);
+  padding: var(--space-6);
+  border: 1px solid var(--presetter-border);
+  border-radius: var(--radius-lg);
+  background: var(--presetter-glass-surface);
+  box-shadow: var(--shadow-soft);
+  text-align: left;
+}
+
+.popularList {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: var(--space-4);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.popularCard {
+  display: grid;
+  gap: var(--space-2);
+  min-height: 44px;
+  padding: var(--space-4) var(--space-5);
+  border: 1px solid var(--presetter-border);
+  border-radius: var(--radius-md);
+  background: var(--presetter-glass-surface-strong);
+  color: var(--presetter-ink);
+  text-decoration: none;
+  transition:
+    transform 180ms ease,
+    border-color 180ms ease,
+    box-shadow 180ms ease;
+}
+
+.popularCard:hover,
+.popularCard:focus-visible {
+  transform: translateY(-2px);
+  border-color: var(--presetter-border-strong-accent);
+  box-shadow: var(--shadow-soft);
+  text-decoration: none;
+  color: var(--presetter-ink);
+}
+
+.popularLabel {
+  font-family: var(
+    --presetter-font-display,
+    'Space Grotesk',
+    system-ui,
+    sans-serif
+  );
+  font-size: var(--font-size-body);
+  font-weight: 600;
+}
+
+.popularDescription {
+  color: var(--presetter-muted);
+  font-size: var(--font-size-body-sm);
+  line-height: 1.5;
+}
+
+.reportRow {
+  margin: 0;
+  color: var(--presetter-muted-strong);
+  font-size: var(--font-size-body-sm);
+}
+
+.reportLink {
+  color: var(--presetter-accent-text);
+  font-weight: 600;
+  text-decoration: underline;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 3px;
+}
+
+.reportLink:hover,
+.reportLink:focus-visible {
+  color: var(--presetter-spark-strong);
+}
+
+@media (max-width: 500px) {
+  .wrapper {
+    padding: var(--space-8) 0 var(--space-9);
+  }
+
+  .container {
+    gap: var(--space-6);
+  }
+
+  .primaryActions {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .primaryCta,
+  .secondaryCta {
+    width: 100%;
+  }
+
+  .searchSection,
+  .popular {
+    padding: var(--space-5);
+  }
+
+  .popularList {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .primaryCta,
+  .secondaryCta,
+  .popularCard {
+    transition: none;
+  }
+
+  .primaryCta:hover,
+  .primaryCta:focus-visible,
+  .secondaryCta:hover,
+  .secondaryCta:focus-visible,
+  .popularCard:hover,
+  .popularCard:focus-visible {
+    transform: none;
+  }
+}
+
+:global([data-theme='dark']) .searchSection,
+:global([data-theme='dark']) .popular,
+:global([data-theme='dark']) .popularCard,
+:global([data-theme='dark']) .secondaryCta {
+  background: rgba(255, 255, 255, 0.04);
+  border-color: rgba(244, 239, 230, 0.12);
+  color: var(--presetter-ink);
+}
+
+:global([data-theme='dark']) .popularDescription {
+  color: var(--presetter-muted);
+}
+
+:global([data-theme='dark']) .glyphBackdrop {
+  background-image:
+    radial-gradient(
+      circle at 18% 22%,
+      rgba(48, 199, 243, 0.22) 0,
+      transparent 40%
+    ),
+    radial-gradient(
+      circle at 82% 12%,
+      rgba(167, 234, 99, 0.16) 0,
+      transparent 42%
+    ),
+    radial-gradient(
+      circle at 50% 92%,
+      rgba(255, 179, 71, 0.1) 0,
+      transparent 48%
+    );
+}

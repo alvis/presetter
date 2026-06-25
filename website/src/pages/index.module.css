@@ -1,0 +1,1158 @@
+.heroBanner {
+  padding: var(--space-9) 0 var(--space-7);
+  position: relative;
+  overflow: clip;
+}
+
+.heroBanner::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(
+      circle at 18% 18%,
+      rgba(167, 234, 99, 0.28),
+      transparent 22%
+    ),
+    radial-gradient(
+      circle at 80% 20%,
+      rgba(48, 199, 243, 0.18),
+      transparent 26%
+    ),
+    radial-gradient(
+      circle at 58% 8%,
+      rgba(255, 179, 71, 0.12),
+      transparent 16%
+    ),
+    linear-gradient(180deg, rgba(255, 255, 255, 0.46), rgba(255, 255, 255, 0));
+  pointer-events: none;
+}
+
+.heroShell {
+  position: relative;
+  display: grid;
+  grid-template-columns: minmax(0, 1.02fr) minmax(420px, 0.98fr);
+  gap: var(--space-8);
+  align-items: center;
+}
+
+.sectionIntro {
+  position: relative;
+  display: grid;
+  grid-template-columns: minmax(0, 1.02fr) minmax(320px, 0.98fr);
+  gap: var(--space-7);
+  align-items: end;
+}
+
+.heroContent {
+  position: relative;
+  z-index: 1;
+}
+
+.releasePill {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  min-height: 44px;
+  margin: 0 0 var(--space-4);
+  padding: 0 var(--space-4) 0 var(--space-2);
+  border: 1px solid var(--presetter-border-strong-accent);
+  border-radius: 999px;
+  background:
+    linear-gradient(135deg, rgba(48, 199, 243, 0.14), rgba(167, 234, 99, 0.14)),
+    rgba(255, 255, 255, 0.78);
+  box-shadow: 0 18px 38px -32px rgba(24, 35, 45, 0.28);
+  color: var(--presetter-primary-strong);
+  font-size: 0.84rem;
+  font-weight: 700;
+  text-decoration: none;
+  transition:
+    transform 180ms ease,
+    box-shadow 180ms ease,
+    border-color 180ms ease;
+}
+
+.releasePill:hover {
+  transform: translateY(-1px);
+  /* hover strengthens (never weakens) the resting accent border token */
+  border-color: rgba(48, 199, 243, 0.42);
+  box-shadow: 0 22px 44px -32px rgba(24, 35, 45, 0.24);
+  text-decoration: none;
+}
+
+.releaseDot {
+  width: 8px;
+  height: 8px;
+  margin-left: var(--space-2);
+  border-radius: 999px;
+  background: var(--presetter-accent-strong);
+  box-shadow: 0 0 0 4px rgba(116, 207, 32, 0.18);
+  animation: releasePulse 2.4s ease-in-out infinite;
+}
+
+@keyframes releasePulse {
+  0%,
+  100% {
+    box-shadow: 0 0 0 3px rgba(116, 207, 32, 0.14);
+  }
+
+  50% {
+    box-shadow: 0 0 0 6px rgba(116, 207, 32, 0.04);
+  }
+}
+
+.releaseTag {
+  display: inline-flex;
+  align-items: center;
+  min-height: 24px;
+  padding: 0 var(--space-2);
+  border-radius: 999px;
+  background: var(--presetter-primary-strong);
+  color: #f4f7fb;
+  font-family: var(--presetter-font-display);
+  font-size: 0.74rem;
+  letter-spacing: 0.02em;
+}
+
+.releaseText {
+  color: var(--presetter-primary-strong);
+}
+
+/* compact label swapped in for .releaseText on narrow viewports */
+.releaseTextShort {
+  display: none;
+  color: var(--presetter-primary-strong);
+}
+
+.releaseArrow {
+  transition: transform 180ms ease;
+}
+
+.releasePill:hover .releaseArrow {
+  transform: translateX(3px);
+}
+
+.eyebrow,
+.sectionEyebrow {
+  margin: 0 0 var(--space-4);
+  font-size: var(--font-size-caption);
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--presetter-accent-text);
+}
+
+.heroTitle {
+  max-width: 9ch;
+  margin-bottom: var(--space-4);
+  font-size: clamp(3rem, 5vw, 5.1rem);
+  line-height: 0.98;
+  text-wrap: balance;
+}
+
+.heroSubtitle {
+  max-width: 44ch;
+  margin: 0 0 var(--space-5);
+  color: var(--presetter-muted-strong);
+  font-size: var(--font-size-body-lg);
+  line-height: 1.6;
+}
+
+.heroSupport {
+  margin: var(--space-4) 0 0;
+  max-width: 34ch;
+  color: var(--presetter-muted);
+  font-size: 0.9rem;
+  line-height: 1.5;
+}
+
+.heroAgentSpotlight {
+  position: relative;
+  display: grid;
+  gap: var(--space-2);
+  max-width: 38ch;
+  margin-top: var(--space-3);
+  padding: var(--space-4);
+  border: 1px solid var(--presetter-border-strong-accent);
+  border-radius: var(--radius-md);
+  background:
+    linear-gradient(180deg, rgba(48, 199, 243, 0.08), rgba(167, 234, 99, 0.08)),
+    rgba(255, 255, 255, 0.72);
+  box-shadow: 0 22px 48px -38px rgba(24, 35, 45, 0.28);
+  overflow: hidden;
+  color: inherit;
+  text-decoration: none;
+  transition:
+    transform 180ms ease,
+    box-shadow 180ms ease,
+    border-color 180ms ease;
+}
+
+.heroAgentSpotlight:hover {
+  transform: translateY(-1px);
+  /* hover strengthens (never weakens) the accent border beyond the resting --presetter-border-strong-accent token */
+  border-color: rgba(48, 199, 243, 0.42);
+  box-shadow: 0 24px 54px -36px rgba(24, 35, 45, 0.24);
+  text-decoration: none;
+}
+
+/* illustration — intentional off-grid radial glow sized to visually balance the spotlight card */
+.heroAgentGlow {
+  position: absolute;
+  inset: -14px auto auto -18px;
+  width: 108px;
+  height: 108px;
+  border-radius: 999px;
+  background: radial-gradient(
+    circle,
+    rgba(167, 234, 99, 0.26),
+    transparent 72%
+  );
+  pointer-events: none;
+}
+
+.heroAgentLabel {
+  position: relative;
+  z-index: 1;
+  color: var(--presetter-accent-text);
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.heroAgentText {
+  position: relative;
+  z-index: 1;
+  color: var(--presetter-primary);
+  font-size: 0.92rem;
+  font-weight: 700;
+  line-height: 1.5;
+}
+
+.heroAgentAction {
+  position: relative;
+  z-index: 1;
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  color: var(--presetter-accent-text);
+  /* token — caption size ensures the "View tutorial" label reads as a link on a 3s scan (WCAG AA vs card background) */
+  font-size: var(--font-size-caption);
+  font-weight: 700;
+}
+
+.heroAgentActionText {
+  text-decoration: underline;
+  text-decoration-color: rgba(8, 107, 137, 0.32);
+  text-underline-offset: 3px;
+}
+
+.heroAgentArrow {
+  display: inline-block;
+  transition: transform 180ms ease;
+}
+
+.heroAgentSpotlight:hover .heroAgentArrow {
+  transform: translateX(3px);
+}
+
+.buttons {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  flex-wrap: wrap;
+  margin-bottom: 0;
+}
+
+.primaryButton {
+  /* layout — min-width tuned so the primary CTA matches the secondary button visually; not a grid-token size */
+  min-width: 184px;
+  justify-content: center;
+}
+
+.heroVisual {
+  position: relative;
+  width: 100%;
+  /* layout — max-width caps the hero artwork to its designed aspect; not a grid-token size */
+  max-width: 520px;
+  justify-self: end;
+}
+
+.logoCard {
+  position: relative;
+  padding: var(--space-4);
+  border: 1px solid rgba(24, 35, 45, 0.12);
+  border-radius: var(--radius-xl);
+  background: linear-gradient(
+    180deg,
+    rgba(255, 255, 255, 0.92),
+    rgba(250, 248, 244, 0.82)
+  );
+  box-shadow: 0 28px 60px -42px rgba(24, 35, 45, 0.24);
+  overflow: hidden;
+}
+
+.heroCanvas {
+  position: relative;
+  z-index: 1;
+  display: grid;
+  gap: var(--space-4);
+  margin: 0;
+  padding: var(--space-5);
+  border: 1px solid rgba(24, 35, 45, 0.08);
+  border-radius: var(--radius-xl);
+  background: linear-gradient(
+    180deg,
+    rgba(35, 52, 66, 0.985),
+    rgba(24, 35, 45, 0.985)
+  );
+  box-shadow: 0 24px 44px -34px rgba(24, 35, 45, 0.44);
+  overflow: hidden;
+}
+
+.canvasGrid {
+  position: absolute;
+  inset: 0;
+  background-image:
+    linear-gradient(rgba(244, 239, 230, 0.022) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(244, 239, 230, 0.022) 1px, transparent 1px);
+  /* illustration — decorative grid cell size tuned to the hero canvas artwork, not the spacing grid */
+  background-size: 40px 40px;
+  mask-image: linear-gradient(180deg, rgba(0, 0, 0, 0.78), transparent 100%);
+}
+
+.heroFrame {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+}
+
+.heroFrameLabel {
+  margin: 0;
+  color: rgba(244, 239, 230, 0.8);
+  font-size: 0.78rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.heroWorkflow {
+  position: relative;
+  z-index: 1;
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--space-3);
+  align-items: stretch;
+}
+
+.sourceCard,
+.workspacePanel {
+  position: relative;
+  z-index: 1;
+  display: grid;
+  gap: var(--space-3);
+  padding: var(--space-4);
+  border: 1px solid rgba(244, 239, 230, 0.08);
+  border-radius: var(--radius-lg);
+  background: rgba(17, 26, 34, 0.24);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.03);
+}
+
+.sourceCard {
+  gap: var(--space-2);
+  padding: var(--space-3);
+  background: rgba(17, 26, 34, 0.18);
+}
+
+.sourceHeader,
+.workspaceHeader {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: var(--space-3);
+}
+
+.cardEyebrow {
+  margin: 0 0 var(--space-2);
+  color: rgba(244, 239, 230, 0.7);
+  font-size: 0.74rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.sourceLead,
+.workspaceLead {
+  margin: 0;
+  color: rgba(244, 239, 230, 0.9);
+  font-family: var(--presetter-font-display);
+  font-size: 1rem;
+  line-height: 1.3;
+  letter-spacing: -0.02em;
+}
+
+.sourceBadge {
+  display: inline-flex;
+  min-height: 32px;
+  align-items: center;
+  padding: 0 var(--space-3);
+  border: 1px solid rgba(182, 255, 119, 0.14);
+  border-radius: 999px;
+  background: linear-gradient(
+    180deg,
+    rgba(90, 217, 255, 0.12),
+    rgba(182, 255, 119, 0.12)
+  );
+  color: rgba(244, 239, 230, 0.96);
+  font-size: 0.76rem;
+  font-weight: 700;
+}
+
+.sourceCode {
+  margin: 0;
+  padding: var(--space-3);
+  border: 1px solid rgba(244, 239, 230, 0.08);
+  border-radius: var(--radius-md);
+  background: rgba(10, 16, 23, 0.45);
+  color: rgba(244, 239, 230, 0.84);
+  font-family: var(--presetter-font-mono);
+  font-size: 0.68rem;
+  line-height: 1.45;
+  white-space: pre-wrap;
+}
+
+.sourceCode code {
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: inherit;
+}
+
+.workspaceSummary {
+  margin: 0;
+  color: rgba(244, 239, 230, 0.78);
+  font-size: 0.82rem;
+  line-height: 1.5;
+}
+
+.illustrationShell {
+  position: relative;
+  display: grid;
+  place-items: center;
+  /* illustration — min-height sized to accommodate the ghost + orbit satellites; off-grid by design */
+  min-height: 248px;
+  padding: var(--space-3);
+  border: 1px solid rgba(244, 239, 230, 0.08);
+  border-radius: var(--radius-lg);
+  background:
+    radial-gradient(circle at top, rgba(255, 255, 255, 0.08), transparent 52%),
+    rgba(12, 19, 26, 0.38);
+  overflow: hidden;
+}
+
+/* illustration — decorative radial blur; dimensions tuned to the artwork, not the spacing grid */
+.illustrationShell::before {
+  content: '';
+  position: absolute;
+  inset: 20% 18% auto;
+  height: 150px;
+  border-radius: 999px;
+  background: radial-gradient(
+    circle,
+    rgba(182, 255, 119, 0.18),
+    transparent 62%
+  );
+  filter: blur(16px);
+}
+
+.heroGhost {
+  position: relative;
+  z-index: 1;
+  /* illustration — width cap tuned to the ghost artwork's intrinsic proportions */
+  width: min(100%, 138px);
+  height: auto;
+  object-fit: contain;
+  filter: drop-shadow(0 22px 34px rgba(0, 0, 0, 0.28));
+}
+
+.ghostOrbitFile {
+  position: absolute;
+  z-index: 1;
+  display: inline-flex;
+  min-height: 28px;
+  align-items: center;
+  padding: 0 var(--space-3);
+  border: 1px solid rgba(244, 239, 230, 0.1);
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.06);
+  color: rgba(244, 239, 230, 0.82);
+  font-family: var(--presetter-font-mono);
+  font-size: 0.64rem;
+  font-weight: 600;
+  white-space: nowrap;
+  backdrop-filter: blur(10px);
+}
+
+/**
+ * Ghost orbit satellites — four config-file pills arranged around the ghost mascot
+ * inside .illustrationShell. Offsets are tuned to the illustration's visual centre,
+ * NOT the --space-* spacing grid, and will drift if the ghost artwork is resized.
+ *
+ *   :nth-child(1) — top-left "preset source" pill         (top: 14px, left: 16px)
+ *   :nth-child(2) — top-right "config" pill               (top: 22px, right: 12px)
+ *   :nth-child(3) — bottom-left "generated" pill (accent) (bottom: 58px, left: 4px)
+ *   :nth-child(4) — bottom-right "lockfile" pill          (bottom: 66px, right: 2px)
+ *
+ * Mobile variants (<=480px) are defined in the .ghostOrbitFile block inside the
+ * (max-width: 480px) media query below and follow the same top-left → bottom-right
+ * ordering. When retuning, preview in a browser — pixel values are illustration
+ * literals, not tokens, so Storybook/DevTools is the source of truth.
+ */
+.ghostOrbitFile:nth-child(1) {
+  top: 14px;
+  left: 16px;
+}
+
+.ghostOrbitFile:nth-child(2) {
+  top: 22px;
+  right: 12px;
+}
+
+.ghostOrbitFile:nth-child(3) {
+  bottom: 58px;
+  left: 4px;
+  border-color: rgba(182, 255, 119, 0.22);
+  background: linear-gradient(
+    180deg,
+    rgba(90, 217, 255, 0.1),
+    rgba(182, 255, 119, 0.12)
+  );
+  color: rgba(244, 239, 230, 0.96);
+}
+
+.ghostOrbitFile:nth-child(4) {
+  bottom: 66px;
+  right: 2px;
+}
+
+.gitignoreCallout {
+  position: absolute;
+  left: 50%;
+  /* illustration — offset from illustrationShell edge; off-grid by design */
+  bottom: 10px;
+  z-index: 1;
+  display: grid;
+  gap: var(--space-1);
+  width: min(100%, 236px);
+  padding: var(--space-3);
+  border: 1px solid rgba(244, 239, 230, 0.1);
+  border-radius: var(--radius-md);
+  background: rgba(8, 13, 18, 0.6);
+  transform: translateX(-50%);
+  text-align: center;
+  backdrop-filter: blur(12px);
+}
+
+.gitignoreLabel {
+  color: rgba(182, 255, 119, 0.96);
+  font-size: 0.64rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.gitignoreValue {
+  color: rgba(244, 239, 230, 0.82);
+  font-size: 0.72rem;
+  line-height: 1.4;
+}
+
+.proofGrid {
+  position: relative;
+  z-index: 1;
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: var(--space-4);
+}
+
+.proofSection {
+  padding: var(--space-6) 0 var(--space-9);
+}
+
+.sectionTransition {
+  position: relative;
+  /* illustration — decorative band height + negative overlap tuned to the clip-path silhouettes; off-grid by design */
+  height: 96px;
+  margin: -18px 0 -14px;
+  overflow: clip;
+  pointer-events: none;
+  isolation: isolate;
+}
+
+.sectionTransitionLayer,
+.sectionTransitionAccent {
+  position: absolute;
+  inset: 0;
+}
+
+.sectionTransitionLayer {
+  background: var(--presetter-canvas);
+  /* illustration — sub-pixel blur softens the clip-path edge; intentional off-grid */
+  filter: blur(0.5px);
+}
+
+.sectionTransitionAccent {
+  opacity: 0.72;
+  filter: blur(14px);
+  transform: translateY(6px) scaleX(1.02);
+}
+
+.heroToProof .sectionTransitionLayer {
+  clip-path: ellipse(78% 100% at 50% 0%);
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0), rgba(255, 253, 249, 0.98)),
+    var(--presetter-canvas);
+}
+
+.heroToProof .sectionTransitionAccent {
+  clip-path: polygon(
+    0 18%,
+    16% 34%,
+    38% 22%,
+    60% 42%,
+    82% 24%,
+    100% 30%,
+    100% 100%,
+    0 100%
+  );
+  background:
+    linear-gradient(180deg, rgba(48, 199, 243, 0.06), rgba(167, 234, 99, 0.1)),
+    transparent;
+}
+
+.heroToProof {
+  margin-bottom: 0;
+}
+
+.proofToFeatures .sectionTransitionLayer {
+  clip-path: polygon(0 6%, 18% 0, 42% 10%, 64% 2%, 100% 14%, 100% 100%, 0 100%);
+  background:
+    linear-gradient(
+      180deg,
+      rgba(255, 253, 249, 0.24),
+      rgba(255, 255, 255, 0.78)
+    ),
+    var(--presetter-canvas);
+}
+
+.proofToFeatures .sectionTransitionAccent {
+  clip-path: polygon(
+    0 54%,
+    14% 38%,
+    34% 46%,
+    56% 28%,
+    78% 44%,
+    100% 34%,
+    100% 100%,
+    0 100%
+  );
+  background: linear-gradient(
+    180deg,
+    rgba(255, 179, 71, 0.07),
+    rgba(48, 199, 243, 0.05)
+  );
+}
+
+.featuresToExplorer .sectionTransitionLayer {
+  clip-path: ellipse(92% 94% at 50% 100%);
+  background:
+    linear-gradient(
+      180deg,
+      rgba(255, 255, 255, 0.74),
+      rgba(255, 253, 249, 0.2)
+    ),
+    var(--presetter-canvas);
+}
+
+.featuresToExplorer .sectionTransitionAccent {
+  clip-path: polygon(
+    0 12%,
+    14% 24%,
+    32% 14%,
+    54% 28%,
+    76% 18%,
+    100% 30%,
+    100% 100%,
+    0 100%
+  );
+  background:
+    linear-gradient(180deg, rgba(167, 234, 99, 0.06), rgba(48, 199, 243, 0.08)),
+    transparent;
+}
+
+.proofCard {
+  padding: var(--space-5);
+  border: 1px solid var(--presetter-border);
+  border-radius: var(--radius-lg);
+  background:
+    linear-gradient(180deg, rgba(48, 199, 243, 0.08), rgba(167, 234, 99, 0.06)),
+    rgba(255, 255, 255, 0.72);
+  box-shadow: var(--shadow-soft);
+}
+
+.proofCardLink {
+  display: block;
+  color: inherit;
+  text-decoration: none;
+  transition:
+    transform 180ms ease,
+    box-shadow 180ms ease,
+    border-color 180ms ease;
+}
+
+.proofCardLink:hover {
+  transform: translateY(-2px);
+  border-color: rgba(48, 199, 243, 0.18);
+  box-shadow: 0 24px 54px -36px rgba(24, 35, 45, 0.24);
+  text-decoration: none;
+}
+
+.proofLabel {
+  margin: 0 0 var(--space-2);
+  color: var(--presetter-muted);
+  font-size: 0.9rem;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+}
+
+.proofValue {
+  margin: 0;
+  color: var(--presetter-primary);
+  font-family: var(--presetter-font-display);
+  font-size: 1.45rem;
+  line-height: 1.35;
+}
+
+.proofHint {
+  margin: var(--space-3) 0 0;
+  color: var(--presetter-accent-text);
+  font-size: 0.82rem;
+  font-weight: 700;
+}
+
+.explorerSection {
+  padding: 0 0 var(--space-11);
+}
+
+.sectionIntro {
+  margin-bottom: var(--space-7);
+}
+
+.sectionTitle {
+  margin: 0;
+  font-family: var(--presetter-font-display);
+  color: var(--presetter-ink);
+  font-size: var(--font-size-h2);
+  line-height: 1.08;
+  text-wrap: balance;
+}
+
+.sectionDescription {
+  margin: 0;
+  color: var(--presetter-muted-strong);
+  font-size: var(--font-size-body-lg);
+  line-height: 1.72;
+}
+
+:global([data-theme='dark']) .heroBanner::before {
+  background:
+    radial-gradient(
+      circle at 18% 18%,
+      rgba(182, 255, 119, 0.16),
+      transparent 22%
+    ),
+    radial-gradient(
+      circle at 80% 20%,
+      rgba(90, 217, 255, 0.12),
+      transparent 26%
+    ),
+    radial-gradient(
+      circle at 58% 8%,
+      rgba(255, 199, 100, 0.08),
+      transparent 16%
+    ),
+    linear-gradient(180deg, rgba(255, 255, 255, 0.02), rgba(255, 255, 255, 0));
+}
+
+:global([data-theme='dark']) .proofCard {
+  background:
+    linear-gradient(
+      180deg,
+      rgba(90, 217, 255, 0.08),
+      rgba(182, 255, 119, 0.06)
+    ),
+    rgba(24, 35, 45, 0.78);
+  border-color: rgba(244, 239, 230, 0.12);
+  color: var(--presetter-ink);
+  box-shadow: 0 24px 60px -40px rgba(0, 0, 0, 0.72);
+}
+
+:global([data-theme='dark']) .heroAgentSpotlight {
+  border-color: rgba(182, 255, 119, 0.16);
+  background:
+    linear-gradient(180deg, rgba(90, 217, 255, 0.1), rgba(182, 255, 119, 0.08)),
+    rgba(24, 35, 45, 0.78);
+  box-shadow: 0 24px 60px -40px rgba(0, 0, 0, 0.72);
+}
+
+:global([data-theme='dark']) .heroAgentSpotlight:hover {
+  border-color: rgba(182, 255, 119, 0.24);
+}
+
+:global([data-theme='dark']) .heroAgentText {
+  color: rgba(244, 239, 230, 0.94);
+}
+
+:global([data-theme='dark']) .releasePill {
+  border-color: rgba(90, 217, 255, 0.28);
+  background:
+    linear-gradient(135deg, rgba(90, 217, 255, 0.12), rgba(182, 255, 119, 0.1)),
+    rgba(24, 35, 45, 0.82);
+  box-shadow: 0 24px 60px -40px rgba(0, 0, 0, 0.72);
+  color: var(--presetter-ink);
+}
+
+:global([data-theme='dark']) .releasePill:hover {
+  border-color: rgba(90, 217, 255, 0.42);
+}
+
+:global([data-theme='dark']) .releaseTag {
+  background: rgba(244, 247, 251, 0.94);
+  color: #15212b;
+}
+
+:global([data-theme='dark']) .releaseText,
+:global([data-theme='dark']) .releaseTextShort {
+  color: var(--presetter-ink);
+}
+
+:global([data-theme='dark']) .logoCard {
+  background: linear-gradient(
+    180deg,
+    rgba(34, 49, 63, 0.92),
+    rgba(24, 35, 45, 0.92)
+  );
+  border-color: rgba(244, 239, 230, 0.1);
+  box-shadow: 0 28px 54px -38px rgba(0, 0, 0, 0.64);
+}
+
+:global([data-theme='dark']) .illustrationShell {
+  background:
+    radial-gradient(circle at top, rgba(90, 217, 255, 0.1), transparent 52%),
+    rgba(255, 255, 255, 0.03);
+}
+
+:global([data-theme='dark']) .proofLabel {
+  color: var(--presetter-muted);
+}
+
+:global([data-theme='dark']) .proofValue {
+  color: var(--presetter-ink);
+}
+
+:global([data-theme='dark']) .proofCardLink:hover {
+  border-color: rgba(182, 255, 119, 0.18);
+  box-shadow: 0 24px 60px -40px rgba(0, 0, 0, 0.72);
+}
+
+:global([data-theme='dark']) .sectionTransitionLayer {
+  background: var(--presetter-canvas);
+}
+
+:global([data-theme='dark']) .heroToProof .sectionTransitionLayer {
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0), rgba(24, 35, 45, 0.98)),
+    var(--presetter-canvas);
+}
+
+:global([data-theme='dark']) .proofToFeatures .sectionTransitionLayer {
+  background:
+    linear-gradient(180deg, rgba(24, 35, 45, 0.28), rgba(17, 25, 34, 0.88)),
+    var(--presetter-canvas);
+}
+
+:global([data-theme='dark']) .featuresToExplorer .sectionTransitionLayer {
+  background:
+    linear-gradient(180deg, rgba(24, 35, 45, 0.92), rgba(17, 25, 34, 0.22)),
+    var(--presetter-canvas);
+}
+
+@media (max-width: 996px) {
+  .heroBanner {
+    padding: var(--space-7) 0 var(--space-5);
+  }
+
+  .heroShell,
+  .sectionIntro {
+    grid-template-columns: 1fr;
+  }
+
+  .heroTitle {
+    max-width: 10ch;
+  }
+
+  .heroVisual {
+    /* layout — tablet max-width tuned so the artwork spans the available column without cropping */
+    max-width: 560px;
+    justify-self: start;
+  }
+
+  .proofGrid {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 768px) {
+  .sectionTransition {
+    /* illustration — tablet band height + overlap tuned to the decorative silhouette */
+    height: 62px;
+    margin: -12px 0 -10px;
+  }
+
+  .heroBanner {
+    padding: var(--space-5) 0 var(--space-4);
+  }
+
+  .heroShell {
+    gap: var(--space-5);
+  }
+
+  .heroTitle {
+    max-width: none;
+    margin-bottom: var(--space-3);
+    font-size: clamp(2.35rem, 11vw, 3.5rem);
+    line-height: 0.96;
+  }
+
+  .heroSubtitle,
+  .sectionDescription {
+    max-width: none;
+  }
+
+  .heroSubtitle {
+    margin-bottom: var(--space-4);
+    font-size: 1.02rem;
+    line-height: 1.55;
+  }
+
+  .heroSupport {
+    max-width: none;
+    font-size: 0.88rem;
+  }
+
+  .heroAgentSpotlight {
+    max-width: none;
+  }
+
+  .buttons {
+    /* layout — tablet max-width keeps CTA stack at a single-line target tap width */
+    max-width: 320px;
+  }
+
+  .heroVisual {
+    max-width: 100%;
+    max-height: 30rem;
+  }
+
+  .logoCard {
+    padding: var(--space-3);
+    border-radius: var(--radius-xl);
+  }
+
+  .heroCanvas {
+    gap: var(--space-3);
+    padding: var(--space-4);
+  }
+
+  .sourceCard,
+  .workspacePanel {
+    gap: var(--space-3);
+    padding: var(--space-3);
+  }
+
+  .sourceCode {
+    font-size: 0.64rem;
+  }
+
+  .heroFrame,
+  .sourceHeader,
+  .workspaceHeader {
+    flex-direction: column;
+    align-items: start;
+  }
+
+  .sourceBadge {
+    justify-self: start;
+  }
+
+  .explorerSection {
+    padding-bottom: var(--space-9);
+  }
+
+  .proofSection {
+    padding: var(--space-5) 0 var(--space-8);
+  }
+}
+
+@media (max-width: 480px) {
+  .sectionTransition {
+    /* illustration — mobile band height + overlap tuned to the decorative silhouette */
+    height: 48px;
+    margin: -8px 0 -6px;
+  }
+
+  .heroBanner {
+    padding-top: var(--space-4);
+  }
+
+  .heroShell {
+    gap: var(--space-4);
+  }
+
+  .eyebrow {
+    margin-bottom: var(--space-3);
+  }
+
+  .releaseText {
+    display: none;
+  }
+
+  .releaseTextShort {
+    display: inline;
+  }
+
+  .heroTitle {
+    font-size: clamp(2.1rem, 10vw, 3rem);
+  }
+
+  .heroSubtitle {
+    margin-bottom: var(--space-5);
+    font-size: 0.97rem;
+  }
+
+  .heroSupport {
+    display: none;
+  }
+
+  .heroAgentSpotlight {
+    gap: var(--space-1);
+    padding: var(--space-3);
+    border-radius: var(--radius-md);
+  }
+
+  .heroAgentLabel {
+    font-size: 0.66rem;
+  }
+
+  .heroAgentText {
+    font-size: 0.82rem;
+    line-height: 1.42;
+  }
+
+  .heroAgentAction {
+    font-size: 0.8rem;
+  }
+
+  .heroCanvas {
+    gap: var(--space-3);
+    padding: var(--space-3);
+    border-radius: var(--radius-lg);
+  }
+
+  .illustrationShell {
+    /* illustration — mobile min-height tuned to the ghost artwork */
+    min-height: 172px;
+  }
+
+  .heroGhost {
+    /* illustration — width tuned to the ghost artwork */
+    width: min(100%, 102px);
+  }
+
+  .ghostOrbitFile {
+    min-height: 26px;
+    padding: 0 var(--space-2);
+    font-size: 0.58rem;
+  }
+
+  /*
+   * Mobile ghost orbit satellite placements — compact variants of the desktop positions.
+   * Order matches desktop: (1) top-left, (2) top-right, (3) bottom-left accent, (4) bottom-right.
+   * Illustration values, off-grid by design.
+   */
+  .ghostOrbitFile:nth-child(1) {
+    top: 12px;
+    left: 14px;
+  }
+
+  .ghostOrbitFile:nth-child(2) {
+    top: 20px;
+    right: 10px;
+  }
+
+  .ghostOrbitFile:nth-child(3) {
+    bottom: 66px;
+    left: 4px;
+  }
+
+  .ghostOrbitFile:nth-child(4) {
+    bottom: 74px;
+    right: 2px;
+  }
+
+  .gitignoreCallout {
+    /* illustration — mobile callout placement tuned to the artwork */
+    bottom: 10px;
+    width: min(100%, 196px);
+    padding: var(--space-2);
+  }
+
+  .gitignoreValue {
+    font-size: 0.62rem;
+  }
+
+  .heroFrameLabel {
+    font-size: 0.68rem;
+  }
+
+  .sourceLead,
+  .workspaceLead {
+    font-size: 0.94rem;
+  }
+
+  .workspaceSummary {
+    font-size: 0.82rem;
+  }
+
+  .proofCard {
+    padding: var(--space-4);
+  }
+
+  .proofValue {
+    font-size: 1.18rem;
+    line-height: 1.3;
+  }
+
+  .sectionIntro {
+    gap: var(--space-4);
+    margin-bottom: var(--space-5);
+  }
+
+  .sectionDescription {
+    font-size: 0.98rem;
+    line-height: 1.6;
+  }
+}

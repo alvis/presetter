@@ -1,0 +1,68 @@
+.container {
+  border: 1px solid var(--presetter-border);
+  border-radius: var(--radius-md);
+  padding: var(--space-5);
+  margin: var(--space-5) 0;
+  background-color: var(--ifm-background-color);
+}
+
+.optionsGrid {
+  display: grid;
+  /* layout — 250px column min-width is a content-fit target for the option selects, not a grid-token size */
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: var(--space-4);
+  margin-bottom: var(--space-6);
+}
+
+.field {
+  display: block;
+}
+
+.label {
+  display: block;
+  margin-bottom: var(--space-2);
+  font-weight: 700;
+}
+
+.select {
+  width: 100%;
+  padding: var(--space-2);
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--presetter-border);
+}
+
+.checkboxRow {
+  margin-bottom: var(--space-4);
+}
+
+.checkboxLabel {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+}
+
+.checkboxText {
+  font-weight: 700;
+}
+
+.checkboxHint {
+  font-size: 0.875rem;
+  color: var(--ifm-color-emphasis-600);
+}
+
+.output {
+  margin-top: var(--space-6);
+}
+
+.nextSteps {
+  margin-top: var(--space-5);
+  padding: var(--space-4);
+  background-color: var(--ifm-color-primary-lightest);
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--ifm-color-primary-light);
+}
+
+.nextStepsList {
+  margin: var(--space-2) 0;
+  padding-left: var(--space-5);
+}

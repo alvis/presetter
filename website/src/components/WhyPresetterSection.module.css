@@ -1,0 +1,197 @@
+.features {
+  padding: var(--space-11) 0;
+  background:
+    radial-gradient(
+      circle at top left,
+      rgba(183, 199, 161, 0.18),
+      transparent 32%
+    ),
+    linear-gradient(180deg, rgba(255, 255, 255, 0.64), rgba(255, 255, 255, 0));
+}
+
+.sectionHeader {
+  display: grid;
+  grid-template-columns: minmax(0, 1.1fr) minmax(0, 0.9fr);
+  gap: var(--space-8);
+  align-items: end;
+  margin-bottom: var(--space-8);
+}
+
+.sectionEyebrow,
+.kicker {
+  margin: 0 0 var(--space-3);
+  font-size: var(--font-size-caption);
+  font-weight: 700;
+  letter-spacing: 0.11em;
+  text-transform: uppercase;
+  color: var(--presetter-accent-text);
+}
+
+.sectionTitle,
+.title {
+  margin: 0;
+  font-family: var(--presetter-font-display);
+  color: var(--presetter-ink);
+}
+
+.sectionTitle {
+  max-width: 12ch;
+  font-size: clamp(2rem, 4vw, 3.25rem);
+  line-height: 1.02;
+}
+
+.sectionDescription,
+.description {
+  margin: 0;
+  color: var(--presetter-muted-strong);
+  font-size: var(--font-size-body-lg);
+  line-height: 1.72;
+}
+
+.featureColumn {
+  display: flex;
+}
+
+.feature {
+  width: 100%;
+  min-height: 100%;
+  padding: var(--space-7);
+  border: 1px solid var(--presetter-border-strong);
+  border-radius: var(--radius-xl);
+  background:
+    linear-gradient(180deg, rgba(48, 199, 243, 0.08), rgba(167, 234, 99, 0.06)),
+    linear-gradient(
+      180deg,
+      rgba(255, 255, 255, 0.92),
+      rgba(255, 255, 255, 0.76)
+    ),
+    var(--presetter-surface);
+  box-shadow: var(--shadow-soft);
+}
+
+.title {
+  margin-bottom: var(--space-4);
+  font-size: clamp(1.5rem, 2vw, 2rem);
+  line-height: 1.1;
+}
+
+.description {
+  margin-bottom: var(--space-5);
+  font-size: 1.04rem;
+  line-height: 1.6;
+}
+
+.detailList {
+  display: grid;
+  gap: var(--space-3);
+  padding: 0;
+  margin: 0;
+  list-style: none;
+}
+
+.detailList li {
+  position: relative;
+  padding-left: var(--space-5);
+  color: var(--presetter-muted-strong);
+  font-size: 0.98rem;
+  line-height: 1.6;
+}
+
+/**
+ * Decorative bullet marker — intentionally smaller than grid step.
+ * Sized to complement ~16px body text rather than snap to --space-3 (12px).
+ * 8px dot + 4px halo = 16px total, roughly matching a single text line's
+ * optical weight without dominating the content.
+ */
+.detailList li::before {
+  content: '';
+  position: absolute;
+  top: 0.55em;
+  left: 0;
+  width: var(--space-2);
+  height: var(--space-2);
+  border-radius: 999px;
+  background: linear-gradient(
+    135deg,
+    var(--presetter-spark),
+    var(--presetter-accent)
+  );
+  box-shadow: 0 0 0 var(--space-1) rgba(48, 199, 243, 0.18);
+}
+
+:global([data-theme='dark']) .features {
+  background:
+    radial-gradient(
+      circle at top left,
+      rgba(182, 255, 119, 0.08),
+      transparent 28%
+    ),
+    radial-gradient(
+      circle at top right,
+      rgba(90, 217, 255, 0.08),
+      transparent 24%
+    ),
+    linear-gradient(180deg, rgba(255, 255, 255, 0.02), rgba(255, 255, 255, 0));
+}
+
+:global([data-theme='dark']) .feature {
+  background:
+    linear-gradient(
+      180deg,
+      rgba(90, 217, 255, 0.05),
+      rgba(182, 255, 119, 0.04)
+    ),
+    linear-gradient(180deg, rgba(34, 49, 63, 0.92), rgba(24, 35, 45, 0.92)),
+    var(--presetter-surface);
+  border-color: rgba(244, 239, 230, 0.1);
+  box-shadow: 0 30px 70px -46px rgba(0, 0, 0, 0.84);
+}
+
+@media (max-width: 996px) {
+  .sectionHeader {
+    grid-template-columns: 1fr;
+    gap: var(--space-5);
+  }
+
+  .sectionTitle {
+    max-width: none;
+  }
+}
+
+/**
+ * Intermediate tablet/small-desktop breakpoint.
+ * Infima collapses `col--4` to 100% width at <=996px, which creates wasted
+ * whitespace between 768-996px for a 3-card layout. Override column width
+ * to render a 2-up grid in this range, with the third card wrapping centered.
+ * `!important` is required to beat Infima's `.col--4` flex shorthand.
+ */
+@media (min-width: 768px) and (max-width: 996px) {
+  .featureColumn {
+    flex: 0 0 50% !important;
+    max-width: 50% !important;
+  }
+
+  .featureColumn:nth-child(3):last-child {
+    flex: 0 0 100% !important;
+    max-width: 640px !important;
+    margin: 0 auto;
+  }
+}
+
+@media (max-width: 768px) {
+  .features {
+    padding: var(--space-10) 0;
+  }
+
+  .feature {
+    padding: var(--space-6);
+  }
+
+  /**
+   * When feature columns stack to 100% width, add vertical breathing room
+   * between consecutive cards. At desktop the 3-across row doesn't need it.
+   */
+  .featureColumn + .featureColumn {
+    margin-top: var(--space-5);
+  }
+}

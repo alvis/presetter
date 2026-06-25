@@ -1,0 +1,70 @@
+{
+  "name": "Presetter Documentation",
+  "short_name": "Presetter",
+  "description": "Configuration management that scales with your projects",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#f4efe6",
+  "theme_color": "#2b3d4d",
+  "categories": ["developer", "documentation", "tools"],
+  "lang": "en",
+  "orientation": "any",
+  "icons": [
+    {
+      "src": "images/logo.svg",
+      "type": "image/svg+xml",
+      "sizes": "any",
+      "purpose": "any"
+    }
+  ],
+  "shortcuts": [
+    {
+      "name": "Getting Started",
+      "short_name": "Get Started",
+      "description": "Quick start guide for Presetter",
+      "url": "/docs/",
+      "icons": [
+        {
+          "src": "images/logo.svg",
+          "sizes": "96x96"
+        }
+      ]
+    },
+    {
+      "name": "Tutorials",
+      "short_name": "Tutorials",
+      "description": "Interactive tutorials and guides",
+      "url": "/docs/tutorials/",
+      "icons": [
+        {
+          "src": "images/logo.svg",
+          "sizes": "96x96"
+        }
+      ]
+    },
+    {
+      "name": "API Reference",
+      "short_name": "API",
+      "description": "TypeScript API documentation",
+      "url": "/docs/api/",
+      "icons": [
+        {
+          "src": "images/logo.svg",
+          "sizes": "96x96"
+        }
+      ]
+    },
+    {
+      "name": "Presets",
+      "short_name": "Presets",
+      "description": "Available configuration presets",
+      "url": "/docs/presets/",
+      "icons": [
+        {
+          "src": "images/logo.svg",
+          "sizes": "96x96"
+        }
+      ]
+    }
+  ]
+}

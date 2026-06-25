@@ -1,0 +1,179 @@
+.loadingShell {
+  padding: var(--space-7);
+  border: 1px solid var(--presetter-border-strong);
+  border-radius: var(--radius-xl);
+  background:
+    linear-gradient(
+      180deg,
+      rgba(255, 255, 255, 0.9),
+      rgba(255, 255, 255, 0.78)
+    ),
+    var(--presetter-surface);
+  box-shadow: var(--shadow-strong);
+}
+
+.srOnly {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+.skeletonHeader {
+  display: grid;
+  gap: var(--space-3);
+  margin-bottom: var(--space-7);
+}
+
+.skeletonLine {
+  height: var(--space-4);
+  border-radius: var(--space-1);
+  background: linear-gradient(
+    90deg,
+    var(--ifm-color-emphasis-200) 0%,
+    var(--ifm-color-emphasis-100) 50%,
+    var(--ifm-color-emphasis-200) 100%
+  );
+  background-size: 200% 100%;
+  animation: shimmer 1.6s ease-in-out infinite;
+}
+
+.skeletonTitle {
+  width: 40%;
+  height: var(--space-7);
+}
+
+.skeletonSubtitle {
+  width: 70%;
+}
+
+.skeletonGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(300px, 100%), 1fr));
+  gap: var(--space-4);
+}
+
+.skeletonCard {
+  display: grid;
+  gap: var(--space-3);
+  padding: var(--space-5);
+  border: 1px solid var(--presetter-border);
+  border-radius: var(--radius-lg);
+  background: rgba(255, 255, 255, 0.74);
+  box-shadow: var(--shadow-soft);
+}
+
+.skeletonBlock {
+  height: var(--space-8);
+  border-radius: var(--space-1);
+  background: linear-gradient(
+    90deg,
+    var(--ifm-color-emphasis-200) 0%,
+    var(--ifm-color-emphasis-100) 50%,
+    var(--ifm-color-emphasis-200) 100%
+  );
+  background-size: 200% 100%;
+  animation: shimmer 1.6s ease-in-out infinite;
+}
+
+@keyframes shimmer {
+  0% {
+    background-position: 200% 0;
+  }
+  100% {
+    background-position: -200% 0;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .skeletonLine,
+  .skeletonBlock {
+    animation: none;
+    background: var(--ifm-color-emphasis-200);
+  }
+}
+
+.errorShell {
+  display: grid;
+  justify-items: start;
+  gap: var(--space-3);
+  padding: var(--space-7);
+  border: 1px solid var(--presetter-border-strong);
+  border-radius: var(--radius-xl);
+  background:
+    linear-gradient(
+      180deg,
+      rgba(255, 255, 255, 0.92),
+      rgba(255, 255, 255, 0.8)
+    ),
+    var(--presetter-surface);
+  box-shadow: var(--shadow-soft);
+}
+
+.errorIcon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: var(--space-9);
+  height: var(--space-9);
+  border-radius: 999px;
+  background: linear-gradient(
+    180deg,
+    rgba(253, 124, 95, 0.2),
+    rgba(228, 90, 64, 0.18)
+  );
+  color: var(--presetter-primary);
+}
+
+.errorTitle {
+  margin: 0;
+  font-family: var(--presetter-font-display);
+  color: var(--presetter-ink);
+  font-size: 1.25rem;
+}
+
+.errorBody {
+  margin: 0;
+  max-width: 60ch;
+  color: var(--presetter-muted-strong);
+  line-height: 1.7;
+}
+
+.errorActions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-3);
+  margin-top: var(--space-3);
+}
+
+.errorPrimaryAction,
+.errorSecondaryAction {
+  min-height: var(--space-9);
+}
+
+:global([data-theme='dark']) .loadingShell,
+:global([data-theme='dark']) .errorShell {
+  background:
+    linear-gradient(180deg, rgba(34, 49, 63, 0.94), rgba(24, 35, 45, 0.94)),
+    var(--presetter-surface);
+  border-color: rgba(244, 239, 230, 0.1);
+}
+
+:global([data-theme='dark']) .skeletonCard {
+  background: rgba(255, 255, 255, 0.04);
+  border-color: rgba(244, 239, 230, 0.12);
+}
+
+:global([data-theme='dark']) .errorTitle,
+:global([data-theme='dark']) .errorBody {
+  color: var(--presetter-ink);
+}
+
+:global([data-theme='dark']) .errorIcon {
+  color: var(--presetter-ink);
+}

@@ -1,0 +1,39 @@
+release:
+  label: Release
+  permalink: /release
+  description: Presetter release announcements and updates
+
+monorepo:
+  label: Monorepo
+  permalink: /monorepo
+  description: Monorepo management and workspace features
+
+storybook:
+  label: Storybook
+  permalink: /storybook
+  description: Storybook integration and component development
+
+web:
+  label: Web Development
+  permalink: /web
+  description: Web development tools and configurations
+
+v8:
+  label: Version 8
+  permalink: /v8
+  description: Presetter version 8 features and improvements
+
+v9:
+  label: Version 9
+  permalink: /v9
+  description: Presetter version 9 features and improvements
+
+typescript:
+  label: TypeScript
+  permalink: /typescript
+  description: TypeScript configuration and language features
+
+ai:
+  label: AI
+  permalink: /ai
+  description: AI coding agents and agentic development workflows

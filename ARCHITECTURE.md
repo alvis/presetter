@@ -74,7 +74,7 @@ sequenceDiagram
 presetter/
 ├── packages/        ← engine + shared types (published to npm)
 ├── presets/         ← official preset content packages
-├── website/         ← Docusaurus documentation site (alvis.github.io/presetter)
+├── website/         ← Docusaurus documentation site (presetter.dev/presetter)
 ├── e2e/             ← end-to-end integration tests across real workspaces
 ├── examples/        ← minimal consumer projects used for manual sanity checks
 └── assets/          ← logos, demo GIFs, before/after imagery for marketing

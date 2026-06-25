@@ -1,0 +1,72 @@
+.toggle {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  /* WCAG 2.5.5 AAA target size floor is 44×44 CSS pixels; the wrapper
+   * sizes to match so the inner .toggleButton (100% / 100%) inherits
+   * the same hit area. */
+  width: 44px;
+  min-width: 44px;
+  height: 44px;
+  min-height: 44px;
+}
+
+.toggleButton {
+  width: 100%;
+  height: 100%;
+  border-radius: 999px;
+  transition:
+    background-color 160ms ease,
+    color 160ms ease,
+    transform 160ms ease;
+}
+
+.toggleButton:hover {
+  background: rgba(48, 199, 243, 0.12);
+}
+
+.toggleButton:disabled {
+  cursor: not-allowed;
+}
+
+.toggleIcon {
+  display: none;
+}
+
+:global([data-theme='light']) .lightToggleIcon,
+:global([data-theme='dark']) .darkToggleIcon {
+  display: block;
+}
+
+.toggleButtonDisabled {
+  opacity: 0.85;
+}
+
+/**
+ * Responsive swap: at mobile widths (≤996px) the original light/dark toggle
+ * is hidden and the MobileSearchButton sibling takes the slot. The wrapper
+ * sizes to the 44×44 trigger button rendered by MobileSearchButton.
+ *
+ * Exception: the mobile sidebar brand reuses this same component; inside
+ * .navbar-sidebar we keep the light/dark toggle (and hide the drawer
+ * trigger via MobileSearchButton.module.css).
+ */
+@media (max-width: 996px) {
+  .toggle {
+    width: auto;
+    height: auto;
+  }
+
+  .toggleButton {
+    display: none;
+  }
+
+  :global(.navbar-sidebar) .toggleButton {
+    display: inline-flex;
+    /* Match the navbar-visible instance's hit area (WCAG 2.5.5 AAA). */
+    width: 44px;
+    min-width: 44px;
+    height: 44px;
+    min-height: 44px;
+  }
+}

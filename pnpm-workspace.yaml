@@ -2,8 +2,10 @@ packages:
   - e2e
   - packages/*
   - presets/*
+  - website
 
 allowBuilds:
+  core-js: true
   esbuild: true
   sharp: true
   unrs-resolver: true
@@ -16,6 +18,22 @@ catalogs:
     tsconfig-paths: ^4.0.0
     tsx: ^4.0.0
     typescript: ^6.0.0
+
+  docusaurus:
+    '@docusaurus/core': ^3.10.0
+    '@docusaurus/module-type-aliases': ^3.10.0
+    '@docusaurus/preset-classic': ^3.10.0
+    '@docusaurus/theme-mermaid': ^3.10.0
+    '@docusaurus/tsconfig': ^3.10.0
+    '@docusaurus/types': ^3.10.0
+    '@mdx-js/react': ^3.1.0
+    clsx: ^2.1.0
+    docusaurus-plugin-typedoc: ^1.4.0
+    prism-react-renderer: ^2.4.0
+    react: ^19.2.0
+    react-dom: ^19.2.0
+    typedoc: ^0.28.0
+    typedoc-plugin-markdown: ^4.9.0
 
   image:
     sharp: '>=0.34.0'

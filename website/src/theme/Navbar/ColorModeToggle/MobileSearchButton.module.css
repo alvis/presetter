@@ -1,0 +1,64 @@
+/**
+ * MobileSearchButton styles.
+ * Mobile-only proxy for Docusaurus Algolia DocSearch.
+ * All dimensions/colors come from design tokens in custom.css.
+ */
+
+.trigger {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 44px;
+  min-width: 44px;
+  height: 44px;
+  min-height: 44px;
+}
+
+.button {
+  box-sizing: border-box;
+  display: flex;
+  flex: 0 0 44px;
+  align-items: center;
+  justify-content: center;
+  width: 44px;
+  max-width: 44px;
+  height: 44px;
+  min-width: 44px;
+  margin: 0;
+  padding: 0;
+  border: 1px solid var(--presetter-search-border-color);
+  border-radius: var(--radius-sm);
+  background: var(--presetter-search-surface);
+  color: var(--presetter-muted-strong);
+  cursor: pointer;
+  font: inherit;
+}
+
+.icon {
+  margin: 0;
+}
+
+.button:hover {
+  background: var(--presetter-search-surface-hover);
+  border-color: var(--presetter-search-border-color-strong);
+  color: var(--presetter-ink);
+}
+
+/**
+ * Hide the trigger on desktop; color-mode toggle renders instead.
+ */
+@media (min-width: 997px) {
+  .trigger {
+    display: none;
+  }
+}
+
+/**
+ * The same ColorModeToggle component is reused by Docusaurus in the mobile
+ * sidebar brand header. Inside the sidebar we still want the light/dark
+ * toggle there (not another search trigger), so hide the trigger when
+ * nested under .navbar-sidebar.
+ */
+:global(.navbar-sidebar) .trigger {
+  display: none;
+}

@@ -1,0 +1,73 @@
+{
+  "name": "presetter-website",
+  "version": "9.0.0",
+  "private": true,
+  "description": "Documentation website for Presetter - Configuration Management That Scales",
+  "keywords": [
+    "presetter",
+    "documentation",
+    "typescript",
+    "configuration",
+    "build-tools"
+  ],
+  "homepage": "https://presetter.dev/presetter/",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/alvis/presetter.git",
+    "directory": "website"
+  },
+  "license": "MIT",
+  "author": "Alvis HT Tang <alvis@hilbert.space>",
+  "imports": {
+    "#components/*": "./src/components/*.tsx"
+  },
+  "scripts": {
+    "build": "dotenv -- docusaurus build",
+    "clear": "docusaurus clear",
+    "dev": "dotenv -- docusaurus start",
+    "lint": "run lint --",
+    "serve": "docusaurus serve",
+    "test:lighthouse": "npm run build && lhci autorun",
+    "typecheck": "run typecheck"
+  },
+  "browserslist": {
+    "production": [
+      ">0.5%",
+      "not dead",
+      "not op_mini all"
+    ],
+    "development": [
+      "last 3 chrome version",
+      "last 3 firefox version",
+      "last 5 safari version"
+    ]
+  },
+  "dependencies": {
+    "@docusaurus/core": "catalog:docusaurus",
+    "@docusaurus/preset-classic": "catalog:docusaurus",
+    "@docusaurus/theme-mermaid": "catalog:docusaurus",
+    "@mdx-js/react": "catalog:docusaurus",
+    "clsx": "catalog:docusaurus",
+    "prism-react-renderer": "catalog:docusaurus",
+    "react": "catalog:docusaurus",
+    "react-dom": "catalog:docusaurus"
+  },
+  "devDependencies": {
+    "@docusaurus/module-type-aliases": "catalog:docusaurus",
+    "@docusaurus/tsconfig": "catalog:docusaurus",
+    "@docusaurus/types": "catalog:docusaurus",
+    "@lhci/cli": "^0.15.1",
+    "@presetter/preset-esm": "workspace:*",
+    "@presetter/preset-react": "workspace:*",
+    "@presetter/preset-web": "workspace:*",
+    "docusaurus-plugin-typedoc": "catalog:docusaurus",
+    "dotenv-cli": "catalog:utilities",
+    "presetter": "workspace:*",
+    "typedoc": "catalog:docusaurus",
+    "typedoc-plugin-markdown": "catalog:docusaurus",
+    "typescript": "catalog:build"
+  },
+  "engines": {
+    "node": ">=18.0"
+  }
+}

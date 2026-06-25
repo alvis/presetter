@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="https://raw.githubusercontent.com/alvis/presetter/master/assets/logo.svg" alt="Presetter logo" height="128">
+  <img src="https://raw.githubusercontent.com/alvis/presetter/main/assets/logo.svg" alt="Presetter logo" height="128">
 </p>
 
 <div align="center">
@@ -9,7 +9,7 @@
 [![maintainability](https://img.shields.io/codeclimate/maintainability/alvis/presetter?style=flat-square)](https://codeclimate.com/github/alvis/presetter/maintainability)
 [![coverage](https://img.shields.io/codeclimate/coverage/alvis/presetter?style=flat-square)](https://codeclimate.com/github/alvis/presetter/test_coverage)
 [![dependencies](https://img.shields.io/librariesio/release/npm/presetter?style=flat-square)](https://libraries.io/npm/presetter)
-[![docs](https://img.shields.io/badge/docs-presetter.dev-blue?style=flat-square)](https://alvis.github.io/presetter/)
+[![docs](https://img.shields.io/badge/docs-presetter.dev-blue?style=flat-square)](https://presetter.dev/docs/)
 
 _Transform 40+ dev dependencies into 2 packages — template-driven configuration management for modern TypeScript development_
 
@@ -31,34 +31,34 @@ This monorepo contains the **Presetter engine** and a comprehensive ecosystem of
 
 ```bash
 # 🟢 Modern ESM development
-npx presetter use @presetter/preset-esm
+npm install --save-dev presetter @presetter/preset-esm
 
 # 🔗 Legacy CommonJS compatibility
-npx presetter use @presetter/preset-cjs
+npm install --save-dev presetter @presetter/preset-cjs
 
 # 🌐 Dual-module library publishing
-npx presetter use @presetter/preset-hybrid
+npm install --save-dev presetter @presetter/preset-hybrid
 
 # 🟩 Node.js runtime
-npx presetter use @presetter/preset-node
+npm install --save-dev presetter @presetter/preset-esm @presetter/preset-node
 
 # 🥟 Bun runtime
-npx presetter use @presetter/preset-bun
+npm install --save-dev presetter @presetter/preset-bun
 
 # 🎨 Modern web development (TailwindCSS)
-npx presetter use @presetter/preset-esm @presetter/preset-web
+npm install --save-dev presetter @presetter/preset-esm @presetter/preset-web
 
-# 📚 Storybook for next.js development
-npx presetter use @presetter/preset-next @presetter/preset-storybook
+# 📚 Storybook for Next.js development
+npm install --save-dev presetter @presetter/preset-next @presetter/preset-storybook
 
 # ⚛️ React application with optimized toolchain
-npx presetter use @presetter/preset-esm @presetter/preset-react
+npm install --save-dev presetter @presetter/preset-esm @presetter/preset-react
 
 # 🏢 Production-grade (security + 100% coverage)
-npx presetter use @presetter/preset-esm @presetter/preset-strict
+npm install --save-dev presetter @presetter/preset-esm @presetter/preset-strict
 
 # ⚡ Next.js application with full-stack support
-npx presetter use @presetter/preset-next
+npm install --save-dev presetter @presetter/preset-next
 ```
 
 ### 🔧 Or Set It Up Manually
@@ -87,8 +87,9 @@ export { default } from '@presetter/preset-esm';
 1. **Install and start developing:**
 
 ```bash
-npm install  # Configurations generated automatically
-npm run test # Everything just works! ✨
+npm install
+npm run bootstrap # Generate project configs from your preset stack
+npm run test      # Run through the maintained toolchain
 ```
 
 ![Demo](assets/demo.gif)
@@ -130,12 +131,14 @@ presetter/
 
 ### 🎯 Package Categories
 
-| **Category**       | **Packages**                                                                                      | **Purpose**                                        |
-| ------------------ | ------------------------------------------------------------------------------------------------- | -------------------------------------------------- |
-| **Core Engine**    | `presetter`, `types`                                                                              | Configuration management infrastructure            |
-| **Foundation**     | `preset-essentials`, `preset-monorepo`                                                            | Base TypeScript development toolkit                |
-| **Module Systems** | `preset-esm`, `preset-cjs`, `preset-hybrid`, `preset-bun`, `preset-node`                          | JavaScript module format & runtime specializations |
-| **Extensions**     | `preset-strict`, `preset-web`, `preset-storybook`, `preset-react`, `preset-next`, `preset-rollup` | Specialized development environments               |
+| **Category**       | **Packages**                                                                                                                              | **Purpose**                                    |
+| ------------------ | ----------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------- |
+| **Core Engine**    | `presetter`, `@presetter/types`                                                                                                           | Configuration management infrastructure        |
+| **Foundation**     | `@presetter/preset-essentials`, `@presetter/preset-monorepo`                                                                              | Base TypeScript development toolkit            |
+| **Module Systems** | `@presetter/preset-esm`, `@presetter/preset-cjs`, `@presetter/preset-hybrid`                                                              | JavaScript module format specializations       |
+| **Runtimes**       | `@presetter/preset-node`, `@presetter/preset-bun`                                                                                         | Runtime-specific TypeScript and build settings |
+| **Extensions**     | `@presetter/preset-strict`, `@presetter/preset-web`, `@presetter/preset-storybook`, `@presetter/preset-react`, `@presetter/preset-rollup` | Specialized development environments           |
+| **Frameworks**     | `@presetter/preset-next`                                                                                                                  | Framework-specific preset composition          |
 
 ---
 
@@ -150,24 +153,24 @@ presetter/
 
 ### 🚀 Module System & Runtime Presets
 
-| Preset                                         | Purpose                    | Extends         | Best For                                  |
-| ---------------------------------------------- | -------------------------- | --------------- | ----------------------------------------- |
-| **[@presetter/preset-esm](presets/esm)**       | ESM-first development      | essentials      | Modern Node.js projects, libraries        |
-| **[@presetter/preset-cjs](presets/cjs)**       | CommonJS compatibility     | essentials      | Legacy environments, enterprise           |
-| **[@presetter/preset-hybrid](presets/hybrid)** | Dual CommonJS/ESM packages | essentials      | npm libraries needing broad compatibility |
-| **[@presetter/preset-bun](presets/bun)**       | Bun runtime and build flow | Any base preset | Bun applications, CLIs, services          |
-| **[@presetter/preset-node](presets/node)**     | Node.js runtime tooling    | essentials      | Node.js apps, CLIs, services              |
+| Preset                                         | Purpose                    | Extends    | Best For                                  |
+| ---------------------------------------------- | -------------------------- | ---------- | ----------------------------------------- |
+| **[@presetter/preset-esm](presets/esm)**       | ESM-first development      | essentials | Modern Node.js projects, libraries        |
+| **[@presetter/preset-cjs](presets/cjs)**       | CommonJS compatibility     | essentials | Legacy environments, enterprise           |
+| **[@presetter/preset-hybrid](presets/hybrid)** | Dual CommonJS/ESM packages | essentials | npm libraries needing broad compatibility |
+| **[@presetter/preset-bun](presets/bun)**       | Bun runtime and build flow | none       | Bun applications, CLIs, services          |
+| **[@presetter/preset-node](presets/node)**     | Node.js runtime types      | none       | Node.js apps, CLIs, services              |
 
 ### 🎨 Specialized Extension Presets
 
-| Preset                                               | Purpose                              | Extends              | Best For                                        |
-| ---------------------------------------------------- | ------------------------------------ | -------------------- | ----------------------------------------------- |
-| **[@presetter/preset-strict](presets/strict)**       | Production-grade quality enforcement | Any base preset      | Enterprise applications, critical systems       |
-| **[@presetter/preset-web](presets/web)**             | Modern web development stack         | Any base preset      | Web applications, SPAs                          |
-| **[@presetter/preset-storybook](presets/storybook)** | Storybook component workflow         | Any UI preset        | Component development and interaction tests     |
-| **[@presetter/preset-react](presets/react)**         | React development excellence         | Any base preset      | React applications, component libraries         |
-| **[@presetter/preset-next](presets/next)**           | Next.js full-stack development       | esm + strict + react | Next.js apps with App Router, Server Components |
-| **[@presetter/preset-rollup](presets/rollup)**       | Professional library bundling        | Any base preset      | npm packages, open-source libraries             |
+| Preset                                               | Purpose                              | Extends                           | Best For                                        |
+| ---------------------------------------------------- | ------------------------------------ | --------------------------------- | ----------------------------------------------- |
+| **[@presetter/preset-strict](presets/strict)**       | Production-grade quality enforcement | Any base preset                   | Enterprise applications, critical systems       |
+| **[@presetter/preset-web](presets/web)**             | Browser globals and Tailwind linting | Any base preset                   | Web applications, SPAs                          |
+| **[@presetter/preset-storybook](presets/storybook)** | Storybook component workflow         | Any UI preset                     | Component development and interaction tests     |
+| **[@presetter/preset-react](presets/react)**         | React and TSX tooling                | none                              | React applications, component libraries         |
+| **[@presetter/preset-next](presets/next)**           | Next.js full-stack development       | esm + node + strict + web + react | Next.js apps with App Router, Server Components |
+| **[@presetter/preset-rollup](presets/rollup)**       | Professional library bundling        | none                              | npm packages, open-source libraries             |
 
 ### 🎯 Common Preset Combinations
 
@@ -208,8 +211,9 @@ export { default } from '@presetter/preset-next';
 Presetter handles two main responsibilities:
 
 1. **🏗️ Environment Setup:**
-   - Installs development dependencies defined by presets
+   - Resolves the configured preset graph
    - Generates configuration files using sophisticated templates
+   - Relies on package managers to install preset peer dependencies
 
 2. **⚡ Script Management:**
    - Merges preset scripts with local `package.json` scripts
@@ -278,10 +282,10 @@ export default preset('my-project', {
 ### ⚡ CLI Commands
 
 ```bash
-# Preset management
-presetter use <preset>         # Adopt preset(s) to project
-presetter bootstrap           # Apply configurations
-presetter unset              # Remove all preset artifacts
+# Configuration generation
+presetter bootstrap                         # Apply configurations
+presetter bootstrap --projects "packages/*" # Bootstrap project path globs
+presetter bootstrap --packages "@scope/*"   # Bootstrap package-name globs
 
 # Development workflows
 run build                    # Build your project

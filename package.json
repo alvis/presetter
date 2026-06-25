@@ -19,7 +19,7 @@
     "build": "pnpm --recursive run build",
     "e2e": "pnpm --filter @presetter/e2e test",
     "install": "husky",
-    "postinstall": "presetter bootstrap --projects . --projects e2e --projects packages/* --projects presets/*",
+    "postinstall": "presetter bootstrap --projects . --projects e2e --projects website --projects packages/* --projects presets/*",
     "lint": "run-s \"lint:* -- packages/*/src/** packages/*/spec/** presets/*/src/** presets/*/spec/**\"",
     "lint:eslint": "NODE_OPTIONS=--max-old-space-size=8096 eslint --flag v10_config_lookup_from_file --fix --format stylish --no-error-on-unmatched-pattern --no-warn-ignored --cache --cache-strategy content",
     "lint:fixme": "leasot --skip-unsupported --exit-nicely package.json",
