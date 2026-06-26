@@ -1,0 +1,18 @@
+{
+  "brand": "Presetter",
+  "voice": {
+    "provider": "elevenlabs",
+    "voiceId": "Fc5CaIGWKvLHapoOSM2K",
+    "voiceName": "Professional Speaker",
+    "modelId": "eleven_v3"
+  },
+  "variants": [
+    {
+      "id": "v4",
+      "label": "README v4 agent-config cut",
+      "duration": 77,
+      "script": "If you maintain more than one repo, config maintenance is not a setup task. It is a recurring pain. A new repo. A toolchain update. ESLint, Vitest, TypeScript, scripts, release rules, runtime rules, and local overrides all get copied, adjusted, and checked again. And now AI agents add another layer. CLAUDE.md. AGENTS.md. Code standards. Agent skills. Hooks. MCP access. Agent teams. Same setup pain, more files, more repo-specific choices, more ways for projects to drift. Every update starts to feel like a tiny migration. That is where Presetter fits. Your project keeps a small Presetter config, composes what it needs, and ships generated configs from one maintained source of truth. Scripts merge. Presets stack. Monorepo packages share a baseline while web apps, CLIs, services, and agent workflows keep their differences. Less copy paste. Less drift. Fewer scary updates. Presetter makes modern development setup maintainable again. Explore the engine, official presets, and docs at Presetter dot dev.",
+      "captionScript": "If you maintain more than one repo, config maintenance is not a setup task. It is a recurring pain. A new repo. A toolchain update. ESLint, Vitest, TypeScript, scripts, release rules, runtime rules, and local overrides all get copied, adjusted, and checked again. And now AI agents add another layer. CLAUDE.md. AGENTS.md. Code standards. Agent skills. Hooks. MCP access. Agent teams. Same setup pain, more files, more repo-specific choices, more ways for projects to drift. Every update starts to feel like a tiny migration. That is where Presetter fits. Your project keeps a small Presetter config, composes what it needs, and ships generated configs from one maintained source of truth. Scripts merge. Presets stack. Monorepo packages share a baseline while web apps, CLIs, services, and agent workflows keep their differences. Less copy paste. Less drift. Fewer scary updates. Presetter makes modern development setup maintainable again. Explore the engine, official presets, and docs at presetter.dev."
+    }
+  ]
+}

@@ -1,0 +1,15 @@
+{
+  "name": "presetter-launch-video",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "build": "node scripts/build.mjs",
+    "check": "npx --yes hyperframes@0.6.120 validate && npx --yes hyperframes@0.6.120 inspect --samples 16",
+    "dev": "npx --yes hyperframes@0.6.120 preview",
+    "mix": "node scripts/mix-audio.mjs",
+    "music": "node scripts/generate-music.mjs",
+    "render": "npx --yes hyperframes@0.6.120 render --output ../../overview.mp4 --quality high --fps 15 --video-bitrate 760k",
+    "reproduce": "npm run voice && npm run music && npm run mix && npm run build && npm run check && npm run render",
+    "voice": "node scripts/generate-voice.mjs"
+  }
+}
