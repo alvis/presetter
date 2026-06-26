@@ -8,12 +8,9 @@
 
 [![npm](https://img.shields.io/npm/v/presetter?style=flat-square)](https://github.com/alvis/presetter/releases)
 [![build](https://img.shields.io/github/actions/workflow/status/alvis/presetter/test.yaml?branch=main&style=flat-square)](https://github.com/alvis/presetter/actions)
-[![maintainability](https://img.shields.io/codeclimate/maintainability/alvis/presetter?style=flat-square)](https://codeclimate.com/github/alvis/presetter/maintainability)
-[![coverage](https://img.shields.io/codeclimate/coverage/alvis/presetter?style=flat-square)](https://codeclimate.com/github/alvis/presetter/test_coverage)
-[![vulnerabilities](https://img.shields.io/sonar/vulnerabilities/presetter/main?server=https%3A%2F%2Fsonarcloud.io&style=flat-square)](https://sonarcloud.io/summary/new_code?id=presetter)
 [![dependencies](https://img.shields.io/librariesio/release/npm/presetter?style=flat-square)](https://libraries.io/npm/presetter)
 
-Template-driven configuration management — transform 40+ dev dependencies into 2 packages ⚡
+Template-driven configuration management for TypeScript projects and monorepos ⚡
 
 •   [Quick Start](#-quick-start)   •   [CLI Reference](#-cli-reference)   •   [Presets](#-official-presets)   •   [Architecture](#-how-it-works)   •
 
@@ -21,47 +18,46 @@ Template-driven configuration management — transform 40+ dev dependencies into
 
 ---
 
-**Presetter is the configuration management tool that processes presets to generate perfect development environments with zero manual setup.**
+**Presetter is the configuration management tool that turns an explicit preset stack into the files and scripts your TypeScript projects need.**
 
 ## ⚡ The Development Setup Revolution
 
 ### Still copying configs between projects? 😤
 
-How many times have you copied configuration files for `babel`, `eslint`, `vitest`, `typescript`, or life cycle scripts across projects? How many dev dependencies do you install before you can even start coding?
+Every repo starts clean. Then the same `eslint`, `vitest`, `typescript`, build, and lifecycle settings fork in small ways across apps, packages, services, and CLIs.
 
-**What if setup took one command and two packages?**
+Presetter moves that intent into `presetter.config.ts`: compose official presets for the shared baseline, keep local overrides visible, and regenerate the config files your toolchain still expects.
 
-### The manual setup nightmare vs. Presetter magic ✨
+<p align="center">
+  <video src="https://github.com/user-attachments/assets/03eef833-9c20-4d22-99c7-85f26c620e66" controls playsinline preload="metadata" width="100%" title="Presetter launch video: make configuration maintainable again">
+    <a href="https://github.com/user-attachments/assets/03eef833-9c20-4d22-99c7-85f26c620e66">Watch the Presetter launch video</a>
+  </video>
+</p>
+
+### The config drift loop vs. Presetter
 
 ```diff
-# Before: Manual development setup (40+ packages, 20+ config files)
-my-project/
-├── package.json                    ← 47 devDependencies to manage
-├── .babelrc.json                   ← Manual Babel configuration
-├── .eslintrc.json                  ← Custom ESLint rules and plugins
-├── .prettierrc.json                ← Prettier formatting rules
-├── vitest.config.ts                ← Test configuration
-├── tsconfig.json                   ← TypeScript compiler options
-├── tsconfig.build.json             ← Build-specific TS config
-├── .lintstagedrc.json              ← Pre-commit hook configuration
-├── .husky/                         ← Git hooks setup
-├── rollup.config.js                ← Bundle configuration
-├── tailwind.config.js              ← CSS framework config
-└── ... (dozen more config files)   ← Endless configuration maintenance
+# Before: copied config across repos and packages
+workspace/
+├── apps/web/eslint.config.ts       ← React-specific edits
+├── apps/api/eslint.config.ts       ← Similar, but not quite the same
+├── packages/ui/vitest.config.ts    ← Local test tweaks
+├── packages/core/tsconfig.json     ← Shared intent copied by hand
+└── packages/runtime/package.json   ← Scripts slowly drift
 
-# After: Presetter setup (2 packages, 1 command)
-my-project/
-+├── presetter.config.ts            ← Single preset reference
-├── package.json                    ← 2 devDependencies total!
-└── Perfect configs generated automatically from templates 🎯
+# After: explicit preset stack plus generated outputs
+workspace/
++├── presetter.config.ts            ← Compose the maintained baseline
+├── package.json                    ← Scripts merge with preset scripts
+└── generated config files          ← Output files can stay out of Git
 ```
 
 ---
 
-## 🎯 One Command. Perfect Setup. Every Time
+## 🎯 Compose the Toolchain You Need
 
 ```bash
-# Choose your development style and get everything instantly:
+# Choose the preset stack that matches this project:
 
 # 🟢 Modern ESM development
 npx presetter use @presetter/preset-esm
@@ -82,9 +78,7 @@ npx presetter use @presetter/preset-esm @presetter/preset-react
 npx presetter use @presetter/preset-esm @presetter/preset-strict
 ```
 
-**That's it.** TypeScript, ESLint, Vitest, build scripts, git hooks, formatter, linter, bundler — everything configured perfectly and working together.
-
-![Demo](https://raw.githubusercontent.com/alvis/presetter/main/assets/demo.gif)
+TypeScript, ESLint, Vitest, build scripts, git hooks, formatter, linter, bundler — the same maintained baseline can travel across repos while each project keeps the differences that matter.
 
 ---
 
@@ -97,21 +91,21 @@ Presetter doesn't copy static files. It **generates** configurations using sophi
 - **Context-aware**: Presets know about your project structure, dependencies, and requirements
 - **Variable substitution**: Templates use dynamic values (`{source}`, `{target}`, `{output}`)
 - **Smart merging**: Deep merge algorithms handle complex configuration inheritance
-- **Two-pass resolution**: Initial setup + override pass for perfect customization
+- **Two-pass resolution**: Initial setup + override pass for controlled customization
 
 ### 🏗️ Composable Preset Architecture
 
 Mix and match presets like building blocks:
 
 ```typescript
-// presetter.config.ts - Build your perfect development environment
+// presetter.config.ts - Build the stack this project needs
 import { preset } from 'presetter';
 import essentials from '@presetter/preset-essentials';
 import web from '@presetter/preset-web';
 import react from '@presetter/preset-react';
 import strict from '@presetter/preset-strict';
 
-export default preset('my-perfect-app', {
+export default preset('my-app', {
   extends: [essentials, web, react, strict], // 🚀 Ultimate React stack
   override: {
     variables: {
@@ -123,11 +117,11 @@ export default preset('my-perfect-app', {
 
 ### ⚡ Real Developer Productivity
 
-| Manual Setup Time                     | With Presetter                   | Productivity Gain            |
-| ------------------------------------- | -------------------------------- | ---------------------------- |
-| **2-4 hours** initial setup           | **30 seconds**                   | **24x faster** ⚡            |
-| **30 minutes** per config update      | **Automatic** via preset updates | **∞ maintenance time saved** |
-| **Copy-paste errors** across projects | **Zero config drift**            | **100% consistency**         |
+| Common Setup Pain                   | With Presetter                         | Result                          |
+| ----------------------------------- | -------------------------------------- | ------------------------------- |
+| Rebuilding the same toolchain setup | Compose a preset stack once            | Faster project starts           |
+| Repeating config updates by hand    | Update preset versions and bootstrap   | Fewer risky edits               |
+| Copy-paste errors across projects   | Keep shared intent in one config model | Less drift, clearer differences |
 
 ---
 
@@ -149,13 +143,13 @@ export default preset('my-perfect-app', {
 
 ## 🚀 Quick Start
 
-### 🎬 Instant Project Setup
+### 🎬 Project Setup
 
 ```bash
-# 1. Choose and adopt a preset (creates presetter.config.ts automatically)
+# 1. Choose and adopt a preset stack
 npx presetter use @presetter/preset-esm
 
-# 2. Install dependencies (presetter bootstrap runs automatically)
+# 2. Install dependencies and let bootstrap generate tool configs
 npm install
 
 # 3. Start developing immediately!
@@ -171,13 +165,13 @@ npm run watch    # ✅ Development mode
 # 1. Review current setup (decide what to keep/replace)
 ls -la *.config.* .*rc.* tsconfig*.json
 
-# 2. Remove unnecessary configs and dev dependencies
-npm uninstall babel eslint prettier typescript vitest # ...and 30+ more
+# 2. Remove local config files you want presets to own
+rm eslint.config.ts vitest.config.ts
 
 # 3. Adopt presetter
 npx presetter use @presetter/preset-esm
 
-# 4. Cleanup and enjoy zero-config development
+# 4. Keep only the local overrides that matter
 ```
 
 ---
@@ -207,8 +201,8 @@ Options:
 
 #### Bootstrap flags
 
-| Flag                | Alias | Default | Purpose                                                                                          |
-| ------------------- | ----- | ------- | ------------------------------------------------------------------------------------------------ |
+| Flag                | Alias | Default | Purpose                                                                                           |
+| ------------------- | ----- | ------- | ------------------------------------------------------------------------------------------------- |
 | `--projects <glob>` | `-p`  | `.`     | Path globs to project directories containing a `package.json` (e.g. `packages/*`, `presets/next`) |
 | `--packages <glob>` | `-P`  | _none_  | Package-name globs matching `package.json#name` across the workspace (e.g. `@presetter/preset-*`) |
 | `--only <file>`     |       | _none_  | Only proceed when the specified file exists                                                       |
@@ -218,7 +212,7 @@ Both `--projects` and `--packages` accept comma-separated values; the wildcard `
 ### 🎯 Common Commands
 
 ```bash
-# Adopt presets (automatically bootstraps)
+# Adopt presets and run bootstrap
 presetter use @presetter/preset-esm @presetter/preset-strict
 
 # Manually bootstrap (if needed)
@@ -322,7 +316,7 @@ Presetter uses a sophisticated **two-pass resolution system** that makes configu
 
 ### 🔧 Binary Path Resolution
 
-When running tasks via `run`, `run-s`, or `run-p`, Presetter automatically prepends binary paths from preset packages to the PATH environment variable. This makes tools in each preset's `node_modules/.bin` directory available without additional configuration.
+When running tasks via `run`, `run-s`, or `run-p`, Presetter prepends binary paths from preset packages to the PATH environment variable. This makes tools in each preset's `node_modules/.bin` directory available without additional configuration.
 
 **How it works:**
 
@@ -334,7 +328,7 @@ When running tasks via `run`, `run-s`, or `run-p`, Presetter automatically prepe
 
 - No need to install shared dev tools at the repository root
 - No need for pnpm's `shamefullyHoist: true` or `public-hoist-pattern` for every tool
-- Preset dependencies are automatically available to templated scripts
+- Preset dependencies are available to templated scripts through the resolved PATH
 
 **Limitation - Dynamic Imports:**
 
@@ -426,22 +420,22 @@ Combine preset scripts with your local scripts:
 
 ### ✅ Developer Experience
 
-- **⚡ Zero-config setup**: One command gets you productive immediately
-- **🔄 Consistent updates**: Update all projects by updating preset versions
-- **🎯 Best practices**: Configurations follow industry standards and expert recommendations
-- **🚀 Composable architecture**: Mix and match presets to build perfect environments
+- **⚡ Repeatable setup**: Adopt a preset stack and generate the expected tool configs
+- **🔄 Consistent updates**: Update projects by updating preset versions
+- **🎯 Recommended baselines**: Configurations follow maintained TypeScript tooling patterns
+- **🚀 Composable architecture**: Mix and match presets to fit each project shape
 
 ### ✅ Project Management
 
-- **📦 Dependency reduction**: 40+ packages → 2 packages
-- **🔧 Maintenance simplification**: Single source of truth for configurations
-- **🌐 Team consistency**: Same setup across all team members and projects
-- **📈 Scalability**: Manage configurations across dozens of projects effortlessly
+- **📦 Config drift reduction**: Keep shared toolchain intent in `presetter.config.ts`
+- **🔧 Maintenance simplification**: Single source of truth for generated configurations
+- **🌐 Team consistency**: Same baseline across team members and projects
+- **📈 Scalability**: Manage configurations across many repos and monorepo packages
 
 ### ✅ Technical Excellence
 
 - **🧠 Intelligent merging**: Sophisticated algorithms handle complex configurations
-- **🔄 Two-pass resolution**: Initial setup + override for perfect customization
+- **🔄 Two-pass resolution**: Initial setup + override for controlled customization
 - **📝 Template system**: Dynamic, context-aware configuration generation
 - **🎛️ Fine-grained control**: Override anything while maintaining preset benefits
 
@@ -449,11 +443,11 @@ Combine preset scripts with your local scripts:
 
 ## 🆚 Alternatives Comparison
 
-| Solution            | Setup Time     | Maintenance | Consistency | Flexibility | Learning Curve |
-| ------------------- | -------------- | ----------- | ----------- | ----------- | -------------- |
-| **Manual Setup**    | 2-4 hours      | High        | Poor        | Full        | High           |
-| **Boilerplate/CRA** | 5 minutes      | Medium      | Medium      | Limited     | Medium         |
-| **Presetter**       | **30 seconds** | **Zero**    | **Perfect** | **Full**    | **Low**        |
+| Solution            | Setup Model                  | Maintenance       | Consistency         | Flexibility |
+| ------------------- | ---------------------------- | ----------------- | ------------------- | ----------- |
+| **Manual Setup**    | Hand-copy each config        | Repeated by hand  | Drifts easily       | Full        |
+| **Boilerplate/CRA** | Copy a starter project once  | Template ages     | Medium              | Limited     |
+| **Presetter**       | Compose presets and generate | Versioned presets | Maintained baseline | Full        |
 
 ---
 
@@ -482,7 +476,7 @@ DEBUG=presetter* run build
 
 ### How is this different from boilerplates?
 
-Boilerplates copy static files once. Presetter **generates** configurations dynamically and **maintains** them through preset updates. When you update a preset, all projects using it get the improvements automatically.
+Boilerplates copy static files once. Presetter **generates** configurations dynamically and **maintains** them through preset updates. When you update a preset and run `bootstrap`, projects using it can pick up the same improvements.
 
 ### Can I customize generated configurations?
 

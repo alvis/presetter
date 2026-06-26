@@ -6,22 +6,52 @@
 
 [![npm](https://img.shields.io/npm/v/presetter?style=flat-square)](https://github.com/alvis/presetter/releases)
 [![build](https://img.shields.io/github/actions/workflow/status/alvis/presetter/test.yaml?branch=main&style=flat-square)](https://github.com/alvis/presetter/actions)
-[![maintainability](https://img.shields.io/codeclimate/maintainability/alvis/presetter?style=flat-square)](https://codeclimate.com/github/alvis/presetter/maintainability)
-[![coverage](https://img.shields.io/codeclimate/coverage/alvis/presetter?style=flat-square)](https://codeclimate.com/github/alvis/presetter/test_coverage)
 [![dependencies](https://img.shields.io/librariesio/release/npm/presetter?style=flat-square)](https://libraries.io/npm/presetter)
 [![docs](https://img.shields.io/badge/docs-presetter.dev-blue?style=flat-square)](https://presetter.dev/docs/)
 
-_Transform 40+ dev dependencies into 2 packages — template-driven configuration management for modern TypeScript development_
+_Template-driven configuration management for TypeScript projects and monorepos_
 
 •   [Quick Start](#-quick-start)   •   [Monorepo Structure](#-monorepo-structure)   •   [Official Presets](#-official-presets)   •   [Usage](#-usage)   •
 
 </div>
 
-**Presetter** is a configuration management tool that eliminates the pain of setting up and maintaining build configurations across TypeScript projects. Instead of copying dozens of config files and managing 40+ dev dependencies, you install 2 packages and get a perfectly configured development environment.
+**Presetter** helps maintainers ship shared TypeScript toolchain configuration across many repos and monorepo packages. Instead of hand-copying ESLint, Vitest, TypeScript, build, and script setup into every project, you describe the stack in `presetter.config.ts`, compose official presets, and regenerate the output files your toolchain expects.
 
 This monorepo contains the **Presetter engine** and a comprehensive ecosystem of **official presets** for every TypeScript development scenario.
 
-![Before and After](assets/before-and-after.jpg)
+---
+
+## ⚡ The Development Setup Revolution
+
+### Still copying configs between projects? 😤
+
+Every repo starts clean. Then the same `eslint`, `vitest`, `typescript`, build, and lifecycle settings fork in small ways across apps, packages, services, and CLIs.
+
+Presetter moves that intent into `presetter.config.ts`: compose official presets for the shared baseline, keep local overrides visible, and regenerate the config files your toolchain still expects.
+
+<p align="center">
+  <video src="https://github.com/user-attachments/assets/d7141b4c-e7b3-4c2f-bb4e-995c209c3efd" controls playsinline preload="metadata" width="100%" title="Presetter launch video: make configuration maintainable again">
+    <a href="https://github.com/user-attachments/assets/d7141b4c-e7b3-4c2f-bb4e-995c209c3efd">Watch the Presetter launch video</a>
+  </video>
+</p>
+
+### The config drift loop vs. Presetter
+
+```diff
+# Before: copied config across repos and packages
+workspace/
+├── apps/web/eslint.config.ts       ← React-specific edits
+├── apps/api/eslint.config.ts       ← Similar, but not quite the same
+├── packages/ui/vitest.config.ts    ← Local test tweaks
+├── packages/core/tsconfig.json     ← Shared intent copied by hand
+└── packages/runtime/package.json   ← Scripts slowly drift
+
+# After: explicit preset stack plus generated outputs
+workspace/
++├── presetter.config.ts            ← Compose the maintained baseline
+├── package.json                    ← Scripts merge with preset scripts
+└── generated config files          ← Output files can stay out of Git
+```
 
 ---
 
@@ -219,7 +249,7 @@ Presetter handles two main responsibilities:
    - Merges preset scripts with local `package.json` scripts
    - Provides intelligent script composition and execution
    - Enables `run`, `run-s`, and `run-p` commands for enhanced workflows
-   - **Binary Path Resolution**: Automatically discovers executables in each preset's `node_modules/.bin` and prepends them to PATH, allowing preset tools to take priority without requiring `shamefullyHoist` or `public-hoist-pattern` configuration
+   - **Binary Path Resolution**: Discovers executables in each preset's `node_modules/.bin` and prepends them to PATH, allowing preset tools to take priority without requiring `shamefullyHoist` or `public-hoist-pattern` configuration
 
    > **Note**: Libraries loaded via dynamic import (like `@vitest/coverage-v8`) may still need to be installed at root or hoisted. See the [presetter package docs](packages/presetter) for details.
 
@@ -227,7 +257,7 @@ Presetter handles two main responsibilities:
 
 Each preset is a reusable configuration bundle containing:
 
-- **Dependencies**: Defined as `peerDependencies` and installed automatically
+- **Dependencies**: Defined as `peerDependencies` and installed during bootstrap
 - **Configuration Templates**: Dynamic files that adapt to your project structure
 - **Scripts**: Lifecycle commands that integrate with your local workflows
 - **Variables**: Customizable parameters for flexible configuration
@@ -525,7 +555,7 @@ export default config;
 Presetter was born from the frustration of maintaining identical configurations across multiple TypeScript projects. The core principles:
 
 - **🎯 Simplicity**: One command should set up a complete development environment
-- **🔄 Maintainability**: Updates should propagate automatically across all projects
+- **🔄 Maintainability**: Updates should propagate across projects through shared preset versions
 - **🧩 Composability**: Presets should work together seamlessly
 - **⚡ Flexibility**: Local customizations should always be respected
 - **📈 Scalability**: Should work for individual projects and large monorepos
@@ -538,3 +568,4 @@ Released under the [MIT License](https://github.com/alvis/presetter/blob/main/LI
 © 2020, [Alvis Tang](https://github.com/alvis).
 
 [![License](https://img.shields.io/github/license/alvis/presetter.svg?style=flat-square)](https://github.com/alvis/presetter/blob/main/LICENSE)
+ttps://img.shields.io/github/license/alvis/presetter.svg?style=flat-square)](https://github.com/alvis/presetter/blob/main/LICENSE)
