@@ -6,17 +6,13 @@ All notable changes to this project will be documented in this file.
 
 ### ♻️ Chores
 
-* migrate all presetter-* to @presetter/* (b4b0b43)
 * remove unnecessary dependencies (be28581)
-* change default branch to main (938973a)
-* update presetter logo (7025962)
 * simplify package.json imports and exports (255cf2d)
 
 
-### 🐞 Bug Fixes
+### ✨ Features
 
-* **preset/next:** update tsconfig for next (b660071)
-* **preset/next:** add missing preset dependencies (faca100)
+* **preset/storybook:** add storybook preset (3aaafe4)
 
 
 ### 📦 Code Refactoring

@@ -1,5 +1,6 @@
 {
   "name": "presetter-launch-video",
+  "version": "9.0.0",
   "private": true,
   "type": "module",
   "scripts": {

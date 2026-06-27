@@ -6,7 +6,6 @@ All notable changes to this project will be documented in this file.
 
 ### ♻️ Chores
 
-* migrate all presetter-* to @presetter/* (b4b0b43)
 * change default branch to main (938973a)
 * update presetter logo (7025962)
 * simplify package.json imports and exports (255cf2d)
@@ -14,5 +13,4 @@ All notable changes to this project will be documented in this file.
 
 ### ✨ Features
 
-* **preset:** update typescript to v6 (cf186c2)
-* **preset:** update default standard to ES2024 (517a5a1)
+* **preset/bun:** add a preset for bun (5258331)
