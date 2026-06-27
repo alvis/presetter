@@ -33,13 +33,51 @@ jobs:
         run: npx github-release-from-changelog
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      - name: publish the package
-        run: >-
-          pnpm
-          --filter "./packages/**"
-          --filter "./presets/**"
-          publish
-          --recursive
-          --no-git-checks
-          --access public
-          --provenance
+      - name: publish packages
+        shell: bash
+        run: |
+          # keep the npm token out of OIDC publishes and expose it only for first publication.
+          npm_auth_token=$NPM_AUTH_TOKEN
+          unset NPM_AUTH_TOKEN NODE_AUTH_TOKEN
+
+          while IFS=$'\t' read -r name version; do
+            # skip exact versions so partially completed releases can be rerun safely.
+            if view_output=$(pnpm view "$name@$version" version --registry=https://registry.npmjs.org 2>&1); then
+              echo "$name@$version is already published; skipping"
+              continue
+            elif [[ $view_output != *ERR_PNPM_FETCH_404* && $view_output != *ERR_PNPM_PACKAGE_NOT_FOUND* ]]; then
+              printf '%s\n' "$view_output" >&2
+              exit 1
+            fi
+
+            publish=(
+              pnpm
+              --filter "$name"
+              publish
+              --no-git-checks
+              --access public
+              --provenance
+            )
+
+            # existing packages use trusted publishing; packages not yet on npm need the token once.
+            if view_output=$(pnpm view "$name" name --registry=https://registry.npmjs.org 2>&1); then
+              "${publish[@]}"
+            elif [[ $view_output == *ERR_PNPM_FETCH_404* ]]; then
+              : "${npm_auth_token:?NPM_AUTH_TOKEN secret is required to publish $name}"
+              NODE_AUTH_TOKEN="$npm_auth_token" "${publish[@]}"
+            else
+              printf '%s\n' "$view_output" >&2
+              exit 1
+            fi
+          done < <(
+            # discover publishable workspace packages so the workflow needs no package allowlist.
+            pnpm \
+              --filter "./packages/**" \
+              --filter "./presets/**" \
+              list \
+              --depth -1 \
+              --json |
+              jq -r '.[] | select(.private != true) | [.name, .version] | @tsv'
+          )
+        env:
+          NPM_AUTH_TOKEN: ${{ secrets.NPM_AUTH_TOKEN }}
