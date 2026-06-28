@@ -51,7 +51,7 @@ function getVisibleSearchButton(): HTMLButtonElement | null {
 export default function WebsiteRoot({ children }: WebsiteRootProps): ReactNode {
   useEffect(() => {
     const onKeyDown = (event: KeyboardEvent): void => {
-      if (event.defaultPrevented || event.repeat) {
+      if (event.repeat) {
         return;
       }
 
