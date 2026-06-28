@@ -36,41 +36,131 @@ jobs:
       - name: publish packages
         shell: bash
         run: |
-          # keep the npm token out of OIDC publishes and expose it only for first publication.
-          npm_auth_token=$NPM_AUTH_TOKEN
-          unset NPM_AUTH_TOKEN NODE_AUTH_TOKEN
+          set -euo pipefail
+
+          registry=https://registry.npmjs.org
+          npm_auth_token=${NPM_AUTH_TOKEN:?NPM_AUTH_TOKEN secret is required}
+
+          is_unavailable_package() {
+            [[
+              $1 == *ERR_PNPM_FETCH_404* ||
+              $1 == *ERR_PNPM_PACKAGE_NOT_FOUND* ||
+              $1 == *ERR_PNPM_UNPUBLISHED_PKG* ||
+              $1 == *"404 Not Found"* ||
+              $1 == *"not found"*
+            ]]
+          }
+
+          is_packument_conflict() {
+            [[
+              $1 == *"409 Conflict"* ||
+              $1 == *"Failed to save packument"* ||
+              $1 == *"previous package has been fully processed"*
+            ]]
+          }
+
+          is_already_published() {
+            local name=$1
+            local version=$2
+            local view_output
+
+            if view_output=$(pnpm view "$name@$version" version --registry="$registry" 2>&1); then
+              [[ $view_output == "$version" ]]
+              return
+            fi
+
+            return 1
+          }
+
+          wait_until_version_visible() {
+            local name=$1
+            local version=$2
+
+            for delay in 5 10 20 30 45 60; do
+              if is_already_published "$name" "$version"; then
+                echo "$name@$version is visible on npm"
+                return 0
+              fi
+
+              echo "$name@$version is not visible on npm yet; waiting ${delay}s"
+              sleep "$delay"
+            done
+
+            echo "$name@$version was published but did not become visible in time" >&2
+            return 1
+          }
+
+          publish_with_retry() {
+            local name=$1
+            local version=$2
+            local output
+            local status
+
+            for delay in 0 10 20 40 80 120; do
+              if (( delay > 0 )); then
+                echo "retrying $name@$version publish after ${delay}s"
+                sleep "$delay"
+              fi
+
+              echo "publishing $name@$version"
+
+              set +e
+              output=$(
+                NODE_AUTH_TOKEN="$npm_auth_token" \
+                pnpm \
+                  --filter "$name" \
+                  publish \
+                  --no-git-checks \
+                  --access public \
+                  --provenance \
+                  --registry="$registry" 2>&1
+              )
+              status=$?
+              set -e
+
+              printf '%s\n' "$output"
+
+              if (( status == 0 )); then
+                wait_until_version_visible "$name" "$version"
+                return 0
+              fi
+
+              # a failed publish attempt may still have published before npm returned an error
+              if is_already_published "$name" "$version"; then
+                echo "$name@$version is already published after failed publish attempt; continuing"
+                wait_until_version_visible "$name" "$version"
+                return 0
+              fi
+
+              if is_packument_conflict "$output"; then
+                echo "$name@$version hit npm packument conflict; will retry"
+                continue
+              fi
+
+              echo "$name@$version publish failed with a non-retryable error" >&2
+              return "$status"
+            done
+
+            echo "$name@$version still failed after publish retries" >&2
+            return 1
+          }
 
           while IFS=$'\t' read -r name version; do
-            # skip exact versions so partially completed releases can be rerun safely.
-            if view_output=$(pnpm view "$name@$version" version --registry=https://registry.npmjs.org 2>&1); then
+            echo "::group::$name@$version"
+
+            # skip exact versions so partially completed releases can be rerun safely
+            # ERR_PNPM_UNPUBLISHED_PKG is not fatal here because it may refer to an older version
+            if is_already_published "$name" "$version"; then
               echo "$name@$version is already published; skipping"
+              echo "::endgroup::"
               continue
-            elif [[ $view_output != *ERR_PNPM_FETCH_404* && $view_output != *ERR_PNPM_PACKAGE_NOT_FOUND* ]]; then
-              printf '%s\n' "$view_output" >&2
-              exit 1
             fi
 
-            publish=(
-              pnpm
-              --filter "$name"
-              publish
-              --no-git-checks
-              --access public
-              --provenance
-            )
+            publish_with_retry "$name" "$version"
 
-            # existing packages use trusted publishing; packages not yet on npm need the token once.
-            if view_output=$(pnpm view "$name" name --registry=https://registry.npmjs.org 2>&1); then
-              "${publish[@]}"
-            elif [[ $view_output == *ERR_PNPM_FETCH_404* ]]; then
-              : "${npm_auth_token:?NPM_AUTH_TOKEN secret is required to publish $name}"
-              NODE_AUTH_TOKEN="$npm_auth_token" "${publish[@]}"
-            else
-              printf '%s\n' "$view_output" >&2
-              exit 1
-            fi
+            echo "::endgroup::"
           done < <(
-            # discover publishable workspace packages so the workflow needs no package allowlist.
+            # discover publishable workspace packages so the workflow needs no package allowlist
             pnpm \
               --filter "./packages/**" \
               --filter "./presets/**" \
