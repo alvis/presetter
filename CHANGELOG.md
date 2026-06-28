@@ -1,6 +1,12 @@
 # Changelog
 
 All notable changes to this project will be documented in this file.
+# 9.0.1 (2026-06-28)
+
+
+### ⚙️ Continuous Integrations
+
+* handle unpublished package errors (0e29559)
 # 9.0.0 (2026-06-27)
 
 

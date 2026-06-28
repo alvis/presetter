@@ -1,6 +1,6 @@
 {
   "name": "@presetter/preset-bun",
-  "version": "9.0.0",
+  "version": "9.0.1",
   "description": "An opinionated presetter preset for Bun projects",
   "keywords": [
     "presetter",

@@ -1,6 +1,6 @@
 {
   "name": "@presetter/preset-node",
-  "version": "9.0.0",
+  "version": "9.0.1",
   "description": "An opinionated presetter preset for a node js application",
   "keywords": [
     "presetter",
