@@ -23,6 +23,9 @@ const ansiPattern = [
 ].join('|');
 const ansi = new RegExp(ansiPattern, 'g');
 
+const printedLines = (): string[] =>
+  warn.mock.calls.map(([line]) => String(line ?? '').replace(ansi, ''));
+
 describe.sequential('fn:handleError', () => {
   beforeEach(() => vi.clearAllMocks());
 
@@ -33,9 +36,7 @@ describe.sequential('fn:handleError', () => {
 
     await handleError(error);
 
-    expect(warn).toHaveBeenCalledTimes(1);
-
-    expect(warn).toHaveBeenCalledWith(error);
+    expect(warn.mock.calls).toEqual([[error]]);
   });
 
   it('should print the error with source code on a tty', async () => {
@@ -43,15 +44,12 @@ describe.sequential('fn:handleError', () => {
 
     const error = new Error('tty');
     createCallsiteRecord.mockReturnValueOnce({
-      render: vi.fn().mockResolvedValue('callsite record'),
+      render: vi.fn(async () => 'callsite record'),
     });
 
     await handleError(error);
 
-    expect(warn).toHaveBeenCalledTimes(3);
-
-    const message = warn.mock.calls[0]![0] as string;
-    expect(message.replace(ansi, '')).toEqual(`[Error] tty`);
+    expect(printedLines()).toEqual(['[Error] tty', '', 'callsite record']);
   });
 
   it('should print the error without callsite record when record is null', async () => {
@@ -62,9 +60,55 @@ describe.sequential('fn:handleError', () => {
 
     await handleError(error);
 
-    expect(warn).toHaveBeenCalledTimes(1);
+    expect(printedLines()).toEqual(['[Error] no record']);
+  });
 
-    const message = warn.mock.calls[0]![0] as string;
-    expect(message.replace(ansi, '')).toEqual(`[Error] no record`);
+  it('should print the message when the callsite record cannot be rendered', async () => {
+    process.stdout.isTTY = true;
+
+    const error = new Error('unrenderable');
+    createCallsiteRecord.mockReturnValueOnce({
+      render: vi.fn(() => {
+        throw new Error('cannot read the source file');
+      }),
+    });
+
+    await handleError(error);
+
+    expect(printedLines()).toEqual(['[Error] unrenderable']);
+  });
+
+  it('should print every nested cause on a tty', async () => {
+    process.stdout.isTTY = true;
+
+    const error = new Error('failed to bootstrap packages/b', {
+      cause: new SyntaxError('Unexpected token'),
+    });
+    createCallsiteRecord.mockReturnValueOnce(null);
+
+    await handleError(error);
+
+    expect(printedLines()).toEqual([
+      '[Error] failed to bootstrap packages/b',
+      '  [SyntaxError] Unexpected token',
+    ]);
+  });
+
+  it('should print every aggregated error on a tty', async () => {
+    process.stdout.isTTY = true;
+
+    const error = new AggregateError(
+      [new Error('first'), new Error('second')],
+      'failed to bootstrap 2 of 3 projects',
+    );
+    createCallsiteRecord.mockReturnValue(null);
+
+    await handleError(error);
+
+    expect(printedLines()).toEqual([
+      '[AggregateError] failed to bootstrap 2 of 3 projects',
+      '  [Error] first',
+      '  [Error] second',
+    ]);
   });
 });
