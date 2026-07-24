@@ -48,7 +48,11 @@ vi.mock(
             return FIXTURE_PATHS;
           }
 
-          return list.filter((pattern) => FIXTURE_PATHS.includes(pattern));
+          // NOTE: every fixture pattern resolves to an exact path, so matching reduces to
+          // an exact-string lookup, deduped the way globby returns unique results
+          return [...new Set(list)].filter((pattern) =>
+            FIXTURE_PATHS.includes(pattern),
+          );
         },
       ),
     }) satisfies Partial<typeof import('globby')>,
@@ -370,6 +374,71 @@ describe('fn:resolveProjectRoots', () => {
   it('should skip scanning entirely when both inputs are empty', async () => {
     const roots = await resolveProjectRoots({
       projects: [],
+      packages: [],
+    });
+
+    expect(roots).toEqual([]);
+  });
+
+  it('should subtract path globs prefixed with an exclamation mark', async () => {
+    const roots = await resolveProjectRoots({
+      projects: [
+        `${FIXTURE_ROOT}/presets/next`,
+        `${FIXTURE_ROOT}/presets/node`,
+        `!${FIXTURE_ROOT}/presets/node`,
+      ],
+      packages: [],
+    });
+
+    expect(roots).toEqual([fixtureRoot('presets/next')]);
+  });
+
+  it('should subtract package-name globs prefixed with an exclamation mark', async () => {
+    const roots = await resolveProjectRoots({
+      projects: [],
+      packages: ['@acme/preset-*', '!@acme/preset-node'],
+    });
+
+    expect([...roots].sort()).toEqual(
+      [fixtureRoot('presets/next'), fixtureRoot('presets/monorepo')].sort(),
+    );
+  });
+
+  it('should subtract a path exclusion from roots selected by a package-name glob', async () => {
+    const roots = await resolveProjectRoots({
+      projects: [`!${FIXTURE_ROOT}/presets/node`],
+      packages: ['@acme/preset-*'],
+    });
+
+    expect([...roots].sort()).toEqual(
+      [fixtureRoot('presets/next'), fixtureRoot('presets/monorepo')].sort(),
+    );
+  });
+
+  it('should subtract a package-name exclusion from roots selected by a path glob', async () => {
+    const roots = await resolveProjectRoots({
+      projects: [
+        `${FIXTURE_ROOT}/presets/next`,
+        `${FIXTURE_ROOT}/presets/node`,
+      ],
+      packages: ['!@acme/preset-node'],
+    });
+
+    expect(roots).toEqual([fixtureRoot('presets/next')]);
+  });
+
+  it('should select nothing when only exclusions are given', async () => {
+    const roots = await resolveProjectRoots({
+      projects: [`!${FIXTURE_ROOT}/presets/node`],
+      packages: [],
+    });
+
+    expect(roots).toEqual([]);
+  });
+
+  it('should ignore a pattern that carries nothing but the exclamation mark', async () => {
+    const roots = await resolveProjectRoots({
+      projects: ['!'],
       packages: [],
     });
 

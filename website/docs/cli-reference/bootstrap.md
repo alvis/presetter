@@ -82,6 +82,46 @@ presetter bootstrap --projects "packages/core" "packages/utils"
 - `"."` - Current directory only
 - `"**/"` - All directories recursively (use with caution)
 
+### `-P, --packages <patterns...>`
+
+Specify glob patterns matching target **package names** rather than paths, as declared by
+each project's `package.json` `name` field. Within a pattern, `*` matches anything except
+`/`, so `@acme/*` stays inside the `@acme` scope.
+
+**Default:** `[]` (no package-name selection)
+
+```bash
+# Bootstrap every preset package in a scope
+presetter bootstrap --packages "@presetter/preset-*"
+
+# Combine path and name selection; both contribute to the same set of roots
+presetter bootstrap --projects "packages/*" --packages "@acme/tooling"
+```
+
+### Excluding with `!`
+
+Any pattern given to `--projects` or `--packages` may be prefixed with `!` to **exclude**
+its matches.
+
+```bash
+# Every preset except presets/node
+presetter bootstrap --projects "presets/*,!presets/node"
+
+# Every @acme preset except one, by package name
+presetter bootstrap --packages "@acme/preset-*,!@acme/preset-node"
+
+# Exclusions cross flags: the path exclusion also drops a name-selected root
+presetter bootstrap --packages "@acme/preset-*" --projects "!presets/legacy"
+```
+
+Two rules govern how exclusions behave:
+
+- **Negations never select.** They only subtract, following the same convention as globby
+  and `.gitignore`. `presetter bootstrap -p '!e2e'` on its own therefore selects nothing.
+- **Exclusions apply to the whole selection**, not only to the flag they were given on. A
+  `!` pattern on `--projects` still removes a root that `--packages` selected, and vice
+  versa.
+
 ### Global Options
 
 - `--help` - Show help information
@@ -106,6 +146,9 @@ presetter bootstrap --projects "packages/*" "apps/*"
 
 # Only bootstrap packages that have a presetter config
 presetter bootstrap --projects "packages/*" --only presetter.config.ts
+
+# Bootstrap the whole monorepo apart from a couple of exceptions
+presetter bootstrap --projects ".,packages/*,presets/*,!presets/legacy,!packages/sandbox"
 ```
 
 ### Conditional Bootstrapping
