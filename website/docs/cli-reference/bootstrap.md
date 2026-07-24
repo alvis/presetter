@@ -22,6 +22,18 @@ The `bootstrap` command is the core setup command that:
 3. **Generates configuration files** (tsconfig.json, eslint.config.ts, etc.)
 4. **Skips null assets** and writes generated assets to the project root
 
+When several projects are targeted, bootstrap always attempts **every** project, even if
+an earlier one fails. Failures are collected and reported together on stderr once the run
+is over, and the command then exits with a non-zero status. That way a single broken
+package no longer leaves the rest of a monorepo un-bootstrapped.
+
+```text
+[AggregateError] failed to bootstrap 1 of 3 projects
+  [Error] failed to bootstrap packages/b
+    [Error] failed to load the presetter configuration at /repo/packages/b/presetter.config.ts
+      [SyntaxError] Unexpected token
+```
+
 This command is typically run:
 - After installing Presetter and a preset for the first time
 - When updating to a new preset version

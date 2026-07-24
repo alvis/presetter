@@ -1,8 +1,9 @@
-import { resolve } from 'node:path';
+import { relative, resolve } from 'node:path';
 
 import { describe, expect, it, vi } from 'vitest';
 
 import {
+  bootstrapProjects,
   entry,
   expandDelimitedValues,
   resolveProjectRoots,
@@ -235,6 +236,56 @@ describe('fn:entry', () => {
 
     expect(bootstrap).toHaveBeenCalledTimes(0);
     expect(run).toHaveBeenCalledTimes(0);
+  });
+});
+
+describe('fn:bootstrapProjects', () => {
+  it('should bootstrap the remaining roots after one of them fails', async () => {
+    vi.mocked(bootstrap).mockRejectedValueOnce(new Error('broken config'));
+
+    await expect(
+      bootstrapProjects([resolve('packages/a'), resolve('packages/b')]),
+    ).rejects.toThrow();
+
+    expect(vi.mocked(bootstrap).mock.calls).toEqual([
+      [resolve('packages/a')],
+      [resolve('packages/b')],
+    ]);
+  });
+
+  it('should report every failed root once the whole run is over', async () => {
+    const repoFailure = new Error('broken config');
+    const packageFailure = new Error('missing preset');
+    vi.mocked(bootstrap)
+      .mockRejectedValueOnce(repoFailure)
+      .mockRejectedValueOnce(packageFailure);
+
+    const error = await bootstrapProjects([
+      process.cwd(),
+      resolve('packages/b'),
+    ]).then(
+      () => undefined,
+      (error: AggregateError) => error,
+    );
+
+    expect({
+      message: error?.message,
+      errors: error?.errors.map((member: Error) => member.message),
+      causes: error?.errors.map((member: Error) => member.cause),
+    }).toEqual({
+      message: 'failed to bootstrap 2 of 2 projects',
+      errors: [
+        'failed to bootstrap .',
+        `failed to bootstrap ${relative(process.cwd(), resolve('packages/b'))}`,
+      ],
+      causes: [repoFailure, packageFailure],
+    });
+  });
+
+  it('should resolve silently when every root succeeds', async () => {
+    await expect(
+      bootstrapProjects([resolve('packages/a'), resolve('packages/b')]),
+    ).resolves.toBeUndefined();
   });
 });
 

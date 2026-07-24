@@ -1,5 +1,5 @@
 import { existsSync, readFileSync } from 'node:fs';
-import { dirname, posix, resolve } from 'node:path';
+import { dirname, posix, relative, resolve } from 'node:path';
 
 import { globby } from 'globby';
 import yargs from 'yargs';
@@ -20,6 +20,13 @@ interface BootstrapArgs {
 interface ResolveProjectRootsOptions {
   readonly projects: readonly string[];
   readonly packages: readonly string[];
+}
+
+interface BootstrapFailure {
+  /** the project root that failed to bootstrap */
+  readonly root: string;
+  /** the reason why the project failed to bootstrap */
+  readonly error: Error;
 }
 
 const DEFAULT_LIST_DELIMITER = ',';
@@ -67,9 +74,8 @@ const bootstrapCommand: CommandModule<
     }
 
     const projectRoots = await resolveProjectRoots({ projects, packages });
-    for (const root of projectRoots) {
-      await bootstrap(root);
-    }
+
+    await bootstrapProjects(projectRoots);
   },
 };
 
@@ -149,6 +155,39 @@ export async function entry(args: string[]): Promise<void> {
     .command(runPCommand)
     .demandCommand()
     .parse(args);
+}
+
+/**
+ * bootstrap every given project root, carrying on past any failure
+ * @param roots the project roots to be bootstrapped
+ */
+export async function bootstrapProjects(
+  roots: readonly string[],
+): Promise<void> {
+  const failures: BootstrapFailure[] = [];
+
+  // NOTE: run sequentially so that the progress printed by bootstrap stays in a deterministic order
+  for (const root of roots) {
+    try {
+      await bootstrap(root);
+    } catch (error) {
+      failures.push({ root, error: error as Error });
+    }
+  }
+
+  if (failures.length > 0) {
+    // NOTE: report everything at the end so that a single broken project doesn't hide the rest of the run
+    throw new AggregateError(
+      failures.map(
+        ({ root, error }) =>
+          new Error(
+            `failed to bootstrap ${relative(process.cwd(), root) || '.'}`,
+            { cause: error },
+          ),
+      ),
+      `failed to bootstrap ${failures.length} of ${roots.length} projects`,
+    );
+  }
 }
 
 /**
