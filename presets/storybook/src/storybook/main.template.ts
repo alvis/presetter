@@ -5,7 +5,7 @@ import { asset, merge } from 'presetter';
 import type { StorybookConfig } from 'storybook/internal/types';
 
 export default asset<{ default: StorybookConfig }>(
-  (current, { variables, projectRoot }) => ({
+  (current, { variables }) => ({
     default: merge(
       {
         // NOTE: story globs MUST be relative to the Storybook config dir
@@ -14,12 +14,7 @@ export default asset<{ default: StorybookConfig }>(
         // transform into Vitest tests; an absolute glob mangles that join
         // (`.storybook/<abs-path>`), matches nothing, and every story reports `0 test`.
         stories: [
-          join(
-            projectRoot,
-            variables.source!,
-            '**',
-            '*.stories.@(ts|tsx|js|jsx|mdx)',
-          ),
+          join('..', variables.source!, '**', '*.stories.@(ts|tsx|js|jsx|mdx)'),
         ],
       },
       current,
