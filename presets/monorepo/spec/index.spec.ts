@@ -88,15 +88,20 @@ describe('fn:preset', () => {
     await expect(packageResult).resolves.not.toThrow();
   });
 
-  it('should skip release bumps by ignored path or package name glob', () => {
+  it('should prepend scoped changelog entries and skip ignored release bumps', () => {
     const root = mkdtempSync(join(tmpdir(), 'presetter-release-'));
     const bin = join(root, 'bin');
 
     mkdirSync(bin);
     writePackage(root, '@acme/root');
     writePackage(join(root, 'packages/app'), '@acme/app');
+    writePackage(join(root, 'packages/changed'), '@acme/changed');
+    writePackage(join(root, 'packages/new'), '@acme/new');
     writePackage(join(root, 'e2e'), '@acme/fixture');
     writePackage(join(root, 'packages/e2e-tools'), '@acme/e2e-tools');
+    writeFileSync(join(root, 'CHANGELOG.md'), 'old root\n');
+    writeFileSync(join(root, 'packages/app/CHANGELOG.md'), 'old app\n');
+    writeFileSync(join(root, 'packages/changed/CHANGELOG.md'), 'old changed\n');
     writeFileSync(join(root, 'e2e/README.md'), '# fixture\n');
 
     writeExecutable(
@@ -104,6 +109,8 @@ describe('fn:preset', () => {
       [
         '#!/bin/sh',
         'if [ "$1" = "rev-parse" ] && [ "$2" = "--show-toplevel" ]; then pwd; exit 0; fi',
+        'if [ "$1" = "describe" ]; then echo v1.0.0; exit 0; fi',
+        'if [ "$1" = "rev-list" ]; then case "$*" in *packages/changed*|*packages/new*) echo abc123;; esac; exit 0; fi',
         'if [ "$1" = "add" ]; then exit 0; fi',
         'echo "unexpected git $*" >&2',
         'exit 1',
@@ -113,9 +120,13 @@ describe('fn:preset', () => {
       join(bin, 'git-cliff'),
       [
         '#!/bin/sh',
+        'case " $* " in',
+        '  *" --bumped-version "*) echo v1.2.3; exit 0;;',
+        'esac',
+        'printf "%s\\n" "$*" >> git-cliff.log',
         'while [ "$#" -gt 0 ]; do',
-        '  if [ "$1" = "--bumped-version" ]; then echo v1.2.3; exit 0; fi',
         '  if [ "$1" = "--output" ]; then mkdir -p "$(dirname "$2")"; echo changelog > "$2"; exit 0; fi',
+        '  if [ "$1" = "--prepend" ]; then { echo changelog; cat "$2"; } > "$2.tmp"; mv "$2.tmp" "$2"; exit 0; fi',
         '  shift',
         'done',
       ].join('\n'),
@@ -158,12 +169,55 @@ describe('fn:preset', () => {
 
       expect(readVersion(root)).toBe('1.2.3');
       expect(readVersion(join(root, 'packages/app'))).toBe('1.2.3');
+      expect(readVersion(join(root, 'packages/changed'))).toBe('1.2.3');
+      expect(readVersion(join(root, 'packages/new'))).toBe('1.2.3');
       expect(readVersion(join(root, 'e2e'))).toBe('0.0.0');
       expect(readVersion(join(root, 'packages/e2e-tools'))).toBe('0.0.0');
       expect(existsSync(join(root, 'packages/app/CHANGELOG.md'))).toBe(true);
+      expect(existsSync(join(root, 'packages/changed/CHANGELOG.md'))).toBe(
+        true,
+      );
+      expect(existsSync(join(root, 'packages/new/CHANGELOG.md'))).toBe(true);
       expect(existsSync(join(root, 'e2e/CHANGELOG.md'))).toBe(false);
       expect(existsSync(join(root, 'packages/e2e-tools/CHANGELOG.md'))).toBe(
         false,
+      );
+      expect(readFileSync(join(root, 'CHANGELOG.md'), 'utf8')).toBe(
+        'changelog\nold root\n',
+      );
+      expect(
+        readFileSync(join(root, 'packages/app/CHANGELOG.md'), 'utf8'),
+      ).toBe('old app\n');
+      expect(
+        readFileSync(join(root, 'packages/changed/CHANGELOG.md'), 'utf8'),
+      ).toBe('changelog\nold changed\n');
+      expect(
+        readFileSync(join(root, 'packages/new/CHANGELOG.md'), 'utf8'),
+      ).toBe('changelog\n');
+
+      const cliffInvocations = readFileSync(join(root, 'git-cliff.log'), 'utf8')
+        .trim()
+        .split('\n');
+      const packageInvocation = cliffInvocations.find((line) =>
+        line.includes('--include-path packages/app/**'),
+      );
+      const changedPackageInvocation = cliffInvocations.find((line) =>
+        line.includes('--include-path packages/changed/**'),
+      );
+      const newPackageInvocation = cliffInvocations.find((line) =>
+        line.includes('--include-path packages/new/**'),
+      );
+
+      expect(packageInvocation).toBeUndefined();
+      expect(changedPackageInvocation).toBeDefined();
+      expect(changedPackageInvocation).toContain('--unreleased');
+      expect(changedPackageInvocation).toContain('--tag v1.2.3');
+      expect(changedPackageInvocation).toContain(
+        '--prepend packages/changed/CHANGELOG.md',
+      );
+      expect(newPackageInvocation).toBeDefined();
+      expect(newPackageInvocation).toContain(
+        '--output packages/new/CHANGELOG.md',
       );
     } finally {
       rmSync(root, { force: true, recursive: true });
@@ -187,7 +241,7 @@ function readReleaseChangelogScript(): string {
     .split('\n')
     .filter(Boolean)
     .map((line) => line.replace(/^ {2}/, ''))
-    .join('\n');
+    .join(' ');
 }
 
 function writePackage(path: string, name: string): void {
