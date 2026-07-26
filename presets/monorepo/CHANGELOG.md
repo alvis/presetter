@@ -1,6 +1,17 @@
 # Changelog
 
 All notable changes to this project will be documented in this file.
+# 9.1.0 (2026-07-26)
+
+
+### 🐞 Bug Fixes
+
+* **preset/monorepo:** render changelogs for unchanged packages (bce9de7)
+
+
+### 📚 Documentation
+
+* restore missing package release history (c14323f)
 # 9.0.0 (2026-06-27)
 
 

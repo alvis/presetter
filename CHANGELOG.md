@@ -1,6 +1,46 @@
 # Changelog
 
 All notable changes to this project will be documented in this file.
+# 9.1.0 (2026-07-26)
+
+
+### ix
+
+* **e2e:** isolate package manager execution state (c20b164)
+
+
+### ⚙️ Continuous Integrations
+
+* remove master branch references (e15a4ed)
+
+
+### ✨ Features
+
+* **presetter:** bootstrap past failing projects (89b4dc1)
+* **presetter:** exclude projects with a ! pattern (a66147e)
+
+
+### 🐞 Bug Fixes
+
+* **preset/storybook:** use relative project root (2feb455)
+* **presetter:** exit non-zero when the cli fails (3ac7b5d)
+* **presetter:** report why loading a config fails (f88282a)
+* **preset/monorepo:** render changelogs for unchanged packages (bce9de7)
+* **preset/hybrid:** use node for CommonJS builds (682c908)
+* **examples:** pin typescript fixtures to v5 (2382b72)
+* **preset/storybook:** handle Playwright flag (086c4fb)
+* **example/next:** stabilize Storybook tests (0866ccf)
+
+
+### 📚 Documentation
+
+* fix cmd+k key on website (6fe873b)
+* restore missing package release history (c14323f)
+
+
+### 🚨 Tests
+
+* **e2e:** log install output on failure (9e46aed)
 # 9.0.1 (2026-06-28)
 
 

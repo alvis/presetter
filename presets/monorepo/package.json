@@ -1,6 +1,6 @@
 {
   "name": "@presetter/preset-monorepo",
-  "version": "9.0.1",
+  "version": "9.1.0",
   "description": "An opinionated presetter preset for a monorepo",
   "keywords": [
     "presetter",

@@ -1,6 +1,18 @@
 # Changelog
 
 All notable changes to this project will be documented in this file.
+# 9.1.0 (2026-07-26)
+
+
+### ✨ Features
+
+* **presetter:** bootstrap past failing projects (89b4dc1)
+* **presetter:** exclude projects with a ! pattern (a66147e)
+
+
+### 📚 Documentation
+
+* fix cmd+k key on website (6fe873b)
 # 9.0.0 (2026-06-27)
 
 

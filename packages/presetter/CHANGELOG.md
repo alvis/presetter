@@ -1,6 +1,24 @@
 # Changelog
 
 All notable changes to this project will be documented in this file.
+# 9.1.0 (2026-07-26)
+
+
+### ✨ Features
+
+* **presetter:** bootstrap past failing projects (89b4dc1)
+* **presetter:** exclude projects with a ! pattern (a66147e)
+
+
+### 🐞 Bug Fixes
+
+* **presetter:** exit non-zero when the cli fails (3ac7b5d)
+* **presetter:** report why loading a config fails (f88282a)
+
+
+### 📚 Documentation
+
+* restore missing package release history (c14323f)
 # 9.0.0 (2026-06-27)
 
 
