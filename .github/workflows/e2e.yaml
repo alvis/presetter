@@ -3,7 +3,7 @@ name: e2e
 on:
   pull_request:
     branches:
-      - master
+      - main
   workflow_dispatch:
   workflow_call:
 

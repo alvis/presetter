@@ -2,19 +2,14 @@ name: Documentation
 
 on:
   push:
-    branches: [main, master]
-    paths:
-      - "website/**"
-      - ".github/workflows/docs.yml"
-  pull_request:
-    branches: [main, master]
+    branches:
+      - main
     paths:
       - "website/**"
       - ".github/workflows/docs.yml"
 
 concurrency:
   group: docs-${{ github.ref }}
-  cancel-in-progress: true
 
 jobs:
   docs:
