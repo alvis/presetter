@@ -1,4 +1,5 @@
 extends: ./tsconfig.build
 compilerOptions:
   module: commonjs
+  moduleResolution: node
   target: ES2017
