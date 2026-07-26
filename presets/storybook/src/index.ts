@@ -21,7 +21,7 @@ export default preset('@presetter/preset-storybook', {
   scripts: {
     'storybook': 'storybook dev -p 6006',
     'build:storybook': 'storybook build',
-    'pretest': `[ $PLAYWRIGHT_READY = "1" ] || playwright install --with-deps chromium`,
+    'pretest': `[ "\${PLAYWRIGHT_READY:-}" = "1" ] || playwright install --with-deps chromium`,
   },
   assets: {
     '.gitignore': ['.storybook/main.ts'],
