@@ -13,6 +13,17 @@ export default preset(name, {
           framework: '@storybook/nextjs-vite',
         },
       },
+      'vitest.config.ts': {
+        default: {
+          optimizeDeps: {
+            include: [
+              'react/jsx-dev-runtime',
+              '@storybook/addon-a11y',
+              '@storybook/nextjs-vite',
+            ],
+          },
+        },
+      },
     },
   },
 });
