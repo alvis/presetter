@@ -70,18 +70,54 @@ All notable changes to this project will be documented in this file.
 ### 📦 Code Refactoring
 
 * centralize dependencies in pnpm workspace catalogs (4bb0ef7)
+## 8.0.12 (2025-09-14)
+
+
+### ♻️ Chores
+
+* **release:** publish v8.0.12 ([ee057ed](https://github.com/alvis/presetter/commit/ee057ed35f7f6a7fb563a004d29e53f54c59df12))
+## 8.0.11 (2025-08-04)
+
+
+### ♻️ Chores
+
+* **release:** publish v8.0.11 ([a3f45aa](https://github.com/alvis/presetter/commit/a3f45aae60b2e571c01f36fcaa73f93b81e01f57))
 # 8.0.10 (2025-08-03)
 
 
 ### 🐞 Bug Fixes
 
 * **presetter:** resolve repoRoot by vcs folders (1d2f9bc)
+## 8.0.9 (2025-08-03)
+
+
+### ♻️ Chores
+
+* **release:** publish v8.0.9 ([192bac6](https://github.com/alvis/presetter/commit/192bac6756a512a215213d3cbe1275521a8c3719))
+## 8.0.8 (2025-07-30)
+
+
+### ♻️ Chores
+
+* **release:** publish v8.0.8 ([83a149b](https://github.com/alvis/presetter/commit/83a149b44fc962f3dfd1a74c69cc80d2fecc48b9))
+## 8.0.7 (2025-07-30)
+
+
+### ♻️ Chores
+
+* **release:** publish v8.0.7 ([f6dd8e1](https://github.com/alvis/presetter/commit/f6dd8e175824fc4dd98c715a0a4c368250fa646f))
 # 8.0.6 (2025-07-30)
 
 
 ### 🐞 Bug Fixes
 
 * **presetter:** parse {@} correctly with no global args (0b53631)
+## 8.0.5 (2025-07-30)
+
+
+### ♻️ Chores
+
+* **release:** publish v8.0.5 ([04edde7](https://github.com/alvis/presetter/commit/04edde7f36e9275115a484aed94eee9b96547e6a))
 # 8.0.4 (2025-07-30)
 
 
@@ -100,6 +136,12 @@ All notable changes to this project will be documented in this file.
 ### ✨ Features
 
 * **preset-strict:** warn for node import without engine declaration (0d6a6f5)
+## 8.0.1 (2025-06-27)
+
+
+### ♻️ Chores
+
+* **release:** publish v8.0.1 ([e9be80d](https://github.com/alvis/presetter/commit/e9be80d020026abd3b3b86b77c1c2d4b6210ea55))
 # 8.0.0 (2025-06-27)
 
 
@@ -143,12 +185,24 @@ All notable changes to this project will be documented in this file.
 * **presetter:** simplify tests on preset resolution (370bf80)
 * resolve type issues among tests (f83e923)
 * resolve type issues (8b6f95d)
+# 7.3.0 (2025-04-21)
+
+
+### ♻️ Chores
+
+* **release:** publish v7.3.0 ([22f79f3](https://github.com/alvis/presetter/commit/22f79f3418f5ac2b44ba04b69ef32f475f954699))
 # 7.2.0 (2025-04-17)
 
 
 ### 🐞 Bug Fixes
 
 * **presetter:** skip merging for content functions (d7832ad)
+# 7.1.0 (2025-01-28)
+
+
+### ♻️ Chores
+
+* **release:** publish v7.1.0 ([1fb2c7a](https://github.com/alvis/presetter/commit/1fb2c7a8db4880379f0522f6aeab8cc966bbc31b))
 # 7.0.2 (2025-01-24)
 
 
@@ -245,6 +299,24 @@ All notable changes to this project will be documented in this file.
 
 * update badges (8e01243)
 * correct path to preset-esm in README.md (50b90e6)
+## 4.7.2 (2024-03-07)
+
+
+### ♻️ Chores
+
+* **release:** publish v4.7.2 ([7d8fe75](https://github.com/alvis/presetter/commit/7d8fe75c0944e0bbd9311fd6082956da0d1b5b9c))
+## 4.7.1 (2024-03-06)
+
+
+### ♻️ Chores
+
+* **release:** publish v4.7.1 ([b8f09a2](https://github.com/alvis/presetter/commit/b8f09a2f081a87c382fd825d74b4a318112aedba))
+# 4.7.0 (2024-02-27)
+
+
+### ♻️ Chores
+
+* **release:** publish v4.7.0 ([8548e01](https://github.com/alvis/presetter/commit/8548e017290d36016cc3d3482ae2e78d2251e873))
 # 4.6.0 (2024-01-22)
 
 
@@ -263,12 +335,36 @@ All notable changes to this project will be documented in this file.
 ### 🐞 Bug Fixes
 
 * **presetter:** ignore any {unknown} variable in template script (3a6f54a)
+## 4.4.1 (2023-10-06)
+
+
+### ♻️ Chores
+
+* **release:** publish v4.4.1 ([b383245](https://github.com/alvis/presetter/commit/b3832456a2aec9cd2c55240007d490e3b8c00090))
+# 4.4.0 (2023-10-03)
+
+
+### ♻️ Chores
+
+* **release:** publish v4.4.0 ([227ede5](https://github.com/alvis/presetter/commit/227ede5ca13bc496b5cbae1631697fdfee3c5149))
+## 4.3.1 (2023-10-03)
+
+
+### ♻️ Chores
+
+* **release:** publish v4.3.1 ([c73fa5a](https://github.com/alvis/presetter/commit/c73fa5a21570a39c4ecfb942e79ebaab4f7916d0))
 # 4.3.0 (2023-09-20)
 
 
 ### 💎 Styles
 
 * remove redundant types (07f8375)
+# 4.2.0 (2023-09-13)
+
+
+### ♻️ Chores
+
+* **release:** publish v4.2.0 ([a0fa974](https://github.com/alvis/presetter/commit/a0fa974b115d7fe00b607486f570813e2d1b29b9))
 # 4.1.2 (2023-07-26)
 
 
@@ -287,6 +383,12 @@ All notable changes to this project will be documented in this file.
 ### ✨ Features
 
 * **preset-esm:** make bootstrap part of the setup procedure (313c0d1)
+## 4.0.1 (2023-06-21)
+
+
+### ♻️ Chores
+
+* **release:** publish v4.0.1 ([b6c7dcf](https://github.com/alvis/presetter/commit/b6c7dcf6314692a81cd0a858d36596fc68656eaf))
 # 4.0.0 (2023-06-19)
 
 
@@ -334,6 +436,18 @@ All notable changes to this project will be documented in this file.
 ### 🛠 Builds
 
 * **presetter:** fix the coverage command to accept extra agruments (5be8431)
+## 3.5.5 (2023-03-31)
+
+
+### ♻️ Chores
+
+* **release:** publish v3.5.5 ([14c1a3b](https://github.com/alvis/presetter/commit/14c1a3b7ddc807e8d0323afc02145bc886424c02))
+## 3.5.4 (2023-03-30)
+
+
+### ♻️ Chores
+
+* **release:** publish v3.5.4 ([a3567cd](https://github.com/alvis/presetter/commit/a3567cd8e12dd7f8d2134c2204db09bb917c55c0))
 # 3.5.3 (2023-03-26)
 
 
@@ -346,6 +460,12 @@ All notable changes to this project will be documented in this file.
 ### 🐞 Bug Fixes
 
 * **presetter:** restore package.json upon SIGTERM (33b8c51)
+## 3.5.1 (2023-03-18)
+
+
+### ♻️ Chores
+
+* **release:** publish v3.5.1 ([1e12a59](https://github.com/alvis/presetter/commit/1e12a59395c835efadf404dc65b7195b25433378))
 # 3.5.0 (2022-09-23)
 
 
@@ -405,6 +525,12 @@ All notable changes to this project will be documented in this file.
 ### 📦 Code Refactoring
 
 * use American English (17315b7)
+## 3.1.1 (2021-12-29)
+
+
+### ♻️ Chores
+
+* **release:** publish v3.1.1 ([8e1aecb](https://github.com/alvis/presetter/commit/8e1aecbd95d08e3b9e185f37993b7af73f9ff365))
 # 3.1.0 (2021-12-28)
 
 
@@ -547,6 +673,12 @@ All notable changes to this project will be documented in this file.
 ### 📦 Code Refactoring
 
 * **presetter:** update yargs to v17 (5e65a8c)
+# 1.3.0 (2021-05-20)
+
+
+### ♻️ Chores
+
+* **release:** publish v1.3.0 ([651e444](https://github.com/alvis/presetter/commit/651e4446756e812ad99d16fda9a29cbdc1338f8b))
 # 1.2.0 (2021-05-11)
 
 
@@ -601,6 +733,24 @@ All notable changes to this project will be documented in this file.
 ### 🚨 Tests
 
 * **presetter:** change example paths for testing under windows (4c68423)
+## 1.0.5 (2020-10-22)
+
+
+### ♻️ Chores
+
+* **release:** publish v1.0.5 ([f920009](https://github.com/alvis/presetter/commit/f920009d7a04974133e85b01c39a4ffca898707a))
+## 1.0.4 (2020-10-04)
+
+
+### ♻️ Chores
+
+* **release:** publish v1.0.4 ([55947b3](https://github.com/alvis/presetter/commit/55947b3f7521be6f0fb0eebf391f1eb753c3cf79))
+## 1.0.3 (2020-09-30)
+
+
+### ♻️ Chores
+
+* **release:** publish v1.0.3 ([4a3a8f7](https://github.com/alvis/presetter/commit/4a3a8f75da428721d89f52ebb7533b9091faf2b0))
 # 1.0.2 (2020-08-14)
 
 
