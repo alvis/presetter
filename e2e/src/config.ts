@@ -73,9 +73,11 @@ export const NPM_ENV = {
 
 /** pnpm-specific environment variables for isolated testing */
 export const PNPM_ENV = {
-  // point to non-existent .npmrc files to prevent reading any .npmrc which may cause false results
+  // isolate configuration and caches to prevent false results
   PNPM_CONFIG_USERCONFIG: join(TEMP_DIR, '.user.npmrc'),
-  PNPM_CONFIG_GLOBALCONFIG: join(TEMP_DIR, '.global.npmrc'),
+  PNPM_CONFIG_STORE_DIR: join(TEMP_DIR, '.pnpm-store'),
+  XDG_CONFIG_HOME: join(TEMP_DIR, '.config'),
+  XDG_CACHE_HOME: join(TEMP_DIR, '.cache'),
   // disable interactive prompts
   CI: 'true',
 };

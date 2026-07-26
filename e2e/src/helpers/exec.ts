@@ -109,9 +109,10 @@ export async function exec(
   options: ExecOptions,
 ): Promise<string> {
   const { args = [], cwd = process.cwd(), timeout = DEFAULT_TIMEOUT } = options;
+  const env = { ...isolatedEnv, ...options.env };
 
   log(`current working directory: ${cwd}`);
-  log('env: ', isolatedEnv);
+  log('env: ', env);
   log(`executing: ${[command, ...args].join(' ')}`);
 
   try {
@@ -124,7 +125,7 @@ export async function exec(
       // stream to terminal while capturing output when not silent
       stdout: output,
       stderr: output,
-      env: isolatedEnv,
+      env,
     });
 
     const message = [

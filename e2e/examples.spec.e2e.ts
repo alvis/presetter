@@ -33,6 +33,7 @@ const WARNING_PATTERNS = [
 
 /** patterns for warnings we can ignore (third-party subdependency issues) */
 const IGNORABLE_PATTERNS = [
+  /^[A-Z_][A-Z0-9_]*=/, // diagnostic environment dump
   /request took/i,
   /not found and will be installed/i,
   /tsconfck/i, // tsconfck is depreciated recently by it's used by vite-tsconfig-paths -> vite-plugin-storybook-nextjs -> @storybook/nextjs-vite. Until https://github.com/aleclarson/vite-tsconfig-paths/issues/219 is resolved, ignore the depreciateion warning
