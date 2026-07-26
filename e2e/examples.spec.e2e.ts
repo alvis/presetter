@@ -15,7 +15,7 @@
 import { mkdir, rm } from 'node:fs/promises';
 import { join } from 'node:path';
 
-import { beforeAll, describe, expect, it } from 'vitest';
+import { beforeAll, beforeEach, describe, expect, it } from 'vitest';
 
 import { EXAMPLES, EXAMPLES_DIR, PACKAGE_MANAGERS, TEMP_DIR } from '#config';
 import { copyExample } from '#helpers/copy';
@@ -73,6 +73,10 @@ describe.each(EXAMPLES)(
           log(`installing dependencies for ${example.name} with ${manager}...`);
           installOutput = await runInstall(destination, manager);
         }, 300_000);
+
+        beforeEach(({ onTestFailed }) => {
+          onTestFailed(() => log(`install output:\n${installOutput}`));
+        });
 
         it('should complete installation successfully', () => {
           expect(installOutput).toBeDefined();
