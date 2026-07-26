@@ -17,6 +17,6 @@
     "@types/bun": "*",
     "@vitest/coverage-v8": "*",
     "presetter": "*",
-    "typescript": "*"
+    "typescript": "^5"
   }
 }

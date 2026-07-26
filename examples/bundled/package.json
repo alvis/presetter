@@ -26,6 +26,6 @@
     "@types/node": "*",
     "@vitest/coverage-v8": "*",
     "presetter": "*",
-    "typescript": "*"
+    "typescript": "^5"
   }
 }
