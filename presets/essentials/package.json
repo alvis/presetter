@@ -50,7 +50,7 @@
     "eslint-config-prettier": "catalog:lint",
     "eslint-import-resolver-typescript": "catalog:lint",
     "eslint-plugin-compat": "catalog:lint",
-    "eslint-plugin-import": "catalog:lint",
+    "eslint-plugin-import-x": "catalog:lint",
     "eslint-plugin-jsdoc": "catalog:lint",
     "git-cliff": "catalog:build",
     "husky": "catalog:lint",

@@ -284,7 +284,7 @@ Customize your project structure:
 {
   "@typescript-eslint/recommended": "error",
   "@typescript-eslint/recommended-type-checked": "error",
-  "import/order": "error",
+  "import-x/order": "error",
   "jsdoc/require-jsdoc": "error",
   "compat/compat": "error"
 }

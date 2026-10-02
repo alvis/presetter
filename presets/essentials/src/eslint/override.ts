@@ -29,7 +29,7 @@ export default asset<{ default: Linter.Config[] }>(
           name: '@presetter/preset-essentials:override:tooling-files',
           files: ['**/*.{config,spec}.ts'],
           rules: {
-            'import/no-nodejs-modules': 'off', // tooling files are not part of the code and generally run under node.js
+            'import-x/no-nodejs-modules': 'off', // tooling files are not part of the code and generally run under node.js
           },
         },
         {

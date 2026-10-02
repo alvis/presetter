@@ -105,6 +105,7 @@ Replace complex manual setups with Presetter's managed configurations.
 
 Migrate from various ESLint setups:
 
+- [`eslint-plugin-import` to `eslint-plugin-import-x`](./eslint-import-to-import-x.md)
 - ESLint configs (Airbnb, Standard, etc.)
 - TSLint to ESLint
 - Custom rule sets

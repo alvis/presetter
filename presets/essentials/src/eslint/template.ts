@@ -3,7 +3,7 @@ import comments from '@eslint-community/eslint-plugin-eslint-comments/configs';
 import { asset } from '@presetter/types';
 import prettier from 'eslint-config-prettier';
 import compat from 'eslint-plugin-compat';
-import imports from 'eslint-plugin-import';
+import imports from 'eslint-plugin-import-x';
 import jsdoc from 'eslint-plugin-jsdoc';
 import tseslint from 'typescript-eslint';
 
@@ -47,11 +47,11 @@ export default asset<{ default: Linter.Config[] }>(
             tsconfigRootDir: projectRoot,
           },
         },
-        plugins: { jsdoc, import: imports },
+        plugins: { jsdoc, 'import-x': imports },
         settings: {
-          'import/internal-regex': /^(#|@\/)/,
-          'import/external-module-folders': ['node_modules', variables.types!],
-          'import/resolver': {
+          'import-x/internal-regex': '^(#|@/)',
+          'import-x/external-module-folders': ['node_modules', variables.types!],
+          'import-x/resolver': {
             typescript: true,
             node: true,
           },
@@ -274,16 +274,16 @@ export default asset<{ default: Linter.Config[] }>(
           ],
           '@typescript-eslint/no-unsafe-assignment': 'off', // disable due to poor performance
           '@typescript-eslint/require-await': 'off', // allow async functions with no await
-          'import/consistent-type-specifier-style': [
+          'import-x/consistent-type-specifier-style': [
             'warn',
             'prefer-top-level', // enforce `import type` specifier style
           ],
-          'import/first': 'warn', // ensure all imports are at the top
-          'import/no-deprecated': 'warn', // avoid deprecated methods
-          'import/no-duplicates': 'warn', // merge multiple imports from the same module
-          'import/no-named-as-default-member': 'off',
-          'import/newline-after-import': 'warn', // add newline after imports
-          'import/order': [
+          'import-x/first': 'warn', // ensure all imports are at the top
+          'import-x/no-deprecated': 'warn', // avoid deprecated methods
+          'import-x/no-duplicates': 'warn', // merge multiple imports from the same module
+          'import-x/no-named-as-default-member': 'off',
+          'import-x/newline-after-import': 'warn', // add newline after imports
+          'import-x/order': [
             'warn',
             {
               'alphabetize': {
@@ -362,8 +362,8 @@ export default asset<{ default: Linter.Config[] }>(
               ignoreStatic: true, // but static methods are fine
             },
           ],
-          'import/export': 'off', // ignore as typescript already handles export duplication detection
-          'import/no-unresolved': 'off', // off as it's handled by typescript
+          'import-x/export': 'off', // ignore as typescript already handles export duplication detection
+          'import-x/no-unresolved': 'off', // off as it's handled by typescript
           'block-scoped-var': 'error', // prevent scoped variable usage outside its scope
           'no-param-reassign': 'error', // prevent parameter reassignment
           'no-sparse-arrays': 'warn', // avoid sparse arrays (e.g., [1,,2])

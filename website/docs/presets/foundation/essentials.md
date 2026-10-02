@@ -292,7 +292,7 @@ export default preset('production-ready', {
 
 ### ESLint Plugins
 - `typescript-eslint` (^8.0.0) - TypeScript parser and rules
-- `eslint-plugin-import` - Import/export syntax checking
+- `eslint-plugin-import-x` (^4.17.0) - Import/export syntax checking
 - `eslint-plugin-jsdoc` - JSDoc comment validation
 - `@eslint-community/eslint-plugin-eslint-comments` - ESLint directive validation
 
@@ -473,6 +473,8 @@ jobs:
 ```
 
 ## 🔄 Migration Guide
+
+For existing `import/*` customizations, follow the [import-x migration guide](../../tutorials/migration-guides/eslint-import-to-import-x.md).
 
 ### From Manual Setup
 
