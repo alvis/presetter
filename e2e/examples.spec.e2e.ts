@@ -36,6 +36,10 @@ const IGNORABLE_PATTERNS = [
   /^[A-Z_][A-Z0-9_]*=/, // diagnostic environment dump
   /request took/i,
   /not found and will be installed/i,
+  // Remove these temporary exceptions with the ESLint 10 upgrade after import-x.
+  /^\s*(?:\[WARN\]|WARN|npm warn)\s+deprecated eslint@9\.39\.5(?:: This version is no longer supported\. Please see https:\/\/eslint\.org\/version-support for other options\.|\. \d+\.\d+\.\d+ is not deprecated, outside the range you declared\.)\s*$/,
+  /^\s*\+ eslint 9\.39\.5 \(\d+\.\d+\.\d+ is available\) deprecated\s*$/,
+  /^\s*(?:\[WARN\]|WARN)\s+Issues with peer dependencies found\. Run "pnpm peers check" to list them\.\s*$/,
   /tsconfck/i, // tsconfck is depreciated recently by it's used by vite-tsconfig-paths -> vite-plugin-storybook-nextjs -> @storybook/nextjs-vite. Until https://github.com/aleclarson/vite-tsconfig-paths/issues/219 is resolved, ignore the depreciateion warning
 ];
 

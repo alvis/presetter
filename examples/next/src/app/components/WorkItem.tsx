@@ -41,7 +41,7 @@ export const WorkItem: FC<WorkItemProps> = ({ client, result, scope }) => {
       </div>
       <p className="mb-0 text-ink-soft font-regular leading-[1.5]">{result}</p>
       <a
-        aria-label={`Discuss work like ${client}`}
+        aria-label={`Discuss similar work: ${client}`}
         className={classnames(
           'inline-flex items-center justify-center min-h-11 px-4 rounded-sm',
           'bg-chip-bg text-ink text-ui font-bold whitespace-nowrap',

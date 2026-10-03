@@ -39,7 +39,7 @@
     "@types/node": "*",
     "@types/react": "*",
     "@types/react-dom": "*",
-    "@vitest/browser-playwright": "*",
+    "@vitest/browser-playwright": "^4.0.0",
     "eslint": "^9",
     "globals": "*",
     "playwright": "*",
@@ -47,6 +47,6 @@
     "storybook": "*",
     "tailwindcss": "*",
     "typescript": "^5",
-    "vitest": "*"
+    "vitest": "^4.0.0"
   }
 }

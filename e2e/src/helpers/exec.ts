@@ -254,7 +254,7 @@ export async function runScript(
     case 'pnpm': {
       await exec('npx', {
         ...options,
-        args: ['corepack', 'pnpm', '--verbose', 'run', script],
+        args: ['corepack', 'pnpm', 'run', script],
         env: PNPM_ENV,
       });
 
