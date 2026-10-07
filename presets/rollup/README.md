@@ -437,7 +437,7 @@ import './styles/component.css';
 | -------------- | --------------------------------------- |
 | Base Presets   | Works with essentials, esm, cjs, hybrid |
 | Rollup         | 4.x (latest)                            |
-| Node.js        | ≥ 18                                    |
+| Node.js        | ≥ 22 |
 | TypeScript     | ≥ 5.0                                   |
 | Output Formats | CommonJS, ES Modules                    |
 

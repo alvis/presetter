@@ -27,7 +27,7 @@ Transform your Create React App (CRA) project to use Presetter's modern, flexibl
 ## Prerequisites
 
 - Existing Create React App project
-- Node.js 20+ and pnpm installed
+- Node.js 22+, and pnpm installed
 - Git repository (for backup)
 
 ## Migration Steps

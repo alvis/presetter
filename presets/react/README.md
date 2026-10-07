@@ -500,7 +500,7 @@ overrides: [
 | React             | ≥ 18 (with React 16.14+ support)                                         |
 | Base Presets      | Works with essentials, esm, cjs, hybrid                                  |
 | Browsers          | Modern browsers (ES2024+)                                                |
-| Node.js           | ≥ 20.19.0                                                                |
+| Node.js           | ≥ 22 |
 | ESLint            | ^9.36.0 (major 9)                                                        |
 | React lint plugin | Exactly 2.13.0                                                           |
 | TypeScript        | Plugin declares >=4.8.4 <6.0.0; TypeScript 6 is outside upstream support |

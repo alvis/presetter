@@ -57,6 +57,8 @@ workspace/
 
 ## 🚀 Quick Start
 
+Requires Node.js 22+. CI tracks LTS and latest Node.js.
+
 ### 🎯 Choose Your Development Style
 
 ```bash

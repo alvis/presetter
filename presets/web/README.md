@@ -399,7 +399,7 @@ compilerOptions:
 | ------------ | --------------------------------------- |
 | Base Presets | Works with essentials, esm, cjs, hybrid |
 | Browsers     | Modern browsers (ES2024+)               |
-| Node.js      | ≥ 18                                    |
+| Node.js      | ≥ 22 |
 | TypeScript   | ≥ 5.0                                   |
 
 ### Works With All Base Presets

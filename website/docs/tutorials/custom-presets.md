@@ -414,7 +414,7 @@ jobs:
     
     strategy:
       matrix:
-        node-version: [18, 20]
+        node-version: ["lts/*", "latest"]
     
     steps:
       - uses: actions/checkout@v4

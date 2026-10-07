@@ -384,7 +384,7 @@ coverage: {
 | Environment  | Support                                 |
 | ------------ | --------------------------------------- |
 | Base Presets | Works with essentials, esm, cjs, hybrid |
-| Node.js      | ≥ 18 (for V8 coverage provider)         |
+| Node.js      | ≥ 22 |
 | TypeScript   | ≥ 5.0                                   |
 | Testing      | Vitest-based projects                   |
 

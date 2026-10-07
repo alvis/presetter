@@ -308,7 +308,7 @@ npm run typecheck   # Type-only checks (no emit)
 
 | Environment | Support                          |
 | ----------- | -------------------------------- |
-| Node.js     | ≥ 20 (preset engine requirement) |
+| Node.js     | ≥ 22 |
 | TypeScript  | ≥ 5.0                            |
 | Module Type | ESM (inherits from essentials)   |
 | Package Mgr | npm, pnpm, yarn                  |
@@ -363,7 +363,7 @@ npm run typecheck   # Type-only checks (no emit)
 | ------------------------------- | ----------------------------------- | -------------------------------------------------------------- |
 | **`process` not found**         | TypeScript errors on Node globals   | Re-run `npx presetter bootstrap` to regenerate `tsconfig.json` |
 | **`node:*` imports unresolved** | `Cannot find module 'node:fs'`      | Ensure `@types/node` is installed (transitive via essentials)  |
-| **Engine mismatch warning**     | `engines.node` violation on install | Use Node.js ≥ 20 (required by the preset itself)               |
+| **Engine mismatch warning**     | `engines.node` violation on install | Use Node.js 22+               |
 | **Custom `types` array reset**  | Your additions overwritten          | Spread base in override: `types: ['node', 'vitest/globals']`   |
 
 > **Need help with Presetter CLI commands?** Check the [CLI reference](https://github.com/alvis/presetter/blob/main/README.md#cli-reference) in the main documentation.

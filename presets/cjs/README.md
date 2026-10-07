@@ -294,7 +294,7 @@ build:typescript: run-s build:typescript:tsc build:typescript:alias
 
 | Environment | Support                        |
 | ----------- | ------------------------------ |
-| Node.js     | ≥ 8 (excellent legacy support) |
+| Node.js     | ≥ 22 |
 | Browsers    | Any (with bundling)            |
 | Tools       | Universal CommonJS support     |
 | TypeScript  | ≥ 5.0                          |

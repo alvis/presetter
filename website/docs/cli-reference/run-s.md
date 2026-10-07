@@ -365,14 +365,14 @@ steps:
 
 ```dockerfile
 # Multi-stage build with sequential tasks
-FROM node:18 AS builder
+FROM node:22 AS builder
 WORKDIR /app
 COPY package*.json ./
 RUN npm ci
 COPY . .
 RUN presetter run-s lint test build -- --production
 
-FROM node:18-alpine
+FROM node:22-alpine
 COPY --from=builder /app/dist ./dist
 ```
 
