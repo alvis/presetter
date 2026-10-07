@@ -680,7 +680,7 @@ export default preset('my-monorepo', {
         // Apply React-specific rules
         if (isReactPackage) {
           Object.assign(packageSpecificRules.rules, {
-            'react/prop-types': 'off',
+            '@eslint-react/no-prop-types': 'off',
             'react-hooks/rules-of-hooks': 'error',
             'react-hooks/exhaustive-deps': 'warn',
             '@typescript-eslint/no-unused-vars': [
@@ -741,7 +741,7 @@ export default preset('my-monorepo', {
                 {
                   files: ['**/*.{ts,tsx}'],
                   rules: {
-                    'react/prop-types': 'off',
+                    '@eslint-react/no-prop-types': 'off',
                     'react-hooks/rules-of-hooks': 'error',
                     'react-hooks/exhaustive-deps': 'warn',
                   },

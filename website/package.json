@@ -68,6 +68,6 @@
     "typescript": "catalog:build"
   },
   "engines": {
-    "node": ">=18.0"
+    "node": ">=20.19.0"
   }
 }

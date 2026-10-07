@@ -274,7 +274,7 @@ Automatically configured tools:
 | ----------- | ---------------------- |
 | Next.js     | ≥ 15 (with App Router) |
 | React       | ≥ 15                   |
-| Node.js     | ≥ 20                   |
+| Node.js     | ≥ 20.19.0              |
 | TypeScript  | ≥ 5.0                  |
 
 ### Includes All From
