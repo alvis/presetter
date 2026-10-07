@@ -42,7 +42,7 @@
   },
   "peerDependencies": {
     "@eslint-react/eslint-plugin": "catalog:lint",
-    "eslint": "^9.36.0",
+    "eslint": "catalog:lint",
     "presetter": "workspace:*"
   },
   "engines": {

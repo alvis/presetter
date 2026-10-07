@@ -289,8 +289,6 @@ export function createESLintConfig(framework: string, strictMode: boolean) {
           {
             plugins: { 'react-hooks': reactHooks },
             rules: {
-              '@eslint-react/jsx-uses-react': 'off',
-              '@eslint-react/no-prop-types': 'off',
               'react-hooks/rules-of-hooks': 'error',
               'react-hooks/exhaustive-deps': 'warn',
             },
@@ -311,7 +309,7 @@ export function createESLintConfig(framework: string, strictMode: boolean) {
 }
 ```
 
-The independent hooks plugin in this example retains its existing two checks. Presetter's React preset uses `@eslint-react/eslint-plugin` 2.13.0 for ESLint 9 compatibility; see its [migration table](https://github.com/alvis/presetter/blob/main/presets/react/README.md#react-eslint-rules) for mappings and coverage gaps.
+The independent hooks plugin in this example retains its existing two checks. Presetter's React preset uses `@eslint-react/eslint-plugin` 5.24.8 with ESLint 10; see its [migration table](https://github.com/alvis/presetter/blob/main/presets/react/README.md#react-eslint-rules) for mappings and coverage gaps.
 
 ### Package Scripts
 

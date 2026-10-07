@@ -129,6 +129,7 @@ export default asset<{ default: Linter.Config[] }>((current, context) => {
           'sonarjs/no-nested-assignment': 'off', // permit nested assignments for improved clarity in specific cases
           'sonarjs/no-nested-conditional': 'off', // allow nested conditionals when readability isn't compromised
           'sonarjs/no-nested-functions': 'off', // use cognitive complexity rule instead
+          'sonarjs/no-redundant-optional': 'off', // allow optional properties whose types include undefined
           'sonarjs/no-redeclare': 'off', // leverage TypeScript to detect redeclaration issues
           'sonarjs/no-throw-literal': 'off', // managed by @typescript-eslint/no-throw-literal
           'sonarjs/no-unused-expressions': 'off', // handled by @typescript-eslint/no-unused-expressions
@@ -165,6 +166,9 @@ export default asset<{ default: Linter.Config[] }>((current, context) => {
 
           // Error Prevention //
           'sonarjs/assertions-in-tests': 'off', // disabled due to frequent false positives in test code
+          'sonarjs/no-duplicate-test-title': 'off', // retain existing test organization
+          'sonarjs/parameterized-tests': 'off', // permit individual test cases
+          'sonarjs/prefer-specific-assertions': 'off', // permit existing assertion styles
         },
       },
     ],

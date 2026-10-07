@@ -246,8 +246,7 @@ export default preset('advanced-react-app', {
           ...current.default,
           {
             rules: {
-              '@eslint-react/dom/no-missing-button-type': 'error',
-              '@eslint-react/prefer-destructuring-assignment': 'warn',
+              '@eslint-react/dom-no-missing-button-type': 'error',
             },
           },
         ],
@@ -295,41 +294,37 @@ compilerOptions:
 
 ### React ESLint Rules
 
-The preset uses the complete `@eslint-react/eslint-plugin` 2.13.0 `recommended` flat configuration, followed by focused overrides. Its plugin registrations and `react-x` settings, including React-version detection, are retained. Automatic JSX runtime does not require a React import. Props need no runtime PropTypes, and existing PropTypes declarations remain allowed.
+The preset uses the complete `@eslint-react/eslint-plugin` 5.24.8 `recommended` flat configuration, followed by focused overrides. The exported `@eslint-react` plugin registration and `react-x` settings, including React-version detection, are retained. The automatic JSX runtime does not require a React import. Typed props need no runtime PropTypes, and existing PropTypes declarations remain allowed.
 
-This is a breaking rule-ID migration. The following table covers every previously active React rule. Old names start with `react/`; replacements start with `@eslint-react/`.
+This is a breaking configuration migration from plugin 2.13.0. All names below start with `@eslint-react/` unless stated otherwise.
 
-| Old rule (severity/options)                                            | Replacement                                                                                                                                                 | Outcome                                                                                                    |
-| ---------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------- |
-| `display-name` (error)                                                 | `no-missing-component-display-name` (error)                                                                                                                 | Partial component display-name coverage                                                                    |
-| `jsx-key` (error)                                                      | `no-missing-key` (error)                                                                                                                                    | List-key checking retained                                                                                 |
-| `jsx-no-comment-textnodes` (error)                                     | Same suffix (error)                                                                                                                                         | Retained                                                                                                   |
-| `jsx-no-duplicate-props` (error)                                       | Same suffix (error)                                                                                                                                         | Retained                                                                                                   |
-| `jsx-no-undef` (error)                                                 | Same suffix (error)                                                                                                                                         | Retained                                                                                                   |
-| `jsx-uses-vars` (error)                                                | Same suffix (error)                                                                                                                                         | JSX variable tracking retained on ESLint 9                                                                 |
-| `no-children-prop` (error)                                             | Same suffix (error)                                                                                                                                         | Retained                                                                                                   |
-| `no-danger-with-children` (error)                                      | `dom/no-dangerously-set-innerhtml-with-children` (error)                                                                                                    | Retained                                                                                                   |
-| `no-direct-mutation-state` (error)                                     | Same suffix (error)                                                                                                                                         | Retained                                                                                                   |
-| `no-find-dom-node` (error)                                             | `dom/no-find-dom-node` (error)                                                                                                                              | Retained                                                                                                   |
-| `no-render-return-value` (error)                                       | `dom/no-render-return-value` (error)                                                                                                                        | Retained                                                                                                   |
-| `no-string-refs` (error)                                               | Same suffix (error)                                                                                                                                         | Retained                                                                                                   |
-| `no-unknown-property` (error)                                          | `dom/no-unknown-property` (error)                                                                                                                           | DOM property checks retained                                                                               |
-| `jsx-no-target-blank` (error)                                          | `dom/no-unsafe-target-blank` (error)                                                                                                                        | Approximate link-safety mapping                                                                            |
-| `no-deprecated` (error)                                                | `no-component-will-mount`, `no-component-will-receive-props`, `no-component-will-update`, `dom/no-find-dom-node`, `dom/no-render`, `dom/no-hydrate` (error) | Focused checks; not the complete historical API checklist                                                  |
-| `button-has-type` (warn)                                               | `dom/no-missing-button-type` (warn)                                                                                                                         | Checks presence; does not reproduce invalid type-value checking                                            |
-| `destructuring-assignment` (warn)                                      | `prefer-destructuring-assignment` (warn)                                                                                                                    | Approximate; named functions/arrows checked, default-export functions and class `this.props` access missed |
-| `boolean-prop-naming` (warn)                                           | None                                                                                                                                                        | Intentionally dropped                                                                                      |
-| `sort-comp` (warn)                                                     | None                                                                                                                                                        | Intentionally dropped                                                                                      |
-| `jsx-sort-props` (warn; `callbacksLast: true`, `shorthandFirst: true`) | None                                                                                                                                                        | Alphabetical, callbacks-last, shorthand-first sorting is no longer enforced                                |
-| `no-is-mounted` (error)                                                | None                                                                                                                                                        | Intentionally dropped                                                                                      |
-| `no-unescaped-entities` (error)                                        | None                                                                                                                                                        | Intentionally dropped                                                                                      |
-| `require-render-return` (error)                                        | None                                                                                                                                                        | Intentionally dropped                                                                                      |
+| Previous rule | Current rule or outcome |
+| --- | --- |
+| `no-children-prop` (error) | `jsx-no-children-prop` (error) |
+| `dom/no-missing-button-type` (warn) | `dom-no-missing-button-type` (warn) |
+| `dom/no-unknown-property` (error) | `dom-no-unknown-property` (error) |
+| `dom/no-unsafe-target-blank` (error) | `dom-no-unsafe-target-blank` (error) |
+| Other `dom/*`, `web-api/*`, `naming-convention/*` rules | Flattened `dom-*`, `web-api-*`, `naming-convention-*` names where still supported |
+| `hooks-extra/no-direct-set-state-in-use-effect` | `set-state-in-effect` (warn); upstream's current effect check |
+| `hooks-extra/no-direct-set-state-in-use-layout-effect` | No separate layout-effect rule; remove custom entries |
+| `hooks-extra/no-unnecessary-use-prefix` | `no-unnecessary-use-prefix` (warn) |
+| `hooks-extra/prefer-use-state-lazy-initialization` | `use-state` (warn); upstream's current state check |
+| `jsx-no-comment-textnodes` (error) | Retained (error) |
+| `no-missing-component-display-name` (error) | Retained (error) |
+| `jsx-no-undef`, `jsx-uses-vars`, `jsx-uses-react` | Removed upstream. ESLint 10 supplies native JSX reference/scope handling; no React import is required |
+| `jsx-no-duplicate-props` (error) | Removed upstream; this standalone lint check is no longer supplied. TypeScript diagnostics can catch duplicate JSX attributes in checked TSX |
+| `prefer-destructuring-assignment` (warn) | Removed upstream; React props/state/context destructuring is no longer enforced by this preset |
+| `no-prop-types` (off) | Removed upstream; PropTypes remain optional and permitted |
+| `no-string-refs` (error) | Removed upstream; this historical React API check is no longer supplied |
+| `no-default-props` and `naming-convention/use-state` | Removed from the recommended baseline; remove obsolete custom rule entries |
 
-Previously disabled `react/prop-types` maps to disabling the inverse `@eslint-react/no-prop-types` policy. `@eslint-react/jsx-uses-react` is explicitly off to preserve automatic JSX runtime. Existing TypeScript naming, JSDoc, function-length and test-file overrides are unchanged.
+The prior `react/*` migration remains a consumer action: list keys use `@eslint-react/no-missing-key`; component display names use `@eslint-react/no-missing-component-display-name`; DOM checks use the flattened names above. Focused legacy API checks include `no-component-will-mount`, `no-component-will-receive-props`, `no-component-will-update`, `dom-no-find-dom-node`, `dom-no-render` and `dom-no-hydrate`, at error severity. They do not reproduce the old `react/no-deprecated` historical API checklist. Button checks require a type but do not reproduce the old invalid-type-value check.
 
-New recommended checks remain enabled. Significant additions include nested components and lazy declarations, React API preferences (`Children`, `cloneElement`, context, `forwardRef`, `createRef`, default props), RSC function definitions, leaked timers/listeners/observers, direct state setters in effects/lifecycles, and context/ref/state naming. For example, `@eslint-react/hooks-extra/no-direct-set-state-in-use-effect` warns on a direct setter inside an effect. This release does not provide the later v5 React Compiler inventory.
+Earlier intentional gaps remain: `react/boolean-prop-naming`, `react/sort-comp`, `react/jsx-sort-props`, `react/no-is-mounted`, `react/no-unescaped-entities` and `react/require-render-return`. Alphabetical JSX prop sorting with callbacks last and shorthand first is no longer enforced. Existing Essentials policies and React naming, JSDoc, function-length and test-file overrides are unchanged.
 
-Migrate explicit rule overrides and all inline `eslint-disable`, `eslint-disable-next-line`, `eslint-disable-line`, `eslint-enable`, and inline rule configuration comments using this table. Remove entries for dropped rules. Consumers managing registrations themselves should use the complete recommended flat object once; its separate namespace plugin objects must not be replaced by repeated registrations of the unified plugin. Custom React settings belong under `react-x`; inspect the selected release's supported options rather than blindly renaming legacy settings. Keep customizations in `presetter.config.ts` so bootstrap can regenerate `eslint.config.ts`.
+The complete recommended baseline retains upstream additions rather than reproducing the old rule count. Significant React 5 additions include Hooks checks (`rules-of-hooks`, `exhaustive-deps`), Compiler checks (`error-boundaries`, `static-components`, `unsupported-syntax`, `use-memo`, `set-state-in-render`), React API preferences, conflicting JSX children, RSC function definitions, and leaked fetches/listeners/timers/observers. These can introduce new diagnostics. The new `@eslint-react/purity` check is disabled to retain existing render-time expressions.
+
+Migrate explicit overrides and inline `eslint-disable`, `eslint-disable-next-line`, `eslint-disable-line`, `eslint-enable`, and inline rule configuration comments using this table; remove entries for retired rules. Consumers managing registrations themselves should use the complete recommended flat object once. React 5 registers its unified plugin under `@eslint-react`, replacing the separate React 2 namespaces. Custom React settings remain under `react-x`; consult the selected release's supported options. Keep customizations in `presetter.config.ts` so bootstrap can regenerate `eslint.config.ts`.
 
 ### Asset Type Declarations
 
@@ -439,9 +434,7 @@ export default [
   {
     languageOptions: { parserOptions: { ecmaFeatures: { jsx: true } } },
     rules: {
-      '@eslint-react/jsx-uses-react': 'off',
-      '@eslint-react/no-prop-types': 'off',
-      '@eslint-react/dom/no-missing-button-type': 'warn',
+      '@eslint-react/dom-no-missing-button-type': 'warn',
     },
   },
 ];
@@ -501,13 +494,11 @@ overrides: [
 | Base Presets      | Works with essentials, esm, cjs, hybrid                                  |
 | Browsers          | Modern browsers (ES2024+)                                                |
 | Node.js           | ≥ 22 |
-| ESLint            | ^9.36.0 (major 9)                                                        |
-| React lint plugin | Exactly 2.13.0                                                           |
-| TypeScript        | Plugin declares >=4.8.4 <6.0.0; TypeScript 6 is outside upstream support |
+| ESLint            | ^10.12.0                                                               |
+| React lint plugin | ^5.24.8                                                                |
+| TypeScript        | 6; React plugin declares `*`, TypeScript ESLint supports >=4.8.4 <6.1.0 |
 
-Version [2.13.0](https://github.com/Rel1cx/eslint-react/tree/v2.13.0) is the latest stable release whose tagged documentation explicitly supports ESLint 9 (minimum 9.36.0 and Node 20.19.0). Later major-version documentation requires ESLint 10, even where package peer ranges are permissive. The exact pin prevents crossing that compatibility boundary.
-
-This repository uses TypeScript 6.0.3. pnpm installs it with a TypeScript peer warning; strict npm installation rejects the mismatch. Focused runtime tests and an outside-workspace packed pnpm consumer install, bootstrap and TSX lint pass on ESLint 9.39.4 and TypeScript 6.0.3. These demonstrate the tested cases rather than upstream TypeScript 6 support. Strict peer consumers must resolve this constraint.
+[React plugin 5.24.8](https://github.com/Rel1cx/eslint-react/tree/v5.24.8) documents ESLint >=10.3.0 and Node >=22. Presetter's shared ESLint/Node floors satisfy React, Unicorn and JSDoc together. The React 2.13.0 TypeScript-below-6 peer conflict is removed by this upgrade; TypeScript stays on major 6, without peer waivers or private compiler dependencies.
 
 ### Extends
 

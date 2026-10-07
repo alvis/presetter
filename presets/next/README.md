@@ -203,7 +203,7 @@ This preset combines multiple presets and adds Next.js-specific configurations:
 
 ```typescript
 // full Next.js ESLint support
-import * as next from '@next/eslint-plugin-next';
+import next from '@next/eslint-plugin-next';
 import storybook from 'eslint-plugin-storybook';
 
 export default [

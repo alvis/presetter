@@ -23,7 +23,7 @@ The **essentials preset** is the foundation of the Presetter ecosystem, providin
 
 ### Core Development Tools
 - **🛠️ TypeScript 6** - Type-safe JavaScript with a strict configuration targeting **ES2024**, including `noUncheckedIndexedAccess` for safer indexed access
-- **🚨 ESLint 9** - Code quality enforcement with TypeScript support
+- **🚨 ESLint 10** - Code quality enforcement with TypeScript support
 - **💅 Prettier 3** - Consistent code formatting
 - **🧪 Vitest 4** - Fast unit testing with coverage reporting
 - **💰 git-cliff** - Automated semantic versioning and changelogs
@@ -286,7 +286,7 @@ export default preset('production-ready', {
 
 ### Core Tools
 - `typescript` (^6.0.0) - TypeScript compiler
-- `eslint` (^9.18.0) - Linting utility
+- `eslint` (^10.12.0) - Linting utility
 - `prettier` (^3.0.0) - Code formatter
 - `vitest` (^4.0.0) - Test framework
 
