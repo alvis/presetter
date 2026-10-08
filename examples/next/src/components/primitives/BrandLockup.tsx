@@ -15,13 +15,13 @@ import type { FC } from 'react';
 export const BrandLockup: FC = () => {
   return (
     <Link
-      aria-label="ACME Inc home"
       className={classnames(
         'inline-flex items-center justify-center min-h-11 gap-3',
         'p-0 font-black leading-none whitespace-nowrap',
       )}
       href="/">
       <span
+        aria-hidden="true"
         className={classnames(
           'grid place-items-center',
           'w-[34px] h-[34px] rounded-full',

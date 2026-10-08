@@ -28,7 +28,7 @@ export const Default: Story = {
   play: async ({ canvas }) => {
     await expect(canvas.getByText('Northstar Robotics')).toBeVisible();
     await expect(
-      canvas.getByRole('link', { name: /discuss work like/i }),
+      canvas.getByRole('link', { name: /discuss similar work/i }),
     ).toHaveAttribute('href', '#contact');
   },
 };

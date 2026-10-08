@@ -22,7 +22,7 @@ export const Default: Story = {
   ),
   play: async ({ canvas }) => {
     await expect(
-      canvas.getByRole('link', { name: /acme inc home/i }),
+      canvas.getByRole('link', { name: 'ACME Inc' }),
     ).toBeVisible();
     await expect(canvas.getByText('A')).toBeVisible();
   },
