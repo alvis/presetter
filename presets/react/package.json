@@ -41,11 +41,12 @@
     "presetter": "workspace:*"
   },
   "peerDependencies": {
-    "eslint-plugin-react": "catalog:lint",
+    "@eslint-react/eslint-plugin": "catalog:lint",
+    "eslint": "^9.36.0",
     "presetter": "workspace:*"
   },
   "engines": {
-    "node": ">=20.0.0"
+    "node": ">=20.19.0"
   },
   "publishConfig": {
     "access": "public",

@@ -285,29 +285,29 @@ export default defineConfig({
 For complex, dynamic configurations:
 
 ```typescript
+import react from '@eslint-react/eslint-plugin';
+
 assets: {
-  'eslint.config.ts': (current, { variables, context }) => {
-    const config = {
-      ...current,
-      languageOptions: {
-        parserOptions: {
-          ecmaVersion: variables.target === 'ES2022' ? 2022 : 2020
+  'eslint.config.ts': (current, { variables, packageJson }) => ({
+    ...current,
+    default: [
+      ...current.default,
+      ...(packageJson.dependencies?.react
+        ? [react.configs.recommended]
+        : []),
+      {
+        languageOptions: {
+          parserOptions: {
+            ecmaVersion: variables.target === 'ES2022' ? 2022 : 2020
+          }
         }
       }
-    };
-    
-    // Add React rules if React is detected
-    if (context.packageJson.dependencies?.react) {
-      config.plugins = {
-        ...config.plugins,
-        react: require('eslint-plugin-react')
-      };
-    }
-    
-    return config;
-  }
+    ]
+  })
 }
 ```
+
+The React plugin's complete recommended flat object owns its namespace registrations and `react-x` settings. Use the React preset for Presetter's automatic-runtime and severity adjustments.
 
 ## Override System
 

@@ -274,42 +274,44 @@ export function createTypeScriptConfig(
 ### ESLint Configuration
 
 ```typescript title="src/configs/eslint.ts"
+import react from '@eslint-react/eslint-plugin';
+import reactHooks from 'eslint-plugin-react-hooks';
+import tseslint from 'typescript-eslint';
+import prettier from 'eslint-config-prettier';
+
 export function createESLintConfig(framework: string, strictMode: boolean) {
-  const baseConfig = {
-    extends: [
-      '@typescript-eslint/recommended',
-      'prettier'
-    ],
-    parser: '@typescript-eslint/parser',
-    plugins: ['@typescript-eslint'],
-    rules: {
-      // Team standards
-      'no-console': 'warn',
-      'prefer-const': 'error',
-      'no-var': 'error',
-      
-      // TypeScript rules
-      '@typescript-eslint/no-unused-vars': 'error',
-      '@typescript-eslint/no-explicit-any': strictMode ? 'error' : 'warn',
-      '@typescript-eslint/explicit-function-return-type': 'warn'
-    }
-  };
-
-  // Framework-specific rules
-  if (framework === 'react') {
-    baseConfig.extends.push('plugin:react/recommended', 'plugin:react-hooks/recommended');
-    baseConfig.plugins.push('react', 'react-hooks');
-    baseConfig.rules = {
-      ...baseConfig.rules,
-      'react/react-in-jsx-scope': 'off', // Not needed in React 17+
-      'react-hooks/rules-of-hooks': 'error',
-      'react-hooks/exhaustive-deps': 'warn'
-    };
-  }
-
-  return baseConfig;
+  return [
+    ...tseslint.configs.recommended,
+    prettier,
+    ...(framework === 'react'
+      ? [
+          react.configs.recommended,
+          {
+            plugins: { 'react-hooks': reactHooks },
+            rules: {
+              '@eslint-react/jsx-uses-react': 'off',
+              '@eslint-react/no-prop-types': 'off',
+              'react-hooks/rules-of-hooks': 'error',
+              'react-hooks/exhaustive-deps': 'warn',
+            },
+          },
+        ]
+      : []),
+    {
+      rules: {
+        'no-console': 'warn',
+        'prefer-const': 'error',
+        'no-var': 'error',
+        '@typescript-eslint/no-unused-vars': 'error',
+        '@typescript-eslint/no-explicit-any': strictMode ? 'error' : 'warn',
+        '@typescript-eslint/explicit-function-return-type': 'warn',
+      },
+    },
+  ];
 }
 ```
+
+The independent hooks plugin in this example retains its existing two checks. Presetter's React preset uses `@eslint-react/eslint-plugin` 2.13.0 for ESLint 9 compatibility; see its [migration table](https://github.com/alvis/presetter/blob/main/presets/react/README.md#react-eslint-rules) for mappings and coverage gaps.
 
 ### Package Scripts
 

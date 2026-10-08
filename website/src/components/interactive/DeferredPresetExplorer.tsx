@@ -1,4 +1,4 @@
-/* eslint better-tailwindcss/no-unknown-classes: off, @typescript-eslint/no-magic-numbers: off, react/destructuring-assignment: off, react/sort-comp: off */
+/* eslint better-tailwindcss/no-unknown-classes: off, @typescript-eslint/no-magic-numbers: off, @eslint-react/prefer-destructuring-assignment: off */
 
 import Heading from '@theme/Heading';
 
