@@ -42,6 +42,7 @@
   "peerDependencies": {
     "eslint-plugin-no-secrets": "catalog:lint",
     "eslint-plugin-sonarjs": "catalog:lint",
+    "eslint-plugin-unicorn": "catalog:lint",
     "sort-package-json": "catalog:lint"
   },
   "engines": {

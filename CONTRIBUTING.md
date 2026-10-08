@@ -56,11 +56,12 @@ If your system doesn't have npm 7.20+, you can achieve it by using [nvm](https:/
 
 ### Code Standard
 
-This project employs code standard rules exported from [@presetter/preset-essentials](packages/preset-essentials/templates/eslintrc.yaml),
+This project employs code standard rules exported from [@presetter/preset-essentials](presets/essentials/src/eslint/template.ts),
 which mostly follow the recommended rules from
 
 - [Eslint](https://eslint.org)
 - [TypeScript ESLint](https://typescript-eslint.io).
+- [eslint-plugin-import-x](https://github.com/un-ts/eslint-plugin-import-x)
 - [Sonar](https://github.com/SonarSource/eslint-plugin-sonarjs)
 - [JSDoc](https://www.npmjs.com/package/eslint-plugin-jsdoc)
 

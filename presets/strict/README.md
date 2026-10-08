@@ -318,6 +318,7 @@ Inherited from base preset with strict-specific additions:
 
 - **eslint-plugin-no-secrets**: Detects hardcoded secrets and credentials
 - **eslint-plugin-sonarjs**: Implements SonarJS code quality rules
+- **eslint-plugin-unicorn**: Warns about missing `node:` prefixes with `prefer-node-protocol` only
 - **sort-package-json**: Ensures consistent package.json formatting
 
 #### Security Detection Patterns

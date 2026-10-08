@@ -1,6 +1,7 @@
 import { asset } from '@presetter/types';
 import noSecrets from 'eslint-plugin-no-secrets';
 import sonarjs from 'eslint-plugin-sonarjs';
+import unicorn from 'eslint-plugin-unicorn';
 
 import type { Linter } from 'eslint';
 
@@ -51,9 +52,10 @@ export default asset<{ default: Linter.Config[] }>((current, context) => {
       },
       {
         name: '@presetter/preset-strict:import',
+        plugins: { unicorn },
         rules: {
-          'import/enforce-node-protocol-usage': ['warn', 'always'], // ensure all node modules are imported under node: protocol
-          'import/no-nodejs-modules': isNodeOnly ? 'off' : 'error',
+          'unicorn/prefer-node-protocol': 'warn',
+          'import-x/no-nodejs-modules': isNodeOnly ? 'off' : 'error',
         },
       },
       {

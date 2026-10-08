@@ -29,3 +29,5 @@ export default preset('strict-project', {
   extends: [esm, strict]
 });
 ```
+
+Strict enables only `unicorn/prefer-node-protocol` at warning severity to prefer `node:` prefixes for Node built-ins.
