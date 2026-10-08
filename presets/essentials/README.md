@@ -327,7 +327,7 @@ Customize your project structure:
 
 | Requirement     | Version       |
 | --------------- | ------------- |
-| Node.js         | ≥ 18          |
+| Node.js         | ≥ 22 |
 | TypeScript      | ≥ 5.0         |
 | Package Manager | npm/yarn/pnpm |
 

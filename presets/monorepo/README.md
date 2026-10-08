@@ -481,7 +481,7 @@ Inherited from `@presetter/preset-essentials`:
 
 | Requirement     | Version                       |
 | --------------- | ----------------------------- |
-| Node.js         | ≥ 18                          |
+| Node.js         | ≥ 22 |
 | Package Manager | npm/yarn/pnpm with workspaces |
 
 ### Extends

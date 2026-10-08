@@ -20,7 +20,7 @@ This tutorial covers:
 
 ## Prerequisites
 
-- **Node.js 20+** and **pnpm** installed
+- **Node.js 22+** and **pnpm** installed
 - Understanding of package workspaces
 - Basic familiarity with monorepo concepts
 
@@ -463,7 +463,7 @@ jobs:
           version: 8
       - uses: actions/setup-node@v4
         with:
-          node-version: 18
+          node-version: "lts/*"
           cache: 'pnpm'
 
       - run: pnpm install --frozen-lockfile

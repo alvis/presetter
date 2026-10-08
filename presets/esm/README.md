@@ -313,7 +313,7 @@ build:typescript:mjs:fix: tsc-esm-fix --sourceMap --target {output}
 
 | Environment | Support                           |
 | ----------- | --------------------------------- |
-| Node.js     | ≥ 16 (ESM stable)                 |
+| Node.js     | ≥ 22 |
 | Browsers    | Modern (ES2024)                   |
 | Bundlers    | Vite, Webpack 5+, Rollup, esbuild |
 | TypeScript  | ≥ 5.0                             |

@@ -10,7 +10,7 @@ This tutorial walks you through creating a brand new TypeScript project with Pre
 
 ## Prerequisites
 
-- **Node.js 20+** and **npm 7+** (or equivalent pnpm/yarn) installed
+- **Node.js 22+** and **npm 7+** (or equivalent pnpm/yarn) installed
 - Basic familiarity with TypeScript and npm scripts
 
 ## Step 1: Initialize Your Project

@@ -40,7 +40,7 @@
     "type-fest": "catalog:types"
   },
   "engines": {
-    "node": ">=20.0.0"
+    "node": ">=22.0.0"
   },
   "publishConfig": {
     "access": "public",

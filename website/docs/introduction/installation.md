@@ -9,8 +9,8 @@ title: Installation
 
 Before installing Presetter, ensure you have:
 
-- **Node.js** 20.0.0 or higher
-- Active Node.js LTS is recommended; v9 CI tracks active LTS lines and latest.
+- **Node.js** 22+
+- CI tracks LTS and latest Node.js. Node.js 20 is no longer supported.
 - **npm** 7.0.0 or higher (npm 7+ required for automatic peer dependency installation)
 - **Git** (for version control integration)
 
