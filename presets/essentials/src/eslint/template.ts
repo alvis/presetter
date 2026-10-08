@@ -315,6 +315,7 @@ export default asset<{ default: Linter.Config[] }>(
           'no-magic-numbers': 'off', // use @typescript-eslint/no-magic-numbers instead
           'no-return-await': 'off', // use @typescript-eslint/return-await instead
           'no-throw-literal': 'off', // use @typescript-eslint/no-throw-literal instead
+          'preserve-caught-error': 'off', // retain existing error-wrapping behavior
           'no-var': 'error', // prefer const or let
           'padding-line-between-statements': [
             'warn',

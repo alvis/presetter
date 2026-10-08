@@ -1,4 +1,4 @@
-import * as next from '@next/eslint-plugin-next';
+import next from '@next/eslint-plugin-next';
 
 import type { Linter } from 'eslint';
 

@@ -15,7 +15,7 @@ The cornerstone preset that provides essential development tools for any TypeScr
 
 **Key Features:**
 - TypeScript compilation with strict configuration
-- ESLint 9 with TypeScript support
+- ESLint 10 with TypeScript support
 - Vitest 4 for testing with coverage
 - Prettier 3 for code formatting
 - Git hooks with Husky and lint-staged

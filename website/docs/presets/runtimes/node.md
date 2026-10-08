@@ -20,7 +20,7 @@ The **node preset** extends [`@presetter/preset-essentials`](../foundation/essen
 
 ## Features
 
-- **Inherits everything** from [`@presetter/preset-essentials`](../foundation/essentials) — TypeScript, ESLint 9, Prettier 3, Vitest 4, Husky, lint-staged, git-cliff, and zx.
+- **Inherits everything** from [`@presetter/preset-essentials`](../foundation/essentials) — TypeScript, ESLint 10, Prettier 3, Vitest 4, Husky, lint-staged, git-cliff, and zx.
 - **Node-typed `tsconfig.json`** — `compilerOptions.types` is overridden to `['node']`.
 - **Forward-compatible** — composes cleanly with `preset-esm`, `preset-cjs`, `preset-hybrid`, `preset-strict`, and `preset-rollup`.
 
