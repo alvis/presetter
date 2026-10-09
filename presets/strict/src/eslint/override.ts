@@ -15,6 +15,7 @@ export default [
     ],
     rules: {
       'sonarjs/no-clear-text-protocols': 'off', // permits usage of http:// protocol in test files for local testing
+      'unicorn/prefer-https': 'off', // preserve the same clear-text protocol exception
       'sonarjs/no-duplicate-string': 'off', // permits duplicate strings in tests, as repeated values may be intentional
 
       'sonarjs/no-hardcoded-passwords': 'off', // allows hardcoded credentials in test files for flexibility with dummy data
