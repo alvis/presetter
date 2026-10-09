@@ -1,6 +1,12 @@
 # Changelog
 
 All notable changes to this project will be documented in this file.
+# Unreleased
+
+### 🐞 Bug Fixes
+
+* **preset/next:** allow exported HTTP method names in App Router route handlers without changing other naming checks
+
 # 9.1.0 (2026-07-26)
 
 

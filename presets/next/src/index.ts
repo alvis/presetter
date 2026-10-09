@@ -13,6 +13,7 @@ import { preset } from 'presetter';
 
 import { name } from '../package.json';
 
+import eslintOverride from './eslint/override';
 import * as eslintTemplate from './eslint/template';
 
 import type { Variables } from '@presetter/preset-react';
@@ -44,4 +45,9 @@ export default preset(name, {
     [`${variables.types}/image.d.ts` as 'image.d.ts']: null,
     [`${variables.types}/style.d.ts` as 'style.d.ts']: null,
   }),
+  override: {
+    assets: {
+      'eslint.config.ts': eslintOverride,
+    },
+  },
 });
