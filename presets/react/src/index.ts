@@ -7,8 +7,6 @@ import eslintOverride from './eslint/override';
 import * as eslint from './eslint/template';
 import vitest from './vitest/template';
 
-export { REACT_NAMING_CONVENTION_OPTIONS } from './eslint/naming-convention';
-
 const DIR = fileURLToPath(dirname(import.meta.url));
 
 // paths to the template directory
