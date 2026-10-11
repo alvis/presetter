@@ -331,6 +331,31 @@ Customize your project structure:
 | TypeScript      | ≥ 5.0         |
 | Package Manager | npm/yarn/pnpm |
 
+### TypeScript 7 Compiler with the TypeScript 6 API
+
+TypeScript 7.0 launched without a stable programmatic compiler API. To use its native compiler while keeping the TypeScript 6 API available to tools that import from `typescript`, install both packages using npm aliases:
+
+```bash
+npm install --save-dev '@typescript/native@npm:typescript@^7.0.2' 'typescript@npm:@typescript/typescript6@^6.0.2'
+```
+
+Your development dependencies will include:
+
+```json
+{
+  "devDependencies": {
+    "@typescript/native": "npm:typescript@^7.0.2",
+    "typescript": "npm:@typescript/typescript6@^6.0.2"
+  }
+}
+```
+
+- `tsc` runs TypeScript 7 through the `@typescript/native` alias.
+- `tsc6` runs TypeScript 6 without conflicting with the `tsc` binary.
+- Imports such as `import ts from 'typescript'` retain the TypeScript 6 API through `@typescript/typescript6`.
+
+See the [website installation guide](https://presetter.dev/docs/introduction/installation#using-typescript-7-with-the-typescript-6-api) and [Microsoft's side-by-side guidance](https://devblogs.microsoft.com/typescript/announcing-typescript-7-0/) for details.
+
 ### Extended By
 
 - [`@presetter/preset-esm`](../preset-esm) - ESM module configuration
