@@ -123,6 +123,40 @@ npm install --save-dev presetter @presetter/preset-cjs
 ```
 **Best for**: Existing CommonJS projects, legacy Node.js applications
 
+## Using TypeScript 7 with the TypeScript 6 API
+
+TypeScript 7.0 launched without a stable programmatic compiler API. Tools that import from `typescript`, such as `typescript-eslint`, can still use the TypeScript 6 API while you use the native TypeScript 7 compiler.
+
+Follow [Microsoft's side-by-side installation guidance](https://devblogs.microsoft.com/typescript/announcing-typescript-7-0/) and install both packages using npm aliases:
+
+```bash
+npm install --save-dev '@typescript/native@npm:typescript@^7.0.2' 'typescript@npm:@typescript/typescript6@^6.0.2'
+```
+
+This adds the following development dependencies:
+
+```json title="package.json"
+{
+  "devDependencies": {
+    "@typescript/native": "npm:typescript@^7.0.2",
+    "typescript": "npm:@typescript/typescript6@^6.0.2"
+  }
+}
+```
+
+- `tsc` runs the TypeScript 7 compiler installed under the `@typescript/native` alias.
+- `tsc6` runs the TypeScript 6 compiler, avoiding a conflict with the `tsc` binary.
+- Imports such as `import ts from 'typescript'` resolve to the TypeScript 6 API through the `@typescript/typescript6` compatibility package.
+
+Verify the compiler versions after installation:
+
+```bash
+npx tsc --version
+npx tsc6 --version
+```
+
+This is an optional compiler setup; keep the TypeScript 6 API available for tools that depend on it.
+
 ## Verification
 
 After installation, verify everything is working:

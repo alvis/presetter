@@ -290,6 +290,12 @@ export default preset('production-ready', {
 - `prettier` (^3.0.0) - Code formatter
 - `vitest` (^4.0.0) - Test framework
 
+### Optional TypeScript 7 Compiler
+
+TypeScript 7.0 launched without a stable compiler API. You can use its `tsc` compiler while keeping TypeScript 6 API imports for tools such as `typescript-eslint`: install TypeScript 7 under the `@typescript/native` alias and alias `typescript` to `@typescript/typescript6`. The compatibility package also provides `tsc6` for the TypeScript 6 compiler.
+
+See [Using TypeScript 7 with the TypeScript 6 API](../../introduction/installation.md#using-typescript-7-with-the-typescript-6-api) for the installation command and dependency example.
+
 ### ESLint Plugins
 - `typescript-eslint` (^8.0.0) - TypeScript parser and rules
 - `eslint-plugin-import-x` (^4.17.0) - Import/export syntax checking
