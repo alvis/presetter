@@ -44,9 +44,9 @@ export default preset('presetter-website', {
       'types/style.d.ts': null,
       'tsconfig.build.json': null,
       'tsconfig.json': {
-        extends: ['@docusaurus/tsconfig'],
         exclude: ['.docusaurus'],
         compilerOptions: {
+          allowJs: true,
           ignoreDeprecations: '6.0',
         },
       },
