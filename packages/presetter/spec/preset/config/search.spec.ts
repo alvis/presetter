@@ -29,11 +29,9 @@ vi.mock(
   () =>
     ({
       findUp: vi.fn(async (name: string, options?: Options) => {
-        if ((options?.cwd as string).includes('/monorepo')) {
-          return resolve('/monorepo/package.json');
-        }
-
-        return undefined;
+        return (options?.cwd as string).includes('/monorepo')
+          ? resolve('/monorepo/package.json')
+          : undefined;
       }),
     }) satisfies Partial<typeof import('find-up-simple')>,
 );

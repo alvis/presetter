@@ -6,7 +6,7 @@ import { run } from '#run';
 vi.mock('@npmcli/run-script', () => ({
   default: vi.fn(({ event }: { event: string }) => {
     if (event === 'error') {
-      throw new Error();
+      throw new Error('mock task failed');
     }
   }),
 }));
@@ -96,11 +96,10 @@ describe('fn:run', () => {
     );
   });
 
-  it('should exit with an error code when any one of the tasks fails', async () => {
-    vi.spyOn(process, 'exit').mockImplementation(() => undefined as never);
-    await run([{ selector: 'error', args: [] }]);
-
-    expect(process.exit).toHaveBeenCalledWith(1);
+  it('should reject when any one of the tasks fails', async () => {
+    await expect(run([{ selector: 'error', args: [] }])).rejects.toThrow(
+      'mock task failed',
+    );
   });
 
   describe('opt:templateOnly', () => {

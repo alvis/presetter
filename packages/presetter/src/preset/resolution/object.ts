@@ -1,4 +1,8 @@
-import type { PresetContentContext, PresetObject } from '@presetter/types';
+import type {
+  PresetContentContext,
+  PresetObject,
+  PresetObjectGenerator,
+} from '@presetter/types';
 
 /**
  * evaluate a static value or content factory
@@ -10,5 +14,7 @@ export function resolveObject<T>(
   object: PresetObject<T>,
   context: PresetContentContext,
 ): T {
-  return object instanceof Function ? object(context) : object;
+  return typeof object === 'function'
+    ? (object as PresetObjectGenerator<T>)(context)
+    : object;
 }

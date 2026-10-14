@@ -68,10 +68,9 @@ describe('fn:resolvePresetterConfig', () => {
       throw failure;
     });
 
-    const error = await resolvePresetterConfig('/broken').then(
-      () => undefined,
-      (error: Error) => error,
-    );
+    const error = await resolvePresetterConfig('/broken')
+      .then(() => undefined)
+      .catch((error: Error) => error);
 
     expect({ error, cause: error?.cause }).toEqual({
       error: new Error(

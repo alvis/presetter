@@ -26,7 +26,7 @@ export function listAssetNames(
 ): string[] {
   const assetsResolver = node.definition.assets ?? {};
   const assets =
-    assetsResolver instanceof Function
+    typeof assetsResolver === 'function'
       ? assetsResolver(context)
       : assetsResolver;
 

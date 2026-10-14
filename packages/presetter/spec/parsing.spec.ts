@@ -239,7 +239,7 @@ describe('fn:parseCommandStructure', () => {
   });
 
   it('should handle escaped characters outside quotes', () => {
-    const text = 'echo \\&\\& test';
+    const text = String.raw`echo \&\& test`;
     const baseOffset = 0;
 
     const result = parseCommandStructure(text, baseOffset);
@@ -249,7 +249,7 @@ describe('fn:parseCommandStructure', () => {
   });
 
   it('should handle escaped backslash in double quotes', () => {
-    const text = 'echo "\\\\" && cmd2';
+    const text = String.raw`echo "\\" && cmd2`;
     const baseOffset = 0;
 
     const result = parseCommandStructure(text, baseOffset);

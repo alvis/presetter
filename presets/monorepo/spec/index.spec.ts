@@ -60,7 +60,7 @@ describe('fn:preset', () => {
     const consumedTemplates = [
       node.definition.scripts,
       ...Object.values({
-        ...(node.definition.assets instanceof Function
+        ...(typeof node.definition.assets === 'function'
           ? node.definition.assets({ ...context, variables })
           : node.definition.assets),
       }),
@@ -123,7 +123,7 @@ describe('fn:preset', () => {
         'case " $* " in',
         '  *" --bumped-version "*) echo v1.2.3; exit 0;;',
         'esac',
-        'printf "%s\\n" "$*" >> git-cliff.log',
+        String.raw`printf "%s\n" "$*" >> git-cliff.log`,
         'while [ "$#" -gt 0 ]; do',
         '  if [ "$1" = "--output" ]; then mkdir -p "$(dirname "$2")"; echo changelog > "$2"; exit 0; fi',
         '  if [ "$1" = "--prepend" ]; then { echo changelog; cat "$2"; } > "$2.tmp"; mv "$2.tmp" "$2"; exit 0; fi',

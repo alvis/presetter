@@ -145,14 +145,15 @@ const findReplacements = (
 
   // iterate over statements from sh-syntax
   for (const stmt of (ast as CorrectFile).Stmt) {
-    if (stmt.Cmd) {
-      // extract command text using sh-syntax positions
-      const cmdText = command.slice(stmt.Cmd.Pos.Offset, stmt.Cmd.End.Offset);
-      // parse structure ourselves
-      const parsed = parseCommandStructure(cmdText, stmt.Cmd.Pos.Offset);
-      // find run commands
-      matches.push(...findRunInParsed(parsed, command));
+    if (!stmt.Cmd) {
+      continue;
     }
+    // extract command text using sh-syntax positions
+    const cmdText = command.slice(stmt.Cmd.Pos.Offset, stmt.Cmd.End.Offset);
+    // parse structure ourselves
+    const parsed = parseCommandStructure(cmdText, stmt.Cmd.Pos.Offset);
+    // find run commands
+    matches.push(...findRunInParsed(parsed, command));
   }
 
   return matches.map((runMatch): Replacement => {

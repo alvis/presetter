@@ -61,10 +61,11 @@ async function printCallsiteRecord(error: Error): Promise<void> {
 
   const rendered = await renderCallsiteRecord(record);
 
-  if (rendered !== undefined) {
-    warn();
-    warn(rendered);
+  if (rendered === undefined) {
+    return;
   }
+  warn();
+  warn(rendered);
 }
 
 /**

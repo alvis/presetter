@@ -77,10 +77,8 @@ const mockFileContents: Record<string, string> = {
     '@import "@unresolvable/module";\n.main { color: red; }',
   '/test/module-import-error/src/fallback.css':
     '@import "tailwindcss";\n.fallback { color: blue; }',
-  '/test/bare-module-import/src/main.css':
-    '@import "some-css-library";\\n.main { color: orange; }',
-  '/fake/node_modules/some-css-library/index.css':
-    '@import "tailwindcss";\\n.library { font-weight: bold; }',
+  '/test/bare-module-import/src/main.css': String.raw`@import "some-css-library";\n.main { color: orange; }`,
+  '/fake/node_modules/some-css-library/index.css': String.raw`@import "tailwindcss";\n.library { font-weight: bold; }`,
 };
 
 // mock directory contents
@@ -140,7 +138,7 @@ vi.mock('node:fs/promises', () => ({
   readdir: vi.fn(async (path: string) => {
     const normalizedPath = posix(path);
 
-    if (normalizedPath in directoryContents) {
+    if (Object.hasOwn(directoryContents, normalizedPath)) {
       return directoryContents[normalizedPath];
     }
 
@@ -173,11 +171,12 @@ vi.mock('node:fs/promises', () => ({
     ];
 
     const isNonExistentDir = testPaths.some((testPath) => {
-      return subDirs.some(
-        (subDir) =>
-          normalizedPath === `/test/${testPath}/${subDir}` ||
-          normalizedPath === `/nonexistent/dir` ||
-          normalizedPath === `/nonexistent/project`,
+      return subDirs.some((subDir) =>
+        [
+          `/test/${testPath}/${subDir}`,
+          '/nonexistent/dir',
+          '/nonexistent/project',
+        ].includes(normalizedPath),
       );
     });
 
@@ -195,7 +194,7 @@ vi.mock('#module', () => ({
       throw new Error(`Cannot resolve module "${specifier}"`);
     }
 
-    if (moduleResolutions[specifier]) {
+    if (Object.hasOwn(moduleResolutions, specifier)) {
       return moduleResolutions[specifier];
     }
 

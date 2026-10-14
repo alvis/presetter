@@ -19,15 +19,17 @@ export function substitute(content: unknown, variables: Variables): unknown;
 export function substitute(content: unknown, variables: Variables): unknown {
   if (typeof content === 'string') {
     return pupa(content, variables, { ignoreMissing: true });
-  } else if (Array.isArray(content)) {
+  }
+  if (Array.isArray(content)) {
     return content.map((value: unknown) => substitute(value, variables));
-  } else if (isJsonObject(content)) {
+  }
+  if (isJsonObject(content)) {
     return Object.fromEntries(
       Object.entries(content).map(([key, value]) => {
         return [substitute(key, variables), substitute(value, variables)];
       }),
     );
-  } else {
-    return content;
   }
+
+  return content;
 }

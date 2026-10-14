@@ -168,11 +168,8 @@ const checkBinaryOp = (params: {
   if (char === '|' && nextChar === '|') {
     return { op: '||' };
   }
-  if (char === '|' && nextChar !== '|') {
-    return { op: '|' };
-  }
 
-  return null;
+  return char === '|' && nextChar !== '|' ? { op: '|' } : null;
 };
 
 /**

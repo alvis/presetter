@@ -46,7 +46,7 @@ describe('fn:preset', () => {
     const consumedTemplates = [
       node.definition.scripts,
       ...Object.values({
-        ...(node.definition.assets instanceof Function
+        ...(typeof node.definition.assets === 'function'
           ? node.definition.assets({ ...context, variables })
           : node.definition.assets),
       }),

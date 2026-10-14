@@ -6,6 +6,7 @@ import Debug from './debugger';
 
 import type {
   PresetContent,
+  PresetContentGenerator,
   PresetDefinition,
   PresetNode,
   ProjectContext,
@@ -30,8 +31,11 @@ export async function resolveContent<T>(_: {
   const { content, current, variables = {}, context } = _;
 
   // if content is a function, call it with the current content and context
-  if (content instanceof Function) {
-    return content(current, { ...context, variables });
+  if (typeof content === 'function') {
+    return (content as PresetContentGenerator<T>)(current, {
+      ...context,
+      variables,
+    });
   }
 
   // if content is a string, load the file content

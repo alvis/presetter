@@ -7,7 +7,7 @@ describe('fn:mapValues', () => {
     const input = { a: 1, b: 2, c: 3 };
     const expected = { a: '1', b: '2', c: '3' };
 
-    const result = mapValues(input, (value) => String(value));
+    const result = mapValues(input, String);
 
     expect(result).toEqual(expected);
   });
@@ -31,7 +31,7 @@ describe('fn:mapValues', () => {
   it('should transform values to different types', () => {
     const input = { count: '5', price: '10.99' };
 
-    const result = mapValues(input, (value) => parseFloat(value));
+    const result = mapValues(input, Number);
 
     expect(result).toEqual({ count: 5, price: 10.99 });
   });
@@ -94,9 +94,7 @@ describe('fn:mapValuesAsync', () => {
   it('should transform values to different types', async () => {
     const input = { count: '5', price: '10.99' };
 
-    const result = await mapValuesAsync(input, async (value) =>
-      parseFloat(value),
-    );
+    const result = await mapValuesAsync(input, async (value) => Number(value));
 
     expect(result).toEqual({ count: 5, price: 10.99 });
   });

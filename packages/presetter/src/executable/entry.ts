@@ -216,10 +216,11 @@ export async function resolveProjectRoots(
 
     // NOTE: a pattern carrying nothing but `!` would otherwise become `package.json` and
     // silently subtract the repo root
-    if (directory) {
-      const manifest = posix.join(directory, 'package.json');
-      (prefix === NEGATION_PREFIX ? subtracting : selecting).push(manifest);
+    if (!directory) {
+      continue;
     }
+    const manifest = posix.join(directory, 'package.json');
+    (prefix === NEGATION_PREFIX ? subtracting : selecting).push(manifest);
   }
 
   const roots = new Set(await resolveRoots(selecting));
@@ -333,7 +334,7 @@ function compileNameMatcher(
 ): (name: string) => boolean {
   const expressions = patterns.map((pattern) => {
     const escaped = pattern
-      .replace(/[.+?^${}()|[\]\\]/g, '\\$&')
+      .replace(/[.+?^${}()|[\]\\]/g, String.raw`\$&`)
       .replace(/\*/g, '[^/]*');
 
     return new RegExp(`^${escaped}$`);

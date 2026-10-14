@@ -34,9 +34,11 @@ export function merge<S, T, R = MergedType<S, T>>(source: S, target?: T): R {
   if (source === target) {
     // increase performance, especially for large objects, since no change is needed anyway
     return source as MergedType<S, T> as R;
-  } else if (Array.isArray(source)) {
+  }
+  if (Array.isArray(source)) {
     return mergeArray(source, target) as MergedType<S, T> as R;
-  } else if (isPlainObject(source)) {
+  }
+  if (isPlainObject(source)) {
     return mergeObject(source, target) as MergedType<S, T> as R;
   }
 
@@ -61,9 +63,10 @@ export function mergeArray<S, T>(source: S[], target?: T): MergedArray<S[], T> {
 
   if (Array.isArray(target)) {
     return mergeArrays(source, target) as MergedArray<S[], T>;
-  } else if (
+  }
+  if (
     isPlainObject(target) &&
-    [...Object.keys(target)].every((key) => parseInt(key) >= 0)
+    Object.keys(target).every((key) => parseInt(key) >= 0)
   ) {
     return [...source].map((value, key) =>
       merge(value, target[key]),
@@ -87,11 +90,9 @@ export function mergeArrays<S, T>(
 ): MergedArray<S[], T[]> {
   const mergeKey = getMergeKey(target) ?? getMergeKey(source);
 
-  if (mergeKey) {
-    return mergeArraysByKey(source, target, mergeKey);
-  }
-
-  return [...new Set([...source, ...target])] as MergedArray<S[], T[]>;
+  return mergeKey
+    ? mergeArraysByKey(source, target, mergeKey)
+    : ([...new Set([...source, ...target])] as MergedArray<S[], T[]>);
 }
 
 /**
@@ -170,7 +171,7 @@ function getAtPath(
 
   for (const segment of segments) {
     if (isPlainObject(cursor)) {
-      if (!(segment in cursor)) {
+      if (!Object.hasOwn(cursor, segment)) {
         return { found: false, value: undefined };
       }
       cursor = cursor[segment];
@@ -195,11 +196,7 @@ function getAtPath(
  * @returns true if the item is a record and the path can be walked to completion
  */
 function hasKey(item: unknown, key: string): item is Record<string, unknown> {
-  if (!isPlainObject(item)) {
-    return false;
-  }
-
-  return getAtPath(item, key).found;
+  return isPlainObject(item) && getAtPath(item, key).found;
 }
 
 /**
@@ -277,7 +274,7 @@ function mergeArraysByKey<S, T>(
   });
 
   // append target items that were not matched by any source item
-  const unmatchedKeyed = [...targetMap.entries()]
+  const unmatchedKeyed = [...targetMap]
     .filter(([keyValue]) => !matchedKeys.has(keyValue))
     .map(([, item]) => item);
 

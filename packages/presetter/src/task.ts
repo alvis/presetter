@@ -78,10 +78,10 @@ function expandPlaceholderArgs(
       if (index === 0) {
         // first part: extract content after {@: prefix
         return part.replace(/^{@:?/, '');
-      } else {
-        // subsequent parts: use as-is (they're continuation of the placeholder)
-        return part;
       }
+
+      // subsequent parts: use as-is (they're continuation of the placeholder)
+      return part;
     })
     .join(' ') // rejoin with spaces
     .replace('}', '') // remove trailing }
@@ -91,7 +91,8 @@ function expandPlaceholderArgs(
   if (globalArgs.length > 0) {
     // use provided globalArgs instead of placeholder defaults
     return { args: globalArgs, nextIndex: closingIndex + 1 };
-  } else if (defaultArgsString) {
+  }
+  if (defaultArgsString) {
     // use placeholder defaults, split by whitespace into individual args
     const defaultArgs = defaultArgsString.split(/\s+/);
 
@@ -154,13 +155,13 @@ export function parseTaskSpec(spec: string, globalArgs: string[]): Task {
           processedArgs: [...state.processedArgs, ...processedArgs],
           skipUntil: nextIndex, // skip to after the closing }
         };
-      } else {
-        // regular argument: add as-is
-        return {
-          processedArgs: [...state.processedArgs, arg],
-          skipUntil: index + 1,
-        };
       }
+
+      // regular argument: add as-is
+      return {
+        processedArgs: [...state.processedArgs, arg],
+        skipUntil: index + 1,
+      };
     },
     { processedArgs: [], skipUntil: 0 },
   );
@@ -181,11 +182,8 @@ export function selectTasks(tasks: string[], pattern: string): string[] {
       if (part === '*') {
         return '[^:]+';
       }
-      if (part === '**') {
-        return '.*';
-      }
 
-      return part;
+      return part === '**' ? '.*' : part;
     })
     .join(':');
 
