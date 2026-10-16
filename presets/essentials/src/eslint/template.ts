@@ -13,7 +13,7 @@ import type { Linter } from 'eslint';
 
 const DOUBLE_OR_HALVE = 2;
 
-const commonWebDependencies = [
+const commonWebDependencies = new Set([
   'autoprefixer',
   'next',
   'parcel',
@@ -25,7 +25,7 @@ const commonWebDependencies = [
   'vue',
   'webpack',
   'tailwindcss',
-];
+]);
 
 export default asset<{ default: Linter.Config[] }>(
   (current, { packageJson, projectRoot, variables }) => ({
@@ -50,7 +50,10 @@ export default asset<{ default: Linter.Config[] }>(
         plugins: { jsdoc, 'import-x': imports },
         settings: {
           'import-x/internal-regex': '^(#|@/)',
-          'import-x/external-module-folders': ['node_modules', variables.types!],
+          'import-x/external-module-folders': [
+            'node_modules',
+            variables.types!,
+          ],
           'import-x/resolver': {
             typescript: true,
             node: true,
@@ -58,15 +61,15 @@ export default asset<{ default: Linter.Config[] }>(
           'jsdoc': {
             mode: 'typescript',
           },
-          'targets':
-            packageJson.browserslist ??
-            (Object.keys({
+          'targets': packageJson.browserslist ?? [
+            Object.keys({
               ...packageJson.dependencies,
               ...packageJson.devDependencies,
               ...packageJson.peerDependencies,
-            }).some((dependency) => commonWebDependencies.includes(dependency))
-              ? ['>0.5%'] // assuming web API usage on browsers only if it has any common web dependencies
-              : ['maintained node versions']), // otherwise, only check if web API usage are supported by the specified node js versions,
+            }).some((dependency) => commonWebDependencies.has(dependency))
+              ? '>0.5%' // assuming web API usage on browsers only if it has any common web dependencies
+              : 'maintained node versions',
+          ], // otherwise, only check if web API usage are supported by the specified node js versions,
         },
         rules: {
           // Extension Rules //
@@ -229,7 +232,7 @@ export default asset<{ default: Linter.Config[] }>(
             'warn',
             'never',
             {
-              ignorePattern: '\\*|\\/|/|\\s', // ignore specific characters in comments
+              ignorePattern: String.raw`\*|\/|/|\s`, // ignore specific characters in comments
             },
           ],
           'one-var': ['warn', 'never'], // enforce one declaration per line

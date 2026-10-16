@@ -31,14 +31,13 @@ const WARNING_PATTERNS = [
   /\bERESOLVE\b/i,
 ];
 
-/** patterns for warnings we can ignore (third-party subdependency issues) */
+/** patterns for transport noise and known third-party dependency warnings */
 const IGNORABLE_PATTERNS = [
   /^[A-Z_][A-Z0-9_]*=/, // diagnostic environment dump
   /request took/i,
+  // registry transfer speed does not indicate a dependency problem
+  /^\s*\[WARN\] Tarball download average speed [^:]+: https?:\/\/\S+ \(GET\)\s*$/,
   /not found and will be installed/i,
-  // Remove these temporary exceptions with the ESLint 10 upgrade after import-x.
-  /^\s*(?:\[WARN\]|WARN|npm warn)\s+deprecated eslint@9\.39\.5(?:: This version is no longer supported\. Please see https:\/\/eslint\.org\/version-support for other options\.|\. \d+\.\d+\.\d+ is not deprecated, outside the range you declared\.)\s*$/,
-  /^\s*\+ eslint 9\.39\.5 \(\d+\.\d+\.\d+ is available\) deprecated\s*$/,
   /^\s*(?:\[WARN\]|WARN)\s+Issues with peer dependencies found\. Run "pnpm peers check" to list them\.\s*$/,
   /tsconfck/i, // tsconfck is depreciated recently by it's used by vite-tsconfig-paths -> vite-plugin-storybook-nextjs -> @storybook/nextjs-vite. Until https://github.com/aleclarson/vite-tsconfig-paths/issues/219 is resolved, ignore the depreciateion warning
 ];
@@ -54,7 +53,7 @@ function findWarnings(output: string): string[] {
   return lines.filter(
     (line) =>
       WARNING_PATTERNS.some((pattern) => pattern.test(line)) &&
-      !IGNORABLE_PATTERNS.some((pattern) => pattern.test(line)),
+      IGNORABLE_PATTERNS.every((pattern) => !pattern.test(line)),
   );
 }
 

@@ -126,7 +126,7 @@ async function checkTailwindImportRecursively(
     }
     visited.add(path);
 
-    const content = await readFile(path, 'utf-8');
+    const content = await readFile(path, 'utf8');
 
     // check for direct tailwind import
     if (/@import\s+["']tailwindcss/.exec(content) !== null) {

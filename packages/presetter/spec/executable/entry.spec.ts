@@ -267,10 +267,9 @@ describe('fn:bootstrapProjects', () => {
     const error = await bootstrapProjects([
       process.cwd(),
       resolve('packages/b'),
-    ]).then(
-      () => undefined,
-      (error: AggregateError) => error,
-    );
+    ])
+      .then(() => undefined)
+      .catch((error: AggregateError) => error);
 
     expect({
       message: error?.message,

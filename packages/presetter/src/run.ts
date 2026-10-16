@@ -55,29 +55,27 @@ function createListrTask(_: {
         const globalArgs = [...parseGlobalArgs(argv), ...args];
 
         // get subtasks based on the task specifications and global arguments
-        const subTasks = (
-          await Promise.all(
-            taskSpecs.map(async (taskSpec) =>
-              getListrTasksBySpec({
-                template,
-                context,
-                paths,
-                taskSpec,
-                globalArgs,
-              }),
-            ),
-          )
-        ).flat();
+        const nestedTasks = await Promise.all(
+          taskSpecs.map(async (taskSpec) =>
+            getListrTasksBySpec({
+              template,
+              context,
+              paths,
+              taskSpec,
+              globalArgs,
+            }),
+          ),
+        );
+        const subTasks = nestedTasks.flat();
 
         const concurrent = executable === 'run-p';
 
         return taskControl.newListr(subTasks, { concurrent });
-      } else {
-        taskControl.output = `${scripts[task]} ${args.join(' ')}`;
-
-        // run the npm script with the provided arguments and package information
-        return runWithNPM({ task, args, context, paths, scripts });
       }
+      taskControl.output = `${scripts[task]} ${args.join(' ')}`;
+
+      // run the npm script with the provided arguments and package information
+      return runWithNPM({ task, args, context, paths, scripts });
     },
   };
 }
@@ -103,7 +101,7 @@ async function getListrTasksBySpec(_: {
 
   // parse the task specification and remove any quotes
   const task = parseTaskSpec(
-    taskSpec.toString().replace(/^(['"])([^]*?)\1$/, '$2'),
+    taskSpec.replace(/^(['"])([^]*?)\1$/, '$2'),
     globalArgs,
   );
 
@@ -219,19 +217,18 @@ export async function run(
   const { paths, scripts: template } = await getScripts();
 
   // get Listr tasks based on the provided tasks and package information
-  const listTasks = (
-    await Promise.all(
-      tasks.map(async (taskItem) =>
-        getListrTasks({
-          paths,
-          template,
-          context: distilled,
-          selector: taskItem.selector,
-          args: taskItem.args,
-        }),
-      ),
-    )
-  ).flat();
+  const nestedTasks = await Promise.all(
+    tasks.map(async (taskItem) =>
+      getListrTasks({
+        paths,
+        template,
+        context: distilled,
+        selector: taskItem.selector,
+        args: taskItem.args,
+      }),
+    ),
+  );
+  const listTasks = nestedTasks.flat();
 
   // create a Listr instance with the list of tasks and configuration options
   const listr = new Listr<never, 'simple'>(listTasks, {
@@ -241,9 +238,5 @@ export async function run(
   });
 
   // run the Listr tasks
-  try {
-    await listr.run();
-  } catch {
-    process.exit(1);
-  }
+  await listr.run();
 }

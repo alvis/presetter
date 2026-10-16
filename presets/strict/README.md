@@ -318,8 +318,10 @@ Inherited from base preset with strict-specific additions:
 
 - **eslint-plugin-no-secrets**: Detects hardcoded secrets and credentials
 - **eslint-plugin-sonarjs**: Implements SonarJS code quality rules
-- **eslint-plugin-unicorn**: Warns about missing `node:` prefixes with `prefer-node-protocol` only
+- **eslint-plugin-unicorn**: Enables recommended checks with exclusions for existing rule ownership, formatting, runtime compatibility, and project preferences. Explicit exclusions preserve the selected rule policies; `prefer-node-protocol` remains a warning. Strict preserves the existing test naming and HTTP exceptions, including React's JSX/TSX test naming scope.
 - **sort-package-json**: Ensures consistent package.json formatting
+
+Strict does not depend on Essentials. Its TypeScript ESLint rules apply only when an earlier configuration registers the `@typescript-eslint` plugin.
 
 #### Security Detection Patterns
 
@@ -384,7 +386,7 @@ coverage: {
 | Environment  | Support                                 |
 | ------------ | --------------------------------------- |
 | Base Presets | Works with essentials, esm, cjs, hybrid |
-| Node.js      | ≥ 22 |
+| Node.js      | ≥ 22                                    |
 | TypeScript   | ≥ 5.0                                   |
 | Testing      | Vitest-based projects                   |
 

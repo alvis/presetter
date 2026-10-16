@@ -73,15 +73,16 @@ export default asset<{ default: ViteUserConfig }>((current, context) => {
          * @returns false to suppress the log, void to allow it
          */
         onConsoleLog(log: string, type: 'stdout' | 'stderr'): boolean | void {
-          if (type === 'stderr') {
-            // Suppress: "An update to X inside a test was not wrapped in act(...)"
-            if (log.includes('inside a test was not wrapped in act')) {
-              return false;
-            }
-            // Suppress: "A component suspended inside an `act` scope"
-            if (log.includes('A component suspended inside an `act` scope')) {
-              return false;
-            }
+          if (type !== 'stderr') {
+            return;
+          }
+          // Suppress: "An update to X inside a test was not wrapped in act(...)"
+          if (log.includes('inside a test was not wrapped in act')) {
+            return false;
+          }
+          // Suppress: "A component suspended inside an `act` scope"
+          if (log.includes('A component suspended inside an `act` scope')) {
+            return false;
           }
         },
       },

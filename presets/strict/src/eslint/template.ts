@@ -21,6 +21,7 @@ export default asset<{ default: Linter.Config[] }>((current, context) => {
   return {
     default: [
       ...currentConfigs,
+      unicorn.configs.recommended,
       sonarjs.configs!.recommended as Linter.Config,
       {
         name: '@presetter/preset-strict:generic',
@@ -52,10 +53,109 @@ export default asset<{ default: Linter.Config[] }>((current, context) => {
       },
       {
         name: '@presetter/preset-strict:import',
+        rules: {
+          'import-x/no-nodejs-modules': isNodeOnly ? 'off' : 'error',
+        },
+      },
+      {
+        name: '@presetter/preset-strict:unicorn',
         plugins: { unicorn },
         rules: {
+          // TypeScript member ordering, JSDoc and Prettier own these policies.
+          'unicorn/consistent-class-member-order': 'off',
+          'unicorn/single-line-block-comment-style': 'off',
+          'unicorn/no-asterisk-prefix-in-documentation-comments': 'off',
+          'unicorn/no-useless-undefined': 'off',
+          'unicorn/no-nested-ternary': 'off',
+          'unicorn/empty-brace-spaces': 'off',
+          'unicorn/number-literal-case': 'off',
+          'unicorn/template-indent': 'off',
+
+          // removing the catch binding would suppress sonarjs/no-ignored-exceptions
+          'unicorn/prefer-optional-catch-binding': 'off',
+
+          // existing TypeScript, core and ESLint-comments checks take priority
+          'unicorn/no-for-loop': 'off',
+          'unicorn/prefer-array-find': 'off',
+          'unicorn/prefer-includes': 'off',
+          'unicorn/prefer-string-starts-ends-with': 'off',
+          'unicorn/no-this-assignment': 'off',
+          'unicorn/no-abusive-eslint-disable': 'off',
+          'unicorn/no-incorrect-template-string-interpolation': 'off',
+          'unicorn/consistent-existence-index-check': 'off', // @typescript-eslint/prefer-includes owns index-based existence checks
+          'unicorn/consistent-optional-chaining': 'off', // @typescript-eslint/no-unnecessary-condition owns redundant optional access
+          'unicorn/no-unnecessary-await': 'off', // @typescript-eslint/await-thenable owns awaiting non-promises
+          'unicorn/no-uncalled-method': 'off', // @typescript-eslint/unbound-method owns detached instance methods and its test exception
+          'unicorn/no-undeclared-class-members': 'off', // TypeScript owns class member declarations
+          'unicorn/no-optional-chaining-on-undeclared-variable': 'off', // core no-undef is off for TypeScript's ambient declarations
+          'unicorn/prefer-regexp-test': 'off', // @typescript-eslint/prefer-regexp-exec and sonarjs/prefer-regexp-exec own match conversions
+          'unicorn/prefer-reflect-apply': 'off', // core prefer-spread owns Function#apply conversions
+          'unicorn/no-magic-array-flat-depth': 'off', // @typescript-eslint/no-magic-numbers owns numeric exceptions, including depth 2 and tests
+          'unicorn/switch-case-braces': 'off', // core no-case-declarations owns lexical declarations in switch cases
+          'unicorn/expiring-todo-comments': 'off', // no-warning-comments and SonarJS task-comment diagnostics own these comments
+
+          // existing SonarJS checks take priority
+          'unicorn/prefer-boolean-return': 'off',
+          'unicorn/prefer-promise-static-methods': 'off',
+          'unicorn/no-negated-comparison': 'off',
+          'unicorn/no-duplicate-if-branches': 'off',
+          'unicorn/no-useless-continue': 'off',
+          'unicorn/no-duplicate-logical-operands': 'off',
+          'unicorn/new-for-builtins': 'off',
+          'unicorn/no-impossible-length-comparison': 'off',
+          'unicorn/no-unused-builtin-method-return': 'off', // sonarjs/no-ignored-return owns discarded built-in results
+          'unicorn/no-useless-logical-operand': 'off', // sonarjs/no-redundant-boolean and core no-constant-binary-expression own constant operands
+          'unicorn/prefer-simplified-conditions': 'off', // sonarjs/no-identical-expressions and no-inverted-boolean-check own simplifications
+          'unicorn/no-accidental-bitwise-operator': 'off', // sonarjs/bitwise-operators owns bitwise restrictions
+          'unicorn/no-xor-as-exponentiation': 'off', // sonarjs/bitwise-operators owns XOR restrictions
+          'unicorn/no-invalid-argument-count': 'off', // sonarjs/no-extra-arguments and TypeScript own call arity
+          'unicorn/no-this-outside-of-class': 'off', // sonarjs/no-global-this owns top-level this
+          'unicorn/throw-new-error': 'off', // sonarjs/new-operator-misuse owns built-in Error construction
+          'unicorn/no-array-sort': 'off', // sonarjs/no-misleading-array-reverse owns sort results and suggests toSorted
+          'unicorn/no-array-reverse': 'off', // sonarjs/no-misleading-array-reverse owns reverse results and suggests toReversed
+
+          // preserve policies disabled in inherited configurations
+          'unicorn/require-array-sort-compare': 'off',
+          'unicorn/no-lonely-if': 'off', // sonarjs/no-collapsible-if is off
+          'unicorn/no-global-object-property-assignment': 'off', // sonarjs/no-built-in-override is off
+          'unicorn/max-nested-calls': 'off', // sonarjs/expression-complexity is off
+          'unicorn/no-top-level-side-effects': 'off', // Presetter's asset/preset factories initialize declarative configuration at module scope
+
+          // preserve current TypeScript libraries, runtimes and build formats
+          'unicorn/prefer-promise-try': 'off',
+          'unicorn/prefer-array-from-async': 'off',
+          'unicorn/prefer-iterator-helpers': 'off',
+          'unicorn/prefer-iterator-to-array': 'off', // Iterator helpers require libraries beyond ES2024
+          'unicorn/prefer-iterator-to-array-at-end': 'off', // Iterator helpers require libraries beyond ES2024
+          'unicorn/prefer-iterator-zip': 'off', // Iterator.zip is outside current libraries and Node 22
+          'unicorn/prefer-get-or-insert-computed': 'off', // Map#getOrInsertComputed is outside ES2024 and Node 22
+          'unicorn/prefer-set-methods': 'off', // Set composition methods require ES2025 libraries
+          'unicorn/prefer-top-level-await': 'off', // CommonJS TypeScript builds cannot emit top-level await
+
+          // explicit project preferences and additional style exclusions
+          'unicorn/consistent-boolean-name': 'off', // preserve the existing identifier naming policy
+          'unicorn/prefer-number-is-safe-integer': 'off', // preserve existing integer validation semantics
+          'unicorn/prefer-await': 'off', // preserve promise chains and their rejection handling
+          'unicorn/prefer-default-parameters': 'off', // preserve explicit nullish defaults
+          'unicorn/no-unreadable-for-of-expression': 'off', // allow expressions in loop headers
+          'unicorn/prefer-string-replace-all': 'off', // retain the existing String#replace convention
+          'unicorn/no-negated-condition': 'off', // allow negative guards and existing branch ordering
+          'unicorn/no-declarations-before-early-exit': 'off', // retain local declaration placement
+          'unicorn/catch-error-name': 'off', // retain meaningful catch binding names, including cause
+          'unicorn/no-array-callback-reference': 'off', // allow compatible functions as array callbacks
+          'unicorn/no-null': 'off',
+          'unicorn/filename-case': 'off',
+          'unicorn/import-style': 'off',
+          'unicorn/name-replacements': 'off',
+          'unicorn/no-array-reduce': 'off',
+          'unicorn/no-for-each': 'off',
+          'unicorn/consistent-function-scoping': 'off',
+          'unicorn/prefer-switch': 'off',
+          'unicorn/no-unreadable-array-destructuring': 'off',
+          'unicorn/prefer-module': 'off',
+          'unicorn/prefer-spread': 'off',
+          'unicorn/no-new-array': 'off',
           'unicorn/prefer-node-protocol': 'warn',
-          'import-x/no-nodejs-modules': isNodeOnly ? 'off' : 'error',
         },
       },
       {
@@ -103,7 +203,7 @@ export default asset<{ default: Linter.Config[] }>((current, context) => {
                 '(?=[A-Z][a-z])', // split camel case for improved analysis
                 ':', // split key-value pairs
                 '_', // split underscores in identifiers
-                '\\?', // split URLs at query strings
+                String.raw`\?`, // split URLs at query strings
                 '&', // split query string pairs
                 '/', // split paths in URLs
                 '#', // split fragments in URLs

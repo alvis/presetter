@@ -7,24 +7,26 @@
 export function display(content: unknown, level = 0): string {
   if (typeof content === 'function') {
     return 'Function';
-  } else if (Array.isArray(content)) {
+  }
+  if (Array.isArray(content)) {
     return `Array(${content.length})`;
-  } else if (content instanceof Buffer) {
+  }
+  if (content instanceof Buffer) {
     return 'Buffer';
-  } else if (content === null) {
+  }
+  if (content === null) {
     return 'null';
-  } else if (typeof content === 'object') {
+  }
+  if (typeof content === 'object') {
     return `Object({${
       level > 1
         ? '...' // skip displaying nested objects
         : '\n' +
-          Object.keys(content)
+          Object.entries(content)
             .map(
-              (key) =>
+              ([key, value]) =>
                 // indent the content based on the level
-                '  '.repeat(level + 1) +
-                `${key}: ` +
-                display((content as Record<string, unknown>)[key], level + 1),
+                '  '.repeat(level + 1) + `${key}: ` + display(value, level + 1),
             )
             .join('\n') +
           '\n' +

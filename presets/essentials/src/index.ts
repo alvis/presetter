@@ -53,13 +53,11 @@ export default preset('@presetter/preset-essentials', (context) => ({
   },
   scripts: resolve(TEMPLATES, 'scripts.yaml'),
   assets: {
-    ...(context.isRepoRoot
-      ? {
-          '.husky/pre-commit': resolve(TEMPLATES, 'pre-commit'),
-          '.husky/pre-push': resolve(TEMPLATES, 'pre-push'),
-          'cliff.yaml': resolve(TEMPLATES, 'cliff.yaml'),
-        }
-      : {}),
+    ...(context.isRepoRoot && {
+      '.husky/pre-commit': resolve(TEMPLATES, 'pre-commit'),
+      '.husky/pre-push': resolve(TEMPLATES, 'pre-push'),
+      'cliff.yaml': resolve(TEMPLATES, 'cliff.yaml'),
+    }),
     '.gitignore': resolve(TEMPLATES, 'gitignore'),
     '.lintstagedrc.json': resolve(TEMPLATES, 'lintstagedrc.yaml'),
     '.npmignore': resolve(TEMPLATES, 'npmignore'),

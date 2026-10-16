@@ -15,7 +15,7 @@ export async function resolvePreset(
   debug(`resolving node ${preset.id}`);
 
   const definition =
-    preset instanceof Function
+    typeof preset === 'function'
       ? { id: preset.id, ...(await preset(context)) }
       : preset;
 

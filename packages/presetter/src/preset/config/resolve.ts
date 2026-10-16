@@ -86,12 +86,10 @@ async function importDefault(path: string): Promise<unknown> {
  * @returns true if the value is an object or function carrying a string id
  */
 function isPreset(content: unknown): content is Preset {
-  if (
-    (typeof content !== 'object' || content === null) &&
-    typeof content !== 'function'
-  ) {
-    return false;
-  }
-
-  return 'id' in content && typeof content.id === 'string';
+  return (
+    (typeof content === 'function' ||
+      (typeof content === 'object' && content !== null)) &&
+    'id' in content &&
+    typeof content.id === 'string'
+  );
 }
