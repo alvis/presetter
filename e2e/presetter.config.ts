@@ -21,6 +21,8 @@ export default preset('@presetter/e2e', {
   extends: [esm, strict],
   override: {
     assets: {
+      // this package runs only the dedicated E2E config, without a UNIT project.
+      'vitest.config.ts': null,
       'vitest.config.e2e.ts': {
         default: {
           test: {

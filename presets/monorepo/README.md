@@ -448,11 +448,12 @@ Inherited from `@presetter/preset-essentials`:
 // Generated vitest.config.ts at root
 {
   test: {
-    workspace: ['*/*/vitest.config{,.int,.e2e}.ts'],
+    name: 'my-monorepo',
+    projects: ['*/vitest.config.ts', '*/*/vitest.config.ts'],
     coverage: {
       provider: 'v8',
       reporter: ['text', 'html', 'clover', 'json', 'lcov'],
-      excludeAfterRemap: true,  // Respects package-level exclusions
+      excludeAfterRemap: true,  // Reapplies exclusions to original source paths
       thresholds: {
         branches: 100,
         functions: 100,
@@ -463,6 +464,8 @@ Inherited from `@presetter/preset-essentials`:
   }
 }
 ```
+
+Each package config declares its own `UNIT` project and auxiliary configs. Vitest namespaces these projects as `package-name (UNIT)`, `package-name (INT)`, and so on. Discover only the main package configs at the monorepo root so auxiliary projects are loaded once. The `test` script selects standalone `UNIT` projects and namespaced unit projects with `*(UNIT)`. Coverage settings belong in the root config; `excludeAfterRemap` reapplies those exclusions after source mapping and does not merge package-level coverage settings.
 
 ---
 

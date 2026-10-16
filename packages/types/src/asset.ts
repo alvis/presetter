@@ -36,9 +36,7 @@ export interface PresetAssets {
     | PresetContent<Record<string, any>>;
 }
 
-/**
- * defines the resolved structure for preset assets
- */
+/** defines the resolved structure for preset assets */
 export interface ResolvedPresetAssets {
   /** defines ignored file patterns */
   [list: `${Path}ignore`]: string[] | null | undefined;
@@ -63,9 +61,7 @@ export interface ResolvedPresetAssets {
   [file: Path]: ResolvedPresetAsset;
 }
 
-/**
- * union of possible types of a resolved asset
- */
+/** union of possible types of a resolved asset */
 export type ResolvedPresetAsset =
   | Buffer // for binary content
   | Record<string, any> // for dynamic ts/js content

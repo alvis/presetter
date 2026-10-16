@@ -25,7 +25,7 @@ The **essentials preset** is the foundation of the Presetter ecosystem, providin
 - **🛠️ TypeScript 6** - Type-safe JavaScript with a strict configuration targeting **ES2024**, including `noUncheckedIndexedAccess` for safer indexed access
 - **🚨 ESLint 10** - Code quality enforcement with TypeScript support
 - **💅 Prettier 3** - Consistent code formatting
-- **🧪 Vitest 4** - Fast unit testing with coverage reporting
+- **🧪 Vitest 5** - Fast unit testing with coverage reporting
 - **💰 git-cliff** - Automated semantic versioning and changelogs
 - **🔧 zx** - Cross-platform shell scripting
 
@@ -146,7 +146,7 @@ run start
 ### Testing
 
 #### `run test`
-Run all tests with Vitest.
+Run unit tests with Vitest by default. The script selects `UNIT` in standalone projects and `*(UNIT)` in monorepos.
 
 ```bash
 run test
@@ -156,22 +156,24 @@ run test -- --watch
 run test -- --ui
 ```
 
+Bare `vitest` runs every configured project; Vitest 5 has no public configuration option for a default project. To run every project through Presetter, use `run test:vitest`.
+
 #### `run test:unit`
-Run unit tests only (files matching `*:UNIT` pattern).
+Run unit projects only (named `UNIT` or matching `*(UNIT)`).
 
 ```bash
 run test:unit
 ```
 
 #### `run test:int`
-Run integration tests only (files matching `*:INT` pattern).
+Run integration projects only (named `INT` or matching `*(INT)`).
 
 ```bash
 run test:int
 ```
 
 #### `run test:e2e`
-Run end-to-end tests only (files matching `*:E2E` pattern).
+Run end-to-end projects only (named `E2E` or matching `*(E2E)`).
 
 ```bash
 run test:e2e
@@ -192,7 +194,7 @@ run test:watch
 ```
 
 #### `run test:coverage`
-Run all tests with coverage reporting.
+Run unit tests with coverage reporting.
 
 ```bash
 run test:coverage
@@ -288,7 +290,7 @@ export default preset('production-ready', {
 - `typescript` (^6.0.0) - TypeScript compiler
 - `eslint` (^10.12.0) - Linting utility
 - `prettier` (^3.0.0) - Code formatter
-- `vitest` (^4.0.0) - Test framework
+- `vitest` (^5.0.0) - Test framework
 
 ### Optional TypeScript 7 Compiler
 
@@ -313,7 +315,7 @@ See [Using TypeScript 7 with the TypeScript 6 API](../../introduction/installati
 - `husky` (^9.0.0) - Git hook management
 - `lint-staged` (^16.0.0) - Run linters on staged files
 - `git-cliff` (^2.12.0) - Version calculation and changelog generation
-- `@vitest/coverage-v8` (^4.0.0) - Test coverage reporting
+- `@vitest/coverage-v8` (^5.0.0) - Test coverage reporting
 - `zx` (^8.0.0) - Shell scripting utilities
 
 ## 🔧 Common Use Cases

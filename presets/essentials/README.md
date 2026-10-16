@@ -296,19 +296,20 @@ Customize your project structure:
 // Generated vitest.config.ts
 {
   test: {
+    name: 'my-package',
+    projects: [
+      { extends: true, test: { name: 'UNIT' } },
+      'vitest.config.*.ts',
+    ],
     coverage: {
       provider: 'v8',
       reporter: ['text', 'html', 'clover', 'json', 'lcov'],
-      thresholds: {
-        branches: 100,
-        functions: 100,
-        lines: 100,
-        statements: 100
-      }
     }
   }
 }
 ```
+
+The `test` script selects `UNIT` in standalone projects and `my-package (UNIT)` in monorepos. Auxiliary configs declare their own project names, such as `INT` or `E2E`. Bare `vitest` runs all configured projects; use `run test` for units by default or `run test:vitest` for all projects.
 
 ---
 
