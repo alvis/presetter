@@ -11,7 +11,7 @@ export function preset(
   id: string,
   preset: Omit<PresetDefinition, 'id'> | PresetGenerator,
 ): Preset {
-  return preset instanceof Function
+  return typeof preset === 'function'
     ? Object.assign(preset, { id })
     : { ...preset, id };
 }

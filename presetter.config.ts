@@ -29,6 +29,9 @@ export default preset('@presetter/monorepo', {
   override: {
     scripts: {
       'build:typescript:tsc': 'tsgo -p tsconfig.build.json',
+      // Vitest 5 matches coverage paths relative to each selected project.
+      'test:coverage':
+        'run-s "test -- --project=*:UNIT --project=!@presetter/e2e:UNIT --coverage {@}" --',
     },
     assets: ({ isRepoRoot }) => ({
       'vitest.config.ts': vitest,
