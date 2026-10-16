@@ -20,7 +20,7 @@ This tutorial covers:
 
 ## Prerequisites
 
-- **Node.js 22+** and **pnpm** installed
+- **Node.js 22.13+ (22.x), 24.x, or 26+** and **pnpm** installed
 - Understanding of package workspaces
 - Basic familiarity with monorepo concepts
 

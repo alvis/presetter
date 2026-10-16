@@ -493,7 +493,7 @@ overrides: [
 | React             | ≥ 18 (with React 16.14+ support)                                         |
 | Base Presets      | Works with essentials, esm, cjs, hybrid                                  |
 | Browsers          | Modern browsers (ES2024+)                                                |
-| Node.js           | ≥ 22 |
+| Node.js           | 22.13+ (22.x), 24.x, or ≥26 |
 | ESLint            | ^10.12.0                                                               |
 | React lint plugin | ^5.24.8                                                                |
 | TypeScript        | 6; React plugin declares `*`, TypeScript ESLint supports >=4.8.4 <6.1.0 |

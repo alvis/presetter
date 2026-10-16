@@ -340,7 +340,7 @@ npm exec run build:compile -- src/index.ts --outfile ./bin/cli
 | Environment  | Support                               |
 | ------------ | ------------------------------------- |
 | Bun runtime  | ≥ 1.0 (for `--compile --bytecode`)    |
-| Node.js      | ≥ 22 |
+| Node.js      | 22.13+ (22.x), 24.x, or ≥26 |
 | TypeScript   | ≥ 6.0                                 |
 | Base Presets | Composes with essentials, esm, strict |
 
@@ -444,7 +444,7 @@ Yes — just don't install this preset. Use `preset-node` or `preset-esm` and ru
 
 #### Does this work in CI?
 
-Yes, as long as your CI image has Bun installed. Most CI providers support Bun via setup actions (e.g. `oven-sh/setup-bun` on GitHub Actions). Presetter itself requires Node.js 22+.
+Yes, as long as your CI image has Bun installed. Most CI providers support Bun via setup actions (e.g. `oven-sh/setup-bun` on GitHub Actions). Presetter itself requires Node.js 22.13+ (22.x), 24.x, or 26+.
 
 #### Can I combine this with preset-strict?
 
