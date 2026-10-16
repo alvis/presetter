@@ -1,5 +1,5 @@
 import { asset } from '@presetter/types';
-import { merge } from 'presetter';
+import { merge, mergeByKey } from 'presetter';
 
 import type { ViteUserConfig } from 'vitest/config';
 
@@ -9,7 +9,12 @@ export default asset<{ default: ViteUserConfig }>((current, context) => {
   return merge(current, {
     default: {
       test: {
-        projects: ['vitest.config{,.*}.ts'],
+        projects: merge(
+          mergeByKey('test.name', [
+            { extends: true, test: { name: `${packageJson.name!}:UNIT` } },
+          ]),
+          ['vitest.config.*.ts'],
+        ),
         name: `${packageJson.name!}:UNIT`,
         passWithNoTests: true,
         typecheck: {

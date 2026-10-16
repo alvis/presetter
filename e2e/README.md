@@ -103,6 +103,6 @@ To debug test failures:
 E2E tests run on GitHub Actions for:
 
 - **Operating Systems**: Ubuntu, macOS, Windows
-- **Node.js Versions**: 20, 22, 24, 25
+- **Node.js Versions**: LTS and latest, within `^22.13.0 || ^24.0.0 || >=26.0.0`
 
 See `.github/workflows/e2e.yaml` for the workflow configuration.

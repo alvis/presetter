@@ -23,9 +23,7 @@ export interface ProjectContext {
   packageJson: PackageJson;
 }
 
-/**
- * supplementary context available for a content resolver
- */
+/** supplementary context available for a content resolver */
 export interface PresetContentContext extends ProjectContext {
   variables: Variables;
 }

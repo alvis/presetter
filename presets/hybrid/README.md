@@ -341,7 +341,7 @@ build:typescript:cjs:tsc: tsc -p tsconfig.cjs.json
 
 | Environment | Support                                  |
 | ----------- | ---------------------------------------- |
-| Node.js     | ≥ 22 |
+| Node.js     | 22.13+ (22.x), 24.x, or ≥26 |
 | Bundlers    | Universal (webpack, Rollup, Vite, etc.)  |
 | Tools       | Works with both CommonJS and ESM tooling |
 | TypeScript  | ≥ 5.0                                    |

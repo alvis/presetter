@@ -467,7 +467,7 @@ export default preset('conditional-preset', {
 | Environment | Support      |
 | ----------- | ------------ |
 | TypeScript  | ≥ 5.0        |
-| Node.js     | ≥ 22 |
+| Node.js     | 22.13+ (22.x), 24.x, or ≥26 |
 | Presetter   | All versions |
 
 ### Used By

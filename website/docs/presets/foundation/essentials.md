@@ -25,7 +25,7 @@ The **essentials preset** is the foundation of the Presetter ecosystem, providin
 - **🛠️ TypeScript 6** - Type-safe JavaScript with a strict configuration targeting **ES2024**, including `noUncheckedIndexedAccess` for safer indexed access
 - **🚨 ESLint 10** - Code quality enforcement with TypeScript support
 - **💅 Prettier 3** - Consistent code formatting
-- **🧪 Vitest 4** - Fast unit testing with coverage reporting
+- **🧪 Vitest 5** - Fast unit testing with coverage reporting
 - **💰 git-cliff** - Automated semantic versioning and changelogs
 - **🔧 zx** - Cross-platform shell scripting
 
@@ -288,7 +288,7 @@ export default preset('production-ready', {
 - `typescript` (^6.0.0) - TypeScript compiler
 - `eslint` (^10.12.0) - Linting utility
 - `prettier` (^3.0.0) - Code formatter
-- `vitest` (^4.0.0) - Test framework
+- `vitest` (^5.0.0) - Test framework
 
 ### Optional TypeScript 7 Compiler
 
@@ -313,7 +313,7 @@ See [Using TypeScript 7 with the TypeScript 6 API](../../introduction/installati
 - `husky` (^9.0.0) - Git hook management
 - `lint-staged` (^16.0.0) - Run linters on staged files
 - `git-cliff` (^2.12.0) - Version calculation and changelog generation
-- `@vitest/coverage-v8` (^4.0.0) - Test coverage reporting
+- `@vitest/coverage-v8` (^5.0.0) - Test coverage reporting
 - `zx` (^8.0.0) - Shell scripting utilities
 
 ## 🔧 Common Use Cases

@@ -2,9 +2,7 @@
 
 import type { PresetContentContext } from './context';
 
-/**
- * generic type for representing an object in a preset
- */
+/** generic type for representing an object in a preset */
 export type PresetObject<T> = T | PresetObjectGenerator<T>;
 
 /**

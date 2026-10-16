@@ -57,7 +57,7 @@ workspace/
 
 ## 🚀 Quick Start
 
-Requires Node.js 22+. CI tracks LTS and latest Node.js.
+Requires Node.js 22.13+ (22.x), 24.x, or 26+. CI tracks LTS and latest Node.js.
 
 ### 🎯 Choose Your Development Style
 

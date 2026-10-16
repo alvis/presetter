@@ -294,7 +294,7 @@ build:typescript: run-s build:typescript:tsc build:typescript:alias
 
 | Environment | Support                        |
 | ----------- | ------------------------------ |
-| Node.js     | ≥ 22 |
+| Node.js     | 22.13+ (22.x), 24.x, or ≥26 |
 | Browsers    | Any (with bundling)            |
 | Tools       | Universal CommonJS support     |
 | TypeScript  | ≥ 5.0                          |
