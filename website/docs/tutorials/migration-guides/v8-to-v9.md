@@ -17,7 +17,7 @@ Presetter v9 is a major release that modernizes the toolchain, reorganizes the p
 - **`noUncheckedIndexedAccess` enabled**: the essentials preset turns on `noUncheckedIndexedAccess` for safer indexed access.
 - **Simplified `tsconfig`**: the explicit `strictNullChecks: false` and `noImplicitAny: false` overrides were removed — the templates now rely on TypeScript 6 defaults.
 - **Standardized script names**: preset script names were renamed for consistency (see [Step 4](#step-4-update-npm-scripts)).
-- **Node 20 CI support dropped**: Presetter's own CI now follows active Node LTS lines plus latest. Keep production projects on an actively supported Node LTS even though package engines still accept Node 20.
+- **Node.js requirements**: Current v9 packages require Node.js 22.13+ (22.x), 24.x, or 26+. Presetter's own CI follows LTS and latest Node.js.
 
 ### 🆕 **New Presets**
 - **`@presetter/preset-node`** — standalone Node-tuned TypeScript configuration.
@@ -37,7 +37,7 @@ Presetter v9 is a major release that modernizes the toolchain, reorganizes the p
 
 Before starting the migration:
 
-- **Node.js 20+** and **npm 7+** installed; an active Node LTS is recommended because v9 CI no longer covers Node 20
+- **Node.js 22.13+ (22.x), 24.x, or 26+** and **npm 7+** installed
 - A working Presetter v8 project
 - A Git repository with a clean working tree (so you can roll back)
 
