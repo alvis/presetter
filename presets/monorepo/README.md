@@ -465,7 +465,7 @@ Inherited from `@presetter/preset-essentials`:
 }
 ```
 
-Each package config declares its own `UNIT` project and auxiliary configs. Vitest namespaces these projects as `package-name (UNIT)`, `package-name (INT)`, and so on. Discover only the main package configs at the monorepo root so auxiliary projects are loaded once. The `test` script selects standalone `UNIT` projects and namespaced unit projects with `*(UNIT)`. Coverage settings belong in the root config; `excludeAfterRemap` reapplies those exclusions after source mapping and does not merge package-level coverage settings.
+Each package config declares inline `UNIT`, `INT`, and `E2E` projects. Vitest namespaces these projects as `package-name (UNIT)`, `package-name (INT)`, and so on. Discover only the main package configs at the monorepo root; no auxiliary config files are discovered. The `test` script selects standalone `UNIT` projects and namespaced unit projects with `*(UNIT)`. Coverage settings belong in the root config; `excludeAfterRemap` reapplies those exclusions after source mapping and does not merge package-level coverage settings.
 
 ---
 
@@ -484,7 +484,7 @@ Each package config declares its own `UNIT` project and auxiliary configs. Vites
 
 | Requirement     | Version                       |
 | --------------- | ----------------------------- |
-| Node.js         | 22.13+ (22.x), 24.x, or ≥26 |
+| Node.js         | 22.13+ (22.x), 24.x, or ≥26   |
 | Package Manager | npm/yarn/pnpm with workspaces |
 
 ### Extends

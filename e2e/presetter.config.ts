@@ -15,23 +15,24 @@
 import esm from '@presetter/preset-esm';
 import strict from '@presetter/preset-strict';
 
-import { preset } from 'presetter';
+import { asset, mergeByKey, preset } from 'presetter';
+
+import type { ViteUserConfig } from 'vitest/config';
 
 export default preset('@presetter/e2e', {
   extends: [esm, strict],
   override: {
     assets: {
-      // this package runs only the dedicated E2E config, without a UNIT project.
-      'vitest.config.ts': null,
-      'vitest.config.e2e.ts': {
+      // start the local registry for E2E only.
+      'vitest.config.ts': asset<{ default: ViteUserConfig }>({
         default: {
           test: {
-            testTimeout: 300_000,
-            hookTimeout: 300_000,
-            include: ['specs/**/*.e2e.spec.ts'],
+            projects: mergeByKey('test.name', [
+              { test: { name: 'E2E', globalSetup: 'setup.ts' } },
+            ]),
           },
         },
-      },
+      }),
     },
   },
 });

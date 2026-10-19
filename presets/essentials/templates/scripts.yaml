@@ -35,8 +35,7 @@ stage: run-p "stage:* -- {@}" --
 stage:lint: run-s "lint:prettier -- {@}" --
 start: run-p "build:typescript -- -w" "build:types:* -- -w"
 pretest: run-s pretest:unit:*
-test: >-
-  run-s "test:vitest -- {@:--project=UNIT --project='*(UNIT)'}" --
+test: run-s "test:vitest -- {@}" --
 test:vitest: vitest --passWithNoTests --configLoader runner
 test:coverage: >-
   run-s "test -- --project=UNIT --project='*(UNIT)' --coverage {@}" --

@@ -19,7 +19,7 @@ The **storybook preset** generates a ready-to-run `.storybook` setup, Storybook 
 **@presetter/preset-storybook** is designed to **extend** a framework preset rather than replace it. When composed, it:
 
 - **Generates Storybook config** — emits `.storybook/main.ts` with story globs derived from your `source` directory and the `@storybook/addon-a11y` and `@storybook/addon-vitest` addons.
-- **Adds Storybook scripts** — `storybook`, `build:storybook`, and a `pretest` step that installs Playwright's Chromium on demand.
+- **Adds Storybook scripts** — `storybook`, `build:storybook`, and a `pretest:unit:playwright` step that installs Playwright's Chromium on demand.
 - **Enables accessibility linting** — overrides `eslint.config.ts` with `eslint-plugin-storybook`'s recommended flat config.
 - **Runs stories as tests** — overrides `vitest.config.ts` to add a headless Chromium browser project powered by `@storybook/addon-vitest` and `@vitest/browser-playwright`.
 
@@ -27,7 +27,7 @@ The **storybook preset** generates a ready-to-run `.storybook` setup, Storybook 
 
 - **`.storybook/main.ts`** — story globs resolved relative to the Storybook config dir, plus the a11y and Vitest addons.
 - **Storybook scripts** — `storybook` (`storybook dev -p 6006`) and `build:storybook` (`storybook build`).
-- **On-demand Playwright** — a `pretest` step runs `playwright install --with-deps chromium` unless `PLAYWRIGHT_READY=1`.
+- **On-demand Playwright** — a `pretest:unit:playwright` step joins the `pretest` hook (and `pretest:sto` reuses it) to run `playwright install --with-deps chromium` unless `PLAYWRIGHT_READY=1`. Package managers fire it only when `package.json` maps the hook, e.g. `"pretest": "run pretest"`.
 - **ESLint story rules** — `eslint-plugin-storybook` `flat/recommended` plus a `**/*.stories.[jt]sx` override that disables `compat/compat`.
 - **Vitest browser project** — headless Chromium runner with `globals: true`, sensible timeouts, and noise-filtering for benign React `act()` warnings.
 
@@ -132,7 +132,8 @@ export default definePreview({
 | --- | --- | --- |
 | `storybook` | `storybook dev -p 6006` | Start the Storybook dev server. |
 | `build:storybook` | `storybook build` | Build a static Storybook. |
-| `pretest` | installs Chromium unless `PLAYWRIGHT_READY=1` | Ensures Playwright's Chromium is available before tests run. |
+| `pretest:unit:playwright` | installs Chromium unless `PLAYWRIGHT_READY=1` | Joins the essentials `pretest` hook so Chromium is available before tests run. |
+| `pretest:sto` | `run-s pretest:unit:playwright` | Installs Chromium before `test:sto`. |
 
 ### `eslint.config.ts` (override)
 

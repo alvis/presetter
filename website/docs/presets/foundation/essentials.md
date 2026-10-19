@@ -146,7 +146,7 @@ run start
 ### Testing
 
 #### `run test`
-Run unit tests with Vitest by default. The script selects `UNIT` in standalone projects and `*(UNIT)` in monorepos.
+Run unit tests with Vitest by default. The script runs bare Vitest, which registers only `UNIT` (`*(UNIT)` in monorepos); other presets may add always-on projects, such as Storybook's `STO`.
 
 ```bash
 run test
@@ -156,7 +156,7 @@ run test -- --watch
 run test -- --ui
 ```
 
-Bare `vitest` runs every configured project; Vitest 5 has no public configuration option for a default project. To run every project through Presetter, use `run test:vitest`.
+Bare `vitest` registers only `UNIT`. Passing `--project` (or `-p`) registers every project for Vitest to filter, so `run test:vitest -- --project='*'` runs them all. Files with an `.int`, `.integration`, or `.e2e` suffix belong to INT or E2E even when they also end in `.spec.*`. Each project typechecks its own files; UNIT also typechecks Vitest's default `*.{test,spec}-d.*` type-test files.
 
 #### `run test:unit`
 Run unit projects only (named `UNIT` or matching `*(UNIT)`).

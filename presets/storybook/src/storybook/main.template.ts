@@ -13,9 +13,7 @@ export default asset<{ default: StorybookConfig }>(
         // via `path.join(configDir, storyPath)` to decide which files to
         // transform into Vitest tests; an absolute glob mangles that join
         // (`.storybook/<abs-path>`), matches nothing, and every story reports `0 test`.
-        stories: [
-          join('..', variables.source!, '**', '*.stories.@(ts|tsx|js|jsx|mdx)'),
-        ],
+        stories: [join('..', variables.source!, '**', '*.stories.[jt]sx')],
       },
       current,
     ),
