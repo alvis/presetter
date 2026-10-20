@@ -30,8 +30,8 @@ Every repo starts clean. Then the same `eslint`, `vitest`, `typescript`, build, 
 Presetter moves that intent into `presetter.config.ts`: compose official presets for the shared baseline, keep local overrides visible, and regenerate the config files your toolchain still expects.
 
 <p align="center">
-  <video src="https://github.com/user-attachments/assets/d7141b4c-e7b3-4c2f-bb4e-995c209c3efd" controls playsinline preload="metadata" width="100%" title="Presetter launch video: make configuration maintainable again">
-    <a href="https://github.com/user-attachments/assets/d7141b4c-e7b3-4c2f-bb4e-995c209c3efd">Watch the Presetter launch video</a>
+  <video src="{{MASCOT_DEMO_VIDEO_URL}}" controls playsinline preload="metadata" width="100%" title="Presetter product demo: stop haunting your configs">
+    <a href="{{MASCOT_DEMO_VIDEO_URL}}">Watch the Presetter product demo</a>
   </video>
 </p>
 

@@ -36,6 +36,12 @@ const proofPoints = [
   },
 ];
 
+// hosted as GitHub attachments, like the README video, so no video bytes live in the repository
+const explainerVideo = {
+  src: '{{MASCOT_EXPLAINER_VIDEO_URL}}',
+  poster: '{{MASCOT_EXPLAINER_POSTER_URL}}',
+};
+
 /**
  * Hero header section for the homepage.
  * @returns The hero header JSX element.
@@ -203,6 +209,51 @@ export default preset('app', {
 }
 
 /**
+ * Explainer video section following one config from start to finish.
+ * @returns The explainer section JSX element.
+ */
+function ExplainerVideoSection(): ReactNode {
+  return (
+    <section
+      aria-labelledby="explainer-video-title"
+      className={styles.explainerSection}>
+      <div className="container">
+        <div className={styles.sectionIntro}>
+          <div>
+            <p className={styles.sectionEyebrow}>90-second explainer</p>
+            <Heading
+              as="h2"
+              className={styles.sectionTitle}
+              id="explainer-video-title">
+              Follow one config from start to finish.
+            </Heading>
+          </div>
+          <p className={styles.sectionDescription}>
+            Compose presets in one small file, generate the configs your tools
+            expect, override a value in plain sight, and update by bumping the
+            preset and running bootstrap again.
+          </p>
+        </div>
+        <div className={styles.explainerFrame}>
+          <video
+            className={styles.explainerVideo}
+            controls
+            height={720}
+            playsInline
+            poster={explainerVideo.poster}
+            preload="none"
+            src={explainerVideo.src}
+            title="Presetter explainer: follow one config from start to finish"
+            width={1280}>
+            <a href={explainerVideo.src}>Watch the Presetter explainer</a>
+          </video>
+        </div>
+      </div>
+    </section>
+  );
+}
+
+/**
  * Proof points section highlighting key Presetter benefits.
  * @returns The proof section JSX element.
  */
@@ -284,6 +335,7 @@ export default function Homepage(): ReactNode {
       <HomepageHero />
       <main>
         <DecorativeSectionTransition className={styles.heroToProof} />
+        <ExplainerVideoSection />
         <ProofPointsSection />
         <DecorativeSectionTransition className={styles.proofToFeatures} />
         <WhyPresetterSection />
