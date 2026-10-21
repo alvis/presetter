@@ -68,6 +68,8 @@ function getErrorContext(cwd: string): string {
 /** options for command execution */
 export interface ExecOptions {
   args?: string[];
+  /** text sent to the command's standard input */
+  input?: string;
   /** working directory for command execution */
   cwd?: string;
   /** timeout in milliseconds */
@@ -118,6 +120,7 @@ export async function exec(
   try {
     const output = options.silent ? 'pipe' : (['inherit', 'pipe'] as const);
     const result = await execa(command, args, {
+      input: options.input,
       shell: options.shell,
       detached: true,
       cwd,

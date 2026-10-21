@@ -1,6 +1,6 @@
 # E2E Tests for Presetter
 
-End-to-end tests that validate all example projects work correctly with presetter packages using a local Verdaccio registry.
+End-to-end tests that validate example projects and fresh-project adoption with presetter packages using a local Verdaccio registry.
 
 ## Why Verdaccio?
 
@@ -21,8 +21,11 @@ The E2E test suite:
    - Writes `.npmrc` pointing to the local Verdaccio registry
    - Runs `pnpm install` (resolves `*` versions from local registry)
    - Executes validation scripts (lint, build, typecheck, test)
-4. Reports results via vitest
-5. Stops the Verdaccio server on teardown
+4. Creates minimal projects inline for npm and pnpm, runs `presetter use @presetter/preset-esm` against Verdaccio, exercises pnpm build approval over stdin (npm runs in advisory mode), and checks installed tools, package scripts, generated configs, and pnpm's recorded approvals
+5. Runs build, lint, typecheck, and test in each adopted project, then repeats `use` to verify idempotency
+6. Reports results via vitest and stops Verdaccio on teardown
+
+Corepack installs with pnpm at latest on purpose, so E2E verifies compatibility with the newest release. Fresh-project adoption records that version in `package.json#packageManager`; subsequent commands let Corepack select it from the project.
 
 ## Usage
 
@@ -78,6 +81,7 @@ e2e/
 │       ├── publish.ts    # Package publishing to Verdaccio
 │       └── verdaccio.ts  # Verdaccio lifecycle management
 ├── examples.spec.e2e.ts  # Vitest E2E tests
+├── use.spec.e2e.ts       # Fresh-project adoption with npm and pnpm
 └── README.md             # This file
 ```
 

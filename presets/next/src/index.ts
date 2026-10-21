@@ -34,6 +34,18 @@ export default preset(name, {
   root: resolve(import.meta.dirname, '..'),
   extends: [esm, node, strict, web, react],
   variables: DEFAULT_VARIABLES,
+  setup: {
+    scripts: {
+      build: 'run build',
+      dev: 'run dev --',
+      start: 'run start --',
+    },
+  },
+  scripts: {
+    build: 'next build',
+    dev: 'next dev',
+    start: 'next start',
+  },
   assets: ({ variables }) => ({
     '.gitignore': resolve(TEMPLATES, 'gitignore'),
     '.npmignore': resolve(TEMPLATES, 'npmignore'),

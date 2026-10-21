@@ -8,6 +8,9 @@ import debug from '../../debugger';
 /** presetter configuration filename */
 const PRESETTER_CONFIG = 'presetter.config';
 
+/** configuration extensions in loader precedence order */
+export const CONFIG_EXTENSIONS = ['.mts', '.ts', '.mjs', '.js'] as const;
+
 /**
  * get all potential presetter configuration files by searching from the current base up to the monorepo root, if there is one
  * @param base the base directory to start searching for the configuration file
@@ -16,9 +19,9 @@ const PRESETTER_CONFIG = 'presetter.config';
 export async function searchPresetterConfigs(base: string): Promise<string[]> {
   debug(`searching for presetter configuration files from ${base}`);
 
-  const filesFromBase = ['.mts', '.ts', '.mjs', '.js']
-    .map((ext) => resolve(base, `${PRESETTER_CONFIG}${ext}`))
-    .filter(existsSync);
+  const filesFromBase = CONFIG_EXTENSIONS.map((ext) =>
+    resolve(base, `${PRESETTER_CONFIG}${ext}`),
+  ).filter(existsSync);
 
   debug(`found ${filesFromBase.length} configuration files from ${base}`);
 
