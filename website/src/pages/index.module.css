@@ -747,6 +747,25 @@
   padding: 0 0 var(--space-11);
 }
 
+.explainerSection {
+  padding: var(--space-6) 0 var(--space-7);
+}
+
+.explainerFrame {
+  overflow: hidden;
+  border: 1px solid var(--presetter-border);
+  border-radius: var(--radius-xl);
+  background: var(--presetter-ink);
+  box-shadow: var(--shadow-soft);
+}
+
+.explainerVideo {
+  display: block;
+  width: 100%;
+  height: auto;
+  aspect-ratio: 16 / 9;
+}
+
 .sectionIntro {
   margin-bottom: var(--space-7);
 }
@@ -1000,6 +1019,10 @@
 
   .explorerSection {
     padding-bottom: var(--space-9);
+  }
+
+  .explainerSection {
+    padding: var(--space-5) 0 var(--space-6);
   }
 
   .proofSection {
