@@ -38,8 +38,9 @@ const proofPoints = [
 
 // hosted as GitHub attachments, like the README video, so no video bytes live in the repository
 const explainerVideo = {
-  src: '{{MASCOT_EXPLAINER_VIDEO_URL}}',
-  poster: '{{MASCOT_EXPLAINER_POSTER_URL}}',
+  src: 'https://github.com/user-attachments/assets/67375ea6-baa6-4363-803c-e2757ae02766',
+  poster:
+    'https://github.com/user-attachments/assets/d7942d49-9236-40b6-9c61-e9aea6df145a',
 };
 
 /**
