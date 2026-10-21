@@ -7,14 +7,24 @@ import { playwright } from '@vitest/browser-playwright';
 import { merge, mergeByKey } from 'presetter';
 import { configDefaults } from 'vitest/config';
 
+import { detectSetupFiles } from './setup';
+
 import type { ViteUserConfig } from 'vitest/config';
 import type { TestCase, TestModule, TestSuite } from 'vitest/node';
 
 export default asset<{ default: ViteUserConfig }>((current, context) => {
-  const { projectRoot } = context;
+  const { projectRoot, variables } = context;
   const onConsoleLog = current?.default.test?.onConsoleLog;
 
   const setupPath = join(projectRoot, '.storybook', 'vitest.setup.ts');
+  const detected = detectSetupFiles(projectRoot, variables.test ?? 'spec', [
+    '.sto',
+    '.story',
+  ]);
+  const setupFiles = [
+    ...(existsSync(setupPath) ? [setupPath] : []),
+    ...detected.file,
+  ];
 
   // NOTE: during bootstraping, .storybook/main.ts doesn't exist yet
   const isBootstrapping = !existsSync(
@@ -103,7 +113,9 @@ export default asset<{ default: ViteUserConfig }>((current, context) => {
                 provider,
                 instances: [{ browser: 'chromium' }],
               },
-              setupFiles: existsSync(setupPath) ? [setupPath] : undefined,
+              setupFiles: setupFiles.length > 0 ? setupFiles : undefined,
+              globalSetup:
+                detected.project.length > 0 ? detected.project : undefined,
             },
           },
         ]),

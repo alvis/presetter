@@ -313,6 +313,31 @@ Customize your project structure:
 
 The `test` script runs bare Vitest, which registers only `UNIT` (`my-package (UNIT)` in monorepos); other presets may add always-on projects, such as Storybook's `STO`. The preset defines inline `UNIT`, `INT`, and `E2E` projects; it does not discover auxiliary config files. UNIT includes `.spec.*` and `.unit.*` files. INT matches `.int.*` or `.integration.*` suffixes, and E2E matches `.e2e.*` suffixes, including their `.test.*`/`.spec.*` forms; UNIT excludes those suffixed forms, so `foo.int.spec.ts` belongs to INT and `foo.e2e.spec.ts` to E2E. Each project also excludes Vitest’s default ignored paths. E2E allows 10 minutes per test. The shared shutdown timeout is also 10 minutes because Vitest only supports `teardownTimeout` at the root, not per project. INT and E2E use Node and run files serially within each project. INT allows 60 seconds per test; both allow 120 seconds per hook. Every project's typecheck include/exclude filters match its runtime filters; UNIT also typechecks Vitest's default `*.{test,spec}-d.*` type-test files. The example omits the projects’ file filters for brevity. Bare `vitest` registers only `UNIT`; passing `--project` (or `-p`) registers every project for Vitest to filter, so use `run test:vitest -- --project='*'` to run all projects.
 
+#### Automatic setup files
+
+Vitest detects conventional setup files when its configuration loads. `<test>`
+is the `test` variable (default `spec`):
+
+| Project | Suffixes, in order     |
+| ------- | ---------------------- |
+| UNIT    | empty, `.unit`         |
+| INT     | `.int`, `.integration` |
+| E2E     | `.e2e`                 |
+
+`setupFiles` searches `vitest.setup`, `<test>/setup`, then `<test>/vitest.setup`;
+`globalSetup` searches `vitest.global-setup`, `<test>/global-setup`, then
+`<test>/vitest.global-setup`. Each base uses the suffixes above, then extensions
+`ts`, `mts`, `cts`, `js`, `mjs`, `cjs`. All matches load in that order.
+
+For example:
+
+- `vitest.setup.ts` — UNIT
+- `spec/setup.unit.ts` — UNIT
+- `spec/vitest.global-setup.int.ts` — INT
+
+Unsuffixed files belong only to UNIT. User-configured setup files are kept.
+Detected setup modules are excluded from test collection.
+
 ---
 
 ## 🏎️ Performance
