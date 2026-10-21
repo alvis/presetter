@@ -4,12 +4,15 @@ import { join } from 'node:path';
 import { asset } from '@presetter/types';
 import { storybookTest } from '@storybook/addon-vitest/vitest-plugin';
 import { playwright } from '@vitest/browser-playwright';
-import { merge } from 'presetter';
+import { merge, mergeByKey } from 'presetter';
+import { configDefaults } from 'vitest/config';
 
 import type { ViteUserConfig } from 'vitest/config';
+import type { TestCase, TestModule, TestSuite } from 'vitest/node';
 
 export default asset<{ default: ViteUserConfig }>((current, context) => {
   const { projectRoot } = context;
+  const onConsoleLog = current?.default.test?.onConsoleLog;
 
   const setupPath = join(projectRoot, '.storybook', 'vitest.setup.ts');
 
@@ -33,25 +36,8 @@ export default asset<{ default: ViteUserConfig }>((current, context) => {
 
   return merge(current, {
     default: {
-      plugins,
-      optimizeDeps: {
-        include: ['react/jsx-dev-runtime'],
-      },
-      resolve: {
-        conditions: ['browser', 'import', 'default'],
-      },
       test: {
-        watch: false,
-        globals: true,
-        testTimeout: 5000,
-        hookTimeout: 5000,
-        browser: {
-          enabled: true,
-          headless: true,
-          provider,
-          instances: [{ browser: 'chromium' }],
-        },
-        setupFiles: existsSync(setupPath) ? [setupPath] : undefined,
+        // onConsoleLog is root-only; inspect the project to filter browser logs only.
         /**
          * suppress specific console warnings that are known false positives
          *
@@ -70,10 +56,18 @@ export default asset<{ default: ViteUserConfig }>((current, context) => {
          * environment detecting async updates that are intentional side effects
          * @param log the console log message
          * @param type the output stream type ('stdout' or 'stderr')
+         * @param entity the test whose project emitted the log
          * @returns false to suppress the log, void to allow it
          */
-        onConsoleLog(log: string, type: 'stdout' | 'stderr'): boolean | void {
-          if (type !== 'stderr') {
+        onConsoleLog(
+          log: string,
+          type: 'stdout' | 'stderr',
+          entity: TestModule | TestCase | TestSuite | undefined,
+        ): boolean | void {
+          if (onConsoleLog?.(log, type, entity) === false) {
+            return false;
+          }
+          if (type !== 'stderr' || !entity?.project.config.browser.enabled) {
             return;
           }
           // Suppress: "An update to X inside a test was not wrapped in act(...)"
@@ -85,6 +79,34 @@ export default asset<{ default: ViteUserConfig }>((current, context) => {
             return false;
           }
         },
+        // keep browser plugins and settings out of UNIT, INT, and E2E.
+        projects: mergeByKey('test.name', [
+          {
+            extends: true,
+            plugins,
+            optimizeDeps: {
+              include: ['react/jsx-dev-runtime'],
+            },
+            resolve: {
+              conditions: ['browser', 'import', 'default'],
+            },
+            test: {
+              name: 'STO',
+              // the addon derives include from .storybook/main.ts stories.
+              exclude: [...configDefaults.exclude],
+              globals: true,
+              testTimeout: 5000,
+              hookTimeout: 5000,
+              browser: {
+                enabled: true,
+                headless: true,
+                provider,
+                instances: [{ browser: 'chromium' }],
+              },
+              setupFiles: existsSync(setupPath) ? [setupPath] : undefined,
+            },
+          },
+        ]),
       },
     },
   });

@@ -35,14 +35,16 @@ stage: run-p "stage:* -- {@}" --
 stage:lint: run-s "lint:prettier -- {@}" --
 start: run-p "build:typescript -- -w" "build:types:* -- -w"
 pretest: run-s pretest:unit:*
-test: 'run-s "test:vitest -- {@:--project=*:UNIT}" --'
+test: run-s "test:vitest -- {@}" --
 test:vitest: vitest --passWithNoTests --configLoader runner
-test:coverage: 'run-s "test -- --project=*:UNIT --coverage {@}" --'
-test:watch: 'run-s "test -- --project=*:UNIT --watch {@}" --'
+test:coverage: >-
+  run-s "test -- --project=UNIT --project='*(UNIT)' --coverage {@}" --
+test:watch: >-
+  run-s "test -- --project=UNIT --project='*(UNIT)' --watch {@}" --
 pretest:unit: run-s pretest:unit:*
-test:unit: run-s "test -- --project=*:UNIT {@}" --
+test:unit: run-s "test -- --project=UNIT --project='*(UNIT)' {@}" --
 pretest:int: run-s pretest:int:*
-test:int: run-s "test -- --project=*:INT {@}" --
+test:int: run-s "test -- --project=INT --project='*(INT)' {@}" --
 pretest:e2e: run-s pretest:e2e:*
-test:e2e: run-s "test -- --project=*:E2E {@}" --
+test:e2e: run-s "test -- --project=E2E --project='*(E2E)' {@}" --
 typecheck: tsc --noEmit --skipLibCheck

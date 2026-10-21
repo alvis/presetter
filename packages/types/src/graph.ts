@@ -2,14 +2,10 @@
 
 import type { PresetDefinition } from './preset';
 
-/**
- * represents a graph of dependencies for all preset assets
- */
+/** represents a graph of dependencies for all preset assets */
 export type PresetGraph = PresetNode[];
 
-/**
- * represents a node within the preset dependency graph
- */
+/** represents a node within the preset dependency graph */
 export interface PresetNode {
   /** the resolved definition provided by this preset */
   definition: PresetDefinition;

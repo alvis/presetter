@@ -21,7 +21,10 @@ export default preset('@presetter/preset-storybook', {
   scripts: {
     'storybook': 'storybook dev -p 6006',
     'build:storybook': 'storybook build',
-    'pretest': `[ "\${PLAYWRIGHT_READY:-}" = "1" ] || playwright install --with-deps chromium`,
+    'test:sto': `run-s "test -- --project=STO --project='*(STO)' {@}" --`,
+    // joins essentials' pretest hook, which runs when package.json maps "pretest"
+    'pretest:unit:playwright': `[ "\${PLAYWRIGHT_READY:-}" = "1" ] || playwright install --with-deps chromium`,
+    'pretest:sto': 'run-s pretest:unit:playwright',
   },
   assets: {
     '.gitignore': ['.storybook/main.ts'],

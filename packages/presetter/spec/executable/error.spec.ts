@@ -1,5 +1,6 @@
-import { handleError } from '#executable/error';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
+
+import { handleError } from '#executable/error';
 
 const { warn } = vi.hoisted(() => ({
   warn: vi.fn(),
@@ -26,7 +27,7 @@ const ansi = new RegExp(ansiPattern, 'g');
 const printedLines = (): string[] =>
   warn.mock.calls.map(([line]) => String(line ?? '').replace(ansi, ''));
 
-describe.sequential('fn:handleError', () => {
+describe('fn:handleError', { concurrent: false }, () => {
   beforeEach(() => vi.clearAllMocks());
 
   it('should print the error if there is no tty', async () => {

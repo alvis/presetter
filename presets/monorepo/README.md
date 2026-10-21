@@ -448,11 +448,12 @@ Inherited from `@presetter/preset-essentials`:
 // Generated vitest.config.ts at root
 {
   test: {
-    workspace: ['*/*/vitest.config{,.int,.e2e}.ts'],
+    name: 'my-monorepo',
+    projects: ['*/vitest.config.ts', '*/*/vitest.config.ts'],
     coverage: {
       provider: 'v8',
       reporter: ['text', 'html', 'clover', 'json', 'lcov'],
-      excludeAfterRemap: true,  // Respects package-level exclusions
+      excludeAfterRemap: true,  // Reapplies exclusions to original source paths
       thresholds: {
         branches: 100,
         functions: 100,
@@ -463,6 +464,8 @@ Inherited from `@presetter/preset-essentials`:
   }
 }
 ```
+
+Each package config declares inline `UNIT`, `INT`, and `E2E` projects. Vitest namespaces these projects as `package-name (UNIT)`, `package-name (INT)`, and so on. Discover only the main package configs at the monorepo root; no auxiliary config files are discovered. The `test` script selects standalone `UNIT` projects and namespaced unit projects with `*(UNIT)`. Coverage settings belong in the root config; `excludeAfterRemap` reapplies those exclusions after source mapping and does not merge package-level coverage settings.
 
 ---
 
@@ -481,7 +484,7 @@ Inherited from `@presetter/preset-essentials`:
 
 | Requirement     | Version                       |
 | --------------- | ----------------------------- |
-| Node.js         | 22.13+ (22.x), 24.x, or ≥26 |
+| Node.js         | 22.13+ (22.x), 24.x, or ≥26   |
 | Package Manager | npm/yarn/pnpm with workspaces |
 
 ### Extends
