@@ -18,6 +18,8 @@ export interface Example {
   name: string;
   /** Scripts to run during testing */
   scripts: string[];
+  /** Package managers the example is installed with */
+  managers: PackageManager[];
 }
 
 /** Package information for building and packing */
@@ -29,4 +31,4 @@ export interface PackageInfo {
 }
 
 /** Supported package managers */
-export type PackageManager = 'npm' | 'pnpm';
+export type PackageManager = 'npm' | 'pnpm' | 'bun';

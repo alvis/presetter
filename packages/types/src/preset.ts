@@ -37,6 +37,9 @@ export interface PresetDefinition {
   /** additional scripts to be executed within the preset */
   scripts?: PresetContent<Scripts>;
 
+  /** package configuration written only when adopting presets with `presetter use` */
+  setup?: PresetSetup;
+
   /** collection of assets associated with the preset */
   assets?: PresetObject<PresetAssets>;
 
@@ -54,7 +57,25 @@ export interface PresetDefinition {
      */
     scripts?: PresetContent<Scripts>;
 
+    /** adoption configuration, including scripts and tools resolved in the second pass */
+    setup?: PresetSetup;
+
     /** asset content, allowing for modifications in the second-pass merge */
     assets?: PresetObject<PresetAssets>;
   };
+}
+
+/** defines package configuration applied only by `presetter use` */
+export interface PresetSetup {
+  /**
+   * package.json commands merged across presets
+   * keeps `{variable}` placeholders literal in objects and generator results; file templates substitute them
+   */
+  scripts?: PresetContent<Scripts>;
+  /** runtime packages with semver ranges, tags, or npm: alias specifications; skips names in any dependency section */
+  dependencies?: PresetContent<Record<string, string>>;
+  /** development tools with semver ranges, tags, or npm: alias specifications; skips existing runtime or development entries and preserves peers */
+  devDependencies?: PresetContent<Record<string, string>>;
+  /** peer requirements with semver ranges, tags, or npm: alias specifications; skips existing peers or runtime entries and adds peers directly beside development entries */
+  peerDependencies?: PresetContent<Record<string, string>>;
 }

@@ -29,9 +29,15 @@ jobs:
         uses: oven-sh/setup-bun@v2
       - name: install dependencies
         run: pnpm install
+      # NOTE: one shared browser path outranks pnpm's isolated XDG cache, so browser tests skip the download inside their script timeout
+      - name: install playwright chromium
+        run: npx --yes playwright@latest install --with-deps chromium
+        env:
+          PLAYWRIGHT_BROWSERS_PATH: ${{ runner.temp }}/ms-playwright
       - name: run e2e tests
         run: pnpm run test:e2e
-        timeout-minutes: 30
+        timeout-minutes: 45
         env:
           CI: true
           DEBUG: ${{ vars.DEBUG }}
+          PLAYWRIGHT_BROWSERS_PATH: ${{ runner.temp }}/ms-playwright

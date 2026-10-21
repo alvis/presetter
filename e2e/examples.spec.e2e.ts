@@ -17,7 +17,7 @@ import { join } from 'node:path';
 
 import { beforeAll, beforeEach, describe, expect, it } from 'vitest';
 
-import { EXAMPLES, EXAMPLES_DIR, PACKAGE_MANAGERS, TEMP_DIR } from '#config';
+import { EXAMPLES, EXAMPLES_DIR, TEMP_DIR } from '#config';
 import { copyExample } from '#helpers/copy';
 import { runInstall, runScript } from '#helpers/exec';
 import { log } from '#log';
@@ -60,9 +60,9 @@ function findWarnings(output: string): string[] {
 describe.each(EXAMPLES)(
   'example: $name',
   (example: (typeof EXAMPLES)[number]) => {
-    describe.each(PACKAGE_MANAGERS)(
+    describe.each(example.managers)(
       'package manager: %s',
-      (manager: (typeof PACKAGE_MANAGERS)[number]) => {
+      (manager: (typeof example.managers)[number]) => {
         const destination = join(TEMP_DIR, `${example.name}-${manager}`);
         const source = join(EXAMPLES_DIR, example.name);
         let installOutput: string;

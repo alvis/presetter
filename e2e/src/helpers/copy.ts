@@ -15,7 +15,7 @@
 import { cp, rm, stat } from 'node:fs/promises';
 import { join } from 'node:path';
 
-import { PACKAGE_MANAGERS } from '#config';
+import { MANAGER_ENV } from '#config';
 
 import type { PackageManager } from '#types';
 
@@ -48,7 +48,7 @@ export async function copyExample(
   }
 
   // remove all package manager override directories
-  for (const pm of PACKAGE_MANAGERS) {
+  for (const pm of Object.keys(MANAGER_ENV)) {
     await rm(join(destination, `.${pm}`), { force: true, recursive: true });
   }
 }

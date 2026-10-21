@@ -8,7 +8,7 @@ import {
   expandDelimitedValues,
   resolveProjectRoots,
 } from '#executable/entry';
-import { bootstrap } from '#preset';
+import { bootstrap, use } from '#preset';
 import { run } from '#run';
 
 const { FIXTURE_ROOT, FIXTURE_PATHS, FIXTURE_PACKAGES } = vi.hoisted(() => {
@@ -82,6 +82,7 @@ vi.mock(
   () =>
     ({
       bootstrap: vi.fn(),
+      use: vi.fn(),
     }) satisfies Partial<typeof import('#preset')>,
 );
 
@@ -97,6 +98,37 @@ const fixtureRoot = (relative: string): string =>
   resolve(`${FIXTURE_ROOT}/${relative}`);
 
 describe('fn:entry', () => {
+  describe('use', () => {
+    it('should adopt each named preset with an explicit package manager', async () => {
+      await entry([
+        'use',
+        '@scope/esm@^2',
+        'preset-strict',
+        '--package-manager=pnpm',
+      ]);
+
+      expect(vi.mocked(use).mock.calls).toEqual([
+        [['@scope/esm@^2', 'preset-strict'], { packageManager: 'pnpm' }],
+      ]);
+    });
+
+    it('should pass --force to adoption', async () => {
+      await entry(['use', '@scope/esm', '--force']);
+
+      expect(vi.mocked(use).mock.calls).toEqual([
+        [['@scope/esm'], { packageManager: undefined, force: true }],
+      ]);
+    });
+
+    it('should leave package manager detection to adoption when the flag is omitted', async () => {
+      await entry(['use', '@scope/esm']);
+
+      expect(vi.mocked(use).mock.calls).toEqual([
+        [['@scope/esm'], { packageManager: undefined }],
+      ]);
+    });
+  });
+
   describe('bootstrap', () => {
     it('should bootstrap when no --only gate is provided', async () => {
       await entry(['bootstrap', '--projects', `${FIXTURE_ROOT}/packages/app`]);

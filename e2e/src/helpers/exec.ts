@@ -19,12 +19,26 @@ import { execa, ExecaError } from 'execa';
 
 import { log } from '#log';
 
-import { NPM_ENV, PNPM_ENV, REGISTRY_URL, TEMP_DIR } from '../config';
+import {
+  BUN_ENV,
+  MANAGER_ENV,
+  NPM_ENV,
+  PNPM_ENV,
+  REGISTRY_URL,
+  TEMP_DIR,
+} from '../config';
 
 import type { PackageManager } from '../types';
 
 /** default timeout for command execution (5 minutes) */
 const DEFAULT_TIMEOUT = 300_000;
+
+/** command and leading arguments that run a project script with each package manager */
+const SCRIPT_RUNNERS: Record<PackageManager, [string, ...string[]]> = {
+  npm: ['npx', 'corepack', 'npm', '--verbose', 'run'],
+  pnpm: ['npx', 'corepack', 'pnpm', 'run'],
+  bun: ['bun', 'run'],
+};
 
 /**
  * gathers context about the node_modules environment for error reporting
@@ -68,6 +82,8 @@ function getErrorContext(cwd: string): string {
 /** options for command execution */
 export interface ExecOptions {
   args?: string[];
+  /** text sent to the command's standard input */
+  input?: string;
   /** working directory for command execution */
   cwd?: string;
   /** timeout in milliseconds */
@@ -118,6 +134,7 @@ export async function exec(
   try {
     const output = options.silent ? 'pipe' : (['inherit', 'pipe'] as const);
     const result = await execa(command, args, {
+      input: options.input,
       shell: options.shell,
       detached: true,
       cwd,
@@ -163,70 +180,85 @@ export async function exec(
   }
 }
 
+// NOTE: the explicit --registry flag avoids user .npmrc interference
+const registry = `--registry=${REGISTRY_URL}`;
+
+/** installs an example's dependencies with each supported package manager */
+const INSTALLERS: Record<
+  PackageManager,
+  (options: ExecOptions) => Promise<string>
+> = {
+  npm: async (options) =>
+    exec('npx', {
+      ...options,
+      args: [
+        'npm@latest',
+        'install',
+        '--dangerously-allow-all-scripts',
+        '--strict-peer-deps',
+        registry,
+      ],
+      env: NPM_ENV,
+    }),
+  pnpm: async (options) => {
+    const envs = await exec('env', { ...options, env: PNPM_ENV });
+
+    const configs = await exec('npx', {
+      ...options,
+      args: ['corepack', 'pnpm@latest', 'config', 'list'],
+      env: PNPM_ENV,
+    });
+
+    const install = await exec('npx', {
+      ...options,
+      shell: true,
+      args: [
+        'corepack',
+        'pnpm@latest',
+        'install',
+        '--dangerously-allow-all-builds',
+        registry,
+      ],
+      env: PNPM_ENV,
+    });
+
+    const bins = await exec('ls', {
+      ...options,
+      args: ['-al', 'node_modules/.bin'],
+      env: PNPM_ENV,
+    });
+
+    return [install, envs, configs, bins].join('\n\n---\n\n');
+  },
+  bun: async (options) => {
+    const install = await exec('bun', {
+      ...options,
+      args: ['install', registry],
+      env: BUN_ENV,
+    });
+
+    // run the install scripts bun blocks, as the other managers allow all builds
+    const trust = await exec('bun', {
+      ...options,
+      args: ['pm', 'trust', '--all'],
+      env: BUN_ENV,
+    });
+
+    return [install, trust].join('\n\n---\n\n');
+  },
+};
+
 /**
- * runs package manager install with lockfile-only first, then full install
+ * installs an example's dependencies with the given package manager
  * @param cwd working directory
  * @param manager package manager to use
- * @returns combined output from both install commands
+ * @returns combined output from the install commands
  */
 export async function runInstall(
   cwd: string,
   manager: PackageManager,
 ): Promise<string> {
-  const options: ExecOptions = { cwd, silent: true };
-
-  // uses explicit --registry flag to avoid user .npmrc interference
-  const registry = `--registry=${REGISTRY_URL}`;
-
-  switch (manager) {
-    case 'npm':
-      return exec('npx', {
-        ...options,
-        args: [
-          'npm@latest',
-          'install',
-          '--dangerously-allow-all-scripts',
-          '--strict-peer-deps',
-          registry,
-        ],
-        env: NPM_ENV,
-      });
-    case 'pnpm': {
-      const envs = await exec('env', {
-        ...options,
-        env: PNPM_ENV,
-      });
-
-      const configs = await exec('npx', {
-        ...options,
-        args: ['corepack', 'pnpm@latest', 'config', 'list'],
-        env: PNPM_ENV,
-      });
-
-      const install = await exec('npx', {
-        ...options,
-        shell: true,
-        args: [
-          'corepack',
-          'pnpm@latest',
-          'install',
-          '--dangerously-allow-all-builds',
-          registry,
-        ],
-        env: PNPM_ENV,
-      });
-
-      const bins = await exec('ls', {
-        ...options,
-        args: ['-al', 'node_modules/.bin'],
-        env: PNPM_ENV,
-      });
-
-      return [install, envs, configs, bins].join('\n\n---\n\n');
-    }
-    default:
-      throw new Error(`unsupported package manager: ${manager}`);
-  }
+  return INSTALLERS[manager]({ cwd, silent: true });
 }
 
 /**
@@ -240,27 +272,12 @@ export async function runScript(
   cwd: string,
   manager: PackageManager,
 ): Promise<void> {
-  const options: ExecOptions = { cwd, silent: true };
+  const [command, ...args] = SCRIPT_RUNNERS[manager];
 
-  switch (manager) {
-    case 'npm':
-      await exec('npx', {
-        ...options,
-        args: ['corepack', 'npm', '--verbose', 'run', script],
-        env: NPM_ENV,
-      });
-
-      return;
-    case 'pnpm': {
-      await exec('npx', {
-        ...options,
-        args: ['corepack', 'pnpm', 'run', script],
-        env: PNPM_ENV,
-      });
-
-      return;
-    }
-    default:
-      throw new Error(`unsupported package manager: ${manager}`);
-  }
+  await exec(command, {
+    cwd,
+    silent: true,
+    args: [...args, script],
+    env: MANAGER_ENV[manager],
+  });
 }

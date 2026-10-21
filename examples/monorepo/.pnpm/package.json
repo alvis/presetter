@@ -16,8 +16,9 @@
     "@presetter/preset-node": "*",
     "@presetter/preset-next": "*",
     "@types/node": "*",
+    "@typescript/native": "npm:typescript@^7.0.0",
     "@vitest/coverage-v8": "*",
     "presetter": "*",
-    "typescript": "*"
+    "typescript": "npm:@typescript/typescript6@^6.0.0"
   }
 }
