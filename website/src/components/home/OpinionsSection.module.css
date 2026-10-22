@@ -1,0 +1,225 @@
+.opinions {
+  position: relative;
+  isolation: isolate;
+}
+
+.glow {
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background:
+    radial-gradient(
+      ellipse 55% 38% at 18% 42%,
+      rgba(var(--home-glow-sage), 0.2),
+      rgba(var(--home-glow-sage), 0) 100%
+    ),
+    radial-gradient(
+      ellipse 45% 30% at 85% 68%,
+      rgba(var(--home-accent), 0.08),
+      rgba(var(--home-accent), 0) 100%
+    );
+  pointer-events: none;
+}
+
+.headAside {
+  display: grid;
+  gap: 14px;
+}
+
+.byline {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  max-width: none;
+  margin: 0;
+  color: rgb(var(--home-muted));
+  font-size: 0.95rem;
+  line-height: 1.5;
+}
+
+.bylineAvatar {
+  width: 26px;
+  height: 26px;
+  border-radius: 8px;
+}
+
+.opinionGrid {
+  display: grid;
+  /* six presets: the minimum keeps three columns on desktop so no row is left half empty */
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 300px), 1fr));
+  gap: 12px;
+  margin: 0 0 56px;
+  padding: 0;
+  list-style: none;
+}
+
+.opinion {
+  max-width: none;
+  margin: 0;
+  line-height: normal;
+  transition:
+    transform 220ms ease,
+    box-shadow 220ms ease,
+    border-color 220ms ease;
+}
+
+.opinion:hover {
+  border-color: rgba(var(--home-accent), 0.28);
+  box-shadow: 0 24px 54px -36px rgba(var(--home-ink-shade), 0.24);
+  transform: translateY(-3px);
+}
+
+.opinionText {
+  color: rgb(var(--home-text));
+  font-size: 1rem;
+  line-height: 1.5;
+}
+
+.tag {
+  justify-self: start;
+  padding: 4px 10px;
+  border-radius: 999px;
+  background: rgba(var(--home-accent), 0.1);
+  color: rgb(var(--home-accent-ink));
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.pathsHead {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 16px;
+  margin-bottom: 20px;
+}
+
+.pathsTitle {
+  margin: 0;
+  color: rgb(var(--home-ink));
+  font-family: var(--home-font-display);
+  font-size: 1.6rem;
+  font-weight: 700;
+  line-height: 1.2;
+  letter-spacing: -0.03em;
+}
+
+.pathsNote {
+  color: rgb(var(--home-muted));
+  font-size: 1rem;
+}
+
+.pathGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 320px), 1fr));
+  align-items: stretch;
+  gap: 16px;
+}
+
+.path {
+  display: grid;
+  grid-template-rows: auto auto 1fr auto;
+  gap: 14px;
+  padding: 24px;
+  border: 1px solid rgba(var(--home-line), 0.14);
+  border-radius: 28px;
+  background: rgba(var(--home-paper), 0.86);
+  box-shadow: 0 24px 60px -40px rgba(var(--home-shadow), 0.16);
+}
+
+.pathFeatured {
+  border-color: rgba(var(--home-lime-strong), 0.5);
+  background: linear-gradient(160deg, #22313f, #18232d);
+  box-shadow: 0 30px 70px -40px rgba(var(--home-ink-shade), 0.7);
+}
+
+.pathTop {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.pathLetter {
+  color: rgb(var(--home-accent-ink));
+  font: 600 12px var(--home-font-mono);
+}
+
+.pathFeatured .pathLetter {
+  color: #b6ff77;
+}
+
+.pathBadge {
+  padding: 5px 10px;
+  border-radius: 999px;
+  background: linear-gradient(
+    135deg,
+    rgb(var(--home-accent)),
+    rgb(var(--home-lime))
+  );
+  color: #10212b;
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.pathTitle {
+  margin: 0 0 6px;
+  color: rgb(var(--home-ink));
+  font-family: var(--home-font-display);
+  font-size: 1.35rem;
+  font-weight: 700;
+  line-height: 1.2;
+  letter-spacing: -0.02em;
+}
+
+.pathFeatured .pathTitle {
+  color: #f3f1eb;
+}
+
+.pathText {
+  max-width: none;
+  margin: 0;
+  color: rgb(var(--home-text));
+  font-size: 1rem;
+  line-height: 1.55;
+}
+
+.pathFeatured .pathText {
+  color: #d2d7dc;
+}
+
+.pathCode {
+  align-self: start;
+  padding: 12px 14px;
+  overflow-x: auto;
+  border-radius: 14px;
+  background: rgba(10, 16, 23, 0.88);
+  font: 500 12px/1.65 var(--home-font-mono);
+}
+
+.pathAction {
+  display: inline-flex;
+  align-items: center;
+  /* NOTE: flex drops the space before the arrow, so the gap stands in for it */
+  gap: 0.25em;
+  justify-self: start;
+  min-height: 44px;
+  padding: 0 18px;
+  border-radius: 999px;
+  background: rgb(var(--home-lime));
+  color: #10212b;
+  font-size: 0.92rem;
+  font-weight: 700;
+  text-decoration: none;
+  transition: transform 180ms ease;
+}
+
+.pathAction:hover {
+  color: #10212b;
+  text-decoration: none;
+  transform: translateX(3px);
+}
