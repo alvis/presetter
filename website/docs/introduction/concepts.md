@@ -16,7 +16,7 @@ graph TD
     A[Your Project] --> B[presetter.config.ts]
     B --> C[Chosen Preset]
     C --> D["Generated configs<br/>tsconfig / eslint / vitest"]
-    C --> E["Declared peer deps<br/>TypeScript / ESLint / Vitest"]
+    C --> E["Declared setup<br/>Packages / script delegates"]
     C --> F["Available scripts<br/>build / test / lint"]
 ```
 
@@ -36,7 +36,8 @@ import { preset } from 'presetter';
 
 export default preset('my-preset', {
   variables: { /* context data */ },
-  scripts: { /* npm scripts */ },
+  scripts: { /* runtime task templates */ },
+  setup: { /* packages and package script delegates for use */ },
   assets: { /* config files */ },
   override: { /* customizations */ }
 });
@@ -102,7 +103,7 @@ Use variables in assets:
 
 ### 4. Scripts
 
-**Scripts** define npm/pnpm/yarn commands available in your project:
+**Scripts** define task templates resolved by Presetter at runtime:
 
 ```typescript
 scripts: {
@@ -198,20 +199,18 @@ export default preset('my-project', {
 
 ### 🚀 Dependency Management
 
-Official presets declare their required tools as **peer dependencies**. npm 7+ installs those peers when you install the preset; pnpm and yarn users should follow their package manager's peer-dependency behavior:
+Presets can declare project packages and script delegates in `setup`:
 
-```json
-// Your package.json stays minimal
-{
-  "devDependencies": {
-    "presetter": "^8.3.0",
-    "@presetter/preset-esm": "^8.3.0"
-  }
+```typescript
+setup: {
+  devDependencies: { vitest: '^5.0.0' },
+  scripts: { test: 'run test --' },
 }
-
-// The preset declares peer tools such as:
-// typescript, eslint, vitest, prettier, etc.
 ```
+
+`presetter use` merges setup across the preset stack, applies `override.setup` in a final pass, and installs missing packages in their declared dependency sections. Essentials declares the TypeScript 7 CLI alias (`@typescript/native`) and TypeScript 6 API alias (`typescript`), along with Vitest and coverage support. Presets also carry their own package dependencies and peers.
+
+Existing project package declarations and script commands are preserved. A differing package specification produces a warning; `--force` opts into replacing it. `bootstrap` generates assets only, so it does not apply setup changes. See [`use`](../cli-reference/use) for details.
 
 ### 🔗 Generated File Strategy
 

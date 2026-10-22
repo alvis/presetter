@@ -84,6 +84,19 @@ export default preset('full-stack-react', {
 });
 ```
 
+## Adoption Setup
+
+Use `scripts` for runtime task templates and `setup.scripts` for the package.json delegates written by `presetter use`:
+
+```typescript
+setup: {
+  devDependencies: { vitest: '^5.0.0' },
+  scripts: { test: 'run test --' },
+}
+```
+
+`setup.dependencies` and `setup.peerDependencies` use the same flat package-name-to-specification maps. Setup merges across `extends`, then applies `override.setup`. Inline setup commands are literal; `{variable}` placeholders are not substituted. Existing declarations and script commands are preserved unless package conflicts are explicitly replaced with `--force`. [`use`](../cli-reference/use) applies setup; `bootstrap` only writes generated assets.
+
 ## Variables Configuration
 
 **Variables** provide dynamic values to your configurations:

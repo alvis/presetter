@@ -19,6 +19,7 @@
   "license": "MIT",
   "author": "Alvis HT Tang <alvis@hilbert.space>",
   "imports": {
+    "#presetter-setup": "./src/components/presetter-setup.ts",
     "#components/*": "./src/components/*.tsx"
   },
   "scripts": {
@@ -46,6 +47,9 @@
     "@docusaurus/core": "catalog:docusaurus",
     "@docusaurus/preset-classic": "catalog:docusaurus",
     "@docusaurus/theme-mermaid": "catalog:docusaurus",
+    "@fontsource-variable/instrument-sans": "catalog:docusaurus",
+    "@fontsource-variable/space-grotesk": "catalog:docusaurus",
+    "@fontsource/ibm-plex-mono": "catalog:docusaurus",
     "@mdx-js/react": "catalog:docusaurus",
     "clsx": "catalog:docusaurus",
     "prism-react-renderer": "catalog:docusaurus",

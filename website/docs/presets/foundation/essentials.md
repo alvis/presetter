@@ -22,7 +22,7 @@ The **essentials preset** is the foundation of the Presetter ecosystem, providin
 ## 🚀 Features
 
 ### Core Development Tools
-- **🛠️ TypeScript 6** - Type-safe JavaScript with a strict configuration targeting **ES2024**, including `noUncheckedIndexedAccess` for safer indexed access
+- **🛠️ TypeScript 7 CLI + TypeScript 6 API** - Type-safe JavaScript with a strict configuration targeting **ES2024**, including `noUncheckedIndexedAccess` for safer indexed access
 - **🚨 ESLint 10** - Code quality enforcement with TypeScript support
 - **💅 Prettier 3** - Consistent code formatting
 - **🧪 Vitest 5** - Fast unit testing with coverage reporting
@@ -47,19 +47,13 @@ The **essentials preset** is the foundation of the Presetter ecosystem, providin
 ### Quick Start
 
 ```bash
-# Install the preset
-npm install --save-dev presetter @presetter/preset-essentials
-
-# Create configuration
-echo "export { default } from '@presetter/preset-essentials';" > presetter.config.ts
-
-# Bootstrap your project
-npm install
+# In a project with a package.json
+npx presetter use @presetter/preset-essentials
 ```
 
 ### Package.json Setup
 
-Add these scripts to your `package.json`:
+`use` adds the script delegates below through `setup.scripts`. For manual installation, add the delegates yourself; package metadata such as `type`, `main`, and `types` remains yours to maintain:
 
 ```json
 {
@@ -312,14 +306,15 @@ export default preset('production-ready', {
 ## 💻 Included Dependencies
 
 ### Core Tools
-- `typescript` (^6.0.0) - TypeScript compiler
+- `@typescript/native` (`npm:typescript@^7.0.0`) - TypeScript 7 CLI
+- `typescript` (`npm:@typescript/typescript6@^6.0.0`) - TypeScript 6 API
 - `eslint` (^10.12.0) - Linting utility
 - `prettier` (^3.0.0) - Code formatter
 - `vitest` (^5.0.0) - Test framework
 
-### Optional TypeScript 7 Compiler
+### TypeScript Compiler Setup
 
-TypeScript 7.0 launched without a stable compiler API. You can use its `tsc` compiler while keeping TypeScript 6 API imports for tools such as `typescript-eslint`: install TypeScript 7 under the `@typescript/native` alias and alias `typescript` to `@typescript/typescript6`. The compatibility package also provides `tsc6` for the TypeScript 6 compiler.
+TypeScript 7.0 launched without a stable compiler API. `presetter use` installs TypeScript 7 under the `@typescript/native` alias and aliases `typescript` to `@typescript/typescript6`, keeping TypeScript 6 API imports available for tools such as `typescript-eslint`. The compatibility package also provides `tsc6` for the TypeScript 6 compiler.
 
 See [Using TypeScript 7 with the TypeScript 6 API](../../introduction/installation.md#using-typescript-7-with-the-typescript-6-api) for the installation command and dependency example.
 
@@ -515,14 +510,8 @@ For existing `import/*` customizations, follow the [import-x migration guide](..
 # 1. Remove existing tool configurations
 rm .eslintrc.* prettier.config.* jest.config.* tsconfig.json
 
-# 2. Install presetter
-npm install --save-dev presetter @presetter/preset-essentials
-
-# 3. Create preset configuration
-echo "export { default } from '@presetter/preset-essentials';" > presetter.config.ts
-
-# 4. Bootstrap
-npm install
+# 2. Install, configure, and bootstrap
+npx presetter use @presetter/preset-essentials
 ```
 
 ### From Create React App
@@ -531,14 +520,8 @@ npm install
 # 1. Eject first (if needed)
 npm run eject
 
-# 2. Install presetter
-npm install --save-dev presetter @presetter/preset-essentials
-
-# 3. Create configuration
-echo "export { default } from '@presetter/preset-essentials';" > presetter.config.ts
-
-# 4. Bootstrap and clean up
-npm install
+# 2. Install, configure, and bootstrap
+npx presetter use @presetter/preset-essentials
 rm -rf config/ scripts/  # Remove CRA configs
 ```
 

@@ -36,8 +36,7 @@ npm install --save-dev typescript eslint prettier vitest @types/node ...
 
 ### The Presetter Way ✨
 ```bash
-npm install --save-dev presetter @presetter/preset-esm
-npx presetter bootstrap
+npx presetter use @presetter/preset-esm
 # Generated configs now come from your preset stack.
 ```
 

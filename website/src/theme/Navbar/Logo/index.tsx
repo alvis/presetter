@@ -11,13 +11,13 @@ import type React from 'react';
 export default function NavbarLogo(): React.ReactNode {
   const { navbar } = useThemeConfig();
   const logo = navbar.logo;
+  const logoSrc = useBaseUrl(logo?.src ?? '');
 
   if (!logo) {
     return navbar.title;
   }
 
   const logoHref = logo.href ?? '/';
-  const logoSrc = useBaseUrl(logo.src);
   const altText = logo.alt ?? navbar.title ?? 'Logo';
 
   return (

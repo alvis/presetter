@@ -26,6 +26,9 @@ catalogs:
     '@docusaurus/theme-mermaid': ^3.10.0
     '@docusaurus/tsconfig': ^3.10.0
     '@docusaurus/types': ^3.10.0
+    '@fontsource-variable/instrument-sans': ^5.3.0
+    '@fontsource-variable/space-grotesk': ^5.3.0
+    '@fontsource/ibm-plex-mono': ^5.3.0
     '@mdx-js/react': ^3.1.0
     clsx: ^2.1.0
     docusaurus-plugin-typedoc: ^1.4.0

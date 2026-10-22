@@ -47,33 +47,9 @@ Replace existing configurations entirely with Presetter-managed ones.
 
 Keep some existing configs and selectively adopt Presetter for others.
 
-## Step 1: Install Presetter
+## Step 1: Choose the Stack
 
-Choose the preset that matches your project:
-
-### For TypeScript Libraries
-
-```bash
-pnpm add -D presetter @presetter/preset-essentials
-```
-
-### For React Applications
-
-```bash
-pnpm add -D presetter @presetter/preset-react
-```
-
-### For ES Module Libraries
-
-```bash
-pnpm add -D presetter @presetter/preset-esm
-```
-
-### For Monorepos
-
-```bash
-pnpm add -D presetter @presetter/preset-monorepo
-```
+Choose `@presetter/preset-esm` for ES module libraries, add `@presetter/preset-react` for React tooling, or use `@presetter/preset-monorepo` for a monorepo. Back up configs before adoption because bootstrap overwrites generated paths.
 
 ## Step 2: Backup Existing Configurations
 
@@ -89,30 +65,30 @@ mv prettier.config.* config-backup/ 2>/dev/null || true
 mv jest.config.* config-backup/ 2>/dev/null || true
 ```
 
-## Step 3: Bootstrap Presetter
+## Step 3: Adopt Presetter
 
-Run the bootstrap command:
+For a project without an existing Presetter config:
 
 ```bash
-presetter bootstrap
+pnpm dlx presetter use @presetter/preset-esm @presetter/preset-react --package-manager=pnpm
 ```
 
-This will create:
+`use` installs the stack and its declared setup packages, writes `presetter.config.ts`, adds missing package script delegates, and bootstraps assets. Existing scripts and package declarations are preserved; conflicts are reported. Review them before opting into `--force` for package specifications.
 
-- Fresh configuration files based on your preset
-
-Bootstrap reads an existing `presetter.config.ts`; create that file before running the command if your project does not already have one.
+If you already have a custom Presetter config, install the desired presets, edit `extends`, and run `pnpm exec presetter bootstrap`. Apply any additional setup packages and delegates manually. `use` stops on differing configs; it does not append presets to them.
 
 ## Step 4: Restore Custom Configurations
 
 ### Review Generated Configuration
 
-Check the generated `presetter.config.ts`:
+Review the generated config before adding local overrides. For example, a React stack composes ESM and React:
 
 ```typescript title="presetter.config.ts"
-import presetReact from '@presetter/preset-react';
+import esm from '@presetter/preset-esm';
+import react from '@presetter/preset-react';
+import { preset } from 'presetter';
 
-export default presetReact;
+export default preset('my-project', { extends: [esm, react] });
 ```
 
 ### Merge Custom Settings
@@ -224,20 +200,9 @@ Compare your old and new dependencies:
 git diff package.json
 ```
 
-### Remove Redundant Dependencies
+### Preserve Required Setup Packages
 
-Presetter presets include many common dev dependencies. Remove duplicates:
-
-```bash
-# Examples of dependencies you might remove
-pnpm remove -D typescript eslint prettier
-pnpm remove -D @typescript-eslint/parser @typescript-eslint/eslint-plugin
-pnpm remove -D eslint-config-prettier eslint-plugin-react
-```
-
-:::warning Keep Project Dependencies
-Only remove **dev dependencies** that are now provided by Presetter. Keep your project's runtime dependencies.
-:::
+Keep dependencies explicitly installed by `use`, including `@typescript/native`, the `typescript` API alias, Vitest, and coverage packages. They are deliberate project declarations, including libraries that resolve from the project root. Remove an older dependency only after verifying that the new stack no longer needs it.
 
 ## Step 7: Test the Migration
 

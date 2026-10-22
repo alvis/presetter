@@ -10,6 +10,7 @@ The Presetter CLI provides powerful commands for managing your project configura
 ## Available Commands
 
 ### Project Setup
+- [`presetter use <preset..>`](./use) - Install a preset stack, apply declared setup, and generate configs
 - [`presetter bootstrap`](./bootstrap) - Setup project according to specified preset
 
 ### Script Execution
@@ -75,7 +76,10 @@ presetter run-s "test -- {@} --coverage" "lint -- --fix {@}" -- --verbose
 
 ### Basic Usage
 ```bash
-# Setup project with preset
+# Adopt a preset stack
+npx presetter use @presetter/preset-esm
+
+# Regenerate assets from an existing config
 presetter bootstrap
 
 # Run single task
@@ -136,6 +140,7 @@ Presetter merges template scripts with your local `package.json` scripts, with l
 ## Next Steps
 
 Explore each command in detail:
+- **[use](./use)** - Adopt presets and apply package/script setup
 - **[bootstrap](./bootstrap)** - Learn about project setup and configuration generation
 - **[run](./run)** - Master single task execution and template scripts
 - **[run-s](./run-s)** - Understand sequential task orchestration

@@ -45,9 +45,7 @@ cd my-app
 npm run eject  # Point of no return!
 
 # With Presetter
-npm install --save-dev presetter @presetter/preset-react
-echo "export { default } from '@presetter/preset-react';" > presetter.config.ts
-npm install  # Done!
+npx presetter use @presetter/preset-esm @presetter/preset-react
 ```
 
 ### vs Vite
@@ -119,9 +117,7 @@ npm install --save-dev husky lint-staged
 # Total: 30-60 minutes
 
 # With Presetter
-npm install --save-dev presetter @presetter/preset-esm
-echo "export { default } from '@presetter/preset-esm';" > presetter.config.ts
-npm install
+npx presetter use @presetter/preset-esm
 # Total: 30 seconds
 ```
 

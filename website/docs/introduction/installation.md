@@ -11,83 +11,67 @@ Before installing Presetter, ensure you have:
 
 - **Node.js** 22.13+ (22.x), 24.x, or 26+
 - CI tracks LTS and latest Node.js. Node.js 20 is no longer supported.
-- **npm** 7.0.0 or higher (npm 7+ required for automatic peer dependency installation)
+- **npm**, **pnpm**, or **Bun** (npm 7+ when using npm, for preset peer dependencies)
 - **Git** (for version control integration)
 
 ## Package Manager Support
 
-Presetter works seamlessly with all major JavaScript package managers:
+`presetter use` supports npm, pnpm, and Bun. In a project with a `package.json`:
 
-### npm (Recommended)
 ```bash
-npm install --save-dev presetter @presetter/preset-esm
+# npm
+npx presetter use @presetter/preset-esm --package-manager=npm
+
+# pnpm
+pnpm dlx presetter use @presetter/preset-esm --package-manager=pnpm
+
+# Bun
+bunx presetter use @presetter/preset-esm --package-manager=bun
 ```
 
-### pnpm
-```bash
-pnpm add -D presetter @presetter/preset-esm
-```
-
-### yarn
-```bash
-yarn add --dev presetter @presetter/preset-esm
-```
+Presetter selects the manager from `package.json#packageManager`, then a single lockfile family, then `--package-manager`, then an interactive prompt. The flag is a fallback; it does not override the project's detected manager. Non-interactive adoption without a selection fails and asks for the flag. Yarn is unsupported by `use`.
 
 ## Installation Methods
 
 ### Method 1: Quick Setup (Recommended)
 
-The fastest way to get started with a new project:
-
 ```bash
-# Create new project directory
 mkdir my-awesome-project
 cd my-awesome-project
-
-# Initialize package.json
 npm init -y
-
-# Install Presetter with a preset
-npm install --save-dev presetter @presetter/preset-esm
-
-# Create configuration file
-echo "export { default } from '@presetter/preset-esm';" > presetter.config.ts
-
-# Add bootstrap script
-npm pkg set scripts.bootstrap="presetter bootstrap"
-
-# Install and bootstrap
-npm install
+npx presetter use @presetter/preset-esm --package-manager=npm
+npm run build
 ```
+
+`use` installs Presetter and the requested presets as devDependencies, writes `presetter.config.ts`, resolves the stack's declared setup packages and package scripts, and runs bootstrap. No separate config creation or install step is needed.
+
+Setup can declare `dependencies`, `devDependencies`, and `peerDependencies`. Existing package declarations are preserved, with a warning when their specifications differ; `--force` replaces conflicting specifications. Existing script commands are preserved too. See [`presetter use`](../cli-reference/use) for reruns, conflicts, and dependency build approval.
 
 ### Method 2: Manual Setup
 
-For more control over the installation process:
+For an existing custom config, install the preset packages and maintain the config and package script delegates yourself:
 
-1. **Install packages**:
-   ```bash
-   npm install --save-dev presetter @presetter/preset-esm
-   ```
+```bash
+npm install --save-dev presetter @presetter/preset-esm
+```
 
-2. **Create configuration file**:
-   ```typescript
-   // presetter.config.ts
-   export { default } from '@presetter/preset-esm';
-   ```
+```typescript title="presetter.config.ts"
+export { default } from '@presetter/preset-esm';
+```
 
-3. **Update package.json**:
-   ```json
-   {
-     "scripts": {
-       "bootstrap": "presetter bootstrap"
-     }
-   }
-   ```
+```json title="package.json (partial)"
+{
+  "scripts": {
+    "prepare": "run prepare",
+    "build": "run build",
+    "lint": "run lint --",
+    "test": "run test --",
+    "typecheck": "run typecheck --"
+  }
+}
+```
 
-4. **Bootstrap the project**:
-   ```bash
-   npm run bootstrap
-   ```
+Install the stack's setup packages explicitly, including the [TypeScript aliases below](#using-typescript-7-with-the-typescript-6-api), Vitest, and any framework packages declared by your presets. Then run `npx presetter bootstrap`. Bootstrap only generates assets; it does not install setup packages or write package scripts.
 
 ## Preset Selection
 
@@ -95,31 +79,31 @@ Choose the right preset for your project type:
 
 ### For Modern ES Modules
 ```bash
-npm install --save-dev presetter @presetter/preset-esm
+npx presetter use @presetter/preset-esm
 ```
 **Best for**: Libraries, Node.js applications, modern web projects
 
 ### For React Applications
 ```bash
-npm install --save-dev presetter @presetter/preset-react
+npx presetter use @presetter/preset-esm @presetter/preset-react
 ```
-**Includes**: React-specific linting, Storybook, testing utilities
+**Includes**: React-specific linting and TSX support. Add `@presetter/preset-storybook` separately for Storybook.
 
 ### For Dual CJS/ESM Libraries
 ```bash
-npm install --save-dev presetter @presetter/preset-hybrid
+npx presetter use @presetter/preset-hybrid
 ```
 **Best for**: NPM packages that need to support both module systems
 
 ### For Monorepos (v8+)
 ```bash
-npm install --save-dev presetter @presetter/preset-monorepo
+npx presetter use @presetter/preset-monorepo
 ```
 **Best for**: Multi-package repositories with shared configurations, TypeScript project references, unified testing
 
 ### For Legacy CommonJS
 ```bash
-npm install --save-dev presetter @presetter/preset-cjs
+npx presetter use @presetter/preset-cjs
 ```
 **Best for**: Existing CommonJS projects, legacy Node.js applications
 
@@ -127,10 +111,10 @@ npm install --save-dev presetter @presetter/preset-cjs
 
 TypeScript 7.0 launched without a stable programmatic compiler API. Tools that import from `typescript`, such as `typescript-eslint`, can still use the TypeScript 6 API while you use the native TypeScript 7 compiler.
 
-Follow [Microsoft's side-by-side installation guidance](https://devblogs.microsoft.com/typescript/announcing-typescript-7-0/) and install both packages using npm aliases:
+Essentials declares both aliases in `setup.devDependencies`, so `presetter use` installs them automatically when they are missing. For manual setup, [Microsoft's side-by-side installation guidance](https://devblogs.microsoft.com/typescript/announcing-typescript-7-0/) uses these npm aliases:
 
 ```bash
-npm install --save-dev '@typescript/native@npm:typescript@^7.0.2' 'typescript@npm:@typescript/typescript6@^6.0.2'
+npm install --save-dev '@typescript/native@npm:typescript@^7.0.0' 'typescript@npm:@typescript/typescript6@^6.0.0'
 ```
 
 This adds the following development dependencies:
@@ -138,8 +122,8 @@ This adds the following development dependencies:
 ```json title="package.json"
 {
   "devDependencies": {
-    "@typescript/native": "npm:typescript@^7.0.2",
-    "typescript": "npm:@typescript/typescript6@^6.0.2"
+    "@typescript/native": "npm:typescript@^7.0.0",
+    "typescript": "npm:@typescript/typescript6@^6.0.0"
   }
 }
 ```
@@ -155,7 +139,7 @@ npx tsc --version
 npx tsc6 --version
 ```
 
-This is an optional compiler setup; keep the TypeScript 6 API available for tools that depend on it.
+If your project already declares `typescript`, use preserves that specification and reports a conflict. Review it before choosing `--force` to adopt the aliases. Keep the TypeScript 6 API available for tools that depend on it.
 
 ## Verification
 
@@ -191,13 +175,10 @@ npx presetter bootstrap
 ```
 
 **Peer dependency warnings**:
-These are expected! With npm 7+, peer dependencies are automatically installed. Since v8.0.0, Presetter leverages npm's built-in peer dependency handling for a smoother experience.
+Review version conflicts rather than ignoring them. Package managers handle the presets’ own peers; `use` also applies explicit setup declarations to your project. Existing conflicting declarations are preserved unless you pass `--force`.
 
 **TypeScript errors in config files**:
-Ensure you have TypeScript installed:
-```bash
-npm install --save-dev typescript
-```
+Verify the CLI and API versions using the commands above. For manual setup, install both aliases rather than replacing the TypeScript 6 API package with TypeScript 7.
 
 ### Getting Help
 
@@ -207,16 +188,16 @@ npm install --save-dev typescript
 
 ## Current Baseline
 
-This checkout's published packages are on the scoped `@presetter/*` preset namespace and the TypeScript 6 toolchain baseline:
+This checkout's published packages are on the scoped `@presetter/*` preset namespace and the TypeScript 7 CLI / TypeScript 6 API baseline:
 
 ### 📦 Scoped package namespace
 - Every preset now ships under the **`@presetter/*`** scope (for example, `@presetter/preset-esm`). The main `presetter` CLI package keeps its unscoped name.
 
-### 🧰 TypeScript 6 + ES2024
-- **TypeScript 6** is now the required peer dependency.
+### 🧰 TypeScript 7 CLI + TypeScript 6 API + ES2024
+- Essentials installs the **TypeScript 7 CLI** and **TypeScript 6 API** aliases through `use`.
 - The default compile target is **ES2024**.
 - **`noUncheckedIndexedAccess`** is enabled in the essentials preset for safer indexed access. The `tsconfig` templates were simplified to rely on TypeScript 6 defaults.
-- Repository typechecking now uses `tsgo` via `@typescript/native-preview`; published presets continue to use the TypeScript 6 peer baseline.
+- Repository typechecking now uses `tsgo` via `@typescript/native-preview`; consumer setup uses the stable TypeScript aliases shown above.
 
 ### 🆕 New presets
 - **`@presetter/preset-node`** — standalone Node type override.

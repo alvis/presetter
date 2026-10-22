@@ -1,0 +1,211 @@
+/* sticky zero-height anchor directly under the Docusaurus navbar */
+.bar {
+  position: sticky;
+  top: var(--ifm-navbar-height);
+  z-index: 100;
+  height: 0;
+  transition: top 200ms ease;
+}
+
+/*
+ * the navbar hides on scroll down (hideOnScroll), so the strip takes its place;
+ * Docusaurus marks that state with its css-module class navbarHidden_<hash>
+ */
+:global(html:has(.navbar[class*='navbarHidden'])) .bar {
+  top: 0;
+}
+
+/* the navbar's fade skirt would wash out the pills while the strip is open */
+:global(html:has([data-home-strip='open']) .navbar::after) {
+  opacity: 0;
+}
+
+.shell {
+  position: absolute;
+  top: 0;
+  right: 0;
+  left: 0;
+}
+
+.strip {
+  max-height: 0;
+  overflow: hidden;
+  opacity: 0;
+  background: rgba(var(--home-paper), 0.86);
+  backdrop-filter: blur(18px);
+  box-shadow: 0 18px 45px -40px rgba(var(--home-shadow), 0.12);
+  transition:
+    max-height 420ms var(--home-ease),
+    opacity 300ms ease;
+}
+
+.stripOpen {
+  max-height: 60px;
+  opacity: 1;
+}
+
+.stripInner {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  max-width: 1320px;
+  margin: 0 auto;
+  padding: 8px 24px 10px;
+  overflow-x: auto;
+  scrollbar-width: none;
+}
+
+.stripLabel {
+  margin-right: 6px;
+  color: rgb(var(--home-muted));
+  font: 600 11px/1 var(--home-font-mono);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+.pill {
+  display: inline-flex;
+  flex: none;
+  align-items: center;
+  gap: 8px;
+  min-height: 34px;
+  padding: 0 14px 0 10px;
+  border: 1px solid rgba(var(--home-line), 0.14);
+  border-radius: 999px;
+  background: rgba(var(--home-paper), 0.7);
+  color: rgb(var(--home-ink-2));
+  font-size: 0.86rem;
+  font-weight: 600;
+  white-space: nowrap;
+  text-decoration: none;
+  transition: all 260ms ease;
+}
+
+.pill:hover {
+  color: rgb(var(--home-ink));
+  text-decoration: none;
+}
+
+.pillActive,
+.pillActive:hover {
+  border-color: rgb(var(--home-inverse));
+  background: rgb(var(--home-inverse));
+  color: rgb(var(--home-on-inverse));
+}
+
+.pillNumber {
+  font: 600 11px/1 var(--home-font-mono);
+  opacity: 0.75;
+}
+
+.hairline,
+.progress {
+  position: absolute;
+  right: 0;
+  bottom: -1px;
+  left: 0;
+  pointer-events: none;
+}
+
+.hairline {
+  height: 1px;
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    rgba(var(--home-accent), 0.2) 18%,
+    rgba(var(--home-lime), 0.32) 50%,
+    rgba(var(--home-accent), 0.2) 82%,
+    transparent 100%
+  );
+  opacity: 0;
+  transition: opacity 300ms ease;
+}
+
+/* while collapsed, the navbar's own hairline already sits at this edge */
+.stripOpen ~ .hairline {
+  opacity: 1;
+}
+
+.progress {
+  height: 2px;
+  background: linear-gradient(
+    90deg,
+    rgb(var(--home-accent)),
+    rgb(var(--home-lime))
+  );
+  transform: scaleX(0);
+  transform-origin: left;
+}
+
+.rail {
+  position: fixed;
+  top: 50%;
+  right: 20px;
+  z-index: 40;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  opacity: 0;
+  transform: translateY(-50%);
+  transition: opacity 300ms ease;
+}
+
+.railOpen {
+  opacity: 1;
+}
+
+.railItem {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 10px;
+  padding: 6px 0;
+  text-decoration: none;
+}
+
+.railItem:hover {
+  text-decoration: none;
+}
+
+.railLabel {
+  padding: 4px 10px;
+  border: 1px solid rgba(var(--home-line), 0.12);
+  border-radius: 999px;
+  background: rgba(var(--home-paper), 0.92);
+  color: rgb(var(--home-ink));
+  font-size: 0.78rem;
+  font-weight: 700;
+  opacity: 0;
+  transform: translateX(6px);
+  transition: all 260ms ease;
+}
+
+.railDot {
+  width: 10px;
+  height: 10px;
+  border-radius: 999px;
+  background: rgba(var(--home-line), 0.28);
+  transition: all 300ms ease;
+}
+
+.railItem:focus-visible .railLabel,
+.railItemActive .railLabel {
+  opacity: 1;
+  transform: none;
+}
+
+.railItemActive .railDot {
+  width: 28px;
+  background: linear-gradient(
+    90deg,
+    rgb(var(--home-accent)),
+    rgb(var(--home-lime))
+  );
+}
+
+@media (max-width: 1199px) {
+  .rail {
+    display: none;
+  }
+}

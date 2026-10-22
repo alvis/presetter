@@ -12,7 +12,7 @@ Presetter v9 is a major release that modernizes the toolchain, reorganizes the p
 
 ### 🎯 **Breaking Changes**
 - **Scoped namespace**: every preset moves from `presetter-preset-*` to **`@presetter/preset-*`**. The main `presetter` CLI package keeps its unscoped name.
-- **TypeScript 6 required**: TypeScript 6 is now the required peer dependency, replacing TypeScript 5.
+- **TypeScript CLI/API split**: Current Essentials setup pairs the TypeScript 7 CLI with the TypeScript 6 API aliases, replacing the TypeScript 5 baseline.
 - **ES2024 default target**: the default compile target is now **ES2024** (was ES2022).
 - **`noUncheckedIndexedAccess` enabled**: the essentials preset turns on `noUncheckedIndexedAccess` for safer indexed access.
 - **Simplified `tsconfig`**: the explicit `strictNullChecks: false` and `noImplicitAny: false` overrides were removed — the templates now rely on TypeScript 6 defaults.
@@ -138,17 +138,17 @@ npm install --save-dev @presetter/preset-react@^9.0.0
 npm install --save-dev @presetter/preset-monorepo@^9.0.0
 ```
 
-### Step 3: Upgrade to TypeScript 6
+### Step 3: Upgrade the TypeScript CLI and API
 
-TypeScript 6 is the new required peer. With npm 7+ it is pulled in automatically, but you can upgrade it explicitly:
+For an existing custom config, install the same aliases that Essentials declares for `use`:
 
 ```bash
-npm install --save-dev typescript@^6.0.0
+npm install --save-dev '@typescript/native@npm:typescript@^7.0.0' 'typescript@npm:@typescript/typescript6@^6.0.0'
 ```
 
 The generated `tsconfig` templates were simplified. If you previously relied on the implicit `strictNullChecks: false` / `noImplicitAny: false` behavior, note that v9 follows TypeScript 6 strict defaults instead. You may also see new errors from `noUncheckedIndexedAccess`:
 
-For maintainers following Presetter's own repository setup, the root workspace now runs typechecking through `tsgo` from `@typescript/native-preview`. That is an internal repository workflow improvement, not an additional dependency required for ordinary preset consumers.
+For maintainers following Presetter's own repository setup, the root workspace now runs typechecking through `tsgo` from `@typescript/native-preview`. That repository workflow is separate from the stable CLI/API aliases used by consumers.
 
 ```typescript
 // v9 flags this — record[key] is now `string | undefined`
@@ -304,7 +304,7 @@ presetter bootstrap --packages @myorg/web-app @myorg/shared-utils
 
 **Problem:** `noUncheckedIndexedAccess` or TypeScript 6 strict defaults surface new type errors.
 
-**Solution:** Add guards/assertions for indexed access, or temporarily override `noUncheckedIndexedAccess: false` in `tsconfig.json` (see [Step 3](#step-3-upgrade-to-typescript-6)).
+**Solution:** Add guards/assertions for indexed access, or temporarily override `noUncheckedIndexedAccess: false` in `tsconfig.json` (see [Step 3](#step-3-upgrade-the-typescript-cli-and-api)).
 
 ### Issue: `npm run coverage` / `npm run watch` no longer exists
 

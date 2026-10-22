@@ -1,0 +1,223 @@
+.divider {
+  position: relative;
+  height: 96px;
+  margin: 0 0 20px;
+  overflow: clip;
+  pointer-events: none;
+}
+
+.wave {
+  position: absolute;
+  top: 0;
+  right: -10%;
+  left: -10%;
+  height: 100%;
+  opacity: 0.75;
+  filter: blur(14px);
+  mask-image: linear-gradient(
+    180deg,
+    transparent,
+    #000 35%,
+    #000 65%,
+    transparent
+  );
+  animation: wavedrift 9s ease-in-out infinite alternate;
+}
+
+.drift .wave {
+  clip-path: polygon(
+    0 40%,
+    12% 22%,
+    26% 44%,
+    42% 18%,
+    58% 46%,
+    74% 20%,
+    88% 42%,
+    100% 26%,
+    100% 100%,
+    0 100%
+  );
+  background: linear-gradient(
+    90deg,
+    rgba(var(--home-accent), 0.16),
+    rgba(var(--home-lime), 0.22) 50%,
+    rgba(255, 179, 71, 0.12)
+  );
+}
+
+.opinions .wave {
+  clip-path: polygon(
+    0 30%,
+    14% 48%,
+    30% 20%,
+    46% 44%,
+    62% 16%,
+    78% 40%,
+    92% 22%,
+    100% 34%,
+    100% 100%,
+    0 100%
+  );
+  background: linear-gradient(
+    90deg,
+    rgba(255, 179, 71, 0.14),
+    rgba(var(--home-accent), 0.16) 50%,
+    rgba(var(--home-lime), 0.2)
+  );
+  animation-duration: 10s;
+  animation-direction: alternate-reverse;
+}
+
+.scripts .wave {
+  clip-path: polygon(
+    0 34%,
+    16% 18%,
+    32% 42%,
+    48% 22%,
+    64% 44%,
+    80% 18%,
+    94% 38%,
+    100% 28%,
+    100% 100%,
+    0 100%
+  );
+  background: linear-gradient(
+    90deg,
+    rgba(var(--home-accent), 0.14),
+    rgba(255, 179, 71, 0.14) 50%,
+    rgba(var(--home-lime), 0.2)
+  );
+  animation-duration: 11s;
+}
+
+.explore .wave {
+  clip-path: polygon(
+    0 40%,
+    12% 22%,
+    26% 44%,
+    42% 18%,
+    58% 46%,
+    74% 20%,
+    88% 42%,
+    100% 26%,
+    100% 100%,
+    0 100%
+  );
+  background: linear-gradient(
+    90deg,
+    rgba(var(--home-lime), 0.18),
+    rgba(var(--home-accent), 0.18) 50%,
+    rgba(255, 179, 71, 0.1)
+  );
+}
+
+.rule {
+  position: absolute;
+  top: 50%;
+  right: 0;
+  left: 0;
+  transform: translateY(-50%);
+}
+
+.ruleGrid {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr);
+  align-items: center;
+  gap: 20px;
+}
+
+.lineStart,
+.lineEnd {
+  height: 1px;
+}
+
+.lineStart {
+  background: linear-gradient(90deg, transparent, rgb(var(--home-accent)));
+  transform-origin: right;
+}
+
+.lineEnd {
+  background: linear-gradient(90deg, rgb(var(--home-lime)), transparent);
+  transform-origin: left;
+}
+
+.badgeRow {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  max-width: none;
+  margin: 0;
+  line-height: normal;
+}
+
+.badge {
+  position: relative;
+  display: grid;
+  place-items: center;
+  width: 34px;
+  height: 34px;
+  border-radius: 999px;
+  background: rgb(var(--home-paper));
+  box-shadow: 0 10px 20px -14px rgba(var(--home-ink-shade), 0.4);
+}
+
+.ring {
+  --ring-from: 0deg;
+
+  position: absolute;
+  inset: -2px;
+  border-radius: 999px;
+  background: conic-gradient(
+    from var(--ring-from),
+    rgb(var(--home-accent)),
+    rgb(var(--home-lime)),
+    #ffb347,
+    rgb(var(--home-accent))
+  );
+  mask: radial-gradient(circle, transparent 17px, #000 18px);
+  animation: ringspin 8s linear infinite;
+}
+
+.opinions .ring {
+  --ring-from: 120deg;
+}
+
+.scripts .ring {
+  --ring-from: 180deg;
+}
+
+.explore .ring {
+  --ring-from: 240deg;
+}
+
+.number {
+  position: relative;
+  color: rgb(var(--home-ink));
+  font: 700 0.88rem var(--home-font-display);
+  letter-spacing: -0.02em;
+}
+
+.label {
+  color: rgb(var(--home-accent-ink));
+  font-size: 0.78rem;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+@keyframes wavedrift {
+  from {
+    transform: translateX(-4%) scaleY(1);
+  }
+
+  to {
+    transform: translateX(4%) scaleY(1.15);
+  }
+}
+
+@keyframes ringspin {
+  to {
+    transform: rotate(360deg);
+  }
+}
