@@ -4,12 +4,19 @@ import { dirname, posix, relative, resolve } from 'node:path';
 import { globby } from 'globby';
 import yargs from 'yargs';
 
-import { bootstrap } from '../preset';
+import { bootstrap, use } from '../preset';
 import { run } from '../run';
 import { parseGlobalArgs, parseTaskSpec } from '../task';
 
 import type { PackageJson } from 'type-fest';
 import type { Argv, CommandModule } from 'yargs';
+
+import type { PackageManager } from '../preset';
+
+interface UseArgs {
+  preset: string[];
+  packageManager?: PackageManager;
+}
 
 interface BootstrapArgs {
   only?: string;
@@ -34,6 +41,29 @@ const NEGATION_PREFIX = '!';
 const WORKSPACE_GLOB_OPTIONS = {
   gitignore: true,
   ignore: ['**/node_modules/**'],
+};
+
+const useCommand: CommandModule<object, UseArgs> = {
+  command: 'use <preset..>',
+  describe: 'install presets and configure the project',
+  builder: (yargs) =>
+    yargs
+      .positional('preset', {
+        type: 'string',
+        array: true,
+        demandOption: true,
+        description: 'preset package names, optionally with versions',
+      })
+      .option('package-manager', {
+        type: 'string',
+        choices: ['npm', 'pnpm', 'yarn', 'bun'] as const,
+        description:
+          'fallback when packageManager and lockfiles are inconclusive',
+      })
+      .help(),
+  handler: async (argv) => {
+    await use(argv.preset, { packageManager: argv.packageManager });
+  },
 };
 
 const bootstrapCommand: CommandModule<
@@ -150,6 +180,7 @@ export async function entry(args: string[]): Promise<void> {
     })
     .usage('⚙ presetter: your preset configurator')
     .showHelpOnFail(true)
+    .command(useCommand)
     .command(bootstrapCommand)
     .command(runCommand)
     .command(runSCommand)

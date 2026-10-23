@@ -69,6 +69,33 @@ describe('fn:preset', () => {
     await expect(result).resolves.not.toThrow();
   });
 
+  it('should list every @types development dependency in tsconfig types', async () => {
+    const typed = {
+      ...context,
+      packageJson: {
+        devDependencies: {
+          '@types/babel__core': '*',
+          '@types/node': '*',
+          'vitest': '*',
+        },
+      },
+    } satisfies ProjectContext;
+
+    const node = await resolvePreset(preset, typed);
+    const assets = await resolveAssets(node, typed);
+
+    expect(assets['tsconfig.json']).toMatchObject({
+      compilerOptions: { types: ['babel__core', 'node'] },
+    });
+  });
+
+  it('should leave tsconfig types unset without @types development dependencies', async () => {
+    const node = await resolvePreset(preset, context);
+    const assets = await resolveAssets(node, context);
+
+    expect(assets['tsconfig.json']).not.toHaveProperty('compilerOptions.types');
+  });
+
   it('should skip .husky/pre-commit if .git is not present', async () => {
     const context = {
       isRepoRoot: false,

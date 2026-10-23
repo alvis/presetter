@@ -5,6 +5,7 @@ import { preset } from '@presetter/types';
 
 import eslintOverride from './eslint/override';
 import eslintTemplate from './eslint/template';
+import tsconfigOverride from './tsconfig/override';
 import vitest from './vitest/template';
 
 const DIR = dirname(fileURLToPath(import.meta.url));
@@ -52,6 +53,25 @@ export default preset('@presetter/preset-essentials', (context) => ({
     root: context.relativeRepoRoot,
   },
   scripts: resolve(TEMPLATES, 'scripts.yaml'),
+  setup: {
+    devDependencies: {
+      '@typescript/native': 'npm:typescript@^7.0.0',
+      'typescript': 'npm:@typescript/typescript6@^6.0.0',
+      '@types/node': '^24.0.0',
+      'vitest': '^5.0.0',
+      '@vitest/coverage-v8': '^5.0.0',
+    },
+    scripts: {
+      'prepare': 'run prepare',
+      'build': 'run build',
+      'lint': 'run lint --',
+      'pretest': 'run pretest',
+      'test': 'run test --',
+      'test:coverage': 'run test:coverage --',
+      'test:watch': 'run test:watch --',
+      'typecheck': 'run typecheck --',
+    },
+  },
   assets: {
     ...(context.isRepoRoot && {
       '.husky/pre-commit': resolve(TEMPLATES, 'pre-commit'),
@@ -70,6 +90,7 @@ export default preset('@presetter/preset-essentials', (context) => ({
   override: {
     assets: {
       'eslint.config.ts': eslintOverride,
+      'tsconfig.json': tsconfigOverride,
     },
   },
 }));

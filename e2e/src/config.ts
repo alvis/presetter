@@ -64,6 +64,7 @@ export const EXAMPLES = detectExamples();
 
 /** npm-specific environment variables for isolated testing */
 export const NPM_ENV = {
+  NPM_CONFIG_CACHE: join(TEMP_DIR, '.npm-cache'),
   // point to non-existent .npmrc files to prevent reading any .npmrc which may cause false results
   NPM_CONFIG_USERCONFIG: join(TEMP_DIR, '.user.npmrc'),
   NPM_CONFIG_GLOBALCONFIG: join(TEMP_DIR, '.global.npmrc'),
