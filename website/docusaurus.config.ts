@@ -285,36 +285,17 @@ const config: Config = {
         {
           title: 'Community',
           items: [
-            {
-              label: 'Repository',
-              href: REPOSITORY_URL,
-              className: 'footer-github-link',
-            },
-            {
-              label: 'Issues',
-              href: `${REPOSITORY_URL}/issues`,
-              className: 'footer-github-link',
-            },
-            {
-              label: 'Discussions',
-              href: `${REPOSITORY_URL}/discussions`,
-              className: 'footer-github-link',
-            },
-            {
-              label: 'npm Package',
-              href: 'https://www.npmjs.com/package/presetter',
-              className: 'footer-npm-link',
-            },
+            { label: 'Repository', href: REPOSITORY_URL },
+            { label: 'Issues', href: `${REPOSITORY_URL}/issues` },
+            { label: 'Discussions', href: `${REPOSITORY_URL}/discussions` },
+            { label: 'npm Package', href: 'https://www.npmjs.com/package/presetter' },
           ],
         },
         {
           title: 'More',
           items: [
             { label: 'Blog', to: '/blog' },
-            {
-              label: 'Changelog',
-              href: `${REPOSITORY_URL}/releases`,
-            },
+            { label: 'Changelog', href: `${REPOSITORY_URL}/releases` },
           ],
         },
       ],
