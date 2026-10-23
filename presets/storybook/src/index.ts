@@ -10,10 +10,13 @@ import vitestStorybookOverride from './vitest/template';
 export interface Variables {
   /** the directory containing all source code (default: src) */
   source: string;
+  /** the directory containing all test files (default: spec) */
+  test: string;
 }
 
 export const DEFAULT_VARIABLES = {
   source: 'src',
+  test: 'spec',
 } satisfies Variables;
 
 export default preset('@presetter/preset-storybook', {

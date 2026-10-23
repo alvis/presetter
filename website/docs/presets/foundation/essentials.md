@@ -200,6 +200,31 @@ Run unit tests with coverage reporting.
 run test:coverage
 ```
 
+#### Automatic setup files
+
+Vitest detects conventional setup files when its configuration loads. `<test>`
+is the `test` variable (default `spec`):
+
+| Project | Suffixes, in order     |
+| ------- | ---------------------- |
+| UNIT    | empty, `.unit`         |
+| INT     | `.int`, `.integration` |
+| E2E     | `.e2e`                 |
+
+`setupFiles` searches `vitest.setup`, `<test>/setup`, then `<test>/vitest.setup`;
+`globalSetup` searches `vitest.global-setup`, `<test>/global-setup`, then
+`<test>/vitest.global-setup`. Each base uses the suffixes above, then extensions
+`ts`, `mts`, `cts`, `js`, `mjs`, `cjs`. All matches load in that order.
+
+For example:
+
+- `vitest.setup.ts` — UNIT
+- `spec/setup.unit.ts` — UNIT
+- `spec/vitest.global-setup.int.ts` — INT
+
+Unsuffixed files belong only to UNIT. User-configured setup files are kept.
+Detected setup modules are excluded from test collection.
+
 ### Release Management
 
 #### `run release`

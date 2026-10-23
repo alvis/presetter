@@ -174,7 +174,26 @@ export default {
 };
 ```
 
-If a `.storybook/vitest.setup.ts` exists, it is wired up as a setup file automatically.
+### Automatic setup files
+
+STO loads `.storybook/vitest.setup.ts` first when present, then conventional
+files detected when the Vitest configuration loads:
+
+| Setting       | Bases, in order                                                            | Suffixes, in order |
+| ------------- | -------------------------------------------------------------------------- | ------------------ |
+| `setupFiles`  | `vitest.setup`, `<test>/setup`, `<test>/vitest.setup`                      | `.sto`, `.story`   |
+| `globalSetup` | `vitest.global-setup`, `<test>/global-setup`, `<test>/vitest.global-setup` | `.sto`, `.story`   |
+
+`<test>` is the inherited `test` variable (default `spec`). Each base uses the
+suffixes above, then extensions `ts`, `mts`, `cts`, `js`, `mjs`, `cjs`.
+All matches load in that order. For example:
+
+- `vitest.setup.sto.ts`
+- `spec/setup.story.mts`
+- `spec/vitest.global-setup.sto.ts`
+
+Unsuffixed conventional files belong to UNIT in essentials.
+User-configured setup files are kept.
 
 ## Use Cases
 
@@ -188,6 +207,7 @@ If a `.storybook/vitest.setup.ts` exists, it is wired up as a setup file automat
 | Variable | Default | Description |
 | --- | --- | --- |
 | `source` | `"src"` | Directory scanned for `*.stories.*` files. |
+| `test` | `"spec"` | Directory scanned for conventional setup files. |
 
 ## Related Presets
 
