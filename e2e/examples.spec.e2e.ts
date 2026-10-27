@@ -12,7 +12,7 @@
  * -------------------------------------------------------------------------
  */
 
-import { mkdir, readFile, rm, writeFile } from 'node:fs/promises';
+import { mkdir, mkdtemp, readFile, rm, writeFile } from 'node:fs/promises';
 import { join } from 'node:path';
 
 import { beforeAll, beforeEach, describe, expect, it } from 'vitest';
@@ -73,14 +73,6 @@ describe.each(EXAMPLES)(
           await mkdir(destination, { recursive: true });
           await copyExample(source, destination, manager);
 
-          if (example.name === 'standalone') {
-            await exec('git', {
-              args: ['init'],
-              cwd: destination,
-              silent: true,
-            });
-          }
-
           log(`installing dependencies for ${example.name} with ${manager}...`);
           installOutput = await runInstall(destination, manager);
         }, 300_000);
@@ -109,14 +101,26 @@ describe.each(EXAMPLES)(
 
         if (example.name === 'standalone') {
           it('should format staged files through the generated hook and propagate task failure', async () => {
-            const sourceFile = join(destination, 'src', 'index.ts');
-            const packageFile = join(destination, 'package.json');
+            const hookProject = await mkdtemp(
+              join(TEMP_DIR, `standalone-hook-${manager}-`),
+            );
+
+            await copyExample(source, hookProject, manager);
+            await exec('git', {
+              args: ['init'],
+              cwd: hookProject,
+              silent: true,
+            });
+            await runInstall(hookProject, manager);
+
+            const sourceFile = join(hookProject, 'src', 'index.ts');
+            const packageFile = join(hookProject, 'package.json');
             const formatted = 'export const greeting = { ready: true };\n';
 
             await writeFile(sourceFile, 'export const greeting={ready:true}\n');
             await exec('git', {
               args: ['add', 'src/index.ts'],
-              cwd: destination,
+              cwd: hookProject,
               silent: true,
             });
             await exec('git', {
@@ -130,7 +134,7 @@ describe.each(EXAMPLES)(
                 '-m',
                 'Verify generated hook',
               ],
-              cwd: destination,
+              cwd: hookProject,
               silent: true,
             });
 
@@ -138,7 +142,7 @@ describe.each(EXAMPLES)(
             expect(
               await exec('git', {
                 args: ['show', 'HEAD:src/index.ts'],
-                cwd: destination,
+                cwd: hookProject,
                 silent: true,
               }),
             ).toContain(formatted);
@@ -168,7 +172,7 @@ describe.each(EXAMPLES)(
             );
             await exec('git', {
               args: ['add', 'src/index.ts'],
-              cwd: destination,
+              cwd: hookProject,
               silent: true,
             });
 
@@ -184,14 +188,14 @@ describe.each(EXAMPLES)(
                   '-m',
                   'Reject failing staged task',
                 ],
-                cwd: destination,
+                cwd: hookProject,
                 silent: true,
               }),
             ).rejects.toThrow();
             expect(
               await exec('git', {
                 args: ['show', 'HEAD:src/index.ts'],
-                cwd: destination,
+                cwd: hookProject,
                 silent: true,
               }),
             ).toContain(formatted);
