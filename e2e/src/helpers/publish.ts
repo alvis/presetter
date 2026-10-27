@@ -14,7 +14,7 @@
 
 import { execa } from 'execa';
 
-import { PNPM_ENV, ROOT_DIR, VERDACCIO_AUTH } from '../config';
+import { PNPM_ENV, ROOT_DIR } from '../config';
 import { log } from '../log';
 
 import type { ExecaError } from 'execa';
@@ -25,8 +25,12 @@ const PUBLISH_TIMEOUT = 900_000;
 /**
  * publishes all packages to the local Verdaccio registry
  * @param registry local Verdaccio registry URL
+ * @param token bearer token of a user registered on the registry
  */
-export async function publishAllPackages(registry: string): Promise<void> {
+export async function publishAllPackages(
+  registry: string,
+  token: string,
+): Promise<void> {
   log(`publishing all packages to ${registry}...`);
 
   const url = new URL(registry);
@@ -37,14 +41,10 @@ export async function publishAllPackages(registry: string): Promise<void> {
 
   // set auth via pnpm config (cross-platform compatible)
   log(`setting registry auth for ${registryPath}...`);
-  await execa(
-    'pnpm',
-    ['config', 'set', `${registryPath}:_auth`, VERDACCIO_AUTH],
-    {
-      cwd: ROOT_DIR,
-      env: PNPM_ENV,
-    },
-  );
+  await execa('pnpm', ['config', 'set', `${registryPath}:_authToken`, token], {
+    cwd: ROOT_DIR,
+    env: PNPM_ENV,
+  });
 
   const args = [
     '--recursive',

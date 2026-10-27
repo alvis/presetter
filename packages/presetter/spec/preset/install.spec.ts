@@ -31,7 +31,8 @@ vi.mock('execa', async (importOriginal) => {
 
   return {
     ...original,
-    execa: vi.fn(async () => ({ stdout: '' })) as unknown as typeof execa,
+    // @ts-expect-error execa also has a bound-options overload; adoption only uses the command overload
+    execa: vi.fn(async () => ({ stdout: '' })),
   } satisfies typeof import('execa');
 });
 

@@ -16,7 +16,14 @@ export default async (): Promise<() => Promise<void>> => {
   const verdaccio = await startVerdaccio();
 
   log('publishing packages to local registry...');
-  await publishAllPackages(verdaccio.url);
+  try {
+    await publishAllPackages(verdaccio.url, verdaccio.token);
+  } catch (exception) {
+    // NOTE: stop the registry on failure, otherwise it keeps the process alive
+    await verdaccio.stop();
+
+    throw exception;
+  }
   log(`published ${packages.length.toString()} packages`);
 
   /** tears down e2e test environment and stops Verdaccio */

@@ -34,7 +34,7 @@
     "execa": "catalog:runtime",
     "presetter": "workspace:*",
     "type-fest": "catalog:types",
-    "verdaccio": "^6.0.0",
+    "verdaccio": "^7.1.0",
     "vitest": "catalog:testing"
   },
   "engines": {

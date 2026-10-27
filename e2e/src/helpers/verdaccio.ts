@@ -13,10 +13,15 @@
  */
 
 import { mkdir } from 'node:fs/promises';
+import { join } from 'node:path';
 
 import { runServer, Config } from 'verdaccio';
 
-import { VERDACCIO_PORT, VERDACCIO_STORAGE_DIR } from '../config';
+import {
+  VERDACCIO_PORT,
+  VERDACCIO_STORAGE_DIR,
+  VERDACCIO_USER,
+} from '../config';
 import { log } from '../log';
 
 import type { Server } from 'node:http';
@@ -31,6 +36,8 @@ const LISTEN_TIMEOUT = 5_000;
 export interface VerdaccioInstance {
   /** the registry URL for publishing and installing packages */
   readonly url: string;
+  /** bearer token of the registered test user for authenticating with the registry */
+  readonly token: string;
   /** function to stop the Verdaccio server */
   readonly stop: () => Promise<void>;
 }
@@ -39,9 +46,15 @@ export interface VerdaccioInstance {
 const VERDACCIO_CONFIG = new Config({
   config_path: 'memory',
   storage: VERDACCIO_STORAGE_DIR,
+  auth: {
+    htpasswd: { file: join(VERDACCIO_STORAGE_DIR, 'htpasswd') },
+  },
   uplinks: {
     npmjs: {
       url: 'https://registry.npmjs.org/',
+      // NOTE: verdaccio 7 marks the uplink dead after one timed out request and then answers 404 for every package it has not cached, so a slow network must neither time out early nor mark the uplink dead
+      timeout: '120s',
+      max_fails: 1000,
     },
   },
   packages: {
@@ -128,9 +141,52 @@ export async function startVerdaccio(): Promise<VerdaccioInstance> {
     log('verdaccio stopped');
   };
 
+  // NOTE: stop the server if registration fails, otherwise it keeps the process alive
+  const token = await registerTestUser(url).catch(
+    async (exception: unknown) => {
+      await stop();
+
+      throw exception;
+    },
+  );
+
   registerSignalHandlers(stop);
 
   log(`verdaccio ready at ${url}`);
 
-  return { url, stop };
+  return { url, token, stop };
+}
+
+/**
+ * registers the test user on the registry
+ * @param registry registry URL
+ * @returns bearer token of the registered user
+ */
+async function registerTestUser(registry: string): Promise<string> {
+  const response = await fetch(
+    `${registry}/-/user/org.couchdb.user:${VERDACCIO_USER.name}`,
+    {
+      method: 'PUT',
+      headers: { 'content-type': 'application/json' },
+      body: JSON.stringify(VERDACCIO_USER),
+    },
+  );
+
+  if (!response.ok) {
+    throw new Error(
+      `failed to register the test user: ${response.status.toString()} ${await response.text()}`,
+    );
+  }
+
+  const body: unknown = await response.json();
+  if (
+    typeof body !== 'object' ||
+    body === null ||
+    !('token' in body) ||
+    typeof body.token !== 'string'
+  ) {
+    throw new Error('registry did not return a token for the test user');
+  }
+
+  return body.token;
 }
