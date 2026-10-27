@@ -195,7 +195,7 @@ scripts: {
   'dev:all': 'run-p dev:server dev:client',
   
   // Conditional scripts
-  precommit: 'lint-staged',
+  precommit: 'presetter run lint-staged -- --concurrent=false',
   prepublishOnly: 'npm run ci'
 }
 ```
