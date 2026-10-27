@@ -4,21 +4,22 @@ import CodeBlock from '@theme/CodeBlock';
 
 import { useState } from 'react';
 
+import { buildPresetConfig, buildUseCommand } from '../presetter-setup';
+
 import styles from './PresetterConfigGenerator.module.css';
 
 import type React from 'react';
 
+import type { SetupPackageManager } from '../presetter-setup';
+
 type ProjectType = 'library' | 'application' | 'monorepo';
 type Framework = 'react' | 'node' | 'none';
-type TestFramework = 'vitest' | 'none';
-type PackageManager = 'npm' | 'yarn' | 'pnpm';
 
 interface ConfigOptions {
   projectType: ProjectType;
   framework: Framework;
   strictMode: boolean;
-  testFramework: TestFramework;
-  packageManager: PackageManager;
+  packageManager: SetupPackageManager;
 }
 
 const PresetterConfigGenerator: React.FC = () => {
@@ -26,11 +27,10 @@ const PresetterConfigGenerator: React.FC = () => {
     projectType: 'library',
     framework: 'none',
     strictMode: true,
-    testFramework: 'vitest',
     packageManager: 'pnpm',
   });
 
-  const generatePresetConfig = (): string => {
+  const selectedPresets = (): string[] => {
     const presets: string[] = [];
 
     if (options.projectType === 'monorepo') {
@@ -51,115 +51,18 @@ const PresetterConfigGenerator: React.FC = () => {
       presets.push('@presetter/preset-strict');
     }
 
-    const uniquePresets = [...new Set(presets)];
-    const imports = uniquePresets
-      .map((preset, index) => `import preset${index} from '${preset}';`)
-      .join('\n');
-
-    const presetCalls = uniquePresets
-      .map((_, index) => `preset${index}`)
-      .join(',\n    ');
-
-    return `import { preset } from 'presetter';
-${imports}
-
-export default preset('my-project', {
-  extends: [
-    ${presetCalls},
-  ],
-});`;
+    return presets;
   };
 
-  const generatePackageJson = (): string => {
-    const devDependencies = ['presetter'];
-
-    if (options.projectType === 'monorepo') {
-      devDependencies.push('@presetter/preset-monorepo');
-    } else if (options.projectType === 'library') {
-      devDependencies.push('@presetter/preset-esm');
-    } else {
-      devDependencies.push('@presetter/preset-essentials');
-    }
-
-    if (options.framework === 'react') {
-      devDependencies.push('@presetter/preset-react');
-    } else if (options.framework === 'node') {
-      devDependencies.push('@presetter/preset-node');
-    }
-
-    if (options.strictMode) {
-      devDependencies.push('@presetter/preset-strict');
-    }
-
-    const scripts: Record<string, string> = {
-      bootstrap: 'presetter bootstrap',
-      build: 'run build',
-      clean: 'run clean',
-      typecheck: 'run typecheck --',
-      lint: 'run lint --',
-      format: 'run format --',
-    };
-
-    if (options.testFramework !== 'none') {
-      scripts.test = 'run test --';
-    }
-
-    return JSON.stringify(
-      {
-        devDependencies: devDependencies.reduce<Record<string, string>>(
-          (acc, dep) => {
-            acc[dep] = '^8.3.0';
-
-            return acc;
-          },
-          {},
-        ),
-        scripts,
-      },
-      null,
-      2,
-    );
-  };
-
-  const generateInstallCommand = (): string => {
-    const presets = ['presetter'];
-
-    if (options.projectType === 'monorepo') {
-      presets.push('@presetter/preset-monorepo');
-    } else if (options.projectType === 'library') {
-      presets.push('@presetter/preset-esm');
-    } else {
-      presets.push('@presetter/preset-essentials');
-    }
-
-    if (options.framework === 'react') {
-      presets.push('@presetter/preset-react');
-    } else if (options.framework === 'node') {
-      presets.push('@presetter/preset-node');
-    }
-
-    if (options.strictMode) {
-      presets.push('@presetter/preset-strict');
-    }
-
-    const uniquePresets = [...new Set(presets)].join(' ');
-
-    if (options.packageManager === 'npm') {
-      return `npm install --save-dev ${uniquePresets}`;
-    }
-
-    if (options.packageManager === 'yarn') {
-      return `yarn add --dev ${uniquePresets}`;
-    }
-
-    return `pnpm add -D ${uniquePresets}`;
-  };
+  const presets = selectedPresets();
 
   return (
     <div className={styles.container}>
       <h3>Presetter Configuration Generator</h3>
       <p>
-        Configure your project settings to generate the perfect Presetter setup:
+        Choose your preset stack. Run the command in a project with a
+        package.json; use installs the packages, adds declared scripts, and
+        bootstraps the configs.
       </p>
 
       <div className={styles.optionsGrid}>
@@ -204,25 +107,6 @@ export default preset('my-project', {
         </div>
 
         <div className={styles.field}>
-          <label className={styles.label} htmlFor="config-test-framework">
-            Test Framework:
-          </label>
-          <select
-            className={styles.select}
-            id="config-test-framework"
-            value={options.testFramework}
-            onChange={(event) =>
-              setOptions((prev) => ({
-                ...prev,
-                testFramework: event.target.value as TestFramework,
-              }))
-            }>
-            <option value="vitest">Vitest</option>
-            <option value="none">None</option>
-          </select>
-        </div>
-
-        <div className={styles.field}>
           <label className={styles.label} htmlFor="config-package-manager">
             Package Manager:
           </label>
@@ -233,12 +117,12 @@ export default preset('my-project', {
             onChange={(event) =>
               setOptions((prev) => ({
                 ...prev,
-                packageManager: event.target.value as PackageManager,
+                packageManager: event.target.value as SetupPackageManager,
               }))
             }>
             <option value="pnpm">pnpm</option>
             <option value="npm">npm</option>
-            <option value="yarn">yarn</option>
+            <option value="bun">Bun</option>
           </select>
         </div>
       </div>
@@ -264,25 +148,35 @@ export default preset('my-project', {
 
       <div className={styles.output}>
         <h4>Installation Command</h4>
-        <CodeBlock language="bash">{generateInstallCommand()}</CodeBlock>
+        <CodeBlock language="bash">
+          {buildUseCommand(presets, options.packageManager)}
+        </CodeBlock>
 
         <h4>presetter.config.ts</h4>
-        <CodeBlock language="typescript">{generatePresetConfig()}</CodeBlock>
+        <CodeBlock language="typescript">
+          {buildPresetConfig(presets)}
+        </CodeBlock>
 
-        <h4>package.json (partial)</h4>
-        <CodeBlock language="json">{generatePackageJson()}</CodeBlock>
-
-        <h4>Bootstrap Command</h4>
-        <CodeBlock language="bash">presetter bootstrap</CodeBlock>
+        <p>
+          The config above previews the file written by use. It also adds the
+          presets’ declared dependencies, devDependencies, peerDependencies and
+          package scripts. Essentials includes Vitest and the TypeScript 7 CLI
+          alongside the TypeScript 6 API. Existing declarations and scripts are
+          preserved; conflicting package specifications are reported.
+        </p>
+        <p>
+          The package manager declared by your project or selected by its
+          lockfile takes priority over the command’s fallback flag.
+        </p>
       </div>
 
       <div className={styles.nextSteps}>
         <strong>Next Steps:</strong>
         <ol className={styles.nextStepsList}>
           <li>Run the installation command above</li>
-          <li>Create the presetter.config.ts file</li>
+          <li>Approve dependency builds if your package manager requests it</li>
           <li>
-            Run <code>presetter bootstrap</code>
+            Keep customizations in presetter.config.ts, then rerun bootstrap
           </li>
           <li>Start developing with your configured tooling!</li>
         </ol>

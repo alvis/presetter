@@ -37,24 +37,20 @@ The **storybook preset** generates a ready-to-run `.storybook` setup, Storybook 
 
 ```bash
 # install the preset alongside a framework preset (Next.js shown)
-npm install --save-dev presetter @presetter/preset-next @presetter/preset-storybook
+npx presetter use @presetter/preset-next @presetter/preset-storybook
 ```
 
-### Peer Dependencies
+### Declared Setup
 
-The preset declares the following peer dependencies. With npm 7+ these are installed automatically; install them explicitly for other package managers:
+`use` installs Storybook, the a11y and Vitest addons, the Vitest Playwright browser provider, Playwright, the Storybook ESLint plugin, and Vitest as development dependencies. It also adds `storybook`, `build:storybook`, and `test:sto` delegates. Existing declarations and scripts are preserved.
+
+Install the Storybook framework package for your application separately; for the Next.js example below:
 
 ```bash
-npm install --save-dev \
-  @storybook/addon-a11y \
-  @storybook/addon-vitest \
-  @storybook/nextjs-vite \
-  @vitest/browser-playwright \
-  eslint-plugin-storybook \
-  playwright \
-  storybook \
-  vitest
+npm install --save-dev @storybook/nextjs-vite
 ```
+
+For manual adoption, install the packages declared in the preset's `setup.devDependencies` and add its script delegates before bootstrapping.
 
 ## Usage
 

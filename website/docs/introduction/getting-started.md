@@ -10,29 +10,22 @@ title: Getting Started
 Ready to transform your development workflow? Let's set up Presetter in under 30 seconds:
 
 ```bash
-# 1. Install Presetter and a preset
-npm install --save-dev presetter @presetter/preset-esm
-
-# 2. Create configuration file
-echo "export { default } from '@presetter/preset-esm';" > presetter.config.ts
-
-# 3. Add bootstrap script to package.json
-npm pkg set scripts.bootstrap="presetter bootstrap"
-
-# 4. Install and initialize
-npm install
+# In a project with a package.json:
+npx presetter use @presetter/preset-esm --package-manager=npm
 ```
 
 🎉 **That's it!** Your project now has TypeScript, ESLint, Vitest, Prettier, and all configurations set up automatically.
 
 ## What Just Happened?
 
-When you ran `npm install`, Presetter automatically:
+When you ran `presetter use`, Presetter:
 
 - ✅ Installed all development dependencies (TypeScript, ESLint, Vitest, etc.)
 - ✅ Generated configuration files (tsconfig.json, eslint.config.ts, vitest.config.ts, etc.)
 - ✅ Set up build and test scripts
-- ✅ Configured git hooks for code quality
+- ✅ Generated git hook files; the declared `prepare` script runs setup on subsequent installs
+
+The project’s `packageManager` or lockfile takes priority over the fallback flag. [Installation](./installation) covers pnpm, Bun, dependency build approval, and existing declarations.
 
 Your project structure now looks like this:
 
@@ -76,26 +69,22 @@ Different presets are optimized for different project types:
 
 ### 🚀 Modern ES Modules Project
 ```bash
-npm install --save-dev presetter @presetter/preset-esm
-echo "export { default } from '@presetter/preset-esm';" > presetter.config.ts
+npx presetter use @presetter/preset-esm
 ```
 
 ### ⚛️ React Application
 ```bash
-npm install --save-dev presetter @presetter/preset-react
-echo "export { default } from '@presetter/preset-react';" > presetter.config.ts
+npx presetter use @presetter/preset-esm @presetter/preset-react
 ```
 
 ### 📚 NPM Library (Dual CJS/ESM)
 ```bash
-npm install --save-dev presetter @presetter/preset-hybrid
-echo "export { default } from '@presetter/preset-hybrid';" > presetter.config.ts
+npx presetter use @presetter/preset-hybrid
 ```
 
 ### 🏢 Monorepo
 ```bash
-npm install --save-dev presetter @presetter/preset-monorepo
-echo "export { default } from '@presetter/preset-monorepo';" > presetter.config.ts
+npx presetter use @presetter/preset-monorepo
 ```
 
 ## Next Steps

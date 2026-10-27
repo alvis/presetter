@@ -75,15 +75,29 @@ Set up the basic package structure:
   "files": ["lib/", "templates/"],
   "keywords": ["presetter", "preset", "typescript", "eslint"],
   "peerDependencies": {
-    "presetter": "^8.3.0"
+    "presetter": "^9.1.0"
   },
   "devDependencies": {
-    "presetter": "^8.3.0",
-    "@presetter/preset-essentials": "^8.3.0",
-    "typescript": "^5.0.0"
+    "presetter": "^9.1.0",
+    "@presetter/preset-essentials": "^9.1.0",
+    "@typescript/native": "npm:typescript@^7.0.0",
+    "typescript": "npm:@typescript/typescript6@^6.0.0"
   }
 }
 ```
+
+### Declare Consumer Setup
+
+A preset's own package dependencies make its implementation available. Use `setup` to declare packages and package script delegates that `presetter use @myteam/preset` should add to each consuming project:
+
+```typescript
+setup: {
+  devDependencies: { vitest: '^5.0.0' },
+  scripts: { test: 'run test --' },
+}
+```
+
+`setup.dependencies` and `setup.peerDependencies` use the same flat maps. Extending Essentials inherits its TypeScript CLI/API aliases, Vitest, and standard delegates. Keep runtime task definitions in `scripts`; keep package.json delegates in `setup.scripts`. Setup commands are literal, without `{variable}` substitution. `override.setup` runs after the initial composition pass. See [`presetter use`](../cli-reference/use) for existing declarations and conflicts.
 
 ## Step 2: Design Your Preset Architecture
 

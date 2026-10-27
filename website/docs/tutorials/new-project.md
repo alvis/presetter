@@ -10,7 +10,7 @@ This tutorial walks you through creating a brand new TypeScript project with Pre
 
 ## Prerequisites
 
-- **Node.js 22.13+ (22.x), 24.x, or 26+** and **npm 7+** (or equivalent pnpm/yarn) installed
+- **Node.js 22.13+ (22.x), 24.x, or 26+** and **npm 7+**, **pnpm**, or **Bun** installed
 - Basic familiarity with TypeScript and npm scripts
 
 ## Step 1: Initialize Your Project
@@ -28,66 +28,28 @@ Expected output:
 ✓ Created package.json
 ```
 
-## Step 2: Install Presetter
-
-Add Presetter and your first preset:
+## Step 2: Adopt a Preset Stack
 
 ```bash
-# Install Presetter CLI globally (recommended)
-pnpm add -g presetter
-
-# Or install locally in your project
-pnpm add -D presetter
-
-# Add a foundation preset
-pnpm add -D @presetter/preset-essentials
+pnpm dlx presetter use @presetter/preset-esm --package-manager=pnpm
 ```
+
+This installs Presetter and the stack, writes `presetter.config.ts`, adds declared package scripts and setup dependencies, and bootstraps the generated configs. Essentials supplies the TypeScript 7 CLI / TypeScript 6 API aliases and Vitest setup. Approve dependency builds when prompted.
+
+The project's `packageManager` or lockfile takes priority over the fallback flag. See [Installation](../introduction/installation) for npm and Bun commands.
 
 :::tip Preset Selection
-- **`@presetter/preset-essentials`**: Core tooling (TypeScript, ESLint, Prettier)
-- **`@presetter/preset-react`**: React applications
-- **`@presetter/preset-esm`**: ES modules focus
+- **`@presetter/preset-esm`**: ES modules, extending Essentials
+- **`@presetter/preset-esm @presetter/preset-react`**: React and TSX tooling
 - **`@presetter/preset-hybrid`**: Dual CJS/ESM libraries
-
-Choose the preset that best matches your project type.
+- **`@presetter/preset-monorepo`**: Shared monorepo tooling
 :::
 
-## Step 3: Bootstrap Configuration
+## Step 3: Review the Generated Configuration
 
-Create the Presetter configuration and script delegates:
+`use` creates the config with imports for your chosen stack and your package name. Keep project differences there; rerun `pnpm exec presetter bootstrap` after editing it.
 
-```typescript title="presetter.config.ts"
-export { default } from '@presetter/preset-essentials';
-```
-
-```bash
-pnpm pkg set scripts.bootstrap="presetter bootstrap"
-pnpm pkg set scripts.build="run build"
-pnpm pkg set scripts.clean="run clean"
-pnpm pkg set scripts.lint="run lint --"
-pnpm pkg set scripts.test="run test --"
-pnpm pkg set scripts.typecheck="run typecheck --"
-```
-
-Run the bootstrap command to generate config files:
-
-```bash
-pnpm run bootstrap
-```
-
-This command will:
-- Generate configuration files such as `tsconfig.json`, `eslint.config.ts`, and `vitest.config.ts`
-- Merge preset asset templates with existing generated files
-- Leave package scripts and source directories under your control
-
-Expected output:
-```bash
-Bootstrapping my-awesome-project (.)
-Generating .gitignore
-Generating eslint.config.ts
-Generating tsconfig.json
-Generating vitest.config.ts
-```
+Bootstrap overwrites generated assets such as `tsconfig.json`, `eslint.config.ts`, and `vitest.config.ts`. It does not merge existing files from disk, install setup packages, or write package scripts.
 
 ## Step 4: Create Source Files
 
@@ -159,19 +121,19 @@ Your project now supports the standard development workflow:
 
 ### Watch Mode
 ```bash
-pnpm run watch
+pnpm exec run start
 # Continuously builds on file changes
 ```
 
 ### Format Code
 ```bash
-pnpm run format
+pnpm exec run lint:prettier -- src spec
 # Formats all files with Prettier
 ```
 
 ### Clean Build
 ```bash
-pnpm run clean
+pnpm exec run clean
 # Removes build artifacts
 ```
 
@@ -181,29 +143,24 @@ Your project is now fully configured! Here are some next steps:
 
 ### Add More Capabilities
 
-**For React development:**
+Install additional preset packages, then add their imports and references to `extends` in the existing config:
+
 ```bash
-pnpm add -D @presetter/preset-react
+pnpm add -D @presetter/preset-react @presetter/preset-strict
 ```
-
-**For ES modules:**
-```bash
-pnpm add -D @presetter/preset-esm
-```
-
-**For strict mode:**
-```bash
-pnpm add -D @presetter/preset-strict
-```
-
-### Customize Configuration
-
-Check the generated `presetter.config.ts`:
 
 ```typescript title="presetter.config.ts"
-// Simple preset usage - most common pattern
-export { default } from '@presetter/preset-essentials';
+import esm from '@presetter/preset-esm';
+import react from '@presetter/preset-react';
+import strict from '@presetter/preset-strict';
+import { preset } from 'presetter';
+
+export default preset('my-awesome-project', {
+  extends: [esm, react, strict],
+});
 ```
+
+Then run `pnpm exec presetter bootstrap`. For presets with additional setup packages or script delegates, apply those declarations manually. `use` stops on a differing existing config, so it does not append presets to a customized file.
 
 ### Explore Available Scripts
 
@@ -218,9 +175,10 @@ pnpm run
 
 ### Issue: TypeScript Errors
 **Problem:** Getting type errors on valid code
-**Solution:** Ensure TypeScript version compatibility:
+**Solution:** Verify the CLI and API alias versions; see the [installation guide](../introduction/installation#using-typescript-7-with-the-typescript-6-api):
 ```bash
-pnpm add -D typescript@latest
+pnpm exec tsc --version
+pnpm exec tsc6 --version
 ```
 
 ### Issue: ESLint Configuration Conflicts
@@ -259,13 +217,10 @@ Here's a complete, working example you can copy and run:
 mkdir presetter-demo && cd presetter-demo
 
 # Initialize project
-pnpm init -y
+pnpm init
 
-# Install dependencies
-pnpm add -D presetter @presetter/preset-essentials
-
-# Bootstrap
-presetter bootstrap
+# Install, configure, and bootstrap
+pnpm dlx presetter use @presetter/preset-esm --package-manager=pnpm
 
 # Create source
 mkdir src

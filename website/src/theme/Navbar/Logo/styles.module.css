@@ -3,4 +3,10 @@
   width: 32px;
   height: 32px;
   object-fit: contain;
+  border-radius: 10px;
+}
+
+/* a cream chip keeps the dark logo outline visible on the dark navbar */
+:global([data-theme='dark']) .logoImage {
+  background: rgb(244, 239, 230);
 }
