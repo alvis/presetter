@@ -57,7 +57,7 @@ workspace/
 ## 🎯 Compose the Toolchain You Need
 
 ```bash
-# Choose the preset stack that matches this project:
+# Choose the preset stack (manager: packageManager → lockfile → flag → interactive prompt):
 
 # 🟢 Modern ESM development
 npx presetter use @presetter/preset-esm
@@ -145,21 +145,26 @@ export default preset('my-app', {
 
 ### 🎬 Project Setup
 
+In an existing project, Presetter selects the package manager from `packageManager`, then one lockfile family, then `--package-manager`, then an interactive prompt. Non-interactive use without a selection fails with instructions to pass the flag.
+
 ```bash
-# 1. Choose and adopt a preset stack
+# In a project with a package.json, install and configure the preset stack
 npx presetter use @presetter/preset-esm
 
-# 2. Install dependencies and let bootstrap generate tool configs
-npm install
-
-# 3. Start developing immediately!
+# Start developing immediately
 npm run build    # ✅ TypeScript compilation
 npm run test     # ✅ Vitest testing
 npm run lint     # ✅ ESLint checking
-npm run watch    # ✅ Development mode
+npm run test:watch # ✅ Test watch mode
 ```
 
+`use` finds the nearest `package.json`, installs Presetter and the requested presets as devDependencies, creates `presetter.config.ts`, adds the presets' declared package scripts, and bootstraps the tool configs. No separate install step is needed.
+
+For a fresh project without a lockfile or `packageManager`, choose the installer explicitly: `npx presetter use @presetter/preset-esm --package-manager=npm`, `pnpm dlx presetter use @presetter/preset-esm --package-manager=pnpm`, or `bunx presetter use @presetter/preset-esm --package-manager=bun`. Without the flag, interactive use asks you to choose; non-interactive use fails with instructions to pass it. Preset arguments accept package names and versions or tags, such as `@presetter/preset-esm@^9`.
+
 ### 🔧 Converting Existing Projects
+
+`use` selects the existing package manager from `packageManager`, then one project lockfile family, then `--package-manager`, then an interactive prompt. Non-interactive use without a selection fails with instructions to pass the flag.
 
 ```bash
 # 1. Review current setup (decide what to keep/replace)
@@ -184,10 +189,9 @@ Presetter provides powerful CLI commands for managing your development environme
 ⚙️ presetter: your preset configurator
 
 Commands:
-  presetter use <preset>     Adopt specified preset(s) to the project
+  presetter use <preset..>   Adopt specified preset(s) to the project
   presetter bootstrap       Apply preset configurations to the project
   presetter run <task>      Run a task with preset + local script merging
-  presetter unset           Remove all artifacts created by presets
 
 Shortcuts:
   run <task>                Shortcut for 'presetter run <task>'
@@ -199,6 +203,22 @@ Options:
   --version                 Show version number
 ```
 
+#### use command
+
+`use` reads `package.json#packageManager` first, then checks for exactly one lockfile family in the project root: `package-lock.json` or `npm-shrinkwrap.json` for npm, `pnpm-lock.yaml` for pnpm, and `bun.lock` or `bun.lockb` for Bun. Yarn is not supported, because it installs no peer dependencies and presets declare their tools as peers: a `packageManager` naming yarn fails, and `yarn.lock` selects nothing, so choosing another manager leaves its lockfile next to yarn's. Missing or conflicting lockfiles fall back to `--package-manager=<npm|pnpm|bun>`, then an interactive choice of npm, pnpm or bun. Invalid choices prompt again; empty input or EOF fails. Non-interactive use without a selection fails with instructions to pass the flag. A conflicting flag is ignored and logged with the detected manager and its source; a matching flag adds no message. Only the manager name is used from `packageManager`; an unsupported name fails before the flag is consulted, asking you to fix or remove the field. The manager binary runs on PATH without version enforcement; enabled corepack shims already honor the pin.
+
+When Presetter and every requested preset are already listed in `dependencies` or `devDependencies`, installation is skipped. A preset requested without a version accepts any declared version; a requested version or range that differs from the declared one counts as a conflict.
+
+Existing package scripts are preserved and logged as skipped when they differ; identical commands count as success. Re-running `use` with an identical generated `presetter.config.ts` succeeds. Any existing non-`.ts` config (`.mts`, `.mjs`, or `.js`), or a differing `.ts` config, stops adoption before installation or file writes; edit that config and run `bootstrap`, or move it before adopting a new stack.
+
+When the package manager blocks dependency install scripts, `use` lists the pending builds in the project with their dependency paths and asks for approval, including when reading from piped stdin. npm and pnpm report blocked builds as install errors; bun blocks them silently, so `use` checks `bun pm untrusted` after each bun install and approves with `bun pm trust`. The first trusted package replaces bun's default allowlist, so bun can ask again for packages such as esbuild that it previously trusted by default. Declining (or empty input or EOF) still writes the config and scripts, skips bootstrap, and prints the manager's approval command to run before `presetter bootstrap`.
+
+Preset authors declare literal package script commands in `setup.scripts`, for example `setup: { scripts: { lint: 'run lint --' } }`, and packages in flat `setup.dependencies`, `setup.devDependencies`, and `setup.peerDependencies` maps, like package.json, for example `setup: { devDependencies: { vitest: '^5.0.0' } }`. `{variable}` placeholders in inline or generator-returned setup commands are not substituted; JSON/YAML file templates use the normal loader substitution. All setup fields merge across `extends`, with `override.setup` applied in a final pass. Presetter and the requested presets install first as development dependencies, so their setup can be resolved. Only `use` writes these scripts and then installs missing setup packages with the matching save flag. Runtime installs skip names already in any dependency section; development installs skip names already in `dependencies` or `devDependencies`. Peer declarations skip existing peers and runtime dependencies, and are added directly to package.json when the package is already a development dependency; otherwise the manager installs the peer. When package.json already declares a package with a different specification, `use` keeps the existing entry and logs a warning, so dependency conflicts stay with the project and its presets; pass `--force` to replace the entry with the requested specification instead. Matching entries keep their sections and versions. Essentials pairs `@typescript/native` (TypeScript 7 `tsc`) with `typescript` aliased to `@typescript/typescript6` for the TypeScript 6 API. `bootstrap` continues to generate assets only.
+
+#### Run flags
+
+`presetter run <task> --template` selects the preset task without merging a local package script. Put task arguments after `--`, for example `run test -- --watch`.
+
 #### Bootstrap flags
 
 | Flag                | Alias | Default | Purpose                                                                                           |
@@ -207,7 +227,7 @@ Options:
 | `--packages <glob>` | `-P`  | _none_  | Package-name globs matching `package.json#name` across the workspace (e.g. `@presetter/preset-*`) |
 | `--only <file>`     |       | _none_  | Only proceed when the specified file exists                                                       |
 
-Both `--projects` and `--packages` accept comma-separated values; the wildcard `*` in `--packages` does not cross the npm-scope boundary (so `@presetter/preset-*` will not match `@other/foo`).
+Both `--projects` and `--packages` accept comma-separated values and `!` prefixes to exclude matches; the wildcard `*` in `--packages` does not cross the npm-scope boundary (so `@presetter/preset-*` will not match `@other/foo`).
 
 ### 🎯 Common Commands
 
@@ -231,14 +251,12 @@ presetter bootstrap --projects .,e2e,packages/* --packages "@presetter/preset-*"
 run build                 # Build your project
 run test                  # Run tests
 run lint                  # Lint your code
-run watch                 # Development mode with hot reload
+run test:watch            # Test watch mode
 
 # Run multiple tasks
 run-s clean build test    # Sequential execution
 run-p lint test           # Parallel execution
 
-# Remove all preset configurations
-presetter unset
 ```
 
 ---

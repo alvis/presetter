@@ -54,8 +54,16 @@ export const VERDACCIO_AUTH =
 /** detected packages from packages directory */
 export const packages = detectPackages();
 
-/** supported package managers for E2E testing */
+/** package managers the examples are installed with */
 export const PACKAGE_MANAGERS: PackageManager[] = ['pnpm', 'npm'];
+
+/** additional package managers that install specific examples */
+export const EXAMPLE_MANAGERS: Partial<Record<string, PackageManager[]>> = {
+  bun: ['bun'],
+};
+
+/** package managers that adopt presets through presetter use */
+export const ADOPTION_MANAGERS: PackageManager[] = ['pnpm', 'npm', 'bun'];
 
 /** detected example configurations */
 export const EXAMPLES = detectExamples();
@@ -64,6 +72,7 @@ export const EXAMPLES = detectExamples();
 
 /** npm-specific environment variables for isolated testing */
 export const NPM_ENV = {
+  NPM_CONFIG_CACHE: join(TEMP_DIR, '.npm-cache'),
   // point to non-existent .npmrc files to prevent reading any .npmrc which may cause false results
   NPM_CONFIG_USERCONFIG: join(TEMP_DIR, '.user.npmrc'),
   NPM_CONFIG_GLOBALCONFIG: join(TEMP_DIR, '.global.npmrc'),
@@ -80,4 +89,20 @@ export const PNPM_ENV = {
   XDG_CACHE_HOME: join(TEMP_DIR, '.cache'),
   // disable interactive prompts
   CI: 'true',
+};
+
+/** bun-specific environment variables for isolated testing */
+export const BUN_ENV = {
+  // isolate the install cache and bunx, which installs each package under TMPDIR
+  BUN_INSTALL_CACHE_DIR: join(TEMP_DIR, '.bun-cache'),
+  TMPDIR: TEMP_DIR,
+  // disable interactive prompts
+  CI: 'true',
+};
+
+/** isolated environment variables for each package manager */
+export const MANAGER_ENV: Record<PackageManager, Record<string, string>> = {
+  npm: NPM_ENV,
+  pnpm: PNPM_ENV,
+  bun: BUN_ENV,
 };

@@ -15,7 +15,12 @@
 import { readdirSync, readFileSync, statSync } from 'node:fs';
 import { resolve } from 'node:path';
 
-import { EXAMPLES_DIR, PACKAGES_DIR } from '#config';
+import {
+  EXAMPLE_MANAGERS,
+  EXAMPLES_DIR,
+  PACKAGE_MANAGERS,
+  PACKAGES_DIR,
+} from '#config';
 
 import type { PackageJson } from 'type-fest';
 
@@ -60,7 +65,7 @@ export function detectPackages(): PackageInfo[] {
 
 /**
  * detects all examples from examples/ directory
- * @returns array of Example configurations with available scripts
+ * @returns array of Example configurations with available scripts and package managers
  */
 export function detectExamples(): Example[] {
   const entries = readdirSync(EXAMPLES_DIR);
@@ -86,6 +91,10 @@ export function detectExamples(): Example[] {
         VALID_SCRIPTS.includes(s),
       );
 
-      return { name, scripts };
+      return {
+        name,
+        scripts,
+        managers: [...PACKAGE_MANAGERS, ...(EXAMPLE_MANAGERS[name] ?? [])],
+      };
     });
 }
