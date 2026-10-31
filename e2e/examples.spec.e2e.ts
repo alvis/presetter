@@ -12,14 +12,14 @@
  * -------------------------------------------------------------------------
  */
 
-import { mkdir, rm } from 'node:fs/promises';
+import { mkdir, mkdtemp, readFile, rm, writeFile } from 'node:fs/promises';
 import { join } from 'node:path';
 
 import { beforeAll, beforeEach, describe, expect, it } from 'vitest';
 
 import { EXAMPLES, EXAMPLES_DIR, TEMP_DIR } from '#config';
 import { copyExample } from '#helpers/copy';
-import { runInstall, runScript } from '#helpers/exec';
+import { exec, runInstall, runScript } from '#helpers/exec';
 import { log } from '#log';
 
 /** patterns indicating installation warnings or errors */
@@ -96,6 +96,109 @@ describe.each(EXAMPLES)(
             await expect(
               runScript(script, destination, manager),
             ).resolves.not.toThrow();
+          });
+        }
+
+        if (example.name === 'standalone') {
+          it('should format staged files through the generated hook and propagate task failure', async () => {
+            const hookProject = await mkdtemp(
+              join(TEMP_DIR, `standalone-hook-${manager}-`),
+            );
+
+            await copyExample(source, hookProject, manager);
+            await exec('git', {
+              args: ['init'],
+              cwd: hookProject,
+              silent: true,
+            });
+            await runInstall(hookProject, manager);
+
+            const sourceFile = join(hookProject, 'src', 'index.ts');
+            const packageFile = join(hookProject, 'package.json');
+            const formatted = 'export const greeting = { ready: true };\n';
+
+            await writeFile(sourceFile, 'export const greeting={ready:true}\n');
+            await exec('git', {
+              args: ['add', 'src/index.ts'],
+              cwd: hookProject,
+              silent: true,
+            });
+            await exec('git', {
+              args: [
+                '-c',
+                'user.name=Presetter E2E',
+                '-c',
+                'user.email=presetter-e2e@example.test',
+                'commit',
+                '--no-gpg-sign',
+                '-m',
+                'Verify generated hook',
+              ],
+              cwd: hookProject,
+              silent: true,
+            });
+
+            expect(await readFile(sourceFile, 'utf8')).toBe(formatted);
+            expect(
+              await exec('git', {
+                args: ['show', 'HEAD:src/index.ts'],
+                cwd: hookProject,
+                silent: true,
+              }),
+            ).toContain(formatted);
+
+            const packageJson = JSON.parse(
+              await readFile(packageFile, 'utf8'),
+            ) as {
+              scripts: Record<string, string>;
+            };
+            await writeFile(
+              packageFile,
+              JSON.stringify(
+                {
+                  ...packageJson,
+                  scripts: {
+                    ...packageJson.scripts,
+                    'lint-staged': 'false',
+                  },
+                },
+                null,
+                2,
+              ),
+            );
+            await writeFile(
+              sourceFile,
+              'export const greeting={ready:false}\n',
+            );
+            await exec('git', {
+              args: ['add', 'src/index.ts'],
+              cwd: hookProject,
+              silent: true,
+            });
+
+            await expect(
+              exec('git', {
+                args: [
+                  '-c',
+                  'user.name=Presetter E2E',
+                  '-c',
+                  'user.email=presetter-e2e@example.test',
+                  'commit',
+                  '--no-gpg-sign',
+                  '-m',
+                  'Reject failing staged task',
+                ],
+                cwd: hookProject,
+                silent: true,
+              }),
+            ).rejects.toThrow();
+            expect(
+              await exec('git', {
+                args: ['show', 'HEAD:src/index.ts'],
+                cwd: hookProject,
+                silent: true,
+              }),
+            ).toContain(formatted);
           });
         }
       },

@@ -27,7 +27,7 @@
     "next": "PRERELEASE=next run-s \"release -- {@}\" --",
     "release": "run release --",
     "release:changelog": "IGNORE_PATHS=examples,e2e run --template release:changelog --",
-    "stage": "pnpm --recursive exec lint-staged -- --concurrent=false",
+    "stage": "pnpm --recursive exec presetter run lint-staged -- --concurrent=false",
     "test": "run test --",
     "test:coverage": "run test:coverage --",
     "test:e2e": "pnpm --filter @presetter/e2e test:e2e",

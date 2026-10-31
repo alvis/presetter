@@ -1,1 +1,1 @@
-npx lint-staged --concurrent=false
+presetter run lint-staged -- --concurrent=false
