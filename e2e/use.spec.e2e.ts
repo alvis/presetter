@@ -52,21 +52,10 @@ const ADOPTIONS: Record<PackageManager, Adoption> = {
       );
       const approvals = /^allowBuilds:\n((?: {2}.+\n)*)/m.exec(workspace)?.[1];
       expect(approvals).toMatch(/^ {2}esbuild@[^:\n]+: true$/m);
-      expect(approvals).toMatch(/^ {2}unrs-resolver@[^:\n]+: true$/m);
     },
   },
-  bun: {
-    runner: ['bunx', 'presetter'],
-    corepack: false,
-    approvals: async (destination) => {
-      const json = JSON.parse(
-        await readFile(join(destination, 'package.json'), 'utf8'),
-      ) as PackageJson & { trustedDependencies?: string[] };
-      expect(json.trustedDependencies).toEqual(
-        expect.arrayContaining(['esbuild', 'unrs-resolver']),
-      );
-    },
-  },
+  // NOTE: bun trusts esbuild by default and no other adopted dependency runs an install script, so bun records no approvals
+  bun: { runner: ['bunx', 'presetter'], corepack: false },
 };
 
 /** points every package manager at the local registry */
@@ -172,7 +161,7 @@ it('should greet', () => {
       args,
       cwd: destination,
       env,
-      // NOTE: bun asks twice, as trusting one package drops its default trust for esbuild
+      // NOTE: a spare answer covers a manager that asks again once trusting one package drops its default trust in another
       input: 'y\ny\n',
       silent: true,
     });
