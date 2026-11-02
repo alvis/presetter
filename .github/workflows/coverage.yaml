@@ -15,12 +15,11 @@ jobs:
       - name: checkout
         uses: actions/checkout@v4
       - name: setup pnpm
-        uses: pnpm/action-setup@v4
-      - name: use node lts
-        uses: actions/setup-node@v4
+        uses: pnpm/setup@v3
         with:
-          node-version: lts/*
-          cache: pnpm
+          runtime: node@lts
+          cache: true
+          install: false
       - name: install dependencies
         run: pnpm install
       - name: run coverage

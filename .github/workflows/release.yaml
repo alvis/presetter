@@ -20,17 +20,23 @@ jobs:
       - name: checkout
         uses: actions/checkout@v4
       - name: setup pnpm
-        uses: pnpm/action-setup@v4
-      - name: use node LTS
-        uses: actions/setup-node@v6
+        uses: pnpm/setup@v3
         with:
-          node-version: lts/*
-          cache: pnpm
-          registry-url: https://registry.npmjs.org
+          runtime: node@lts
+          cache: true
+          install: false
+      # NOTE: pnpm/setup writes no registry auth, so this recreates the user .npmrc that setup-node's registry-url wrote, whose token publish supplies through NODE_AUTH_TOKEN
+      - name: configure npm registry auth
+        shell: bash
+        run: |
+          npmrc="$RUNNER_TEMP/.npmrc"
+          printf '%s\n' '//registry.npmjs.org/:_authToken=${NODE_AUTH_TOKEN}' 'registry=https://registry.npmjs.org/' > "$npmrc"
+          echo "NPM_CONFIG_USERCONFIG=$npmrc" >> "$GITHUB_ENV"
+          echo "NODE_AUTH_TOKEN=XXXXX-XXXXX-XXXXX-XXXXX" >> "$GITHUB_ENV"
       - name: install dependencies
         run: pnpm install
       - name: publish the release note
-        run: npx github-release-from-changelog
+        run: pnpm dlx github-release-from-changelog
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       - name: publish packages
