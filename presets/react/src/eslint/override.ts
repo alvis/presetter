@@ -22,6 +22,9 @@ export default asset<{ default: Linter.Config[] }>((current, { variables }) => {
             'warn',
             {
               max: 120, // extend the default to 120 lines for functional components
+              skipBlankLines: true,
+              skipComments: true,
+              IIFEs: true,
             },
           ],
           ...(hasTypescriptEslint && {
