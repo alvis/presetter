@@ -28,7 +28,7 @@
   "scripts": {
     "build": "run build",
     "lint": "run lint --",
-    "prepare": "tsc --ignoreConfig --rootDir ./src --types node --skipLibCheck --declaration --moduleResolution bundler --module esnext --target esnext --outdir lib src/index.ts && tsc-esm-fix --sourceMap --target lib",
+    "prepare": "tsrs --ignoreConfig --rootDir ./src --types node --skipLibCheck --declaration --moduleResolution bundler --module esnext --target esnext --outdir lib src/index.ts && tsc-alias --resolve-full-paths --dir lib -p package.json",
     "prepublishOnly": "run prepare && run prepublishOnly",
     "test": "run test --",
     "test:coverage": "run test:coverage --",

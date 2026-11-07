@@ -66,7 +66,7 @@ Modern Node.js ecosystem is divided: legacy tools need CommonJS, modern environm
 When used with [Presetter](https://github.com/alvis/presetter/blob/main/packages/presetter) (the configuration management tool), this preset extends [preset-essentials](https://github.com/alvis/presetter/blob/main/packages/preset-essentials) with sophisticated dual-module generation, automatically creating both `.js` (CommonJS) and `.mjs` (ESM) outputs from your single TypeScript codebase.
 
 - 🔄 **Dual Builds**: Generates both CommonJS and ESM from single source
-- 🛠️ **Automatic Transforms**: Handles import extensions, `__dirname` conversion, path aliases
+- 🛠️ **Automatic Transforms**: Handles import extensions, `.mjs` renaming, path aliases
 - 📦 **Package Integration**: Perfect dual-module package.json structure
 - ⚡ **Modern DX**: Write TypeScript once, support all Node.js environments
 - 🎯 **Library-First**: Optimized for npm packages and open-source libraries
@@ -122,7 +122,7 @@ my-library/
 ### How dual-module template generation works
 
 1. **Dual TypeScript Compilation** — Separate `tsconfig.cjs.json` and `tsconfig.mjs.json` with format-specific settings
-2. **Automated Transformations** — `tsc-esm-fix` handles import extensions, `__dirname` conversion, `.mjs` renaming
+2. **Automated Transformations** — `tsc-alias` handles import extensions and path aliases, and a rename step produces `.mjs`
 3. **Sequential Build Pipeline** — ESM build → CommonJS build → alias resolution → transformations
 4. **Package Structure** — Perfect dual-module package.json with conditional exports
 
@@ -244,7 +244,7 @@ This preset extends [preset-essentials](https://github.com/alvis/presetter/blob/
 | **TypeScript Configs** | Dual compilation     | Separate CommonJS and ESM tsconfig files                   |
 | **Build Pipeline**     | Sequential builds    | ESM → CommonJS → transformations → aliases                 |
 | **Package Structure**  | Dual exports         | Conditional exports for require/import                     |
-| **Transformations**    | Format compatibility | Import extensions, `__dirname` conversion, `.mjs` renaming |
+| **Transformations**    | Format compatibility | Import extensions, `.mjs` renaming, path aliases           |
 
 ### Generated TypeScript Configurations
 
@@ -293,19 +293,23 @@ Inherited from [preset-essentials](https://github.com/alvis/presetter/blob/main/
 ```yaml
 # Generated build scripts
 build:typescript: run-s build:typescript:mjs build:typescript:cjs build:typescript:alias
-build:typescript:mjs: run-s build:typescript:mjs:tsc build:typescript:mjs:fix
-build:typescript:mjs:tsc: tsc -p tsconfig.mjs.json
-build:typescript:mjs:fix: tsc-esm-fix --sourceMap --target {output} --ext .mjs
+build:typescript:mjs: run-s build:typescript:mjs:tsc build:typescript:mjs:rename build:typescript:mjs:alias
+build:typescript:mjs:tsc: tsrs -p tsconfig.mjs.json
+build:typescript:mjs:rename: zx --eval "for (const file of glob.sync('{output}/**/*.js')) fs.renameSync(file, file.replace(/\.js$/, '.mjs'))"
+build:typescript:mjs:alias: tsc-alias --resolve-full-paths --resolve-package-subpaths --resolve-full-extension .mjs --dir {output}
 build:typescript:cjs: run-s build:typescript:cjs:*
-build:typescript:cjs:tsc: tsc -p tsconfig.cjs.json
+build:typescript:cjs:tsc: tsrs -p tsconfig.cjs.json
 ```
+
+The `tsconfig.mjs.json` build sets `composite`, `declaration` and `declarationMap` to `false`; declarations come from the CJS build. `tsconfig.cjs.json` no longer sets `moduleResolution: node` because TypeScript 7 removed node10 resolution, so it inherits `bundler`.
 
 ### Automatic Transformations
 
-1. **Import Extension Addition**: `import './foo'` → `import './foo.js'`
-2. **ESM Global Replacement**: `__dirname` → `import.meta` equivalents
-3. **File Extension Renaming**: `.js` → `.mjs` for ESM outputs
-4. **Path Alias Resolution**: TypeScript paths work in both formats
+1. **Import Extension Addition**: `import './foo'` → `import './foo.js'` (`./foo.mjs` for ESM outputs)
+2. **File Extension Renaming**: `.js` → `.mjs` for ESM outputs, via the zx rename step
+3. **Path Alias Resolution**: TypeScript paths work in both formats
+
+> **Breaking change:** the build no longer rewrites `__dirname` / `__filename` in emitted ESM. ESM source must use `import.meta.dirname` / `import.meta.filename` instead. Every supported Node.js version (22.13 or later) provides both.
 
 ### Perfect Package.json Structure
 
@@ -396,8 +400,8 @@ build:typescript:cjs:tsc: tsc -p tsconfig.cjs.json
 
 | Issue                       | Symptoms                       | Solution                                              |
 | --------------------------- | ------------------------------ | ----------------------------------------------------- |
-| **Import extension errors** | `Cannot resolve module` in ESM | `tsc-esm-fix` automatically adds `.js` extensions     |
-| **\_\_dirname undefined**   | `ReferenceError` in ESM        | Automatically replaced with `import.meta` equivalents |
+| **Import extension errors** | `Cannot resolve module` in ESM | `tsc-alias` automatically adds full extensions        |
+| **\_\_dirname undefined**   | `ReferenceError` in ESM        | Use `import.meta.dirname` / `import.meta.filename`    |
 | **Wrong module format**     | CJS syntax in .mjs files       | Check build pipeline runs both compilations           |
 | **Package.json exports**    | Module resolution failures     | Ensure proper conditional exports structure           |
 
@@ -422,7 +426,7 @@ preset-hybrid **extends** preset-essentials with sophisticated dual-module capab
 
 #### How are import extensions handled?
 
-Automatically by `tsc-esm-fix`:
+Automatically by `tsc-alias --resolve-full-paths`:
 
 ```typescript
 // Your TypeScript code
@@ -432,25 +436,16 @@ import { utils } from './utils';
 const { utils } = require('./utils');
 
 // ESM output (extensions added automatically)
-import { utils } from './utils.js';
+import { utils } from './utils.mjs';
 ```
 
 #### What about **dirname and**filename?
 
-Automatically converted for ESM compatibility:
+These are no longer rewritten for ESM output (a breaking change from the previous pipeline). Use `import.meta.dirname` and `import.meta.filename` in ESM source; every supported Node.js version (22.13 or later) provides both.
 
 ```typescript
-// Your TypeScript code
-const configPath = path.join(__dirname, 'config.json');
-
-// CommonJS output (unchanged)
-const configPath = path.join(__dirname, 'config.json');
-
-// ESM output (automatically converted)
-const configPath = path.join(
-  path.dirname(fileURLToPath(import.meta.url)),
-  'config.json',
-);
+// Your TypeScript code (ESM)
+const configPath = path.join(import.meta.dirname, 'config.json');
 ```
 
 #### Do I need to maintain two codebases?

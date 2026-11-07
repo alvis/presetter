@@ -105,7 +105,7 @@ This ensures Bun's ambient types resolve. Pair with `@types/bun` (declared as a 
 # presets/bun/overrides/scripts.yaml
 build:typescript: run-s build:typescript:bun build:typescript:types
 build:typescript:bun: bun build "./{source}/**/*.ts" "./{source}/**/*.tsx" "./{source}/**/*.cts" "./{source}/**/*.mts" --outdir "{output}" --root "{source}" --target bun --format esm --no-bundle
-build:typescript:types: tsc -p tsconfig.build.json --emitDeclarationOnly
+build:typescript:types: tsrs -p tsconfig.build.json --emitDeclarationOnly
 build:bundle: bun build --target bun --format esm
 build:compile: bun build --compile --bytecode
 ```

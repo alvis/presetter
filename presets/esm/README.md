@@ -110,7 +110,7 @@ my-project/
 +├── presetter.config.ts        ← References this ESM preset template
 ├── package.json                ← Perfect ESM configuration
 +├── tsconfig.json              ← Generated with optimal ESM settings
-+├── Build pipeline             ← Generated with tsc-esm-fix integration
++├── Build pipeline             ← Generated with tsrs + tsc-alias
 ├── src/
 │   └── index.ts
 └── lib/
@@ -120,7 +120,7 @@ my-project/
 ### How ESM template optimization works
 
 1. **TypeScript Configuration** — Optimal settings for native ESM compilation
-2. **Build Pipeline** — Automatic import/export fixing with `tsc-esm-fix`
+2. **Build Pipeline** — Two-step build (`tsrs` → `tsc-alias`) that rewrites imports to full `.js` paths
 3. **Package Structure** — Perfect ESM package.json with exports field
 4. **Tool Integration** — All development tools configured for ESM workflow
 
@@ -236,7 +236,7 @@ This preset extends [preset-essentials](https://github.com/alvis/presetter/blob/
 | Configuration         | Purpose         | ESM Optimizations                                          |
 | --------------------- | --------------- | ---------------------------------------------------------- |
 | **TypeScript**        | ESM compilation | `module: "ESNext"`, `target: "ES2024"`, bundler resolution |
-| **Build Pipeline**    | Import fixing   | `tsc-esm-fix` integration for correct .js extensions       |
+| **Build Pipeline**    | Import fixing   | `tsrs` + `tsc-alias` rewrite imports to correct .js paths  |
 | **Package Structure** | ESM exports     | Proper `exports` field and module type                     |
 | **Source Maps**       | Debugging       | Accurate mapping for ESM output                            |
 
@@ -274,10 +274,13 @@ Inherited from [preset-essentials](https://github.com/alvis/presetter/blob/main/
 ### Enhanced Build Pipeline
 
 ```yaml
-# Generated build scripts with ESM fixes
-build:typescript: run-s build:typescript:tsc build:typescript:alias build:typescript:mjs:fix
-build:typescript:mjs:fix: tsc-esm-fix --sourceMap --target {output}
+# Generated build scripts
+build:typescript: run-s build:typescript:tsc build:typescript:alias
+build:typescript:tsc: tsrs -p tsconfig.build.json
+build:typescript:alias: tsc-alias --resolve-full-paths --resolve-package-subpaths --dir {output}
 ```
+
+ESM source must use `import.meta.dirname` / `import.meta.filename` instead of `__dirname` / `__filename`; the build no longer rewrites them. Every supported Node.js version (22.13 or later) provides both.
 
 ### Perfect Package.json Structure
 

@@ -277,6 +277,20 @@ Customize your project structure:
 }
 ```
 
+### Build Pipeline
+
+```yaml
+# Generated build scripts
+build:typescript:tsc: tsrs -p tsconfig.build.json
+build:typescript:alias: tsc-alias --resolve-full-paths --resolve-package-subpaths --dir {output}
+```
+
+`tsrs` (a Rust port of the TypeScript 7 compiler with a drop-in `tsc` CLI) compiles, then `tsc-alias` rewrites the emitted imports. `typescript` stays installed for `typecheck`, ESLint and editors.
+
+- **Why `tsc-alias --resolve-full-paths` is enough**: it rewrites extensionless relative specifiers to the emitted file (`./foo` → `./foo.js`) and directory specifiers to their index file (`./services` → `./services/index.js`, `.` → `./index.js`, `..` → `../index.js`). This covers static imports, re-exports, side-effect imports, literal dynamic `import()`, `require()` and `.d.ts` files. `--resolve-package-subpaths` adds an extension to deep imports into packages without an `exports` field (`pkg/deep` → `pkg/deep.js`), matching the behaviour of the previous pipeline. Packages with an `exports` field and native `#` subpath imports are never rewritten. Your source needs neither `.js` extensions nor NodeNext.
+- **Breaking change**: the build no longer rewrites `__dirname` / `__filename` in emitted ESM. ESM source must use `import.meta.dirname` / `import.meta.filename`, which every supported Node.js version (22.13 or later) provides.
+- **Source map limit**: the templates use `inlineSourceMap`. Line mappings stay exact, but when one statement contains a rewritten import followed by more code, columns after the specifier shift by the number of characters added. The former pipeline had the same limit.
+
 ### ESLint Configuration
 
 ```typescript

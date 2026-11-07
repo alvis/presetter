@@ -2,3 +2,7 @@ extends: ./tsconfig.build
 compilerOptions:
   module: ESNext
   target: '{target}'
+  # declarations come from the CommonJS build, so the ESM build emits JavaScript only
+  composite: false
+  declaration: false
+  declarationMap: false

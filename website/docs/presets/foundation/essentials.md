@@ -123,6 +123,17 @@ npm run build
 run build
 ```
 
+**Build pipeline:** `tsrs` compiles the code, then `tsc-alias` rewrites the emitted imports.
+
+```yaml
+build:typescript:tsc: tsrs -p tsconfig.build.json
+build:typescript:alias: tsc-alias --resolve-full-paths --resolve-package-subpaths --dir {output}
+```
+
+- `tsc-alias --resolve-full-paths` is sufficient: it rewrites extensionless relative specifiers to the emitted file (`./foo` → `./foo.js`) and directory specifiers to their index file (`./services` → `./services/index.js`), across static imports, re-exports, side-effect imports, literal dynamic `import()`, `require()` and `.d.ts` files. `--resolve-package-subpaths` adds an extension to deep imports into packages without an `exports` field. Packages with an `exports` field and native `#` subpath imports are never rewritten. Your source needs neither `.js` extensions nor NodeNext.
+- **Breaking change:** the build no longer rewrites `__dirname` / `__filename` in emitted ESM. ESM source must use `import.meta.dirname` / `import.meta.filename`, which every supported Node.js version (22.13 or later) provides.
+- **Source map limit:** the templates use `inlineSourceMap`. Line mappings stay exact, but when one statement contains a rewritten import followed by more code, columns after the specifier shift by the number of characters added. The former pipeline had the same limit.
+
 #### `run clean`
 Clean up any previously transpiled code.
 
@@ -326,8 +337,8 @@ See [Using TypeScript 7 with the TypeScript 6 API](../../introduction/installati
 
 ### Build & Development
 - `tsx` (^4.0.0) - TypeScript execution and REPL
-- `tsc-alias` (^1.0.0) - Path mapping resolution
-- `tsc-esm-fix` (^3.0.0) - ESM compatibility fixes
+- `tsrs` (^0.23.0-ts7.1.0-beta) - Rust port of the TypeScript 7 compiler, a drop-in `tsc` CLI
+- `tsc-alias` (^1.9.0) - Path mapping and import path resolution
 - `cross-env` (^10.0.0) - Cross-platform environment variables
 - `jiti` (^2.4.0) - Runtime TypeScript and ESM support
 
