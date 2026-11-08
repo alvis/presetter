@@ -18,7 +18,7 @@ Focused checks from the repository root:
 ```bash
 pnpm --filter presetter-website typecheck
 pnpm --filter presetter-website exec eslint --no-fix src spec
-pnpm exec tsx --test website/spec/presetter-setup.spec.ts
+node --import jiti/register --test website/spec/presetter-setup.spec.ts
 pnpm --filter presetter-website build
 ```
 

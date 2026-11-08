@@ -21,7 +21,7 @@ The E2E test suite:
    - Writes `.npmrc` pointing to the local Verdaccio registry
    - Installs with pnpm and npm, plus any extra managers `EXAMPLE_MANAGERS` lists for the example (bun for the bun example), resolving `*` versions from the local registry
    - Executes validation scripts (lint, build, typecheck, test)
-4. Creates minimal projects inline for npm, pnpm, and bun, runs `presetter use @presetter/preset-esm` against Verdaccio, exercises build approval over stdin (pnpm records esbuild in `allowBuilds`, bun trusts esbuild by default and records nothing, and npm runs in advisory mode), and checks installed tools, package scripts, generated configs, and pnpm's recorded approval
+4. Creates minimal projects inline for npm, pnpm, and bun, runs `presetter use @presetter/preset-esm` against Verdaccio, answers any build approval prompt over stdin (no adopted dependency runs an install script, so no manager records approvals), and checks installed tools, package scripts, and generated configs
 5. Runs build, lint, typecheck, and test in each adopted project, then repeats `use` to verify idempotency
 6. Reports results via vitest and stops Verdaccio on teardown
 

@@ -61,7 +61,6 @@
     "tsc-alias": "catalog:build",
     "tsconfig-paths": "catalog:build",
     "tsrs": "catalog:build",
-    "tsx": "catalog:build",
     "typescript-eslint": "catalog:lint",
     "vitest": "catalog:testing",
     "zx": "catalog:utilities"
