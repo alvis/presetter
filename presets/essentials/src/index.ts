@@ -3,6 +3,8 @@ import { fileURLToPath } from 'node:url';
 
 import { preset } from '@presetter/types';
 
+import manifest from '../package.json' with { type: 'json' };
+
 import eslintOverride from './eslint/override';
 import eslintTemplate from './eslint/template';
 import tsconfigOverride from './tsconfig/override';
@@ -45,7 +47,7 @@ export const DEFAULT_VARIABLES = {
  * get the list of templates provided by this preset
  * @returns list of preset templates
  */
-export default preset('@presetter/preset-essentials', (context) => ({
+export default preset(manifest.name, (context) => ({
   root: resolve(import.meta.dirname, '..'),
   variables: {
     ...DEFAULT_VARIABLES,

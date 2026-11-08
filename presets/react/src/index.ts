@@ -3,6 +3,8 @@ import { fileURLToPath } from 'node:url';
 
 import { preset } from '@presetter/types';
 
+import manifest from '../package.json' with { type: 'json' };
+
 import eslintOverride from './eslint/override';
 import * as eslint from './eslint/template';
 import vitest from './vitest/template';
@@ -26,7 +28,7 @@ export const DEFAULT_VARIABLES = {
   output: 'lib',
 } satisfies Variables;
 
-export default preset('@presetter/preset-react', {
+export default preset(manifest.name, {
   root: resolve(import.meta.dirname, '..'),
   variables: DEFAULT_VARIABLES,
   scripts: resolve(TEMPLATES, 'scripts.yaml'),

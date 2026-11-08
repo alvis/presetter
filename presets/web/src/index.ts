@@ -3,6 +3,8 @@ import { fileURLToPath } from 'node:url';
 
 import { preset } from '@presetter/types';
 
+import manifest from '../package.json' with { type: 'json' };
+
 import * as eslintOverride from './eslint/override';
 import eslintTemplate from './eslint/template';
 
@@ -29,7 +31,7 @@ const STYLE_TYPE = 'style.d.ts';
  * get the list of templates provided by this preset
  * @returns list of preset templates
  */
-export default preset('@presetter/preset-web', {
+export default preset(manifest.name, {
   root: resolve(import.meta.dirname, '..'),
   variables: DEFAULT_VARIABLES,
   assets: ({ variables }) => ({

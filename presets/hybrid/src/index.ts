@@ -4,6 +4,8 @@ import { fileURLToPath } from 'node:url';
 import essentials from '@presetter/preset-essentials';
 import { preset } from '@presetter/types';
 
+import manifest from '../package.json' with { type: 'json' };
+
 export { DEFAULT_VARIABLES } from '@presetter/preset-essentials';
 
 export type { Variables } from '@presetter/preset-essentials';
@@ -14,7 +16,7 @@ const DIR = fileURLToPath(dirname(import.meta.url));
 const OVERRIDES = resolve(DIR, '..', 'overrides');
 const TEMPLATES = resolve(DIR, '..', 'templates');
 
-export default preset('@presetter/preset-hybrid', {
+export default preset(manifest.name, {
   root: resolve(import.meta.dirname, '..'),
   extends: [essentials],
   assets: {

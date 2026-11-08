@@ -2,6 +2,8 @@ import { resolve } from 'node:path';
 
 import { preset } from '@presetter/types';
 
+import manifest from '../package.json' with { type: 'json' };
+
 import * as eslintOverride from './eslint/override';
 import storybookMain from './storybook/main.template';
 import vitestStorybookOverride from './vitest/template';
@@ -19,7 +21,7 @@ export const DEFAULT_VARIABLES = {
   test: 'spec',
 } satisfies Variables;
 
-export default preset('@presetter/preset-storybook', {
+export default preset(manifest.name, {
   root: resolve(import.meta.dirname, '..'),
   setup: {
     devDependencies: {

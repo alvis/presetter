@@ -11,7 +11,7 @@ import web from '@presetter/preset-web';
 
 import { preset } from 'presetter';
 
-import { name } from '../package.json';
+import manifest from '../package.json' with { type: 'json' };
 
 import * as eslintOverride from './eslint/override';
 import * as eslintTemplate from './eslint/template';
@@ -30,7 +30,7 @@ const DIR = fileURLToPath(dirname(import.meta.url));
 // paths to the template directory
 const TEMPLATES = resolve(DIR, '..', 'templates');
 
-export default preset(name, {
+export default preset(manifest.name, {
   root: resolve(import.meta.dirname, '..'),
   extends: [esm, node, strict, web, react],
   variables: DEFAULT_VARIABLES,
