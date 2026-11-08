@@ -336,7 +336,6 @@ See [Using TypeScript 7 with the TypeScript 6 API](../../introduction/installati
 - `@eslint-community/eslint-plugin-eslint-comments` - ESLint directive validation
 
 ### Build & Development
-- `tsx` (^4.0.0) - TypeScript execution and REPL
 - `tsrs` (^0.23.0-ts7.1.0-beta) - Rust port of the TypeScript 7 compiler, a drop-in `tsc` CLI
 - `tsc-alias` (^1.9.0) - Path mapping and import path resolution
 - `cross-env` (^10.0.0) - Cross-platform environment variables

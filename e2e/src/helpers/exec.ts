@@ -238,13 +238,24 @@ const INSTALLERS: Record<
     });
 
     // run the install scripts bun blocks, as the other managers allow all builds
+    const untrusted = await exec('bun', {
+      ...options,
+      args: ['pm', 'untrusted'],
+      env: BUN_ENV,
+    });
+
+    // NOTE: bun pm trust --all fails when no blocked script is left to run
+    if (untrusted.includes('Found 0 untrusted')) {
+      return [install, untrusted].join('\n\n---\n\n');
+    }
+
     const trust = await exec('bun', {
       ...options,
       args: ['pm', 'trust', '--all'],
       env: BUN_ENV,
     });
 
-    return [install, trust].join('\n\n---\n\n');
+    return [install, untrusted, trust].join('\n\n---\n\n');
   },
 };
 

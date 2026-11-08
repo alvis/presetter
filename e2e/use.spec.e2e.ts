@@ -36,25 +36,15 @@ interface Adoption {
   runner: [string, ...string[]];
   /** whether corepack provides the manager, pinned through packageManager instead of --package-manager */
   corepack: boolean;
-  /** asserts the build approvals the adoption recorded */
-  approvals?: (destination: string) => Promise<void>;
 }
 
+// NOTE: no dependency adopted with preset-esm runs an install script, so no manager records build approvals
 const ADOPTIONS: Record<PackageManager, Adoption> = {
   npm: { runner: ['npx', '--yes', 'presetter'], corepack: false },
   pnpm: {
     runner: ['npx', '--yes', 'corepack', 'pnpm', 'dlx', 'presetter'],
     corepack: true,
-    approvals: async (destination) => {
-      const workspace = await readFile(
-        join(destination, 'pnpm-workspace.yaml'),
-        'utf8',
-      );
-      const approvals = /^allowBuilds:\n((?: {2}.+\n)*)/m.exec(workspace)?.[1];
-      expect(approvals).toMatch(/^ {2}esbuild@[^:\n]+: true$/m);
-    },
   },
-  // NOTE: bun trusts esbuild by default and no other adopted dependency runs an install script, so bun records no approvals
   bun: { runner: ['bunx', 'presetter'], corepack: false },
 };
 
@@ -66,7 +56,7 @@ const REGISTRY_ENV = {
 };
 
 describe.each(ADOPTION_MANAGERS)('cmd:presetter use (%s)', (manager) => {
-  const { runner, corepack, approvals } = ADOPTIONS[manager];
+  const { runner, corepack } = ADOPTIONS[manager];
   const destination = join(TEMP_DIR, `use-${manager}`);
   // corepack shims here let presetter run the version pinned by packageManager
   const managerBin = join(TEMP_DIR, `use-${manager}-bin`);
@@ -224,7 +214,6 @@ it('should greet', () => {
     ]) {
       expect(await readFile(join(destination, file), 'utf8')).not.toBe('');
     }
-    await approvals?.(destination);
   });
 
   for (const script of ['build', 'lint', 'typecheck', 'test']) {
