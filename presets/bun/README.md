@@ -129,7 +129,7 @@ my-bun-service/
 
 1. **Scripts override** — Replaces `build:typescript` with a two-step Bun flow:
    - `build:typescript:bun` → transpiles all `.ts/.tsx/.cts/.mts` via `bun build --no-bundle`
-   - `build:typescript:types` → emits `.d.ts` files via `tsc -p tsconfig.build.json --emitDeclarationOnly`
+   - `build:typescript:types` → emits `.d.ts` files via `tsrs -p tsconfig.build.json --emitDeclarationOnly`
 2. **TypeScript override** — Adds `compilerOptions.types: ['bun']` so Bun APIs resolve
 3. **Extra build targets** — Exposes `build:bundle` and `build:compile` for single-entry workflows
 4. **Path variables** — Respects the base preset's `{source}` and `{output}` variables
@@ -257,7 +257,7 @@ This preset adds Bun-specific build workflows on top of any base preset:
 | Enhancement                  | Purpose               | Bun Features                                          |
 | ---------------------------- | --------------------- | ----------------------------------------------------- |
 | **`build:typescript:bun`**   | Fast transpilation    | `bun build --no-bundle` over all `.ts/.tsx/.cts/.mts` |
-| **`build:typescript:types`** | Declaration emission  | `tsc -p tsconfig.build.json --emitDeclarationOnly`    |
+| **`build:typescript:types`** | Declaration emission  | `tsrs -p tsconfig.build.json --emitDeclarationOnly`   |
 | **`build:bundle`**           | Single-entry bundle   | `bun build --target bun --format esm`                 |
 | **`build:compile`**          | Standalone executable | `bun build --compile --bytecode`                      |
 | **TypeScript types**         | Bun API resolution    | `compilerOptions.types: ['bun']`                      |
@@ -268,7 +268,7 @@ This preset adds Bun-specific build workflows on top of any base preset:
 # overrides/scripts.yaml
 build:typescript: run-s build:typescript:bun build:typescript:types
 build:typescript:bun: bun build "./{source}/**/*.ts" "./{source}/**/*.tsx" "./{source}/**/*.cts" "./{source}/**/*.mts" --outdir "{output}" --root "{source}" --target bun --format esm --no-bundle
-build:typescript:types: tsc -p tsconfig.build.json --emitDeclarationOnly
+build:typescript:types: tsrs -p tsconfig.build.json --emitDeclarationOnly
 build:bundle: bun build --target bun --format esm
 build:compile: bun build --compile --bytecode
 ```
@@ -303,7 +303,7 @@ This enables Bun's globals (`Bun.serve`, `Bun.file`, `Bun.password`, etc.) and r
 # What `npm run build` does end-to-end
 1. Clean output directory (from base preset)
 2. build:typescript:bun    → bun build (all TS files → output/, no bundling)
-3. build:typescript:types  → tsc --emitDeclarationOnly (emit .d.ts)
+3. build:typescript:types  → tsrs --emitDeclarationOnly (emit .d.ts)
 4. Finalize (from base preset)
 ```
 

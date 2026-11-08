@@ -2,10 +2,8 @@ build: run-s clean build:artifact build:typescript
 build:artifact: run-s build:artifact:*
 build:artifact:package: zx --eval "fs.ensureDir('{output}')"
 build:typescript: echo "You must explicitly define your build target. Try @presetter/preset-esm or @presetter/preset-cjs to set it up."; exit 1
-build:typescript:tsc: tsc -p tsconfig.build.json
-build:typescript:alias: run-s build:typescript:alias:*
-build:typescript:alias:lib: tsc-alias --resolve-full-paths --dir {output}
-build:typescript:alias:root: tsc-alias --resolve-full-paths --dir .
+build:typescript:tsc: tsrs -p tsconfig.build.json
+build:typescript:alias: tsc-alias --resolve-full-paths --resolve-package-subpaths --dir {output}
 clean: run-s clean:**
 clean:lib: zx --eval "fs.remove('{output}')"
 clean:coverage: zx --eval "fs.remove('coverage')"

@@ -1,6 +1,7 @@
 build:typescript: run-s build:typescript:mjs build:typescript:cjs build:typescript:alias
-build:typescript:mjs: run-s build:typescript:mjs:tsc build:typescript:mjs:fix
-build:typescript:mjs:tsc: tsc -p tsconfig.mjs.json
-build:typescript:mjs:fix: tsc-esm-fix --sourceMap --target {output} --ext .mjs
+build:typescript:mjs: run-s build:typescript:mjs:tsc build:typescript:mjs:rename build:typescript:mjs:alias
+build:typescript:mjs:tsc: tsrs -p tsconfig.mjs.json
+build:typescript:mjs:rename: zx --eval "for (const file of glob.sync('{output}/**/*.js')) fs.renameSync(file, file.replace(/\.js$/, '.mjs'))"
+build:typescript:mjs:alias: tsc-alias --resolve-full-paths --resolve-package-subpaths --resolve-full-extension .mjs --dir {output}
 build:typescript:cjs: run-s build:typescript:cjs:*
-build:typescript:cjs:tsc: tsc -p tsconfig.cjs.json
+build:typescript:cjs:tsc: tsrs -p tsconfig.cjs.json

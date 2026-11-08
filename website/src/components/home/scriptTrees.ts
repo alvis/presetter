@@ -79,16 +79,14 @@ export const scriptTrees: Record<string, readonly ScriptNode[]> = {
     node(
       1,
       'build:typescript',
-      'run-s build:typescript:tsc build:typescript:alias build:typescript:mjs:fix',
+      'run-s build:typescript:tsc build:typescript:alias',
       'esm',
     ),
-    node(2, 'build:typescript:tsc', 'tsc -p tsconfig.build.json'),
-    node(2, 'build:typescript:alias', 'run-s build:typescript:alias:*'),
+    node(2, 'build:typescript:tsc', 'tsrs -p tsconfig.build.json'),
     node(
       2,
-      'build:typescript:mjs:fix',
-      'tsc-esm-fix --sourceMap --target {output}',
-      'esm',
+      'build:typescript:alias',
+      'tsc-alias --resolve-full-paths --resolve-package-subpaths --dir {output}',
     ),
   ],
   'lint': [
