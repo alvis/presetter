@@ -3,6 +3,8 @@ import { fileURLToPath } from 'node:url';
 
 import { preset } from '@presetter/types';
 
+import manifest from '../package.json' with { type: 'json' };
+
 /** list of configurable variables */
 export interface Variables {}
 
@@ -13,7 +15,7 @@ const DIR = fileURLToPath(dirname(import.meta.url));
 // paths to the template directory
 const OVERRIDES = resolve(DIR, '..', 'overrides');
 
-export default preset('@presetter/preset-node', {
+export default preset(manifest.name, {
   root: resolve(import.meta.dirname, '..'),
   override: {
     assets: {

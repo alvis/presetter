@@ -3,6 +3,8 @@ import { fileURLToPath } from 'node:url';
 
 import { preset } from '@presetter/types';
 
+import manifest from '../package.json' with { type: 'json' };
+
 import * as eslintOverride from './eslint/override';
 import eslintTemplate from './eslint/template';
 import * as vitestOverride from './vitest/override';
@@ -17,7 +19,7 @@ const DIR = dirname(fileURLToPath(import.meta.url));
 // paths to the template directory
 const OVERRIDES = resolve(DIR, '..', 'overrides');
 
-export default preset('@presetter/preset-strict', {
+export default preset(manifest.name, {
   root: resolve(import.meta.dirname, '..'),
   assets: {
     'eslint.config.ts': eslintTemplate,

@@ -3,6 +3,8 @@ import { fileURLToPath } from 'node:url';
 
 import { preset } from '@presetter/types';
 
+import manifest from '../package.json' with { type: 'json' };
+
 const DIR = fileURLToPath(dirname(import.meta.url));
 
 // paths to the template directory
@@ -21,7 +23,7 @@ export const DEFAULT_VARIABLES = {
   output: 'lib',
 } satisfies Variables;
 
-export default preset('@presetter/preset-bun', {
+export default preset(manifest.name, {
   root: resolve(import.meta.dirname, '..'),
   variables: DEFAULT_VARIABLES,
   override: {

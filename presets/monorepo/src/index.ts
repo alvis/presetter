@@ -5,6 +5,8 @@ import essentials from '@presetter/preset-essentials';
 import strict from '@presetter/preset-strict';
 import { preset } from '@presetter/types';
 
+import manifest from '../package.json' with { type: 'json' };
+
 import eslintOverride from './eslint/override';
 import tsconfigOverride from './tsconfig/override';
 import vitestOverride from './vitest/config/override';
@@ -18,7 +20,7 @@ const DIR = dirname(fileURLToPath(import.meta.url));
 // paths to the override directory
 const OVERRIDES = resolve(DIR, '..', 'overrides');
 
-export default preset('@presetter/preset-monorepo', {
+export default preset(manifest.name, {
   root: resolve(import.meta.dirname, '..'),
   extends: [essentials, strict],
   override: {
