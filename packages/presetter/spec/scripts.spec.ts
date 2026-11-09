@@ -269,6 +269,18 @@ describe('fn:composeScript', () => {
       },
     });
 
+    should('resolve a task after non-ASCII source text', {
+      template: {
+        build: 'builder',
+      },
+      target: {
+        build: 'echo 😀 && run build',
+      },
+      result: {
+        build: 'echo 😀 && builder',
+      },
+    });
+
     should('resolve a task with the runner in the middle of other commands', {
       template: {
         build: 'builder',
