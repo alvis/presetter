@@ -1,16 +1,9 @@
-import { parse, print } from 'sh-syntax';
+import { parse, print, walk } from 'sh-syntax';
 
 import debug from './debugger';
-import {
-  findRunInParsed,
-  parseCommandStructure,
-  parseCommandText,
-} from './parsing';
 import { mapValuesAsync } from './utilities';
 
-import type { File } from 'sh-syntax';
-
-import type { ParsedCallExpr, RunMatch } from './parsing';
+import type { CallExpr, File, Word, WordPart } from 'sh-syntax';
 
 /** pseudo type for representing the name of a script */
 type ScriptName = string;
@@ -33,10 +26,16 @@ interface Replacement {
   text: string;
 }
 
-// a temporary fix for mismatched type in sh-syntax
-// see https://github.com/un-ts/sh-syntax/issues/130
-// eslint-disable-next-line @typescript-eslint/naming-convention
-type CorrectFile = File & { Stmt: File['Stmts'] };
+/** a resolved `run` call with source positions */
+interface RunCallExpr {
+  args: string[];
+  extraArgs: string[];
+  prefix: string;
+  start: number;
+  end: number;
+}
+
+type SourceIndex = (byteOffset: number) => number;
 
 const MAX_DEPTH = 10;
 
@@ -61,16 +60,12 @@ export async function composeScripts(args: {
     { ...template, ...target },
     async (command): Promise<string> => {
       try {
-        // first validate the shell command syntax
-        await parse(command);
-
         // resolve any 'run' commands in the script
         const context = { template, target };
         const resolvedCommand = await resolveAllRunCommands(command, context);
 
-        // parse and print to normalize formatting
-        const ast = await parse(resolvedCommand);
-        const printed = await print(ast, { originalText: resolvedCommand });
+        // print and normalize formatting
+        const printed = await print(resolvedCommand);
 
         return printed.trim();
       } catch (error: unknown) {
@@ -101,11 +96,11 @@ export async function composeScripts(args: {
  * @returns the resolved command string
  */
 const resolveRunner = (
-  parsedExpr: Readonly<ParsedCallExpr>,
+  parsedExpr: Readonly<Pick<RunCallExpr, 'args' | 'extraArgs' | 'prefix'>>,
   originalCommand: string,
   context: Readonly<ScriptContext>,
 ): string => {
-  const { args, extraArgs } = parsedExpr;
+  const { args, extraArgs, prefix } = parsedExpr;
 
   const destinations = args.filter((arg) => !arg.startsWith('--'));
 
@@ -124,7 +119,9 @@ const resolveRunner = (
         );
       }
 
-      return [expandedCommand, ...extraArgs].join(' ');
+      const resolved = [expandedCommand, ...extraArgs].join(' ');
+      const assignments = prefix.trim();
+      return assignments ? `(export ${assignments}; ${resolved})` : resolved;
     })
     .join(' && ');
 };
@@ -140,32 +137,185 @@ const findReplacements = (
   command: string,
   context: Readonly<ScriptContext>,
   ast: File,
-): Replacement[] => {
-  const matches: RunMatch[] = [];
+): Replacement[] =>
+  findRunCalls(ast, command).map((runCall): Replacement => ({
+    start: runCall.start,
+    end: runCall.end,
+    text: resolveRunner(runCall, command, context),
+  }));
 
-  // iterate over statements from sh-syntax
-  for (const stmt of (ast as CorrectFile).Stmt) {
-    if (!stmt.Cmd) {
-      continue;
+/**
+ * finds all `run` calls in an AST
+ * @param ast the parsed AST from sh-syntax
+ * @param source the original source string
+ * @returns run calls with source positions
+ */
+const findRunCalls = (ast: File, source: string): RunCallExpr[] => {
+  const toIndex = createSourceIndex(source);
+  const calls: RunCallExpr[] = [];
+
+  walk(ast, (node) => {
+    if (node.type === 'CallExpr') {
+      const parsed = parseCallExpr(node, source, toIndex);
+      if (parsed) {
+        calls.push(parsed);
+      }
     }
-    // extract command text using sh-syntax positions
-    const cmdText = command.slice(stmt.Cmd.Pos.Offset, stmt.Cmd.End.Offset);
-    // parse structure ourselves
-    const parsed = parseCommandStructure(cmdText, stmt.Cmd.Pos.Offset);
-    // find run commands
-    matches.push(...findRunInParsed(parsed, command));
+    return true;
+  });
+
+  return calls;
+};
+
+/**
+ * parses a CallExpr into a run command if the command is `run`
+ * @param call the call expression
+ * @param source the original source string
+ * @param toIndex byte-offset to string-index converter
+ * @returns parsed run call, or undefined for non-run commands
+ */
+const parseCallExpr = (
+  call: CallExpr,
+  source: string,
+  toIndex: SourceIndex,
+): RunCallExpr | undefined => {
+  if (call.args.length === 0) {
+    return undefined;
   }
 
-  return matches.map((runMatch): Replacement => {
-    const parsedExpr = parseCommandText(runMatch.match);
-    const resolved = resolveRunner(parsedExpr, command, context);
+  const words = call.args.map((arg) => wordText(arg, source, toIndex));
+  if (words[0] !== 'run') {
+    return undefined;
+  }
 
-    return {
-      start: runMatch.start,
-      end: runMatch.end,
-      text: resolved,
-    };
-  });
+  const separatorIndex = words.indexOf('--');
+  const args =
+    separatorIndex < 0 ? words.slice(1) : words.slice(1, separatorIndex);
+  if (args.length === 0) {
+    return undefined;
+  }
+
+  const extraArgs =
+    separatorIndex < 0
+      ? []
+      : call.args
+          .slice(separatorIndex + 1)
+          .map((arg) => source.slice(toIndex(arg.start), toIndex(arg.end)));
+
+  return {
+    args,
+    extraArgs,
+    prefix:
+      call.assigns.length > 0
+        ? source.slice(
+            toIndex(call.assigns[0]!.start),
+            toIndex(call.args[0]!.start),
+          )
+        : '',
+    start: toIndex(call.start),
+    end: toIndex(call.end),
+  };
+};
+
+/**
+ * reconstructs a shell word from its AST parts
+ * @param word the word node
+ * @param source the original source string
+ * @param toIndex byte-offset to string-index converter
+ * @returns the word as written without quote delimiters
+ */
+const wordText = (word: Word, source: string, toIndex: SourceIndex): string =>
+  word.parts.map((part) => wordPartText(part, source, toIndex, false)).join('');
+
+/**
+ * reconstructs a word part, preserving expansions as source text
+ * @param part the word part
+ * @param source the original source string
+ * @param toIndex byte-offset to string-index converter
+ * @param doubleQuoted whether the part is inside double quotes
+ * @returns the reconstructed part
+ */
+const wordPartText = (
+  part: WordPart,
+  source: string,
+  toIndex: SourceIndex,
+  doubleQuoted: boolean,
+): string => {
+  switch (part.type) {
+    case 'Lit':
+      return doubleQuoted ? unescapeDoubleQuoted(part.value) : part.value;
+    case 'SglQuoted':
+      return part.value;
+    case 'DblQuoted':
+      return part.parts
+        .map((nested) => wordPartText(nested, source, toIndex, true))
+        .join('');
+    default:
+      return source.slice(toIndex(part.start), toIndex(part.end));
+  }
+};
+
+/**
+ * removes shell escapes inside double quotes
+ * @param value raw double-quoted text
+ * @returns unescaped text
+ */
+const unescapeDoubleQuoted = (value: string): string => {
+  let result = '';
+  for (let index = 0; index < value.length; index++) {
+    const char = value[index]!;
+    if (
+      char === '\\' &&
+      index + 1 < value.length &&
+      /[\\$`"\n]/.test(value[index + 1]!)
+    ) {
+      const next = value[index + 1]!;
+      if (next !== '\n') {
+        result += next;
+      }
+      index += 1;
+      continue;
+    }
+    result += char;
+  }
+  return result;
+};
+
+/**
+ * creates a converter from UTF-8 byte offsets to JavaScript string indexes
+ * @param source the source string
+ * @returns byte-offset to string-index converter
+ */
+const createSourceIndex = (source: string): SourceIndex => {
+  const indexes = [0];
+  let byteOffset = 0;
+
+  for (let index = 0; index < source.length;) {
+    const codePoint = source.codePointAt(index)!;
+    byteOffset += utf8Length(codePoint);
+    index += codePoint > 0xffff ? 2 : 1;
+    indexes[byteOffset] = index;
+  }
+
+  return (offset) => indexes[offset] ?? source.length;
+};
+
+/**
+ * gets the UTF-8 byte length of a Unicode code point
+ * @param codePoint Unicode code point
+ * @returns byte length
+ */
+const utf8Length = (codePoint: number): number => {
+  if (codePoint <= 0x7f) {
+    return 1;
+  }
+  if (codePoint <= 0x7ff) {
+    return 2;
+  }
+  if (codePoint <= 0xffff) {
+    return 3;
+  }
+  return 4;
 };
 
 /**
