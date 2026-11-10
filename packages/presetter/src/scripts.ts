@@ -188,12 +188,21 @@ const parseCallExpr = (
   const separatorIndex = words.indexOf('--');
   const args =
     separatorIndex < 0 ? words.slice(1) : words.slice(1, separatorIndex);
-  const extraArgs = separatorIndex < 0 ? [] : words.slice(separatorIndex + 1);
+  if (args.length === 0) {
+    return undefined;
+  }
+
+  const extraArgs =
+    separatorIndex < 0
+      ? []
+      : call.args
+          .slice(separatorIndex + 1)
+          .map((arg) => source.slice(toIndex(arg.start), toIndex(arg.end)));
 
   return {
     args,
     extraArgs,
-    start: toIndex(call.start),
+    start: toIndex(call.args[0]!.start),
     end: toIndex(call.end),
   };
 };

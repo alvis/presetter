@@ -257,6 +257,90 @@ describe('fn:composeScript', () => {
       },
     });
 
+    should('preserve quoted arguments after --', {
+      template: {
+        build: 'eslint',
+      },
+      target: {
+        build: 'run build -- "src/**/*.ts"',
+      },
+      result: {
+        build: 'eslint "src/**/*.ts"',
+      },
+    });
+
+    should('preserve an assignment prefix', {
+      template: {
+        build: 'builder',
+      },
+      target: {
+        build: 'NODE_ENV=production run build',
+      },
+      result: {
+        build: 'NODE_ENV=production builder',
+      },
+    });
+
+    should('resolve a run command in a pipeline', {
+      template: {
+        build: 'builder',
+      },
+      target: {
+        build: 'run build | tee log',
+      },
+      result: {
+        build: 'builder | tee log',
+      },
+    });
+
+    should('resolve a run command in a block', {
+      template: {
+        build: 'builder',
+      },
+      target: {
+        build: '{ run build; }',
+      },
+      result: {
+        build: '{ builder; }',
+      },
+    });
+
+    should('leave a bare run command untouched', {
+      template: {
+        build: 'builder',
+      },
+      target: {
+        build: 'run',
+      },
+      result: {
+        build: 'run',
+      },
+    });
+
+    should('leave a run command without a task untouched', {
+      template: {
+        build: 'builder',
+      },
+      target: {
+        build: 'run -- --watch',
+      },
+      result: {
+        build: 'run -- --watch',
+      },
+    });
+
+    should('resolve a quoted task name', {
+      template: {
+        build: 'builder',
+      },
+      target: {
+        build: 'run "build"',
+      },
+      result: {
+        build: 'builder',
+      },
+    });
+
     should('ignore non task definitions', {
       template: {
         build: 'builder',
