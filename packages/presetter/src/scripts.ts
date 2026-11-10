@@ -30,6 +30,7 @@ interface Replacement {
 interface RunCallExpr {
   args: string[];
   extraArgs: string[];
+  prefix: string;
   start: number;
   end: number;
 }
@@ -95,11 +96,11 @@ export async function composeScripts(args: {
  * @returns the resolved command string
  */
 const resolveRunner = (
-  parsedExpr: Readonly<Pick<RunCallExpr, 'args' | 'extraArgs'>>,
+  parsedExpr: Readonly<Pick<RunCallExpr, 'args' | 'extraArgs' | 'prefix'>>,
   originalCommand: string,
   context: Readonly<ScriptContext>,
 ): string => {
-  const { args, extraArgs } = parsedExpr;
+  const { args, extraArgs, prefix } = parsedExpr;
 
   const destinations = args.filter((arg) => !arg.startsWith('--'));
 
@@ -118,7 +119,7 @@ const resolveRunner = (
         );
       }
 
-      return [expandedCommand, ...extraArgs].join(' ');
+      return [prefix + expandedCommand, ...extraArgs].join(' ');
     })
     .join(' && ');
 };
@@ -202,7 +203,14 @@ const parseCallExpr = (
   return {
     args,
     extraArgs,
-    start: toIndex(call.args[0]!.start),
+    prefix:
+      call.assigns.length > 0
+        ? source.slice(
+            toIndex(call.assigns[0]!.start),
+            toIndex(call.args[0]!.start),
+          )
+        : '',
+    start: toIndex(call.start),
     end: toIndex(call.end),
   };
 };

@@ -281,6 +281,20 @@ describe('fn:composeScript', () => {
       },
     });
 
+    should('apply an assignment prefix to every task', {
+      template: {
+        build: 'builder',
+        lint: 'linter',
+      },
+      target: {
+        build: 'NODE_ENV=production run lint build',
+      },
+      result: {
+        build: 'NODE_ENV=production linter && NODE_ENV=production builder',
+        lint: 'linter',
+      },
+    });
+
     should('resolve a run command in a pipeline', {
       template: {
         build: 'builder',
