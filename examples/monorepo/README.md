@@ -64,7 +64,7 @@ The root `package.json` includes:
 ```json
 {
   "scripts": {
-    "install": "presetter bootstrap --projects . --projects */*/"
+    "install": "presetter bootstrap . */*/"
   }
 }
 ```

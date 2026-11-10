@@ -16,16 +16,17 @@ export interface Task {
  * @returns an array of cleaned up global arguments as strings
  */
 export function parseGlobalArgs(argv: Arguments): string[] {
-  // get the global arguments as an array of strings or numbers, or undefined if not present
-  const globalArgs = argv['--'];
+  // if no global arguments are present, return an empty array
+  return unquoteArgs(argv['--'] ?? []);
+}
 
-  // if global arguments are present, map them to strings and clean up the quotes
-  return (
-    globalArgs?.map((arg) =>
-      // replace the single or double quotes that wrap the argument
-      arg.toString().replace(/^(['"])([^]*?)\1$/, '$2'),
-    ) ?? [] // if no global arguments are present, return an empty array
-  );
+/**
+ * strip the single or double quotes that wrap each argument
+ * @param args raw arguments, each possibly wrapped in quotes
+ * @returns the arguments as strings without their wrapping quotes
+ */
+export function unquoteArgs(args: ReadonlyArray<string | number>): string[] {
+  return args.map((arg) => arg.toString().replace(/^(['"])([^]*?)\1$/, '$2'));
 }
 
 const ARG_PLACEHOLDER_REGEX = /^{@:?(.*)$/;

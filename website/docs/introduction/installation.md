@@ -205,7 +205,7 @@ This checkout's published packages are on the scoped `@presetter/*` preset names
 - **`@presetter/preset-storybook`** — standalone Storybook configuration.
 
 ### ✨ New features
-- **`presetter bootstrap --projects`** targets project-folder globs, and **`--packages`** targets package-name globs.
+- **`presetter bootstrap`** targets project-folder globs given as arguments or with **`--project`**, and **`--package`** targets package-name globs.
 - **lint-staged pre-commit** and **pre-push** hooks out of the box.
 - **git-cliff** powered changelog generation.
 - **Monorepo sub-level Vitest** configuration support.

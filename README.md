@@ -315,9 +315,9 @@ export default preset('my-project', {
 
 ```bash
 # Configuration generation
-presetter bootstrap                         # Apply configurations
-presetter bootstrap --projects "packages/*" # Bootstrap project path globs
-presetter bootstrap --packages "@scope/*"   # Bootstrap package-name globs
+presetter bootstrap                        # Apply configurations
+presetter bootstrap "packages/*"           # Bootstrap project path globs
+presetter bootstrap --package "@scope/*"   # Bootstrap package-name globs
 
 # Development workflows
 run build                    # Build your project

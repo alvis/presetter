@@ -10,7 +10,7 @@ Generate configuration assets from an existing preset stack. Use [`presetter use
 ## Synopsis
 
 ```bash
-presetter bootstrap [options]
+presetter bootstrap [options] [project...]
 ```
 
 ## Description
@@ -59,21 +59,23 @@ presetter bootstrap --only presetter.config.ts
 - Monorepo setups where not all packages need bootstrapping
 - Conditional setup based on project structure
 
-### `-p, --projects <patterns...>`
+### `[project...]` and `-p, --project <pattern>`
 
-Specify glob patterns matching target project folders containing package.json.
+Glob patterns matching target project folders containing package.json. Give them as plain
+arguments or with the repeatable `--project` flag; both spellings add to the same list, so
+`presetter bootstrap a b` is the same as `presetter bootstrap --project a --project b`.
 
-**Default:** `["."` (current directory)
+**Default:** `.` (current directory), used only when no project pattern is given
 
 ```bash
 # Bootstrap multiple packages in a monorepo
-presetter bootstrap --projects "packages/*" "apps/*"
+presetter bootstrap "packages/*" "apps/*"
 
-# Bootstrap all packages recursively
-presetter bootstrap --projects "**/package.json"
+# The same with the flag, one value per occurrence
+presetter bootstrap --project "packages/*" --project "apps/*"
 
 # Bootstrap specific packages
-presetter bootstrap --projects "packages/core" "packages/utils"
+presetter bootstrap packages/core packages/utils
 ```
 
 **Pattern Examples:**
@@ -82,45 +84,55 @@ presetter bootstrap --projects "packages/core" "packages/utils"
 - `"."` - Current directory only
 - `"**/"` - All directories recursively (use with caution)
 
-### `-P, --packages <patterns...>`
+Unquoted globs are fine too: when the shell expands `packages/*` into several paths, each
+one is taken as a project.
 
-Specify glob patterns matching target **package names** rather than paths, as declared by
-each project's `package.json` `name` field. Within a pattern, `*` matches anything except
-`/`, so `@acme/*` stays inside the `@acme` scope.
+### `-P, --package <pattern>`
 
-**Default:** `[]` (no package-name selection)
+Glob patterns matching target **package names** rather than paths, as declared by each
+project's `package.json` `name` field. Within a pattern, `*` matches anything except `/`,
+so `@acme/*` stays inside the `@acme` scope. Repeat the flag to give several patterns.
+
+**Default:** none (no package-name selection)
+
+Package patterns add to the project patterns rather than replace them, so the default `.`
+is still bootstrapped when no project pattern is given. Pass an explicit project pattern,
+or `'!.'`, to leave the current directory out.
 
 ```bash
 # Bootstrap every preset package in a scope
-presetter bootstrap --packages "@presetter/preset-*"
+presetter bootstrap --package "@presetter/preset-*"
 
 # Combine path and name selection; both contribute to the same set of roots
-presetter bootstrap --projects "packages/*" --packages "@acme/tooling"
+presetter bootstrap "packages/*" --package "@acme/tooling"
 ```
+
+Both project and package patterns also accept comma-separated values, such as
+`--package "@acme/web,@acme/api"`.
 
 ### Excluding with `!`
 
-Any pattern given to `--projects` or `--packages` may be prefixed with `!` to **exclude**
-its matches.
+Any project or package pattern may be prefixed with `!` to **exclude** its matches. Quote
+such a pattern with single quotes, since an interactive shell expands `!` inside double
+quotes.
 
 ```bash
 # Every preset except presets/node
-presetter bootstrap --projects "presets/*,!presets/node"
+presetter bootstrap 'presets/*' '!presets/node'
 
 # Every @acme preset except one, by package name
-presetter bootstrap --packages "@acme/preset-*,!@acme/preset-node"
+presetter bootstrap --package '@acme/preset-*' --package '!@acme/preset-node'
 
 # Exclusions cross flags: the path exclusion also drops a name-selected root
-presetter bootstrap --packages "@acme/preset-*" --projects "!presets/legacy"
+presetter bootstrap --package '@acme/preset-*' '!presets/legacy'
 ```
 
 Two rules govern how exclusions behave:
 
 - **Negations never select.** They only subtract, following the same convention as globby
   and `.gitignore`. `presetter bootstrap -p '!e2e'` on its own therefore selects nothing.
-- **Exclusions apply to the whole selection**, not only to the flag they were given on. A
-  `!` pattern on `--projects` still removes a root that `--packages` selected, and vice
-  versa.
+- **Exclusions apply to the whole selection**, not only to where they were given. A `!`
+  project pattern still removes a root that `--package` selected, and vice versa.
 
 ### Global Options
 
@@ -143,13 +155,13 @@ npx presetter bootstrap
 
 ```bash
 # Bootstrap all packages in a monorepo
-presetter bootstrap --projects "packages/*" "apps/*"
+presetter bootstrap "packages/*" "apps/*"
 
 # Only bootstrap packages that have a presetter config
-presetter bootstrap --projects "packages/*" --only presetter.config.ts
+presetter bootstrap "packages/*" --only presetter.config.ts
 
 # Bootstrap the whole monorepo apart from a couple of exceptions
-presetter bootstrap --projects ".,packages/*,presets/*,!presets/legacy,!packages/sandbox"
+presetter bootstrap '.,packages/*,presets/*,!presets/legacy,!packages/sandbox'
 ```
 
 ### Conditional Bootstrapping
@@ -228,10 +240,10 @@ npm install --save-dev @presetter/preset-esm
 **Monorepo Issues:**
 ```bash
 # Use absolute patterns for complex structures
-presetter bootstrap --projects "$(pwd)/packages/*"
+presetter bootstrap "$(pwd)/packages/*"
 
 # Debug with verbose output
-DEBUG=presetter:* presetter bootstrap --projects "packages/*"
+DEBUG=presetter:* presetter bootstrap "packages/*"
 ```
 
 ### Verification
