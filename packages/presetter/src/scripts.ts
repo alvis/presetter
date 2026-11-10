@@ -119,7 +119,9 @@ const resolveRunner = (
         );
       }
 
-      return [prefix + expandedCommand, ...extraArgs].join(' ');
+      const resolved = [expandedCommand, ...extraArgs].join(' ');
+      const assignments = prefix.trim();
+      return assignments ? `(export ${assignments}; ${resolved})` : resolved;
     })
     .join(' && ');
 };

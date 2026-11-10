@@ -277,7 +277,7 @@ describe('fn:composeScript', () => {
         build: 'NODE_ENV=production run build',
       },
       result: {
-        build: 'NODE_ENV=production builder',
+        build: '(\n  export NODE_ENV=production\n  builder\n)',
       },
     });
 
@@ -290,8 +290,20 @@ describe('fn:composeScript', () => {
         build: 'NODE_ENV=production run lint build',
       },
       result: {
-        build: 'NODE_ENV=production linter && NODE_ENV=production builder',
+        build: '(\n  export NODE_ENV=production\n  linter\n) && (\n  export NODE_ENV=production\n  builder\n)',
         lint: 'linter',
+      },
+    });
+
+    should('scope an assignment prefix over a compound task', {
+      template: {
+        build: 'V=$(npm pkg get version) && git commit',
+      },
+      target: {
+        build: 'GIT_AUTHOR_NAME=bot run build',
+      },
+      result: {
+        build: '(\n  export GIT_AUTHOR_NAME=bot\n  V=$(npm pkg get version) && git commit\n)',
       },
     });
 
