@@ -1,12 +1,15 @@
 import { existsSync, mkdirSync, readFileSync, writeFileSync } from 'node:fs';
 import { dirname, extname } from 'node:path';
 
-import { load } from 'js-yaml';
+import { CORE_SCHEMA, load, mergeTag } from 'js-yaml';
 
 import { substitute } from './template';
 
 import type { Variables } from '@presetter/types';
 import type { JsonObject } from 'type-fest';
+
+// NOTE: js-yaml 5 no longer merges `<<` keys by default, which templates written for js-yaml 4 rely on
+const TEMPLATE_SCHEMA = CORE_SCHEMA.withTags(mergeTag);
 
 /**
  * load the content of a file
@@ -32,7 +35,9 @@ export function loadFile(
       ) as JsonObject;
     case '.yaml':
     case '.yml':
-      return load(substitute(content.toString(), variables)) as JsonObject;
+      return load(substitute(content.toString(), variables), {
+        schema: TEMPLATE_SCHEMA,
+      }) as JsonObject;
     default:
       return path.endsWith('ignore')
         ? substitute(content.toString(), variables)
