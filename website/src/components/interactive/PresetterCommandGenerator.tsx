@@ -79,8 +79,8 @@ const PresetterCommandGenerator: React.FC = () => {
       case 'bootstrap':
         return [
           'presetter bootstrap',
-          'presetter bootstrap --projects "packages/*"',
-          'presetter bootstrap --packages "@scope/*"',
+          'presetter bootstrap "packages/*"',
+          'presetter bootstrap --package "@scope/*"',
         ];
       case 'run':
         return [

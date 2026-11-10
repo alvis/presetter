@@ -1,82 +1,35 @@
-import { resolve } from 'node:path';
+import { readFile } from 'node:fs/promises';
 
-import { describe, expect, it, vi } from 'vitest';
+import { ExitCode } from '@stricli/core';
+import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 
 import { entry } from '#executable/entry';
-import { bootstrap, use } from '#preset';
+import { bootstrapProjects, resolveProjectRoots } from '#executable/projects';
+import { use } from '#preset';
 import { run } from '#run';
-
-const { FIXTURE_ROOT, FIXTURE_PATHS, FIXTURE_PACKAGES } = vi.hoisted(() => {
-  const root = 'spec/executable/fixtures';
-  const packages: Record<string, { name?: string }> = {
-    [`${root}/packages/app/package.json`]: { name: 'acme' },
-    [`${root}/presets/next/package.json`]: { name: '@acme/preset-next' },
-    [`${root}/presets/node/package.json`]: { name: '@acme/preset-node' },
-    [`${root}/presets/monorepo/package.json`]: {
-      name: '@acme/preset-monorepo',
-    },
-    [`${root}/tools/scripts/package.json`]: { name: 'scripts' },
-    [`${root}/no-name/package.json`]: {},
-  };
-
-  return {
-    FIXTURE_ROOT: root,
-    FIXTURE_PATHS: Object.keys(packages),
-    FIXTURE_PACKAGES: packages,
-  };
-});
-
-vi.mock(
-  'globby',
-  () =>
-    ({
-      // @ts-expect-error -- globby exports an overloaded signature whose first
-      // overload returns Entry[]; only the simple string[] overload is reachable
-      // from entry.ts, so a single-signature vi.fn cannot satisfy the union
-      globby: vi.fn(
-        async (patterns: string | readonly string[]): Promise<string[]> => {
-          const list = Array.isArray(patterns)
-            ? [...(patterns as readonly string[])]
-            : [patterns as string];
-
-          if (list.length === 1 && list[0] === '**/package.json') {
-            return FIXTURE_PATHS;
-          }
-
-          // NOTE: every fixture pattern resolves to an exact path, so matching reduces to
-          // an exact-string lookup, deduped the way globby returns unique results
-          return [...new Set(list)].filter((pattern) =>
-            FIXTURE_PATHS.includes(pattern),
-          );
-        },
-      ),
-    }) satisfies Partial<typeof import('globby')>,
-);
 
 vi.mock(
   'node:fs',
   () =>
     ({
       existsSync: vi.fn((path: import('node:fs').PathLike) => path === 'exist'),
-      // @ts-expect-error -- readFileSync is overloaded; the string-returning
-      // overload is the only one reached from entry.ts, which a single-signature
-      // vi.fn cannot satisfy against the full union
-      readFileSync: vi.fn((path: string): string => {
-        const pkg = FIXTURE_PACKAGES[path];
-        if (!pkg) {
-          throw new Error(`unexpected readFileSync path: ${path}`);
-        }
-
-        return JSON.stringify(pkg);
-      }),
     }) satisfies Partial<typeof import('node:fs')>,
+);
+
+vi.mock(
+  '#executable/projects',
+  async (importOriginal) =>
+    ({
+      ...(await importOriginal<typeof import('#executable/projects')>()),
+      bootstrapProjects: vi.fn(),
+      resolveProjectRoots: vi.fn(async () => ['/resolved/root']),
+    }) satisfies typeof import('#executable/projects'),
 );
 
 vi.mock(
   '#preset',
   () =>
     ({
-      bootstrap: vi.fn(),
       use: vi.fn(),
     }) satisfies Partial<typeof import('#preset')>,
 );
@@ -89,10 +42,17 @@ vi.mock(
     }) satisfies Partial<typeof import('#run')>,
 );
 
-const fixtureRoot = (relative: string): string =>
-  resolve(`${FIXTURE_ROOT}/${relative}`);
-
 describe('fn:entry', () => {
+  beforeEach(() => {
+    // NOTE: keep the usage errors printed by stricli out of the test output
+    vi.spyOn(process.stderr, 'write').mockReturnValue(true);
+  });
+
+  afterEach(() => {
+    // NOTE: stricli reports a usage error through the exit code, which must not fail the test run
+    process.exitCode = undefined;
+  });
+
   describe('use', () => {
     it('should adopt each named preset with an explicit package manager', async () => {
       await entry([
@@ -122,13 +82,24 @@ describe('fn:entry', () => {
         [['@scope/esm'], { packageManager: undefined }],
       ]);
     });
+
+    it('should reject an unsupported package manager', async () => {
+      await entry(['use', '@scope/esm', '--package-manager=yarn']);
+
+      expect(use).not.toHaveBeenCalled();
+      expect(process.exitCode).toBe(ExitCode.InvalidArgument);
+    });
   });
 
   describe('bootstrap', () => {
-    it('should bootstrap when no --only gate is provided', async () => {
-      await entry(['bootstrap', '--projects', `${FIXTURE_ROOT}/packages/app`]);
+    it('should bootstrap the current directory when no project is given', async () => {
+      await entry(['bootstrap']);
 
-      expect(bootstrap).toHaveBeenCalledWith(fixtureRoot('packages/app'));
+      expect(resolveProjectRoots).toHaveBeenCalledWith({
+        projects: ['.'],
+        packages: [],
+      });
+      expect(bootstrapProjects).toHaveBeenCalledWith(['/resolved/root']);
     });
 
     it('should bootstrap if the specified file exists', async () => {
@@ -136,31 +107,70 @@ describe('fn:entry', () => {
         'bootstrap',
         '--only',
         'exist',
-        '--projects',
-        `${FIXTURE_ROOT}/packages/app`,
+        '--project',
+        'packages/app',
       ]);
 
-      expect(bootstrap).toHaveBeenCalledWith(fixtureRoot('packages/app'));
+      expect(resolveProjectRoots).toHaveBeenCalledWith({
+        projects: ['packages/app'],
+        packages: [],
+      });
+      expect(bootstrapProjects).toHaveBeenCalledWith(['/resolved/root']);
     });
 
     it('should skip bootstrap if the specified file is missing', async () => {
       await entry(['bootstrap', '--only', 'no-such-file']);
 
-      expect(bootstrap).not.toHaveBeenCalled();
+      expect(resolveProjectRoots).not.toHaveBeenCalled();
+      expect(bootstrapProjects).not.toHaveBeenCalled();
     });
 
-    it('should bootstrap each path-glob match in order', async () => {
-      await entry([
-        'bootstrap',
-        '--projects',
-        `${FIXTURE_ROOT}/presets/next,${FIXTURE_ROOT}/presets/node`,
-      ]);
+    it('should select nothing when the only project pattern is empty', async () => {
+      await entry(['bootstrap', '-p', '']);
 
-      expect(bootstrap).toHaveBeenNthCalledWith(1, fixtureRoot('presets/next'));
-      expect(bootstrap).toHaveBeenNthCalledWith(2, fixtureRoot('presets/node'));
+      expect(resolveProjectRoots).toHaveBeenCalledWith({
+        projects: [],
+        packages: [],
+      });
     });
 
-    it('should bootstrap by package-name glob via the -P alias', async () => {
+    it('should split comma-separated project patterns', async () => {
+      await entry(['bootstrap', '--project', 'presets/next, presets/node']);
+
+      expect(resolveProjectRoots).toHaveBeenCalledWith({
+        projects: ['presets/next', 'presets/node'],
+        packages: [],
+      });
+    });
+
+    it('should collect each repeated --project flag via the -p alias', async () => {
+      await entry(['bootstrap', '-p', 'presets/next', '-p', 'presets/node']);
+
+      expect(resolveProjectRoots).toHaveBeenCalledWith({
+        projects: ['presets/next', 'presets/node'],
+        packages: [],
+      });
+    });
+
+    it('should treat positional paths the same as --project flags', async () => {
+      await entry(['bootstrap', 'presets/next', 'presets/node']);
+
+      expect(resolveProjectRoots).toHaveBeenCalledWith({
+        projects: ['presets/next', 'presets/node'],
+        packages: [],
+      });
+    });
+
+    it('should combine positional paths with --project flags', async () => {
+      await entry(['bootstrap', 'presets/*', '--project', '!presets/node']);
+
+      expect(resolveProjectRoots).toHaveBeenCalledWith({
+        projects: ['presets/*', '!presets/node'],
+        packages: [],
+      });
+    });
+
+    it('should collect package-name globs via the -P alias', async () => {
       await entry([
         'bootstrap',
         '-p',
@@ -169,10 +179,39 @@ describe('fn:entry', () => {
         '@acme/preset-next,@acme/preset-node',
       ]);
 
-      const calls = vi.mocked(bootstrap).mock.calls.map(([root]) => root);
-      expect([...calls].sort()).toEqual(
-        [fixtureRoot('presets/next'), fixtureRoot('presets/node')].sort(),
-      );
+      expect(resolveProjectRoots).toHaveBeenCalledWith({
+        projects: [],
+        packages: ['@acme/preset-next', '@acme/preset-node'],
+      });
+    });
+
+    it('should collect each repeated --package flag', async () => {
+      await entry([
+        'bootstrap',
+        '--package',
+        '@acme/preset-next',
+        '--package',
+        '@acme/preset-node',
+      ]);
+
+      expect(resolveProjectRoots).toHaveBeenCalledWith({
+        projects: ['.'],
+        packages: ['@acme/preset-next', '@acme/preset-node'],
+      });
+    });
+
+    it('should reject the removed --projects flag', async () => {
+      await entry(['bootstrap', '--projects', 'packages/app']);
+
+      expect(bootstrapProjects).not.toHaveBeenCalled();
+      expect(process.exitCode).toBe(ExitCode.InvalidArgument);
+    });
+
+    it('should rethrow a bootstrap failure for the caller to report', async () => {
+      const failure = new Error('broken config');
+      vi.mocked(bootstrapProjects).mockRejectedValueOnce(failure);
+
+      await expect(entry(['bootstrap'])).rejects.toBe(failure);
     });
   });
 
@@ -189,6 +228,30 @@ describe('fn:entry', () => {
         ],
         { templateOnly: false },
       );
+    });
+
+    it('should use the template script with --template', async () => {
+      await entry(['run', '--template', 'task']);
+
+      expect(run).toHaveBeenCalledWith([{ selector: 'task', args: [] }], {
+        templateOnly: true,
+      });
+    });
+
+    it('should forward a --help given after -- to the task', async () => {
+      await entry(['run', 'task', '--', '--help']);
+
+      expect(run).toHaveBeenCalledWith(
+        [{ selector: 'task', args: ['--help'] }],
+        { templateOnly: false },
+      );
+    });
+
+    it('should reject an unknown flag given before --', async () => {
+      await entry(['run', 'task', '--watch']);
+
+      expect(run).not.toHaveBeenCalled();
+      expect(process.exitCode).toBe(ExitCode.InvalidArgument);
     });
   });
 
@@ -262,10 +325,32 @@ describe('fn:entry', () => {
     });
   });
 
-  it('should not do anything if the command cannot be recognized', async () => {
+  it('should print the version of presetter', async () => {
+    const write = vi.spyOn(process.stdout, 'write').mockReturnValue(true);
+
+    const { version } = JSON.parse(
+      await readFile('package.json', { encoding: 'utf8' }),
+    ) as { version: string };
+
+    await entry(['--version']);
+
+    expect(write).toHaveBeenCalledWith(`${version}\n`);
+  });
+
+  it('should report a missing command as a usage error', async () => {
+    vi.spyOn(process.stdout, 'write').mockReturnValue(true);
+
+    await entry([]);
+
+    expect(run).not.toHaveBeenCalled();
+    expect(process.exitCode).toBe(ExitCode.UnknownCommand);
+  });
+
+  it('should report an unknown command without running anything', async () => {
     await entry(['unknown', '--arg-1']);
 
-    expect(bootstrap).toHaveBeenCalledTimes(0);
+    expect(bootstrapProjects).toHaveBeenCalledTimes(0);
     expect(run).toHaveBeenCalledTimes(0);
+    expect(process.exitCode).toBe(ExitCode.UnknownCommand);
   });
 });

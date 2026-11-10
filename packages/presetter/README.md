@@ -189,9 +189,9 @@ Presetter provides powerful CLI commands for managing your development environme
 ⚙️ presetter: your preset configurator
 
 Commands:
-  presetter use <preset..>   Adopt specified preset(s) to the project
-  presetter bootstrap       Apply preset configurations to the project
-  presetter run <task>      Run a task with preset + local script merging
+  presetter use <preset...>            Adopt specified preset(s) to the project
+  presetter bootstrap [project...]    Apply preset configurations to the project
+  presetter run <task>                Run a task with preset + local script merging
 
 Shortcuts:
   run <task>                Shortcut for 'presetter run <task>'
@@ -221,13 +221,13 @@ Preset authors declare literal package script commands in `setup.scripts`, for e
 
 #### Bootstrap flags
 
-| Flag                | Alias | Default | Purpose                                                                                           |
-| ------------------- | ----- | ------- | ------------------------------------------------------------------------------------------------- |
-| `--projects <glob>` | `-p`  | `.`     | Path globs to project directories containing a `package.json` (e.g. `packages/*`, `presets/next`) |
-| `--packages <glob>` | `-P`  | _none_  | Package-name globs matching `package.json#name` across the workspace (e.g. `@presetter/preset-*`) |
-| `--only <file>`     |       | _none_  | Only proceed when the specified file exists                                                       |
+| Flag               | Alias | Default | Purpose                                                                                           |
+| ------------------ | ----- | ------- | ------------------------------------------------------------------------------------------------- |
+| `--project <glob>` | `-p`  | `.`     | Path globs to project directories containing a `package.json` (e.g. `packages/*`, `presets/next`) |
+| `--package <glob>` | `-P`  | _none_  | Package-name globs matching `package.json#name` across the workspace (e.g. `@presetter/preset-*`) |
+| `--only <file>`    |       | _none_  | Only proceed when the specified file exists                                                       |
 
-Both `--projects` and `--packages` accept comma-separated values and `!` prefixes to exclude matches; the wildcard `*` in `--packages` does not cross the npm-scope boundary (so `@presetter/preset-*` will not match `@other/foo`).
+Project path globs can also be given as plain arguments, so `presetter bootstrap . packages/*` is the same as `presetter bootstrap --project . --project packages/*`. Repeat a flag to give it several values. Both `--project` and `--package` accept comma-separated values and `!` prefixes to exclude matches; the wildcard `*` in `--package` does not cross the npm-scope boundary (so `@presetter/preset-*` will not match `@other/foo`). `--package` adds to the default `.` rather than replacing it; pass an explicit project, or `'!.'`, to leave the current directory out.
 
 ### 🎯 Common Commands
 
@@ -239,13 +239,13 @@ presetter use @presetter/preset-esm @presetter/preset-strict
 presetter bootstrap
 
 # Bootstrap specific projects by path glob
-presetter bootstrap --projects packages/*
+presetter bootstrap packages/*
 
 # Bootstrap by package name (e.g. every preset package in a monorepo)
-presetter bootstrap --packages "@presetter/preset-*"
+presetter bootstrap --package "@presetter/preset-*"
 
-# Mix path and name globs; both flags accept comma-separated values
-presetter bootstrap --projects .,e2e,packages/* --packages "@presetter/preset-*"
+# Mix path and name globs; both accept comma-separated values
+presetter bootstrap .,e2e,packages/* --package "@presetter/preset-*"
 
 # Run development tasks
 run build                 # Build your project

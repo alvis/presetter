@@ -54,7 +54,7 @@ npm install --save-dev presetter @presetter/preset-monorepo
 echo "export { default } from '@presetter/preset-monorepo';" > presetter.config.ts
 
 # Bootstrap entire monorepo
-npx presetter bootstrap --projects . --projects packages/*/
+npx presetter bootstrap . packages/*/
 ```
 
 ### Package Manager Integration
@@ -392,7 +392,7 @@ Inherits configuration variables from `@presetter/preset-esm`:
 **Solution:** Re-run bootstrap to include new packages:
 
 ```bash
-npx presetter bootstrap --projects . --projects packages/*/
+npx presetter bootstrap . packages/*/
 ```
 
 ### Issue: Type errors across packages
@@ -442,7 +442,7 @@ rm lerna.json
 npm install --save-dev presetter @presetter/preset-monorepo
 
 # Bootstrap workspace
-npx presetter bootstrap --projects . --projects packages/*/
+npx presetter bootstrap . packages/*/
 ```
 
 ### From Nx
@@ -455,7 +455,7 @@ rm -rf nx.json .nxignore tools/
 npm install --save-dev presetter @presetter/preset-monorepo
 
 # Adapt workspace structure
-npx presetter bootstrap --projects . --projects packages/*/
+npx presetter bootstrap . packages/*/
 ```
 
 ### From Manual Setup
@@ -468,7 +468,7 @@ find . -name "vitest.config.*" -not -path "./node_modules/*" -delete
 
 # Install and bootstrap
 npm install --save-dev presetter @presetter/preset-monorepo
-npx presetter bootstrap --projects . --projects packages/*/
+npx presetter bootstrap . packages/*/
 ```
 
 ## Next Steps

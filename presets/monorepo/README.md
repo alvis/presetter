@@ -33,7 +33,7 @@ npm i -D presetter @presetter/preset-monorepo
 echo "export { default } from '@presetter/preset-monorepo';" > presetter.config.ts
 
 # Use Presetter to generate configs for root and all packages
-npx presetter bootstrap --projects . --projects packages/*/
+npx presetter bootstrap . packages/*/
 ```
 
 Your entire monorepo is now configured with TypeScript, ESLint, Vitest, and more — **zero config files in packages!**
@@ -180,7 +180,7 @@ This preset is just a template definition. It needs Presetter (the tool) to actu
   "private": true,
   "workspaces": ["packages/*"],
   "scripts": {
-    "prepare": "presetter bootstrap --projects . --projects packages/*/",
+    "prepare": "presetter bootstrap . packages/*/",
     "build": "run build",
     "test": "run test",
   },
@@ -222,7 +222,7 @@ That's it! No tsconfig.json, no eslint.config.ts, no vitest.config.ts needed in 
 ```bash
 npm install
 # Configs are automatically generated from this preset template via the prepare script
-# Or run manually: npx presetter bootstrap --projects . --projects packages/*/
+# Or run manually: npx presetter bootstrap . packages/*/
 ```
 
 ---
@@ -279,39 +279,40 @@ export default preset('special-package', {
 
 ## 🔧 Monorepo Bootstrap Command
 
-For Presetter to generate configurations from this preset template for all packages in your monorepo, you need to specify the project paths using the `--projects` flag:
+For Presetter to generate configurations from this preset template for all packages in your monorepo, you need to pass the project paths to `bootstrap`, either as plain arguments or with the repeatable `--project` (`-p`) flag:
 
 ```bash
 # Basic monorepo bootstrap
-npx presetter bootstrap --projects . --projects packages/*/
+npx presetter bootstrap . packages/*/
 
 # Alternative patterns
-npx presetter bootstrap --projects . --projects "packages/*/" --projects "apps/*/"
+npx presetter bootstrap . "packages/*/" "apps/*/"
 
 # Custom workspace structure
-npx presetter bootstrap --projects . --projects "libs/*/" --projects "tools/*/"
+npx presetter bootstrap . "libs/*/" "tools/*/"
 ```
 
-### Understanding the `--projects` flag
+### Understanding project paths
 
-- `--projects .` - Generates configs for the root directory
-- `--projects packages/*/` - Generates configs for all immediate subdirectories under `packages/`
-- `--projects packages/*/` - Uses glob patterns, so `packages/*/` matches `packages/ui-lib/`, `packages/api-server/`, etc.
+- `.` - Generates configs for the root directory
+- `packages/*/` - Generates configs for all immediate subdirectories under `packages/`
+- Paths are glob patterns, so `packages/*/` matches `packages/ui-lib/`, `packages/api-server/`, etc.
+- `bootstrap . packages/*/` is the same as `bootstrap --project . --project packages/*/`
 
 ### Common workspace patterns
 
 ```bash
 # Standard packages structure
---projects . --projects packages/*/
+npx presetter bootstrap . packages/*/
 
 # Apps and packages structure
---projects . --projects packages/*/ --projects apps/*/
+npx presetter bootstrap . packages/*/ apps/*/
 
 # Nested structure
---projects . --projects packages/*/ --projects packages/*/lib/*/
+npx presetter bootstrap . packages/*/ packages/*/lib/*/
 
 # Mixed structure
---projects . --projects libs/*/ --projects tools/*/ --projects examples/*/
+npx presetter bootstrap . libs/*/ tools/*/ examples/*/
 ```
 
 ### Automation in package.json
@@ -321,7 +322,7 @@ Always add this to your root `package.json` for automatic bootstrapping:
 ```jsonc
 {
   "scripts": {
-    "prepare": "presetter bootstrap --projects . --projects packages/*/",
+    "prepare": "presetter bootstrap . packages/*/",
   },
 }
 ```
@@ -527,9 +528,9 @@ Each package config declares inline `UNIT`, `INT`, and `E2E` projects. Vitest na
 
 ### Monorepo-Specific Issues
 
-| Issue                                 | Symptoms                                         | Solution                                                                               |
-| ------------------------------------- | ------------------------------------------------ | -------------------------------------------------------------------------------------- |
-| **Configs not generated in packages** | No `.eslintrc.json`, `tsconfig.json` in packages | Run `npx presetter bootstrap --projects . --projects packages/*/` at **monorepo root** |
+| Issue                                 | Symptoms                                         | Solution                                                         |
+| ------------------------------------- | ------------------------------------------------ | ---------------------------------------------------------------- |
+| **Configs not generated in packages** | No `.eslintrc.json`, `tsconfig.json` in packages | Run `npx presetter bootstrap . packages/*/` at **monorepo root** |
 
 > **Need help with Presetter CLI commands?** Check the [CLI reference](https://github.com/alvis/presetter/blob/main/packages/presetter#cli-reference) in the main documentation.
 
