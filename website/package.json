@@ -60,7 +60,7 @@
     "@docusaurus/module-type-aliases": "catalog:docusaurus",
     "@docusaurus/tsconfig": "catalog:docusaurus",
     "@docusaurus/types": "catalog:docusaurus",
-    "@lhci/cli": "^0.15.1",
+    "@lhci/cli": "^0.16.0",
     "@presetter/preset-esm": "workspace:*",
     "@presetter/preset-react": "workspace:*",
     "@presetter/preset-web": "workspace:*",

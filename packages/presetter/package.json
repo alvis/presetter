@@ -77,7 +77,6 @@
     "@presetter/preset-essentials": "workspace:*",
     "@presetter/preset-strict": "workspace:*",
     "@types/debug": "catalog:runtime",
-    "@types/js-yaml": "catalog:runtime",
     "@types/node": "catalog:types",
     "@types/yargs-parser": "catalog:runtime",
     "type-fest": "catalog:types"

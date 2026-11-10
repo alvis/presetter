@@ -30,6 +30,20 @@ describe('fn:loadFile', () => {
     expect(result).toEqual(expected);
   });
 
+  it('should merge the anchored mapping referenced by a merge key in a yaml file', () => {
+    vi.mocked(existsSync).mockReturnValue(true);
+    vi.mocked(readFileSync).mockReturnValue(
+      Buffer.from(
+        'base: &base\n  a: 1\n  b: 2\nderived:\n  <<: *base\n  b: 3\n',
+      ),
+    );
+
+    const result = loadFile('/path/to/config.yaml');
+    const expected = { base: { a: 1, b: 2 }, derived: { a: 1, b: 3 } };
+
+    expect(result).toEqual(expected);
+  });
+
   it('should load an ignore file', () => {
     vi.mocked(existsSync).mockReturnValue(true);
     vi.mocked(readFileSync).mockReturnValue(

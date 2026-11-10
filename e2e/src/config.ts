@@ -44,10 +44,13 @@ export const REGISTRY_URL = `http://localhost:${VERDACCIO_PORT}`;
 /** Verdaccio storage directory path */
 export const VERDACCIO_STORAGE_DIR = resolve(TEMP_DIR, 'verdaccio-storage');
 
-// NOTE: verdaccio has been configured to accept anonymous publication so any username password combination will work, but we need to pass a user to pnpm otherwise it will complain
-/** base64-encoded authentication credentials for Verdaccio */
-export const VERDACCIO_AUTH =
-  Buffer.from('username:password').toString('base64');
+// NOTE: verdaccio accepts anonymous publication, but pnpm still needs to authenticate as a user
+// NOTE: verdaccio 7 rejects basic credentials (even of a registered user), so the user is registered at startup and authenticates with its bearer token instead
+/** credentials of the test user registered on the local Verdaccio registry */
+export const VERDACCIO_USER = {
+  name: 'username',
+  password: 'password',
+} as const;
 
 // PACKAGE DETECTION //
 

@@ -82,8 +82,8 @@ vi.mock('execa', async (importOriginal) => {
 
   return {
     ...original,
-    // execa also has a bound-options overload; adoption only uses the command overload
-    execa: vi.fn(async () => ({ stdout: '' })) as unknown as typeof execa,
+    // @ts-expect-error execa also has a bound-options overload; adoption only uses the command overload
+    execa: vi.fn(async () => ({ stdout: '' })),
   } satisfies typeof import('execa');
 });
 vi.mock(
@@ -133,6 +133,20 @@ beforeEach(() => {
 
 function result(stdout: string): Awaited<ReturnType<typeof execa>> {
   return { stdout } as Awaited<ReturnType<typeof execa>>;
+}
+
+/**
+ * replaces the mocked execa with an implementation of its command overload
+ * @param implementation the replacement for execa(manager, args)
+ */
+function mockExeca(
+  implementation: (
+    manager: string | URL,
+    args: readonly string[],
+  ) => Promise<Awaited<ReturnType<typeof execa>>>,
+): void {
+  // @ts-expect-error execa also has a bound-options overload; adoption only uses the command overload
+  vi.mocked(execa).mockImplementation(implementation);
 }
 
 /**
@@ -228,10 +242,7 @@ describe('fn:use', () => {
       },
       nodes: [],
     });
-    vi.mocked(execa).mockImplementation((async (
-      _manager: string | URL,
-      args: readonly string[],
-    ) => {
+    mockExeca(async (_manager: string | URL, args: readonly string[]) => {
       const json = JSON.parse(read(join(root, 'package.json'))) as PackageJson;
       const argumentsList = args;
       const section = argumentsList.includes('--save-prod')
@@ -253,7 +264,7 @@ describe('fn:use', () => {
       );
 
       return result('');
-    }) as typeof execa);
+    });
 
     await use(['preset'], { cwd: root, packageManager: 'npm' });
 
@@ -288,10 +299,9 @@ describe('fn:use', () => {
         },
         nodes: [],
       });
-      vi.mocked(execa).mockImplementation((async (
-        _manager: string | URL,
-        args: readonly string[],
-      ) => saveNpmPackages(args)) as typeof execa);
+      mockExeca(async (_manager: string | URL, args: readonly string[]) =>
+        saveNpmPackages(args),
+      );
 
       await use(['preset'], { cwd: root, packageManager: 'npm' });
 
@@ -323,10 +333,9 @@ describe('fn:use', () => {
       },
       nodes: [],
     });
-    vi.mocked(execa).mockImplementation((async (
-      _manager: string | URL,
-      args: readonly string[],
-    ) => saveNpmPackages(args)) as typeof execa);
+    mockExeca(async (_manager: string | URL, args: readonly string[]) =>
+      saveNpmPackages(args),
+    );
 
     await use(['preset'], { cwd: root, packageManager: 'npm' });
 
@@ -353,10 +362,9 @@ describe('fn:use', () => {
       },
       nodes: [],
     });
-    vi.mocked(execa).mockImplementation((async (
-      _manager: string | URL,
-      args: readonly string[],
-    ) => saveNpmPackages(args)) as typeof execa);
+    mockExeca(async (_manager: string | URL, args: readonly string[]) =>
+      saveNpmPackages(args),
+    );
 
     await use(['preset'], { cwd: root, packageManager: 'npm' });
 
@@ -389,10 +397,9 @@ describe('fn:use', () => {
       },
       nodes: [],
     });
-    vi.mocked(execa).mockImplementation((async (
-      _manager: string | URL,
-      args: readonly string[],
-    ) => saveNpmPackages(args)) as typeof execa);
+    mockExeca(async (_manager: string | URL, args: readonly string[]) =>
+      saveNpmPackages(args),
+    );
 
     await use(['preset'], { cwd: root, packageManager: 'npm' });
 
@@ -434,10 +441,9 @@ describe('fn:use', () => {
       },
       nodes: [],
     });
-    vi.mocked(execa).mockImplementation((async (
-      _manager: string | URL,
-      args: readonly string[],
-    ) => saveNpmPackages(args)) as typeof execa);
+    mockExeca(async (_manager: string | URL, args: readonly string[]) =>
+      saveNpmPackages(args),
+    );
 
     await use(['preset'], { cwd: root, packageManager: 'npm' });
 
@@ -469,15 +475,13 @@ describe('fn:use', () => {
       },
       nodes: [],
     });
-    vi.mocked(execa).mockImplementation((async (
-      _manager: string | URL,
-      args: readonly string[],
-    ) =>
+    mockExeca(async (_manager: string | URL, args: readonly string[]) =>
       result(
         args[0] === 'ignored-builds'
           ? 'Automatically ignored builds during installation:\n  esbuild@0.28.2\n'
           : '',
-      )) as typeof execa);
+      ),
+    );
 
     await use(['preset'], { cwd: root, packageManager: 'pnpm' });
 
