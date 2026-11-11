@@ -30,11 +30,11 @@ so you easily run tests and lint your code during development.
 This repo is a monorepo. It contains the code for presetter and a simple preset.
 Here's a quick guide to the content of the monorepo.
 
-| Package                                                   | Description                                                                    |
-| --------------------------------------------------------- | ------------------------------------------------------------------------------ |
-| [presetter](packages/presetter)                           | The core of presetter containing all the logic and the CLI utility             |
+| Package                                                    | Description                                                                    |
+| ---------------------------------------------------------- | ------------------------------------------------------------------------------ |
+| [presetter](packages/presetter)                            | The core of presetter containing all the logic and the CLI utility             |
 | [@presetter/preset-essentials](packages/preset-essentials) | A battery-loaded preset for building presetter, containing typescript and more |
-| [@presetter/preset-strict](packages/preset-strict)         | An extension of @presetter/preset-essentials with stricter rules                |
+| [@presetter/preset-strict](packages/preset-strict)         | An extension of @presetter/preset-essentials with stricter rules               |
 | [@presetter/preset-react](packages/preset-react)           | An opinionated preset for building a React project                             |
 | [@presetter/preset-rollup](packages/preset-rollup)         | An advanced preset for setting up rollup for code bundling                     |
 | [@presetter/preset-web](packages/preset-web)               | An example pure bundle preset for building a web project                       |
@@ -189,17 +189,24 @@ $ npm link
 
 ### Release
 
-We follow semantic versioning and a release can be triggered by running either the following:
+We follow semantic versioning, and all packages in the monorepo are released in lock-step at one version per cycle.
+Releases are published from CI only.
 
 ```shell
-# bump the version and release as canary
-$ npm run next
+# open or refresh the Release PR for the next stable version, computed by git-cliff
+$ npm run release:pr
 
-# release as a stable version
-$ npm run release
+# or for an npm prerelease of that version, e.g. v10.0.0-alpha.0 under the `alpha` dist-tag
+$ npm run release:pr -- alpha.0
 ```
 
-All packages in the monorepo are released in lock-step at one version per cycle.
+The script rebuilds the `releases/next` branch as `main` plus one release commit (versions and changelogs), then opens or updates its pull request.
+Squash-merging the pull request runs the `release` workflow, which tags the merged commit, publishes every package with `pnpm publish -r`, and writes the GitHub Release.
+Run `npm run release:pr` again right before merging if `main` has moved since: the workflow refuses to publish a merged tree that differs from the reviewed pull request.
+A stable release also deletes the dated preview releases up to that version, keeping their tags.
+
+To share a build without publishing to npm, run the `preview` workflow from the Actions tab (or `gh workflow run preview.yaml -f phase=alpha`).
+It attaches each package as a tarball to a GitHub prerelease versioned `<next version>[-<phase>]-<commit date>-<short sha>`, with internal dependencies pointing at the sibling tarballs.
 
 ### Getting npm to trust github actions
 
@@ -228,7 +235,7 @@ Because this mutates npm registry settings, only run it from an npm account that
 | Variable       | Purpose                                                                                                             | Example                                       |
 | -------------- | ------------------------------------------------------------------------------------------------------------------- | --------------------------------------------- |
 | `VERSION`      | Force a specific version instead of letting `git-cliff` compute the next one from commits.                          | `VERSION=9.1.0 npm run release`               |
-| `PRERELEASE`   | Append a prerelease identifier (e.g. `next`, `beta`). `npm run next` sets this to `next` automatically.             | `PRERELEASE=beta npm run release`             |
+| `PRERELEASE`   | Append a prerelease identifier (e.g. `next`, `beta`).                                                               | `PRERELEASE=beta npm run release`             |
 | `IGNORE_PATHS` | Comma-delimited list of path prefixes to exclude from lock-step version bumping in environment-driven release jobs. | `IGNORE_PATHS=examples,tools npm run release` |
 
 `--ignore` can match any discovered sub-package by directory or `package.json` path (`./e2e/*`) or by package name (`@acme/e2e-*`). `IGNORE_PATHS` preserves the older path-prefix behavior (`examples` also skips `examples/monorepo/packages/core`). Paths are repo-relative, with no spaces.
