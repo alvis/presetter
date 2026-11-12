@@ -1,9 +1,9 @@
 import { warn } from 'node:console';
 
-import createCallsiteRecord from 'callsite-record';
 import chalk from 'chalk';
+import { disassembleStack, renderLocation } from 'sherlog';
 
-type CallsiteRecord = NonNullable<ReturnType<typeof createCallsiteRecord>>;
+import type { SourceResolver, StackLocationBlock } from 'sherlog';
 
 const INDENT = '  ';
 
@@ -40,7 +40,7 @@ async function printError(error: Error, depth: number): Promise<void> {
 
   // NOTE: only a leaf carries the callsite the user cares about, as any wrapper points at presetter itself
   if (children.length === 0) {
-    await printCallsiteRecord(error);
+    await renderCallsite(error);
   }
 
   for (const child of children) {
@@ -49,37 +49,33 @@ async function printError(error: Error, depth: number): Promise<void> {
 }
 
 /**
- * print the source excerpt behind the error, if it can be rendered
+ * print the stack of an error with a source excerpt at its top frame, skipping it when the renderer cannot read the source
  * @param error the error to be reported
  */
-async function printCallsiteRecord(error: Error): Promise<void> {
-  const record = createCallsiteRecord({ forError: error });
-
-  if (!record) {
-    return;
-  }
-
-  const rendered = await renderCallsiteRecord(record);
-
-  if (rendered === undefined) {
-    return;
-  }
-  warn();
-  warn(rendered);
-}
-
-/**
- * render a callsite record, tolerating a source file the renderer cannot read
- * @param record the callsite record to be rendered
- * @returns the rendered excerpt, or undefined when it cannot be produced
- */
-async function renderCallsiteRecord(
-  record: CallsiteRecord,
-): Promise<string | undefined> {
+async function renderCallsite(error: Error): Promise<void> {
   try {
-    return await record.render({});
+    const locations = disassembleStack(error.stack ?? '').flatMap(
+      (block): StackLocationBlock[] =>
+        block.type === 'location'
+          ? [{ ...block, entry: block.entry || '<anonymous>' }]
+          : [],
+    );
+
+    if (locations.length === 0) {
+      return;
+    }
+
+    // NOTE: share resolvers so a file referenced by many frames is read once
+    const cache = new Map<string, Promise<SourceResolver>>();
+    const frames = await Promise.all(
+      locations.map(async (block, index) =>
+        renderLocation(block, { indent: 0, showSource: index === 0, cache }),
+      ),
+    );
+
+    warn();
+    warn(frames.join('\n'));
   } catch {
     // NOTE: the renderer must read the source behind the callsite, which isn't always possible (e.g. a jiti-transpiled path), and a missing excerpt must never mask the message
-    return undefined;
   }
 }
