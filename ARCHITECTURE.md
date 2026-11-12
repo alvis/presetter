@@ -209,8 +209,9 @@ flowchart LR
 
 - **Unit tests** live next to source under `spec/` folders in each package (Vitest). Co-location keeps tests within arm's reach of the code under test.
 - **End-to-end tests** live in `e2e/` and exercise real bootstrap flows against fixture workspaces.
-- **Changelog generation** is driven by [`cliff.yaml`](cliff.yaml) (git-cliff) at the repo root.
-- **Releases are per-package and user-orchestrated.** There is no monorepo-wide release command. Contributors publish individual packages after their changes land on `master`; automation is intentionally out of scope at the repo level so that each package can move at its own cadence.
+- **Changelog generation** is driven by `cliff.yaml` (git-cliff) at the repo root, generated from the essentials preset's template. Its `tag_pattern` matches stable tags only, so prerelease tags never cap the next version or split the changelog.
+- **Releases are lock-step and published from CI.** `npm run release:pr [-- <phase>.<n>]` prepares one release commit on `releases/next` and opens its pull request. Squash-merging it triggers [`release.yaml`](.github/workflows/release.yaml), which checks the merged tree against the pull request, tags, publishes with `pnpm publish -r` (npm trusted publishing; the phase name is the dist-tag for prereleases), and writes the GitHub Release.
+- **Preview builds skip npm.** [`preview.yaml`](.github/workflows/preview.yaml) is dispatched by hand and attaches every public package as a tarball to a GitHub prerelease, with internal dependencies rewritten to the sibling tarball URLs. Both workflows also accept `workflow_call`.
 
 ---
 

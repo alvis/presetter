@@ -1,5 +1,3 @@
-tag_pattern: 'v[0-9].*'
-
 changelog:
   header: |
     # Changelog
@@ -30,6 +28,8 @@ changelog:
   trim: true
 
 git:
+  # stable tags only, so prerelease tags neither cap the bumped version nor split the changelog
+  tag_pattern: '^v[0-9]+\.[0-9]+\.[0-9]+$'
   conventional_commits: true
   filter_unconventional: false
   split_commits: false

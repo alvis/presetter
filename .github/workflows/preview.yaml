@@ -1,0 +1,99 @@
+name: preview
+
+# packs every public package of the chosen commit as tarballs on a GitHub prerelease; nothing goes to npm
+on:
+  workflow_dispatch:
+    inputs:
+      phase:
+        description: phase added to the version and file names
+        type: choice
+        options:
+          - none
+          - alpha
+          - beta
+          - rc
+        default: none
+  workflow_call:
+    inputs:
+      phase:
+        description: phase added to the version and file names (none, alpha, beta or rc)
+        type: string
+        default: none
+
+jobs:
+  preview:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - name: checkout
+        uses: actions/checkout@v4
+        with:
+          # git-cliff needs the history and tags to compute the next version
+          fetch-depth: 0
+      - name: setup pnpm
+        uses: pnpm/setup@v3
+        with:
+          runtime: node@lts
+          cache: true
+          install: false
+      - name: install dependencies
+        run: pnpm install
+      - name: run build
+        run: pnpm run build
+      - name: run test
+        run: pnpm run test
+        env:
+          CI: true
+      - name: pack and attach the tarballs
+        shell: bash
+        env:
+          GH_TOKEN: ${{ github.token }}
+          PHASE: ${{ inputs.phase }}
+        run: |
+          set -euo pipefail
+
+          # version: <next stable>[-<phase>]-<commit date, UTC>-<short sha>, e.g. 10.0.0-alpha-2026-11-11-711b49b
+          PHASE=${PHASE#none}
+          SHA=$(git rev-parse --short=7 HEAD)
+          DATE=$(TZ=UTC git show -s --format=%cd --date=format-local:%Y-%m-%d HEAD)
+          V="$(pnpm exec git-cliff --config cliff.yaml --bumped-version | sed 's/^v//')${PHASE:+-$PHASE}-$DATE-$SHA"
+          URL="https://github.com/$GITHUB_REPOSITORY/releases/download/v$V"
+          OUT="$RUNNER_TEMP/preview"
+          mkdir -p "$OUT"
+
+          # file name: <package name without @, / as ->[-<phase>]-<short sha>.tgz
+          asset() { printf '%s%s-%s.tgz' "$(printf '%s' "${1#@}" | tr / -)" "${PHASE:+-$PHASE}" "$SHA"; }
+
+          PKGS=$(pnpm ls -r --depth -1 --json | jq -r '.[] | select(.private != true) | .path')
+          NAMES=$(for dir in $PKGS; do jq -r .name "$dir/package.json"; done)
+
+          # written before the rewrite below, after which pnpm's pre-run dependency check rejects the URL peers
+          {
+            pnpm exec git-cliff --config cliff.yaml --unreleased --tag "v$V" --strip all
+            printf '\n## Install\n\nInstall the tarballs you need by URL. pnpm skips URL peers, so also list the packages they peer on.\n\n'
+            for name in $NAMES; do printf -- '- `%s`: %s/%s\n' "$name" "$URL" "$(asset "$name")"; done
+          } > "$OUT/notes.md"
+
+          # internal dependencies and peers point at the sibling tarballs, so one install line pulls the whole set
+          for dir in $PKGS; do
+            (
+              cd "$dir"
+              npm pkg set version="$V"
+              for name in $NAMES; do
+                for field in dependencies peerDependencies; do
+                  if jq -e --arg n "$name" ".${field}[\$n]" package.json >/dev/null; then
+                    npm pkg set "$field.$name=$URL/$(asset "$name")"
+                  fi
+                done
+              done
+              mv "$(pnpm pack --pack-destination "$OUT" | tail -1)" "$OUT/$(asset "$(jq -r .name package.json)")"
+            )
+          done
+
+          # a rerun on the same commit and phase replaces the assets of the existing release
+          if gh release view "v$V" >/dev/null 2>&1; then
+            gh release upload "v$V" "$OUT"/*.tgz --clobber
+          else
+            gh release create "v$V" "$OUT"/*.tgz --target "$GITHUB_SHA" --prerelease --title "v$V" --notes-file "$OUT/notes.md"
+          fi
