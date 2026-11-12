@@ -73,7 +73,7 @@ describe('fn:handleError', { concurrent: false }, () => {
     );
   });
 
-  it('should print every located frame of the stack on a tty, naming anonymous ones', async () => {
+  it('should print every located frame of the stack on a tty, naming anonymous ones and pointing eval-ed code at its caller', async () => {
     process.stdout.isTTY = true;
 
     const error: Error = {
@@ -85,6 +85,7 @@ describe('fn:handleError', { concurrent: false }, () => {
         '    at new Promise (<anonymous>)',
         '    at Object.<anonymous> (file:///missing/entry.js:3:4)',
         '    at async file:///missing/entry.js:5:6',
+        '    at eval (eval at load (/missing/presetter.config.ts:11:5), <anonymous>:1:1)',
         '    at /missing/presetter.config.ts:9:3',
       ].join('\n'),
     };
@@ -97,7 +98,8 @@ describe('fn:handleError', { concurrent: false }, () => {
       [
         '    at async Preset.load (/missing/presetter.config.ts:7:25)',
         '    at Object.<anonymous> (file:///missing/entry.js:3:4)',
-        '    at <anonymous> (file:///missing/entry.js:5:6)',
+        '    at async (file:///missing/entry.js:5:6)',
+        '    at eval (/missing/presetter.config.ts:11:5)',
         '    at <anonymous> (/missing/presetter.config.ts:9:3)',
       ].join('\n'),
     ]);

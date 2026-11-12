@@ -1,14 +1,11 @@
 import { warn } from 'node:console';
 
 import chalk from 'chalk';
-import { renderLocation } from 'sherlog';
+import { disassembleStack, renderLocation } from 'sherlog';
 
 import type { SourceResolver, StackLocationBlock } from 'sherlog';
 
 const INDENT = '  ';
-
-/** a v8 stack frame with a source position, e.g. `at async new Foo (file:///a.ts:1:2)`, `at async file:///a.ts:1:2` or `at /a.ts:1:2` */
-const FRAME_PATTERN = /^\s*at (?:(.+?) \(|async )?(.+):(\d+):(\d+)\)?$/;
 
 /**
  * print error nicely on console
@@ -72,7 +69,12 @@ async function printCallsite(error: Error): Promise<void> {
  */
 async function renderCallsite(error: Error): Promise<string | undefined> {
   try {
-    const locations = (error.stack ?? '').split('\n').flatMap(parseFrame);
+    const locations = disassembleStack(error.stack ?? '').flatMap(
+      (block): StackLocationBlock[] =>
+        block.type === 'location'
+          ? [{ ...block, entry: block.entry || '<anonymous>' }]
+          : [],
+    );
 
     if (locations.length === 0) {
       return undefined;
@@ -91,27 +93,4 @@ async function renderCallsite(error: Error): Promise<string | undefined> {
     // NOTE: the renderer must read the source behind the callsite, which isn't always possible (e.g. a jiti-transpiled path), and a missing excerpt must never mask the message
     return undefined;
   }
-}
-
-/**
- * parse a line of a v8 stack into a location, skipping those without a source position (e.g. `at new Promise (<anonymous>)`)
- * @param text a line of the stack
- * @returns the location in the line, if any
- */
-function parseFrame(text: string): StackLocationBlock[] {
-  // NOTE: sherlog's own stack parser skips frames like `at async run (…)` or `at Object.<anonymous> (…)`, which would misplace the excerpt
-  const [matched, entry = '<anonymous>', location, line, column] =
-    FRAME_PATTERN.exec(text) ?? [];
-
-  return matched
-    ? [
-        {
-          type: 'location',
-          entry,
-          location: String(location),
-          line: Number(line),
-          column: Number(column),
-        },
-      ]
-    : [];
 }

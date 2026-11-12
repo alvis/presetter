@@ -227,7 +227,7 @@ catalogs:
       version: 0.8.3
     sherlog:
       specifier: ^1.0.0
-      version: 1.0.0
+      version: 1.0.1
     source-map-support:
       specifier: ^0.5.0
       version: 0.5.21
@@ -396,7 +396,7 @@ importers:
         version: 0.8.3
       sherlog:
         specifier: catalog:runtime
-        version: 1.0.0(xception@9.1.0)
+        version: 1.0.1(xception@9.1.0)
       source-map-support:
         specifier: catalog:runtime
         version: 0.5.21
@@ -10657,8 +10657,8 @@ packages:
     resolution: {integrity: sha512-VsC6n6vz1ihYYyZZwX7YZSF5l5x36ca17OC+a69h94YqB7X6XLwf+5MOgynYir2SLFUbl8gIYvBo8K8RoNQ6bQ==}
     engines: {node: '>= 0.4'}
 
-  sherlog@1.0.0:
-    resolution: {integrity: sha512-dmHIQPvBx3is3syhTSeWw7qnInXANR1vtG0GRx0NH5IRQVnUk5rNSwxbNjeIhpjRiYbhhU41TzgqzOpFUwJE5g==}
+  sherlog@1.0.1:
+    resolution: {integrity: sha512-JXh7D/YjVk7H4LsCrFO535IAlKtnzS8JA3tVmIq3sAQY2pyFns97CAveLffBsUqWlAhd4fjxjMi7b3U9hv4SKA==}
     engines: {node: '>=22'}
     peerDependencies:
       xception: ^9.0.0
@@ -23994,10 +23994,10 @@ snapshots:
 
   shell-quote@1.8.4: {}
 
-  sherlog@1.0.0(xception@9.1.0):
+  sherlog@1.0.1(xception@9.1.0):
     dependencies:
       '@jridgewell/trace-mapping': 0.3.31
-      chalk: 5.6.2
+      chalk: 6.0.1
       js-tokens: 10.0.0
       xception: 9.1.0
       yaml: 2.9.1

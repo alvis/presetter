@@ -9,6 +9,10 @@ allowBuilds:
   esbuild: true
   sharp: true
 
+minimumReleaseAgeExclude:
+  - sherlog
+  - xception
+
 catalogs:
   build:
     git-cliff: ^2.14.0
