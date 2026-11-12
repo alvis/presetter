@@ -40,7 +40,7 @@ async function printError(error: Error, depth: number): Promise<void> {
 
   // NOTE: only a leaf carries the callsite the user cares about, as any wrapper points at presetter itself
   if (children.length === 0) {
-    await printCallsite(error);
+    await renderCallsite(error);
   }
 
   for (const child of children) {
@@ -49,25 +49,10 @@ async function printError(error: Error, depth: number): Promise<void> {
 }
 
 /**
- * print the source excerpt and stack behind the error, if they can be rendered
+ * print the stack of an error with a source excerpt at its top frame, skipping it when the renderer cannot read the source
  * @param error the error to be reported
  */
-async function printCallsite(error: Error): Promise<void> {
-  const rendered = await renderCallsite(error);
-
-  if (rendered === undefined) {
-    return;
-  }
-  warn();
-  warn(rendered);
-}
-
-/**
- * render the stack of an error with a source excerpt at its top frame, tolerating a source the renderer cannot read
- * @param error the error to be rendered
- * @returns the rendered callsite, or undefined when it cannot be produced
- */
-async function renderCallsite(error: Error): Promise<string | undefined> {
+async function renderCallsite(error: Error): Promise<void> {
   try {
     const locations = disassembleStack(error.stack ?? '').flatMap(
       (block): StackLocationBlock[] =>
@@ -77,7 +62,7 @@ async function renderCallsite(error: Error): Promise<string | undefined> {
     );
 
     if (locations.length === 0) {
-      return undefined;
+      return;
     }
 
     // NOTE: share resolvers so a file referenced by many frames is read once
@@ -88,9 +73,9 @@ async function renderCallsite(error: Error): Promise<string | undefined> {
       ),
     );
 
-    return frames.join('\n');
+    warn();
+    warn(frames.join('\n'));
   } catch {
     // NOTE: the renderer must read the source behind the callsite, which isn't always possible (e.g. a jiti-transpiled path), and a missing excerpt must never mask the message
-    return undefined;
   }
 }
