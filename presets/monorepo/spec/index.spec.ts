@@ -51,9 +51,16 @@ describe('fn:preset', () => {
     const overrides = existsSync(OVERRIDES) ? readdirSync(OVERRIDES) : [];
     const templates = existsSync(TEMPLATES) ? readdirSync(TEMPLATES) : [];
 
+    const overrideAssets = node.definition.override?.assets;
     const consumedOverrides = [
       node.definition.override?.scripts,
-      ...Object.values({ ...node.definition.override?.assets }),
+      ...[rootContext, context].flatMap((ctx) =>
+        Object.values({
+          ...(typeof overrideAssets === 'function'
+            ? overrideAssets({ ...ctx, variables })
+            : overrideAssets),
+        }),
+      ),
     ]
       .filter((item) => typeof item === 'string')
       .map((path) => relative(OVERRIDES, path));
@@ -155,16 +162,11 @@ describe('fn:preset', () => {
     const posixBin = posix(bin);
 
     try {
-      execFileSync(
-        // the temporary `bin` directory is created by this test to stub git/git-cliff/npm,
-        // and is prepended to $PATH inside the shell, isolated test scaffolding
-        // eslint-disable-next-line sonarjs/no-os-command-from-path -- intentional test stubbing via a self-created temp bin
-        'sh',
-        [
-          '-c',
-          `PATH="${posixBin}:$PATH" ${readReleaseChangelogScript()} --ignore ./e2e/* --ignore '@acme/e2e-*'`,
-        ],
-        { cwd: root },
+      // the temporary `bin` directory is created by this test to stub git/git-cliff/npm,
+      // and is prepended to $PATH inside the shell, isolated test scaffolding
+      runShell(
+        `PATH="${posixBin}:$PATH" ${readReleaseChangelogScript()} --ignore ./e2e/* --ignore '@acme/e2e-*'`,
+        root,
       );
 
       expect(readVersion(root)).toBe('1.2.3');
@@ -223,7 +225,97 @@ describe('fn:preset', () => {
       rmSync(root, { force: true, recursive: true });
     }
   });
+
+  it('should run lint-staged at the repo root only in packages with a config and staged changes', () => {
+    const root = createPreCommitRepo();
+
+    try {
+      runPreCommit(root, 0);
+
+      expect(readFileSync(join(root, 'presetter.log'), 'utf8')).toBe(
+        'packages/staged run lint-staged -- --concurrent=false\n',
+      );
+    } finally {
+      rmSync(root, { force: true, recursive: true });
+    }
+  });
+
+  it('should fail the commit when lint-staged fails in a package', () => {
+    const root = createPreCommitRepo();
+
+    try {
+      expect(() => runPreCommit(root, 3)).toThrow();
+    } finally {
+      rmSync(root, { force: true, recursive: true });
+    }
+  });
 });
+
+/**
+ * create a scratch repo whose staged changes cover a package with a config, one without, and a dependency
+ * @returns the repo root, with a `presetter` stub in the root's node_modules/.bin that logs where it runs
+ */
+function createPreCommitRepo(): string {
+  const root = mkdtempSync(join(tmpdir(), 'presetter-pre-commit-'));
+
+  for (const path of [
+    'packages/staged',
+    'packages/unstaged',
+    'packages/no-config',
+    'node_modules/dependency',
+  ]) {
+    writePackage(join(root, path), path);
+    writeFileSync(join(root, path, 'index.ts'), 'export {};\n');
+  }
+  for (const path of [
+    'packages/staged',
+    'packages/unstaged',
+    'node_modules/dependency',
+  ]) {
+    writeFileSync(join(root, path, '.lintstagedrc.json'), '{}\n');
+  }
+  writeFileSync(join(root, '.gitignore'), 'node_modules\n.lintstagedrc.json\n');
+  writeExecutable(
+    join(root, 'node_modules/.bin/presetter'),
+    [
+      '#!/bin/sh',
+      String.raw`printf "%s %s\n" "$(pwd -P | sed "s|^$ROOT/||")" "$*" >> "$ROOT/presetter.log"`,
+      'exit "$STUB_EXIT"',
+    ].join('\n'),
+  );
+
+  return root;
+}
+
+/**
+ * stage changes and run the root pre-commit hook the way husky does, with a relative node_modules/.bin on PATH
+ * @param root the scratch repo root
+ * @param exitCode the exit code of the stubbed lint-staged run
+ */
+function runPreCommit(root: string, exitCode: number): void {
+  const hook = posix(resolve(OVERRIDES, 'pre-commit'));
+
+  // drop the GIT_* variables a calling git hook exports (e.g. GIT_INDEX_FILE), so git targets the scratch repo
+  const env = Object.fromEntries(
+    Object.entries(process.env).filter(([key]) => !key.startsWith('GIT_')),
+  );
+
+  runShell(
+    [
+      'git init -q',
+      'git add .gitignore packages/staged/package.json packages/unstaged/package.json packages/no-config/package.json',
+      'git -c user.name=test -c user.email=test@example.com -c commit.gpgsign=false commit -q -m init',
+      'git add packages/staged/index.ts packages/no-config/index.ts',
+      'git add -f node_modules/dependency/index.ts',
+      'ROOT="$(pwd -P)"',
+      `STUB_EXIT=${exitCode}`,
+      'export ROOT STUB_EXIT',
+      `PATH="node_modules/.bin:$PATH" sh -e "${hook}"`,
+    ].join('\n'),
+    root,
+    env,
+  );
+}
 
 function readReleaseChangelogScript(): string {
   // normalize CRLF so marker matching and the extracted shell body work on Windows checkouts
@@ -242,6 +334,17 @@ function readReleaseChangelogScript(): string {
     .filter(Boolean)
     .map((line) => line.replace(/^ {2}/, ''))
     .join(' ');
+}
+
+/**
+ * run a POSIX shell script, through Git Bash on Windows
+ * @param script the script to run
+ * @param cwd the working directory
+ * @param env the environment, defaulting to the current one
+ */
+function runShell(script: string, cwd: string, env?: NodeJS.ProcessEnv): void {
+  // eslint-disable-next-line sonarjs/no-os-command-from-path -- intentional test stubbing via a self-created temp bin
+  execFileSync('sh', ['-c', script], { cwd, env });
 }
 
 function writePackage(path: string, name: string): void {
