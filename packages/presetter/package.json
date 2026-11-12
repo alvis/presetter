@@ -58,7 +58,6 @@
     "@npmcli/run-script": "catalog:runtime",
     "@presetter/types": "workspace:*",
     "@stricli/core": "catalog:runtime",
-    "callsite-record": "catalog:runtime",
     "chalk": "catalog:runtime",
     "debug": "catalog:runtime",
     "execa": "catalog:runtime",
@@ -69,6 +68,7 @@
     "listr2": "catalog:runtime",
     "pupa": "catalog:runtime",
     "sh-syntax": "catalog:runtime",
+    "sherlog": "catalog:runtime",
     "source-map-support": "catalog:runtime",
     "yargs-parser": "catalog:runtime"
   },

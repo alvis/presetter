@@ -1,11 +1,14 @@
 import { warn } from 'node:console';
 
-import createCallsiteRecord from 'callsite-record';
 import chalk from 'chalk';
+import { renderLocation } from 'sherlog';
 
-type CallsiteRecord = NonNullable<ReturnType<typeof createCallsiteRecord>>;
+import type { SourceResolver, StackLocationBlock } from 'sherlog';
 
 const INDENT = '  ';
+
+/** a v8 stack frame with a source position, e.g. `at async new Foo (file:///a.ts:1:2)`, `at async file:///a.ts:1:2` or `at /a.ts:1:2` */
+const FRAME_PATTERN = /^\s*at (?:(.+?) \(|async )?(.+):(\d+):(\d+)\)?$/;
 
 /**
  * print error nicely on console
@@ -40,7 +43,7 @@ async function printError(error: Error, depth: number): Promise<void> {
 
   // NOTE: only a leaf carries the callsite the user cares about, as any wrapper points at presetter itself
   if (children.length === 0) {
-    await printCallsiteRecord(error);
+    await printCallsite(error);
   }
 
   for (const child of children) {
@@ -49,17 +52,11 @@ async function printError(error: Error, depth: number): Promise<void> {
 }
 
 /**
- * print the source excerpt behind the error, if it can be rendered
+ * print the source excerpt and stack behind the error, if they can be rendered
  * @param error the error to be reported
  */
-async function printCallsiteRecord(error: Error): Promise<void> {
-  const record = createCallsiteRecord({ forError: error });
-
-  if (!record) {
-    return;
-  }
-
-  const rendered = await renderCallsiteRecord(record);
+async function printCallsite(error: Error): Promise<void> {
+  const rendered = await renderCallsite(error);
 
   if (rendered === undefined) {
     return;
@@ -69,17 +66,52 @@ async function printCallsiteRecord(error: Error): Promise<void> {
 }
 
 /**
- * render a callsite record, tolerating a source file the renderer cannot read
- * @param record the callsite record to be rendered
- * @returns the rendered excerpt, or undefined when it cannot be produced
+ * render the stack of an error with a source excerpt at its top frame, tolerating a source the renderer cannot read
+ * @param error the error to be rendered
+ * @returns the rendered callsite, or undefined when it cannot be produced
  */
-async function renderCallsiteRecord(
-  record: CallsiteRecord,
-): Promise<string | undefined> {
+async function renderCallsite(error: Error): Promise<string | undefined> {
   try {
-    return await record.render({});
+    const locations = (error.stack ?? '').split('\n').flatMap(parseFrame);
+
+    if (locations.length === 0) {
+      return undefined;
+    }
+
+    // NOTE: share resolvers so a file referenced by many frames is read once
+    const cache = new Map<string, Promise<SourceResolver>>();
+    const frames = await Promise.all(
+      locations.map(async (block, index) =>
+        renderLocation(block, { indent: 0, showSource: index === 0, cache }),
+      ),
+    );
+
+    return frames.join('\n');
   } catch {
     // NOTE: the renderer must read the source behind the callsite, which isn't always possible (e.g. a jiti-transpiled path), and a missing excerpt must never mask the message
     return undefined;
   }
+}
+
+/**
+ * parse a line of a v8 stack into a location, skipping those without a source position (e.g. `at new Promise (<anonymous>)`)
+ * @param text a line of the stack
+ * @returns the location in the line, if any
+ */
+function parseFrame(text: string): StackLocationBlock[] {
+  // NOTE: sherlog's own stack parser skips frames like `at async run (…)` or `at Object.<anonymous> (…)`, which would misplace the excerpt
+  const [matched, entry = '<anonymous>', location, line, column] =
+    FRAME_PATTERN.exec(text) ?? [];
+
+  return matched
+    ? [
+        {
+          type: 'location',
+          entry,
+          location: String(location),
+          line: Number(line),
+          column: Number(column),
+        },
+      ]
+    : [];
 }

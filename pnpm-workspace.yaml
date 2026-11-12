@@ -81,7 +81,6 @@ catalogs:
 
   runtime:
     '@npmcli/run-script': ^11.0.0
-    callsite-record: ^4.1.0
     chalk: ^6.0.0
     debug: ^4.3.0
     '@types/debug': ^4.0.0
@@ -92,6 +91,7 @@ catalogs:
     js-yaml: ^5.5.0
     listr2: ^11.4.0
     sh-syntax: ^0.8.3
+    sherlog: ^1.0.0
     pupa: ^3.1.0
     source-map-support: ^0.5.0
     '@stricli/core': ^1.3.0
