@@ -29,6 +29,7 @@ export default preset(manifest.name, {
       context.isRepoRoot
         ? {
             // for repo root
+            '.husky/pre-commit': resolve(OVERRIDES, 'pre-commit'),
             '.lintstagedrc.json': null,
             '.npmignore': null,
             'eslint.config.ts': eslintOverride,

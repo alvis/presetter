@@ -1,0 +1,10 @@
+# the repo root has no lint-staged config of its own, so run lint-staged in each package that has staged changes
+# husky puts a relative node_modules/.bin on PATH, so pin the root's before changing into a package
+PATH="$PWD/node_modules/.bin:$PATH"
+find . \( -name node_modules -o -name .git \) -prune -o -name .lintstagedrc.json -print |
+  while IFS= read -r config; do
+    dir=$(dirname "$config")
+    if ! git diff --cached --quiet -- "$dir"; then
+      (cd "$dir" && presetter run lint-staged -- --concurrent=false </dev/null)
+    fi
+  done
