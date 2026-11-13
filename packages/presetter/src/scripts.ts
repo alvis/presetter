@@ -1,4 +1,4 @@
-import { parse, print, walk } from 'sh-syntax';
+import { createSourceIndex, parse, print, walk } from 'sh-syntax';
 
 import debug from './debugger';
 import { mapValuesAsync } from './utilities';
@@ -279,43 +279,6 @@ const unescapeDoubleQuoted = (value: string): string => {
     result += char;
   }
   return result;
-};
-
-/**
- * creates a converter from UTF-8 byte offsets to JavaScript string indexes
- * @param source the source string
- * @returns byte-offset to string-index converter
- */
-const createSourceIndex = (source: string): SourceIndex => {
-  const indexes = [0];
-  let byteOffset = 0;
-
-  for (let index = 0; index < source.length;) {
-    const codePoint = source.codePointAt(index)!;
-    byteOffset += utf8Length(codePoint);
-    index += codePoint > 0xffff ? 2 : 1;
-    indexes[byteOffset] = index;
-  }
-
-  return (offset) => indexes[offset] ?? source.length;
-};
-
-/**
- * gets the UTF-8 byte length of a Unicode code point
- * @param codePoint Unicode code point
- * @returns byte length
- */
-const utf8Length = (codePoint: number): number => {
-  if (codePoint <= 0x7f) {
-    return 1;
-  }
-  if (codePoint <= 0x7ff) {
-    return 2;
-  }
-  if (codePoint <= 0xffff) {
-    return 3;
-  }
-  return 4;
 };
 
 /**
