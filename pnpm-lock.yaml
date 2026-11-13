@@ -223,8 +223,8 @@ catalogs:
       specifier: ^3.1.0
       version: 3.3.0
     sh-syntax:
-      specifier: ^0.8.3
-      version: 0.8.3
+      specifier: ^0.8.4
+      version: 0.8.4
     sherlog:
       specifier: ^1.0.0
       version: 1.0.1
@@ -393,7 +393,7 @@ importers:
         version: 3.3.0
       sh-syntax:
         specifier: catalog:runtime
-        version: 0.8.3
+        version: 0.8.4
       sherlog:
         specifier: catalog:runtime
         version: 1.0.1(xception@9.1.0)
@@ -10626,8 +10626,8 @@ packages:
   setprototypeof@1.2.0:
     resolution: {integrity: sha512-E5LDX7Wrp85Kil5bhZv46j8jOeboKq5JMmYM3gVGdGH8xFpPWXUMsNrlODCrkoxMEeNi/XZIwuRvY4XNwYMJpw==}
 
-  sh-syntax@0.8.3:
-    resolution: {integrity: sha512-hB9A5RRaY3+YDgMnzdMXiouAadurCwI9/j/wDHz/7gvHBPyK8SilHKpjousnj9zHshloYJADhtdIPxA3nknp3Q==}
+  sh-syntax@0.8.4:
+    resolution: {integrity: sha512-BI2cAN1oIyfxMw/W10wFx4QfvOG5GGFZfgPO7KSomspXxM2IOL/S9QLE6yDG7mTo2LHyndOC53epFD0uv3nSFw==}
     engines: {node: '>=18.0.0'}
 
   shallow-clone@3.0.1:
@@ -23914,7 +23914,7 @@ snapshots:
 
   setprototypeof@1.2.0: {}
 
-  sh-syntax@0.8.3: {}
+  sh-syntax@0.8.4: {}
 
   shallow-clone@3.0.1:
     dependencies:
@@ -25471,7 +25471,6 @@ time:
   rollup-plugin-tsconfig-paths@1.5.2: '2023-10-23T07:54:50.781Z'
   rollup-plugin-visualizer@7.0.1: '2026-03-03T12:43:13.985Z'
   rollup@4.62.0: '2026-06-13T08:32:24.547Z'
-  sh-syntax@0.8.3: '2026-11-09T04:13:07.230Z'
   sharp@0.35.1: '2026-06-11T17:10:33.369Z'
   sort-package-json@4.0.0: '2026-06-03T20:49:42.090Z'
   source-map-support@0.5.21: '2021-11-19T11:02:57.258Z'
