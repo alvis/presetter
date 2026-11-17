@@ -16,8 +16,67 @@ import type { ListrTask, SimpleRenderer } from 'listr2';
 
 import type { Task } from './task';
 
+/** a Listr task rendered by the simple renderer */
+type RunnerTask = ListrTask<never, typeof SimpleRenderer>;
+
 /**
- * create an array of Listr tasks based on the provided inputs
+ * create Listr tasks that run a task between its pre and post hooks, as npm run does
+ * @param _ collection of arguments
+ * @param _.scripts composed script object containing script definitions
+ * @param _.template template object containing script definitions
+ * @param _.context project context
+ * @param _.paths additional binary paths from preset roots
+ * @param _.task task name
+ * @param _.args array of arguments, passed to the task only and never to its hooks
+ * @param _.concurrent whether the tasks join a list that runs concurrently
+ * @param _.lifecycleEvent the package.json script the package manager is running, if any
+ * @returns Listr tasks running the hooks and the task in sequence
+ */
+function createListrTasks(_: {
+  scripts: Record<string, string>;
+  template: Record<string, string>;
+  context: ProjectContext;
+  paths: string[];
+  task: string;
+  args: string[];
+  concurrent: boolean;
+  lifecycleEvent?: string;
+}): RunnerTask[] {
+  const { concurrent, lifecycleEvent, ...script } = _;
+  const { scripts, task, context } = script;
+
+  // NOTE: a package manager running the task as a package.json script has already run the hooks package.json defines
+  const managedHooks =
+    task === lifecycleEvent ? { ...context.packageJson.scripts } : {};
+
+  // NOTE: like npm, hooks get no arguments and never fire hooks of their own
+  const createHookTasks = (hook: string): RunnerTask[] => {
+    const command = scripts[hook];
+
+    return command && !Object.hasOwn(managedHooks, hook)
+      ? [createScriptTask({ ...script, task: hook, args: [] })]
+      : [];
+  };
+  const sequence = [
+    ...createHookTasks(`pre${task}`),
+    createScriptTask(script),
+    ...createHookTasks(`post${task}`),
+  ];
+
+  // NOTE: a sequential list keeps the hooks beside the task so the output reads like npm's,
+  //       while a concurrent one needs an untitled group to keep them in order
+  return concurrent && sequence.length > 1
+    ? [
+        {
+          task: (_, taskControl) =>
+            taskControl.newListr(sequence, { concurrent: false }),
+        },
+      ]
+    : sequence;
+}
+
+/**
+ * create a Listr task that runs a single script without its hooks
  * @param _ collection of arguments
  * @param _.scripts composed script object containing script definitions
  * @param _.template template object containing script definitions
@@ -25,16 +84,16 @@ import type { Task } from './task';
  * @param _.paths additional binary paths from preset roots
  * @param _.task task name
  * @param _.args array of arguments
- * @returns array of Listr tasks
+ * @returns a Listr task running the script
  */
-function createListrTask(_: {
+function createScriptTask(_: {
   scripts: Record<string, string>;
   template: Record<string, string>;
   context: ProjectContext;
   paths: string[];
   task: string;
   args: string[];
-}): ListrTask<never, typeof SimpleRenderer> {
+}): RunnerTask {
   const { scripts, template, task, args, context, paths } = _;
 
   return {
@@ -53,6 +112,7 @@ function createListrTask(_: {
       // check if the executable is 'run-s' or 'run-p'
       if (['run-s', 'run-p'].includes(executable)) {
         const globalArgs = [...parseGlobalArgs(argv), ...args];
+        const concurrent = executable === 'run-p';
 
         // get subtasks based on the task specifications and global arguments
         const nestedTasks = await Promise.all(
@@ -63,12 +123,11 @@ function createListrTask(_: {
               paths,
               taskSpec,
               globalArgs,
+              concurrent,
             }),
           ),
         );
         const subTasks = nestedTasks.flat();
-
-        const concurrent = executable === 'run-p';
 
         return taskControl.newListr(subTasks, { concurrent });
       }
@@ -88,6 +147,7 @@ function createListrTask(_: {
  * @param _.paths additional binary paths from preset roots
  * @param _.taskSpec task specification string
  * @param _.globalArgs array of global arguments
+ * @param _.concurrent whether the tasks join a list that runs concurrently
  * @returns a promise resolving to an array of Listr tasks
  */
 async function getListrTasksBySpec(_: {
@@ -96,8 +156,9 @@ async function getListrTasksBySpec(_: {
   paths: string[];
   taskSpec: string;
   globalArgs: string[];
-}): Promise<Array<ListrTask<never, typeof SimpleRenderer>>> {
-  const { template, context, paths, taskSpec, globalArgs } = _;
+  concurrent: boolean;
+}): Promise<RunnerTask[]> {
+  const { template, context, paths, taskSpec, globalArgs, concurrent } = _;
 
   // parse the task specification and remove any quotes
   const task = parseTaskSpec(
@@ -112,6 +173,7 @@ async function getListrTasksBySpec(_: {
     paths,
     selector: task.selector,
     args: task.args,
+    concurrent,
   });
 }
 
@@ -123,6 +185,8 @@ async function getListrTasksBySpec(_: {
  * @param _.paths additional binary paths from preset roots
  * @param _.selector task selector string
  * @param _.args array of arguments
+ * @param _.concurrent whether the tasks join a list that runs concurrently
+ * @param _.lifecycleEvent the package.json script the package manager is running, if any
  * @returns a promise resolving to an array of Listr tasks
  */
 async function getListrTasks(_: {
@@ -131,8 +195,11 @@ async function getListrTasks(_: {
   context: ProjectContext;
   selector: string;
   args: string[];
-}): Promise<Array<ListrTask<never, typeof SimpleRenderer>>> {
+  concurrent: boolean;
+  lifecycleEvent?: string;
+}): Promise<RunnerTask[]> {
   const { paths, template, context, selector, args } = _;
+  const { concurrent, lifecycleEvent } = _;
 
   // clone the content for immutability
   const target = { ...context.packageJson.scripts } as Record<string, string>;
@@ -143,9 +210,18 @@ async function getListrTasks(_: {
   // select tasks based on the composed script and selector
   const tasks = selectTasks(Object.keys(scripts), selector);
 
-  // create Listr tasks based on the selected tasks
-  return tasks.map((task) =>
-    createListrTask({ paths, scripts, template, context, task, args }),
+  // create Listr tasks, with their hooks, based on the selected tasks
+  return tasks.flatMap((task) =>
+    createListrTasks({
+      paths,
+      scripts,
+      template,
+      context,
+      task,
+      args,
+      concurrent,
+      lifecycleEvent,
+    }),
   );
 }
 
@@ -225,6 +301,9 @@ export async function run(
         context: distilled,
         selector: taskItem.selector,
         args: taskItem.args,
+        concurrent: parallel,
+        // NOTE: only a top-level task can be the script the package manager runs
+        lifecycleEvent: process.env.npm_lifecycle_event,
       }),
     ),
   );
