@@ -27,7 +27,7 @@ The **storybook preset** generates a ready-to-run `.storybook` setup, Storybook 
 
 - **`.storybook/main.ts`** — story globs resolved relative to the Storybook config dir, plus the a11y and Vitest addons.
 - **Storybook scripts** — `storybook` (`storybook dev -p 6006`) and `build:storybook` (`storybook build`).
-- **On-demand Playwright** — a `pretest:unit:playwright` step joins the `pretest` hook (and `pretest:sto` reuses it) to run `playwright install --with-deps chromium` unless `PLAYWRIGHT_READY=1`. Package managers fire it only when `package.json` maps the hook, e.g. `"pretest": "run pretest"`.
+- **On-demand Playwright** — a `pretest:unit:playwright` step joins the unit steps to run `playwright install --with-deps chromium` unless `PLAYWRIGHT_READY=1`. `run` fires it through the `pretest` hook of `test` (and of `test:coverage` and `test:watch`, which run `test`), the `pretest:unit` hook of `test:unit`, and the `pretest:sto` hook of `test:sto`.
 - **ESLint story rules** — `eslint-plugin-storybook` `flat/recommended` plus a `**/*.stories.[jt]sx` override that disables `compat/compat`.
 - **Vitest browser project** — headless Chromium runner with `globals: true`, sensible timeouts, and noise-filtering for benign React `act()` warnings.
 
@@ -128,8 +128,9 @@ export default definePreview({
 | --- | --- | --- |
 | `storybook` | `storybook dev -p 6006` | Start the Storybook dev server. |
 | `build:storybook` | `storybook build` | Build a static Storybook. |
-| `pretest:unit:playwright` | installs Chromium unless `PLAYWRIGHT_READY=1` | Joins the essentials `pretest` hook so Chromium is available before tests run. |
-| `pretest:sto` | `run-s pretest:unit:playwright` | Installs Chromium before `test:sto`. |
+| `pretest:unit:playwright` | installs Chromium unless `PLAYWRIGHT_READY=1` | Joins the essentials unit steps so Chromium is available before unit tests run. |
+| `pretest:sto` | `run-s pretest:unit:playwright` | Hook of `test:sto`: installs Chromium before story tests run. |
+| `test:sto` | `run-s "test:vitest -- --project=STO --project='*(STO)' {@}" --` | Runs story tests only. |
 
 ### `eslint.config.ts` (override)
 

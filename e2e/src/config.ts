@@ -30,6 +30,9 @@ export const PACKAGES_DIR = resolve(ROOT_DIR, 'packages');
 /** examples source directory path */
 export const EXAMPLES_DIR = resolve(ROOT_DIR, 'examples');
 
+/** fixture projects copied into E2E scaffolds */
+export const FIXTURES_DIR = resolve(ROOT_DIR, 'e2e', 'fixtures');
+
 /** temporary working directory path (outside monorepo for isolation) */
 export const TEMP_DIR = resolve(tmpdir(), `@presetter/e2e`);
 

@@ -16,7 +16,6 @@
     "prepare": "run prepare",
     "start": "next start",
     "storybook": "run storybook",
-    "pretest": "run pretest",
     "test": "run test --",
     "test:coverage": "run test:coverage --",
     "test:watch": "run test:watch --",
