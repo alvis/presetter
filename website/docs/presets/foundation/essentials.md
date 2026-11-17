@@ -151,7 +151,7 @@ run start
 ### Testing
 
 #### `run test`
-Run unit tests with Vitest by default. The script runs bare Vitest, which registers only `UNIT` (`*(UNIT)` in monorepos); other presets may add always-on projects, such as Storybook's `STO`.
+Run unit tests with Vitest by default, after the `pretest:unit:*` steps that its `pretest` hook runs. The script runs bare Vitest, which registers only `UNIT` (`*(UNIT)` in monorepos); other presets may add always-on projects, such as Storybook's `STO`.
 
 ```bash
 run test
@@ -164,21 +164,21 @@ run test -- --ui
 Bare `vitest` registers only `UNIT`. Passing `--project` (or `-p`) registers every project for Vitest to filter, so `run test:vitest -- --project='*'` runs them all. Files with an `.int`, `.integration`, or `.e2e` suffix belong to INT or E2E even when they also end in `.spec.*`. Each project typechecks its own files; UNIT also typechecks Vitest's default `*.{test,spec}-d.*` type-test files.
 
 #### `run test:unit`
-Run unit projects only (named `UNIT` or matching `*(UNIT)`).
+Run unit projects only (named `UNIT` or matching `*(UNIT)`), after the `pretest:unit:*` steps that its `pretest:unit` hook runs.
 
 ```bash
 run test:unit
 ```
 
 #### `run test:int`
-Run integration projects only (named `INT` or matching `*(INT)`).
+Run integration projects only (named `INT` or matching `*(INT)`), after the `pretest:int:*` steps that its `pretest:int` hook runs.
 
 ```bash
 run test:int
 ```
 
 #### `run test:e2e`
-Run end-to-end projects only (named `E2E` or matching `*(E2E)`).
+Run end-to-end projects only (named `E2E` or matching `*(E2E)`), after the `pretest:e2e:*` steps that its `pretest:e2e` hook runs. Add a step such as `'pretest:e2e:build': 'run build'` through `scripts` in `presetter.config.ts`; `"test:e2e": "run test:e2e --"` in `package.json` is enough to run it.
 
 ```bash
 run test:e2e
@@ -192,14 +192,14 @@ run typecheck
 ```
 
 #### `run test:watch`
-Continuously run unit tests whenever source code changes.
+Continuously run unit tests whenever source code changes. It runs `test`, so the `pretest:unit:*` steps run once before watching starts.
 
 ```bash
 run test:watch
 ```
 
 #### `run test:coverage`
-Run unit tests with coverage reporting.
+Run unit tests with coverage reporting. It runs `test`, so the `pretest:unit:*` steps run first.
 
 ```bash
 run test:coverage

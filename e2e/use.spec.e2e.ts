@@ -12,13 +12,14 @@
  * -------------------------------------------------------------------------
  */
 
-import { mkdir, readFile, rm, writeFile } from 'node:fs/promises';
+import { copyFile, mkdir, readFile, rm, writeFile } from 'node:fs/promises';
 import { delimiter, join } from 'node:path';
 
 import { beforeAll, describe, expect, it } from 'vitest';
 
 import {
   ADOPTION_MANAGERS,
+  FIXTURES_DIR,
   MANAGER_ENV,
   REGISTRY_URL,
   TEMP_DIR,
@@ -176,7 +177,6 @@ it('should greet', () => {
         'prepare': 'run prepare',
         'build': 'run build',
         'lint': 'run lint --',
-        'pretest': 'run pretest',
         'test': 'run test --',
         'test:coverage': 'run test:coverage --',
         'test:watch': 'run test:watch --',
@@ -243,4 +243,73 @@ it('should greet', () => {
       await Promise.all(paths.map(async (path) => readFile(path, 'utf8'))),
     ).toEqual(before);
   }, 300_000);
+
+  describe('with pretest steps contributed by presetter.config.ts', () => {
+    const journal = join(destination, 'steps.log');
+    const fixtures = join(FIXTURES_DIR, 'journal');
+
+    /**
+     * declares the given package scripts and contributes journaling pretest steps and an e2e spec
+     * @param scripts the only scripts package.json declares
+     */
+    async function prepareJournalProject(
+      scripts: Record<string, string>,
+    ): Promise<void> {
+      const path = join(destination, 'package.json');
+      const json = JSON.parse(await readFile(path, 'utf8')) as PackageJson;
+
+      await writeFile(
+        path,
+        `${JSON.stringify({ ...json, scripts }, null, 2)}\n`,
+      );
+      await copyFile(
+        join(fixtures, 'presetter.config.ts'),
+        join(destination, 'presetter.config.ts'),
+      );
+      // NOTE: the fixture takes its e2e name only once copied, so this package's own E2E run never collects it
+      await copyFile(
+        join(fixtures, 'record.ts'),
+        join(destination, 'spec/index.spec.e2e.ts'),
+      );
+      await rm(journal, { force: true });
+    }
+
+    /**
+     * runs a script through the package manager and reads the steps it records
+     * @param script script to run
+     * @returns the steps recorded during the run, in order
+     */
+    async function recordSteps(script: string): Promise<string[]> {
+      await runScript(script, destination, manager);
+      const steps = await readFile(journal, 'utf8');
+
+      return steps.trim().split(/\r?\n/);
+    }
+
+    it('should run the e2e steps once before the e2e tests and no unit steps', async () => {
+      await prepareJournalProject({ 'test:e2e': 'run test:e2e --' });
+
+      expect(await recordSteps('test:e2e')).toEqual(['pretest:e2e', 'E2E']);
+    });
+
+    it.each([
+      ['test', ['pretest:unit']],
+      ['test:unit', ['pretest:unit']],
+      ['test:int', ['pretest:int']],
+      ['test:coverage', ['pretest:unit']],
+    ])('should run only its own steps once for %s', async (script, steps) => {
+      await prepareJournalProject({ [script]: `run ${script} --` });
+
+      expect(await recordSteps(script)).toEqual(steps);
+    });
+
+    it('should run a package.json pretest once in place of the preset one', async () => {
+      await prepareJournalProject({
+        pretest: 'echo package.json >> steps.log',
+        test: 'run test --',
+      });
+
+      expect(await recordSteps('test')).toEqual(['package.json']);
+    });
+  });
 });

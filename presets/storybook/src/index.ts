@@ -42,8 +42,8 @@ export default preset(manifest.name, {
   scripts: {
     'storybook': 'storybook dev -p 6006',
     'build:storybook': 'storybook build',
-    'test:sto': `run-s "test -- --project=STO --project='*(STO)' {@}" --`,
-    // joins essentials' pretest hook, which runs when package.json maps "pretest"
+    'test:sto': `run-s "test:vitest -- --project=STO --project='*(STO)' {@}" --`,
+    // joins the unit steps that essentials' pretest and pretest:unit hooks run
     'pretest:unit:playwright': `[ "\${PLAYWRIGHT_READY:-}" = "1" ] || playwright install --with-deps chromium`,
     'pretest:sto': 'run-s pretest:unit:playwright',
   },

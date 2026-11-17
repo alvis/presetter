@@ -1,11 +1,11 @@
 import npmRunScript from '@npmcli/run-script';
-import { beforeEach, describe, expect, it, vi } from 'vitest';
+import { describe, expect, it, vi } from 'vitest';
 
 import { run } from '#run';
 
 vi.mock('@npmcli/run-script', () => ({
-  default: vi.fn(({ event }: { event: string }) => {
-    if (event === 'error') {
+  default: vi.fn(({ event, pkg }: Parameters<typeof npmRunScript>[0]) => {
+    if (pkg.scripts?.[event] === 'erroneous command') {
       throw new Error('mock task failed');
     }
   }),
@@ -23,6 +23,7 @@ vi.mock('#context', () => ({
         other: 'run other -- --arg-package',
         subtask: 'run subtask',
         error: 'erroneous command',
+        prelocal: 'prelocal command',
       },
     },
   })),
@@ -38,13 +39,36 @@ vi.mock('#preset', () => ({
       'subtask': 'run-s subtask:*',
       'subtask:task1': 'command1 --arg',
       'subtask:task2': 'command2 --arg',
+      'local': 'local command',
+      'wrapper': 'run-s local',
+      'hooked': 'hooked command',
+      'prehooked': 'prehooked command',
+      'posthooked': 'posthooked command',
+      'preprehooked': 'preprehooked command',
+      'postposthooked': 'postposthooked command',
+      'nested': 'run-s hooked other',
+      'concurrent': 'run-p blocked other',
+      'blocked': 'blocked command',
+      'preblocked': 'erroneous command',
+      'postblocked': 'postblocked command',
+      'aborted': 'erroneous command',
+      'preaborted': 'preaborted command',
+      'postaborted': 'postaborted command',
     },
   })),
 }));
 
-describe('fn:run', () => {
-  beforeEach(() => vi.clearAllMocks());
+/**
+ * lists the scripts executed so far, in order, with their arguments
+ * @returns event name and arguments of each executed script
+ */
+function getExecutedScripts(): Array<[event: string, args: string[]]> {
+  return vi
+    .mocked(npmRunScript)
+    .mock.calls.map(([{ event, args }]) => [event, args]);
+}
 
+describe('fn:run', () => {
   it('should run tasks via listr', async () => {
     const selectors = [
       { selector: 'task', args: [] },
@@ -133,6 +157,126 @@ describe('fn:run', () => {
           }),
         }),
       );
+    });
+  });
+
+  describe('pre and post hooks', () => {
+    it('should run the pre hook before and the post hook after the task', async () => {
+      await run([{ selector: 'hooked', args: [] }]);
+
+      expect(getExecutedScripts()).toEqual([
+        ['prehooked', []],
+        ['hooked', []],
+        ['posthooked', []],
+      ]);
+    });
+
+    it('should pass arguments to the main task only', async () => {
+      await run([{ selector: 'hooked', args: ['--flag', 'value'] }]);
+
+      expect(getExecutedScripts()).toEqual([
+        ['prehooked', []],
+        ['hooked', ['--flag', 'value']],
+        ['posthooked', []],
+      ]);
+    });
+
+    it('should run the hooks of a task reached through run-s', async () => {
+      await run([{ selector: 'nested', args: [] }]);
+
+      expect(getExecutedScripts()).toEqual([
+        ['prehooked', []],
+        ['hooked', []],
+        ['posthooked', []],
+        ['other', []],
+      ]);
+    });
+
+    it('should keep the hooks in sequence with a task reached through run-p', async () => {
+      await expect(run([{ selector: 'concurrent', args: [] }])).rejects.toThrow(
+        'mock task failed',
+      );
+
+      const executed = getExecutedScripts();
+
+      expect(executed).toContainEqual(['preblocked', []]);
+      expect(executed).not.toContainEqual(['blocked', []]);
+    });
+
+    it('should run the hooks of a hook script run as a task', async () => {
+      await run([{ selector: 'prehooked', args: [] }]);
+
+      expect(getExecutedScripts()).toEqual([
+        ['preprehooked', []],
+        ['prehooked', []],
+      ]);
+    });
+
+    it('should run a hook defined only in package.json', async () => {
+      await run([{ selector: 'local', args: [] }]);
+
+      expect(getExecutedScripts()).toEqual([
+        ['prelocal', []],
+        ['local', []],
+      ]);
+    });
+
+    it('should ignore package.json hooks if templateOnly is true', async () => {
+      await run([{ selector: 'local', args: [] }], { templateOnly: true });
+
+      expect(getExecutedScripts()).toEqual([['local', []]]);
+    });
+
+    describe('run as a package.json script', () => {
+      it('should skip the hooks package.json defines, which the package manager runs', async () => {
+        vi.stubEnv('npm_lifecycle_event', 'local');
+
+        await run([{ selector: 'local', args: [] }]);
+
+        expect(getExecutedScripts()).toEqual([['local', []]]);
+      });
+
+      it('should run the hooks only the template defines', async () => {
+        vi.stubEnv('npm_lifecycle_event', 'hooked');
+
+        await run([{ selector: 'hooked', args: [] }]);
+
+        expect(getExecutedScripts()).toEqual([
+          ['prehooked', []],
+          ['hooked', []],
+          ['posthooked', []],
+        ]);
+      });
+
+      it('should run the package.json hooks of a task reached through run-s', async () => {
+        vi.stubEnv('npm_lifecycle_event', 'local');
+
+        await run([{ selector: 'wrapper', args: [] }]);
+
+        expect(getExecutedScripts()).toEqual([
+          ['prelocal', []],
+          ['local', []],
+        ]);
+      });
+    });
+
+    it('should stop before the task when the pre hook fails', async () => {
+      await expect(run([{ selector: 'blocked', args: [] }])).rejects.toThrow(
+        'mock task failed',
+      );
+
+      expect(getExecutedScripts()).toEqual([['preblocked', []]]);
+    });
+
+    it('should skip the post hook when the task fails', async () => {
+      await expect(run([{ selector: 'aborted', args: [] }])).rejects.toThrow(
+        'mock task failed',
+      );
+
+      expect(getExecutedScripts()).toEqual([
+        ['preaborted', []],
+        ['aborted', []],
+      ]);
     });
   });
 });

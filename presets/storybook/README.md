@@ -52,9 +52,10 @@ User-configured setup files are kept.
 
 `STO` is always registered, so `run test` and bare `vitest` run `UNIT` and `STO`
 together. Use `run test:sto` to select story tests only. `pretest:unit:playwright`
-joins the `pretest` hook (and `pretest:sto` reuses it) to install Chromium unless
-`PLAYWRIGHT_READY=1`. Package managers fire these hooks only when `package.json`
-maps them, e.g. `"pretest": "run pretest"`; `run <script>` alone does not.
+joins the unit steps to install Chromium unless `PLAYWRIGHT_READY=1`, so `run` fires
+it through the `pretest` hook of `test` (and `test:coverage` and `test:watch`, which
+run `test`) and the `pretest:unit` hook of `test:unit`. `test:sto` fires `pretest:sto`,
+which reuses it.
 
 STO retains 5-second test and hook timeouts. The shared 10-minute shutdown
 timeout applies to the whole Vitest run.

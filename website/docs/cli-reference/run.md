@@ -19,8 +19,9 @@ The `run` command executes a single script defined in your preset or local `pack
 
 1. **Merges scripts** from preset with local package.json (local takes priority)
 2. **Resolves task patterns** using wildcards and selectors
-3. **Passes arguments** to the underlying script
-4. **Provides template-only mode** for preset-specific scripts
+3. **Runs pre and post hooks** around each task, as `npm run` does
+4. **Passes arguments** to the underlying script
+5. **Provides template-only mode** for preset-specific scripts
 
 This is the fundamental command for task execution in Presetter projects.
 
@@ -72,6 +73,21 @@ presetter run build -- --mode production --minify
 # Pass flags with values
 presetter run lint -- --ext .ts,.tsx --fix
 ```
+
+## Pre and Post Hooks
+
+Like `npm run`, `run` executes `pre<task>` before and `post<task>` after every task it runs when the merged scripts define them, including tasks reached through `run-s` and `run-p` steps. The hooks may come from a preset or from `package.json`.
+
+- `post<task>` runs only after the task succeeds, and any failure stops the chain.
+- Arguments reach the task only, never its hooks.
+- A hook run as a hook fires no hooks of its own.
+
+```bash
+# with pretest:e2e defined, this runs pretest:e2e, then test:e2e
+run test:e2e -- --bail=1
+```
+
+Hooks come from the merged scripts, so `package.json` needs no `pre<task>` entry. When the package manager runs the task as a `package.json` script, it has already run the hooks that `package.json` defines, so `run` skips those and runs only the hooks from presets. A delegate such as `"pretest": "run pretest"` is therefore redundant; remove it.
 
 ## Pattern Matching
 

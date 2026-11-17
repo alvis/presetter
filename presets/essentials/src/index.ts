@@ -67,7 +67,6 @@ export default preset(manifest.name, (context) => ({
       'prepare': 'run prepare',
       'build': 'run build',
       'lint': 'run lint --',
-      'pretest': 'run pretest',
       'test': 'run test --',
       'test:coverage': 'run test:coverage --',
       'test:watch': 'run test:watch --',
