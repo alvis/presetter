@@ -120,6 +120,10 @@ npm run bootstrap # Generate project configs from your preset stack
 npm run test      # Run through the maintained toolchain
 ```
 
+### Pre-release Builds
+
+Preview builds of unreleased commits are shared as tarballs on [GitHub prereleases](https://github.com/alvis/presetter/releases), not on npm. To install one with npm, pnpm or Bun, follow the website's [pre-release guide](https://presetter.dev/docs/introduction/pre-releases).
+
 ### TypeScript 7 Compiler
 
 TypeScript 7.0 launched without a stable compiler API. To use its `tsc` binary while keeping imports from `typescript` on the TypeScript 6 API, follow the website's [TypeScript 7 installation instructions](https://presetter.dev/docs/introduction/installation#using-typescript-7-with-the-typescript-6-api).

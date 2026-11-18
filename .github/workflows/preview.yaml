@@ -72,7 +72,7 @@ jobs:
           # written before the rewrite below, after which pnpm's pre-run dependency check rejects the URL peers
           {
             pnpm exec git-cliff --config cliff.yaml --unreleased --tag "v$V" --strip all
-            printf '\n## Install\n\nInstall the tarballs you need by URL. pnpm skips URL peers, so also list the packages they peer on.\n\n'
+            printf '\n## Install\n\nInstall the tarballs you need by URL; each one pulls in its sibling tarballs from this release. pnpm also needs `blockExoticSubdeps: false` and the packages they peer on listed directly. See https://presetter.dev/docs/introduction/pre-releases for npm, pnpm and Bun, upgrades and switching back to a stable release.\n\n'
             for name in $NAMES; do printf -- '- `%s`: %s/%s\n' "$name" "$URL" "$(asset "$name")"; done
           } > "$OUT/notes.md"
 
