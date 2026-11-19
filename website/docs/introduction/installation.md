@@ -73,6 +73,10 @@ export { default } from '@presetter/preset-esm';
 
 Install the stack's setup packages explicitly, including the [TypeScript aliases below](#using-typescript-7-with-the-typescript-6-api), Vitest, and any framework packages declared by your presets. Then run `npx presetter bootstrap`. Bootstrap only generates assets; it does not install setup packages or write package scripts.
 
+### Method 3: Pre-release Builds
+
+To try an unreleased change, install a preview build: the tarballs attached to a [GitHub prerelease](https://github.com/alvis/presetter/releases) instead of the npm packages. The tarballs depend on each other by URL, which npm and Bun follow on their own; pnpm needs a few extra settings. See [Pre-release Builds](./pre-releases) for each package manager, for upgrades, and for switching back to a stable release.
+
 ## Preset Selection
 
 Choose the right preset for your project type:
