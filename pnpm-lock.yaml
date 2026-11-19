@@ -223,8 +223,8 @@ catalogs:
       specifier: ^3.1.0
       version: 3.3.0
     sh-syntax:
-      specifier: ^0.8.4
-      version: 0.8.4
+      specifier: ^0.8.7
+      version: 0.8.7
     sherlog:
       specifier: ^1.0.0
       version: 1.0.1
@@ -393,7 +393,7 @@ importers:
         version: 3.3.0
       sh-syntax:
         specifier: catalog:runtime
-        version: 0.8.4
+        version: 0.8.7
       sherlog:
         specifier: catalog:runtime
         version: 1.0.1(xception@9.1.0)
@@ -10626,8 +10626,8 @@ packages:
   setprototypeof@1.2.0:
     resolution: {integrity: sha512-E5LDX7Wrp85Kil5bhZv46j8jOeboKq5JMmYM3gVGdGH8xFpPWXUMsNrlODCrkoxMEeNi/XZIwuRvY4XNwYMJpw==}
 
-  sh-syntax@0.8.4:
-    resolution: {integrity: sha512-BI2cAN1oIyfxMw/W10wFx4QfvOG5GGFZfgPO7KSomspXxM2IOL/S9QLE6yDG7mTo2LHyndOC53epFD0uv3nSFw==}
+  sh-syntax@0.8.7:
+    resolution: {integrity: sha512-zaJUdXFCbDFgtREm3KiqvX3dBlngGY0tumPzHvC5RqX67UuaBLIIZqb16MCbYLGyk5rPYrM+5FlghF+w6WdVUw==}
     engines: {node: '>=18.0.0'}
 
   shallow-clone@3.0.1:
@@ -23914,7 +23914,7 @@ snapshots:
 
   setprototypeof@1.2.0: {}
 
-  sh-syntax@0.8.4: {}
+  sh-syntax@0.8.7: {}
 
   shallow-clone@3.0.1:
     dependencies:
