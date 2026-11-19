@@ -21,7 +21,8 @@
     "#*": "./src/*.ts"
   },
   "exports": {
-    ".": "./src/index.ts"
+    ".": "./src/index.ts",
+    "./vitest": "./src/vitest.ts"
   },
   "main": "lib/index.js",
   "types": "lib/index.d.ts",
@@ -29,7 +30,7 @@
     "bootstrap": "presetter bootstrap",
     "build": "run build",
     "lint": "run lint --",
-    "prepare": "tsrs --ignoreConfig --rootDir ./src --typeRoots types --skipLibCheck --declaration --moduleResolution bundler --module esnext --target esnext --outdir lib src/index.ts types/eslint-community__eslint-plugin-eslint-comments/configs/index.d.ts ../../packages/presetter/types/npmcli__run-script/index.d.ts && tsc-alias --resolve-full-paths --dir lib -p package.json",
+    "prepare": "tsrs --ignoreConfig --rootDir ./src --typeRoots types --skipLibCheck --declaration --moduleResolution bundler --module esnext --target esnext --outdir lib src/index.ts src/vitest.ts types/eslint-community__eslint-plugin-eslint-comments/configs/index.d.ts ../../packages/presetter/types/npmcli__run-script/index.d.ts && tsc-alias --resolve-full-paths --dir lib -p package.json",
     "prepublishOnly": "run prepare && run prepublishOnly",
     "test": "run test --",
     "test:coverage": "run test:coverage --",
@@ -37,7 +38,8 @@
     "typecheck": "run typecheck --"
   },
   "dependencies": {
-    "@presetter/types": "workspace:*"
+    "@presetter/types": "workspace:*",
+    "globby": "catalog:runtime"
   },
   "peerDependencies": {
     "@eslint-community/eslint-plugin-eslint-comments": "catalog:lint",
@@ -71,7 +73,8 @@
   "publishConfig": {
     "access": "public",
     "exports": {
-      ".": "./lib/index.js"
+      ".": "./lib/index.js",
+      "./vitest": "./lib/vitest.js"
     },
     "imports": {
       "#*": "./lib/*.js"
