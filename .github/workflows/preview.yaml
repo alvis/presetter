@@ -12,11 +12,12 @@ on:
           - alpha
           - beta
           - rc
+          - next
         default: none
   workflow_call:
     inputs:
       phase:
-        description: phase added to the version and file names (none, alpha, beta or rc)
+        description: phase added to the version and file names (none, alpha, beta, rc or next)
         type: string
         default: none
 
