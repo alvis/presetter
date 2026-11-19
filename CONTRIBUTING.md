@@ -205,7 +205,7 @@ Squash-merging the pull request runs the `release` workflow, which tags the merg
 Run `npm run release:pr` again right before merging if `main` has moved since: the workflow refuses to publish a merged tree that differs from the reviewed pull request.
 A stable release also deletes the dated preview releases up to that version, keeping their tags.
 
-To share a build without publishing to npm, run the `preview` workflow from the Actions tab (or `gh workflow run preview.yaml -f phase=alpha`).
+To share a build without publishing to npm, run the `preview` workflow from the Actions tab (or `gh workflow run preview.yaml -f phase=next`).
 It attaches each package as a tarball to a GitHub prerelease versioned `<next version>[-<phase>]-<commit date>-<short sha>`, with internal dependencies pointing at the sibling tarballs.
 
 ### Getting npm to trust github actions
