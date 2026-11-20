@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
 
-import { merge, mergeByKey } from '#template/merge';
+import { merge, mergeByKey, mergeIfExists } from '#template/merge';
 
 describe('fn:merge', () => {
   it('should overwite list content', () => {
@@ -299,6 +299,198 @@ describe('fn:mergeByKey', () => {
 
   it('should preserve existing set-dedup behavior for non-annotated arrays', () => {
     expect(merge([1, 2, 3], [2, 3, 4])).toEqual([1, 2, 3, 4]);
+  });
+});
+
+describe('fn:mergeIfExists', () => {
+  it('should deep merge items into the elements they match by key', () => {
+    const source = { items: [{ name: 'foo', list: ['a'], x: 1 }] };
+    const target = {
+      items: mergeIfExists('name', [{ name: 'foo', list: ['b'], y: 2 }]),
+    };
+
+    expect(merge(source, target)).toEqual({
+      items: [{ name: 'foo', list: ['a', 'b'], x: 1, y: 2 }],
+    });
+  });
+
+  it('should drop items that match no element instead of appending them', () => {
+    const source = { items: [{ name: 'foo', x: 1 }] };
+    const target = {
+      items: mergeIfExists('name', [
+        { name: 'foo', y: 2 },
+        { name: 'bar', z: 3 },
+      ]),
+    };
+
+    expect(merge(source, target)).toEqual({
+      items: [{ name: 'foo', x: 1, y: 2 }],
+    });
+  });
+
+  it('should drop items without the key', () => {
+    const source = { items: [{ name: 'foo', x: 1 }] };
+    const target = {
+      items: mergeIfExists('name', [{ other: 'no-key' }] as Array<
+        Record<string, unknown>
+      >),
+    };
+
+    expect(merge(source, target)).toEqual({ items: [{ name: 'foo', x: 1 }] });
+  });
+
+  it('should keep the elements that no item matches', () => {
+    const source = {
+      items: [
+        { name: 'foo', x: 1 },
+        { name: 'baz', z: 3 },
+      ],
+    };
+    const target = { items: mergeIfExists('name', [{ name: 'foo', y: 2 }]) };
+
+    expect(merge(source, target)).toEqual({
+      items: [
+        { name: 'foo', x: 1, y: 2 },
+        { name: 'baz', z: 3 },
+      ],
+    });
+  });
+
+  it('should match items by a nested path', () => {
+    const source = {
+      projects: mergeByKey('test.name', [
+        { test: { name: 'UNIT', include: ['u'] } },
+      ]),
+    };
+    const target = {
+      projects: mergeIfExists('test.name', [
+        { test: { name: 'UNIT', setupFiles: ['s'] } },
+        { test: { name: 'INT', setupFiles: ['s'] } },
+      ]),
+    };
+
+    expect(merge(source, target)).toEqual({
+      projects: [{ test: { name: 'UNIT', include: ['u'], setupFiles: ['s'] } }],
+    });
+  });
+
+  it('should add nothing where the source has no such property', () => {
+    const target = { a: 1, items: mergeIfExists('name', [{ name: 'foo' }]) };
+
+    expect(merge({ a: 0 }, target)).toEqual({ a: 1 });
+  });
+
+  it('should add nothing where the source has no parent of such a property', () => {
+    const target = {
+      default: {
+        test: {
+          timeout: 1,
+          projects: mergeIfExists('test.name', [{ test: { name: 'INT' } }]),
+        },
+      },
+    };
+
+    expect(merge({ default: { name: 'x' } }, target)).toEqual({
+      default: { name: 'x', test: { timeout: 1 } },
+    });
+    expect(merge(undefined, target)).toEqual({
+      default: { test: { timeout: 1 } },
+    });
+  });
+
+  it('should add nothing inside content that replaces a value of another kind', () => {
+    const target = {
+      a: { items: mergeIfExists('name', [{ name: 'foo' }]), b: 1 },
+    };
+
+    expect(merge({ a: 'value' }, target)).toEqual({ a: { b: 1 } });
+    expect(merge({ a: ['value'] }, { a: 'other' })).toEqual({ a: 'other' });
+  });
+
+  it('should add nothing inside elements appended to another list', () => {
+    const nested = mergeIfExists('name', [{ name: 'foo' }]);
+    const appended = { name: 'bar', items: nested };
+
+    expect(
+      merge(
+        { list: mergeByKey('name', [{ name: 'baz' }]) },
+        { list: [appended, { items: nested }] },
+      ),
+    ).toEqual({ list: [{ name: 'baz' }, { name: 'bar' }, {}] });
+    expect(merge({ list: [1] }, { list: [nested, { items: nested }] })).toEqual(
+      { list: [1, {}] },
+    );
+  });
+
+  it('should add circular content without looping', () => {
+    const plugin: Record<string, unknown> = { name: 'plugin' };
+    plugin.configs = { recommended: { plugins: { self: plugin } } };
+
+    const result = merge<object, object, { plugin: typeof plugin }>(
+      {},
+      { plugin },
+    );
+
+    expect(result.plugin).toBe(plugin);
+  });
+
+  it('should drop the lists of shared and circular content alike', () => {
+    const shared: Record<string, unknown> = {
+      items: mergeIfExists('name', [{ name: 'foo' }]),
+      b: 1,
+    };
+    shared.self = shared;
+
+    const result = merge<
+      object,
+      object,
+      { a: Record<string, unknown>; c: Record<string, unknown> }
+    >({}, { a: shared, c: shared });
+
+    expect(result.a).toBe(result.c);
+    expect(result.a).toEqual({ b: 1, self: shared });
+  });
+
+  it('should keep the merge key of a list that holds dropped content', () => {
+    const result = merge(undefined, {
+      list: mergeByKey('name', [
+        { name: 'foo', items: mergeIfExists('id', [{ id: 'a' }]) },
+      ]),
+    });
+
+    expect(merge(result, { list: [{ name: 'foo', x: 1 }] })).toEqual({
+      list: [{ name: 'foo', x: 1 }],
+    });
+  });
+
+  it('should leave a source that is not an array as it is', () => {
+    const items = mergeIfExists('name', [{ name: 'foo' }]);
+
+    expect(merge({ items: undefined }, { items })).toEqual({
+      items: undefined,
+    });
+    expect(merge('value', items)).toEqual('value');
+  });
+
+  it('should merge a later plain array by key and append its unmatched items', () => {
+    const first = merge(
+      { items: [{ name: 'foo', x: 1 }] },
+      { items: mergeIfExists('name', [{ name: 'foo', y: 2 }]) },
+    );
+
+    expect(
+      merge(first, {
+        items: [
+          { name: 'foo', z: 3 },
+          { name: 'bar', w: 4 },
+        ],
+      }),
+    ).toEqual({
+      items: [
+        { name: 'foo', x: 1, y: 2, z: 3 },
+        { name: 'bar', w: 4 },
+      ],
+    });
   });
 });
 

@@ -409,6 +409,46 @@ export default preset('my-project', {
 });
 ```
 
+### 🔀 Merging Lists by Key
+
+An override merges lists by joining them, so an object in an override list is
+added beside the preset's objects rather than merged into one. Wrap the list to
+match objects by a key path instead:
+
+- `mergeByKey(key, items)` deep merges each item into the object with the same
+  value at `key`, and appends items that match none.
+- `mergeIfExists(key, items)` deep merges the same way, but drops items that
+  match none, and adds nothing where the preset has no such list.
+
+```typescript
+// presetter.config.ts
+import { asset, mergeIfExists, preset } from 'presetter';
+import essentials from '@presetter/preset-essentials';
+
+import type { ViteUserConfig } from 'vitest/config';
+
+export default preset('my-project', {
+  extends: [essentials],
+  override: {
+    assets: {
+      'vitest.config.ts': asset<{ default: ViteUserConfig }>({
+        default: {
+          test: {
+            // extends INT when this run registers it, and adds no project otherwise
+            projects: mergeIfExists('test.name', [
+              { test: { name: 'INT', testTimeout: 120_000 } },
+            ]),
+          },
+        },
+      }),
+    },
+  },
+});
+```
+
+A list a preset already wraps keeps its key, so a plain override list merges by
+that key too, appending items that match none.
+
 ### 🔧 Local Configuration Override
 
 Presetter respects local configurations - simply create your own file:

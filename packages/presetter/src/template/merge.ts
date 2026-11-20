@@ -18,6 +18,9 @@ type MergedArray<A, B> = A extends any[]
 
 const MERGE_KEY = Symbol.for('presetter.mergeKey');
 
+/** marks an array whose items merge only into elements they match */
+const MERGE_EXISTING = Symbol.for('presetter.mergeExisting');
+
 /**
  * deep merge an object
  * @param source default object if no additional property is supplied
@@ -35,6 +38,10 @@ export function merge<S, T, R = MergedType<S, T>>(source: S, target?: T): R {
     // increase performance, especially for large objects, since no change is needed anyway
     return source as MergedType<S, T> as R;
   }
+  if (isMergeIfExists(target) && !Array.isArray(source)) {
+    // there are no elements for the items to match, so nothing merges
+    return source as MergedType<S, T> as R;
+  }
   if (Array.isArray(source)) {
     return mergeArray(source, target) as MergedType<S, T> as R;
   }
@@ -45,8 +52,9 @@ export function merge<S, T, R = MergedType<S, T>>(source: S, target?: T): R {
   // NOTE:
   // if target is undefined, return the source
   // otherwise, return the target, even it is null
-  // eslint-disable-next-line @typescript-eslint/prefer-nullish-coalescing
-  return (target === undefined ? source : target) as MergedType<S, T> as R;
+  return (target === undefined
+    ? source
+    : withoutUnmatched(target)) as MergedType<S, T> as R;
 }
 
 /**
@@ -74,8 +82,9 @@ export function mergeArray<S, T>(source: S[], target?: T): MergedArray<S[], T> {
   }
 
   // if a merge isn't possible return the replacement or the original if no replacement is found
-  // eslint-disable-next-line @typescript-eslint/prefer-nullish-coalescing
-  return (target === undefined ? source : target) as MergedArray<S[], T>;
+  return (
+    target === undefined ? source : withoutUnmatched(target)
+  ) as MergedArray<S[], T>;
 }
 
 /**
@@ -92,7 +101,10 @@ export function mergeArrays<S, T>(
 
   return mergeKey
     ? mergeArraysByKey(source, target, mergeKey)
-    : ([...new Set([...source, ...target])] as MergedArray<S[], T[]>);
+    : ([...new Set([...source, ...withoutUnmatched(target)])] as MergedArray<
+        S[],
+        T[]
+      >);
 }
 
 /**
@@ -115,6 +127,114 @@ export function mergeByKey<
   });
 
   return result;
+}
+
+/**
+ * annotate an array so its items merge only into the elements they match by key,
+ * and are dropped, rather than appended, when they match none
+ * @param key the property name used to identify matching elements across arrays
+ * @param items the array of objects to annotate
+ * @returns a shallow copy of the array with non-enumerable merge annotations
+ */
+export function mergeIfExists<
+  T extends Record<string, unknown>,
+  K extends string & Paths<T, { bracketNotation: true; leavesOnly: true }>,
+>(key: K, items: T[]): T[] {
+  return Object.defineProperty(mergeByKey(key, items), MERGE_EXISTING, {
+    value: true,
+    enumerable: false,
+    writable: false,
+    configurable: false,
+  });
+}
+
+/**
+ * tell whether a value is an array annotated by mergeIfExists
+ * @param subject the value to inspect
+ * @returns true if its items merge only into elements they match
+ */
+function isMergeIfExists(subject: unknown): boolean {
+  return (
+    Array.isArray(subject) &&
+    Object.getOwnPropertyDescriptor(subject, MERGE_EXISTING)?.value === true
+  );
+}
+
+/**
+ * removes, at any depth, the lists whose items merge only into existing elements,
+ * from content added where there is nothing for them to merge into
+ * @param content content added without a counterpart in the source
+ * @param visited content already handled, mapped to its result, so shared and circular references resolve once
+ * @returns the content without those lists, or the same reference when it holds none
+ */
+function withoutUnmatched<T>(
+  content: T,
+  visited = new WeakMap<object, unknown>(),
+): T {
+  if (!Array.isArray(content) && !isPlainObject(content)) {
+    return content;
+  }
+
+  if (visited.has(content)) {
+    return visited.get(content) as T;
+  }
+
+  // a reference back to content still being handled keeps the original
+  visited.set(content, content);
+
+  const result = Array.isArray(content)
+    ? withoutUnmatchedItems(content, visited)
+    : withoutUnmatchedProperties(content, visited);
+
+  visited.set(content, result);
+
+  return result as T;
+}
+
+/**
+ * removes the lists that merge only into existing elements from the items of a list
+ * @param content list added without a counterpart in the source
+ * @param visited content already handled, mapped to its result
+ * @returns the list without those lists, or the same reference when it holds none
+ */
+function withoutUnmatchedItems(
+  content: unknown[],
+  visited: WeakMap<object, unknown>,
+): unknown[] {
+  const kept = content
+    .filter((item) => !isMergeIfExists(item))
+    .map((item) => withoutUnmatched(item, visited));
+  const isUnchanged =
+    kept.length === content.length &&
+    kept.every((item, index) => item === content[index]);
+  const key = getMergeKey(content);
+
+  if (isUnchanged) {
+    return content;
+  }
+
+  return key ? attachMergeKey(kept, key) : kept;
+}
+
+/**
+ * removes the lists that merge only into existing elements from the properties of an object
+ * @param content object added without a counterpart in the source
+ * @param visited content already handled, mapped to its result
+ * @returns the object without those lists, or the same reference when it holds none
+ */
+function withoutUnmatchedProperties(
+  content: Record<string, unknown>,
+  visited: WeakMap<object, unknown>,
+): Record<string, unknown> {
+  const entries = Object.entries(content);
+  const kept = entries
+    .filter(([, value]) => !isMergeIfExists(value))
+    .map(([key, value]) => [key, withoutUnmatched(value, visited)] as const);
+  const isUnchanged =
+    kept.length === entries.length &&
+    kept.every(([, value], index) => value === entries[index]?.[1]);
+
+  return isUnchanged ? content : Object.fromEntries(kept);
 }
 
 /**
@@ -273,12 +393,18 @@ function mergeArraysByKey<S, T>(
     return merge(item, match);
   });
 
-  // append target items that were not matched by any source item
+  // append target items that were not matched by any source item, unless only matches merge
   const unmatchedKeyed = [...targetMap]
     .filter(([keyValue]) => !matchedKeys.has(keyValue))
     .map(([, item]) => item);
 
-  const result = [...merged, ...unmatchedKeyed, ...unmatchedTarget];
+  const result = isMergeIfExists(target)
+    ? merged
+    : [
+        ...merged,
+        ...withoutUnmatched(unmatchedKeyed),
+        ...withoutUnmatched(unmatchedTarget),
+      ];
 
   return attachMergeKey(result, key);
 }
@@ -302,14 +428,18 @@ export function mergeObject<S extends {}, T>(
       ]),
     );
 
-    return {
-      ...mergedSource,
-      ...(target as object),
-      ...mergedSource,
-    } as MergedType<S, T>;
+    // properties the source lacks have nothing to merge into
+    const additions = withoutUnmatched(
+      Object.fromEntries(
+        Object.entries(target).filter(([key]) => !Object.hasOwn(source, key)),
+      ),
+    );
+
+    return { ...mergedSource, ...additions } as MergedType<S, T>;
   }
 
   // otherwise replace the source with target
-  // eslint-disable-next-line @typescript-eslint/prefer-nullish-coalescing
-  return (target === undefined ? source : target) as MergedType<S, T>;
+  return (
+    target === undefined ? source : withoutUnmatched(target)
+  ) as MergedType<S, T>;
 }
