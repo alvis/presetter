@@ -507,6 +507,9 @@ importers:
       git-cliff:
         specifier: catalog:build
         version: 2.14.2
+      globby:
+        specifier: catalog:runtime
+        version: 16.2.0
       husky:
         specifier: catalog:lint
         version: 9.1.7
