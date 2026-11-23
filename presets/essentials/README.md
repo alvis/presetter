@@ -325,7 +325,7 @@ build:typescript:alias: tsc-alias --resolve-full-paths --resolve-package-subpath
 }
 ```
 
-The `test` script runs bare Vitest, which registers only `UNIT` (`my-package (UNIT)` in monorepos); other presets may add always-on projects, such as Storybook's `STO`. The preset defines inline `UNIT`, `INT`, and `E2E` projects; it does not discover auxiliary config files. UNIT includes `.spec.*` and `.unit.*` files. INT matches `.int.*` or `.integration.*` suffixes, and E2E matches `.e2e.*` suffixes, including their `.test.*`/`.spec.*` forms; UNIT excludes those suffixed forms, so `foo.int.spec.ts` belongs to INT and `foo.e2e.spec.ts` to E2E. Each project also excludes Vitest’s default ignored paths. E2E allows 10 minutes per test. The shared shutdown timeout is also 10 minutes because Vitest only supports `teardownTimeout` at the root, not per project. INT and E2E use Node and run files serially within each project. INT allows 60 seconds per test; both allow 120 seconds per hook. Every project's typecheck include/exclude filters match its runtime filters; UNIT also typechecks Vitest's default `*.{test,spec}-d.*` type-test files. The example omits the projects’ file filters for brevity. Bare `vitest` registers only `UNIT`; passing `--project` (or `-p`) registers every project for Vitest to filter, so use `run test:vitest -- --project='*'` to run all projects.
+The `test` script runs bare Vitest, which registers only `UNIT` (`my-package (UNIT)` in monorepos); other presets may add always-on projects, such as Storybook's `STO`. The preset defines inline `UNIT`, `INT`, and `E2E` projects; it does not discover auxiliary config files. UNIT includes `.spec.*` and `.unit.*` files. INT matches `.int.*` or `.integration.*` suffixes, and E2E matches `.e2e.*` suffixes, including their `.test.*`/`.spec.*` forms; UNIT excludes those suffixed forms, so `foo.int.spec.ts` belongs to INT and `foo.e2e.spec.ts` to E2E. Each project also excludes Vitest’s default ignored paths. Every project collects its test files from the package directory, replacing any root-level `test.dir`, so its patterns and exclusions hold when Vitest runs from another directory; coverage paths still resolve from Vitest's root. E2E allows 10 minutes per test. The shared shutdown timeout is also 10 minutes because Vitest only supports `teardownTimeout` at the root, not per project. INT and E2E use Node and run files serially within each project. INT allows 60 seconds per test; both allow 120 seconds per hook. Every project's typecheck include/exclude filters match its runtime filters; UNIT also typechecks Vitest's default `*.{test,spec}-d.*` type-test files. The example omits the projects’ file filters for brevity. Bare `vitest` registers only `UNIT`; passing `--project` (or `-p`) registers every project for Vitest to filter, so use `run test:vitest -- --project='*'` to run all projects.
 
 #### Automatic setup files
 
@@ -351,6 +351,121 @@ For example:
 
 Unsuffixed files belong only to UNIT. User-configured setup files are kept.
 Detected setup modules are excluded from test collection.
+
+##### Folder-scoped setup files
+
+A nested folder of `<test>` can hold its own setup files. A `setup<suffix>`,
+`global-setup<suffix>`, `vitest.setup<suffix>` or `vitest.global-setup<suffix>`
+file there applies only to the specs in that folder's subtree. The suffix still
+selects the project, and the fixed names at the root and directly in `<test>`
+behave as above.
+
+| File                              | Applies to                     |
+| --------------------------------- | ------------------------------ |
+| `spec/setup.unit.ts`              | every UNIT spec                |
+| `spec/api/setup.unit.ts`          | UNIT specs under `spec/api/`   |
+| `spec/api/db/global-setup.int.ts` | INT specs under `spec/api/db/` |
+
+- Within a folder the base, suffix and extension order above applies, with
+  `setup` before `vitest.setup`.
+- The fixed files load first, then outer folders before inner ones. Sibling
+  folders run in plain string order of their names, so `B` comes before `a`.
+- Dot-folders, `node_modules` and symlinked folders are not scanned.
+- Only the names above are detected; `docker-setup.ts` or
+  `docker-global-setup.ts` is not.
+- Detected files are never collected as tests.
+
+##### Scoping setup files by hand
+
+`@presetter/preset-essentials/vitest` exports two helpers for setup files whose
+specs are not one folder. A setup that serves one folder needs no helper: put it
+in that folder as `global-setup.int.ts` or `setup.int.ts`, and it is detected
+and scoped to the folder. Use the helpers when several folders share one
+resource, which a setup file in each folder would start once per folder, or when
+specs are picked by name rather than by folder.
+
+Call them inside a project's `globalSetup` or `setupFiles` in a
+`presetter.config.ts` override. Essentials keys its projects by `test.name`, so
+wrap the entry in `mergeIfExists`: it merges into INT when INT is registered and
+is dropped otherwise, since a bare run registers only UNIT:
+
+| Helper                          | List it in    | Effect                                                                                             |
+| ------------------------------- | ------------- | -------------------------------------------------------------------------------------------------- |
+| `scopeGlobalSetup(globs, file)` | `globalSetup` | imports `file`, then runs its setup and teardown, only when a selected spec of the project matches |
+| `scopeSetup(globs, file)`       | `setupFiles`  | imports `file` only before the spec files that match                                               |
+
+```typescript
+// presetter.config.ts
+import essentials from '@presetter/preset-essentials';
+import {
+  scopeGlobalSetup,
+  scopeSetup,
+} from '@presetter/preset-essentials/vitest';
+import { asset, mergeIfExists, preset } from 'presetter';
+
+import type { ViteUserConfig } from 'vitest/config';
+
+export default preset('my-package', {
+  extends: [essentials],
+  override: {
+    assets: {
+      'vitest.config.ts': asset<{ default: ViteUserConfig }>({
+        default: {
+          test: {
+            // merge into INT, and add nothing when a bare run registers only UNIT
+            projects: mergeIfExists('test.name', [
+              {
+                test: {
+                  name: 'INT',
+                  globalSetup: [
+                    // one registry for both folders, started once when either is selected
+                    scopeGlobalSetup(
+                      ['spec/registry/**', 'spec/deploy/**'],
+                      'setup/docker.ts',
+                    ),
+                    // specs named after the resource they need, wherever they live
+                    scopeGlobalSetup(
+                      ['spec/**/*.ecr.int.spec.ts'],
+                      'setup/ecr.ts',
+                    ),
+                  ],
+                  setupFiles: [
+                    scopeSetup(
+                      ['spec/**/*.ecr.int.spec.ts'],
+                      'setup/ecr-each.ts',
+                    ),
+                  ],
+                },
+              },
+            ]),
+          },
+        },
+      }),
+    },
+  },
+});
+```
+
+- A relative `file` and every glob are relative to the directory of the
+  project's `vitest.config.ts`; an absolute `file` is used as is. Globs use `/`
+  separators and match dot-folders.
+- A global setup file follows Vitest's contract: a default export, or `setup`
+  and `teardown` exports. It is imported only when a selected spec of that
+  project matches. A run with no file filter selects every spec, so it runs
+  whenever one of the project's specs matches.
+- A per-file setup is imported only before matching spec files.
+- Files scoped by hand are not excluded from test collection, so keep them
+  outside the project's test patterns.
+
+##### Limits of scoped setup files
+
+- In watch mode, whether a scoped global setup runs is decided once per
+  session.
+- With `isolate: false`, a scoped per-file setup loads once per worker.
+- Outside a project built by the essentials template, `scopeGlobalSetup` falls
+  back to Vitest's root and `scopeSetup` to the working directory.
+- The generated wrappers live under `node_modules/.cache/presetter/vitest` in
+  the working directory.
 
 ---
 
