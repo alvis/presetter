@@ -66,6 +66,18 @@ describe('fn:composeScript', () => {
       ),
     });
 
+    should('warn a task name containing an unexpanded variable', {
+      template: {
+        build: 'builder',
+      },
+      target: {
+        build: 'run build:$TARGET',
+      },
+      result: new Error(
+        '"build:$TARGET" cannot be resolved in "run build:$TARGET"',
+      ),
+    });
+
     should('throw when maximum recursion depth is exceeded', {
       template: {
         t0: 'run t1',
@@ -262,10 +274,10 @@ describe('fn:composeScript', () => {
         build: 'eslint',
       },
       target: {
-        build: 'run build -- "src/**/*.ts"',
+        build: String.raw`run build -- "src/**/*.ts" --rule "quotes: [error, \"single\"]"`,
       },
       result: {
-        build: 'eslint "src/**/*.ts"',
+        build: String.raw`eslint "src/**/*.ts" --rule "quotes: [error, \"single\"]"`,
       },
     });
 
@@ -290,7 +302,8 @@ describe('fn:composeScript', () => {
         build: 'NODE_ENV=production run lint build',
       },
       result: {
-        build: '(\n  export NODE_ENV=production\n  linter\n) && (\n  export NODE_ENV=production\n  builder\n)',
+        build:
+          '(\n  export NODE_ENV=production\n  linter\n) && (\n  export NODE_ENV=production\n  builder\n)',
         lint: 'linter',
       },
     });
@@ -303,7 +316,8 @@ describe('fn:composeScript', () => {
         build: 'GIT_AUTHOR_NAME=bot run build',
       },
       result: {
-        build: '(\n  export GIT_AUTHOR_NAME=bot\n  V=$(npm pkg get version) && git commit\n)',
+        build:
+          '(\n  export GIT_AUTHOR_NAME=bot\n  V=$(npm pkg get version) && git commit\n)',
       },
     });
 
@@ -366,6 +380,48 @@ describe('fn:composeScript', () => {
         build: 'builder',
       },
     });
+
+    should('resolve a single-quoted task name', {
+      template: {
+        build: 'builder',
+      },
+      target: {
+        build: "run 'build'",
+      },
+      result: {
+        build: 'builder',
+      },
+    });
+
+    should('unescape a double-quoted task name', {
+      template: {
+        'build:"esm"': 'builder --format=esm',
+      },
+      target: {
+        build: String.raw`run "build:\"esm\""`,
+      },
+      result: {
+        'build': 'builder --format=esm',
+        'build:"esm"': 'builder --format=esm',
+      },
+    });
+
+    should(
+      'drop a line continuation after an escaped backslash in a double-quoted task name',
+      {
+        template: {
+          'build\\': 'builder',
+        },
+        target: {
+          // the shell source is `run "build\\\<newline>"`
+          build: 'run "build\\\\\\\n"',
+        },
+        result: {
+          'build': 'builder',
+          'build\\': 'builder',
+        },
+      },
+    );
 
     should('ignore non task definitions', {
       template: {
