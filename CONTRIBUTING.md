@@ -7,6 +7,7 @@
 - [Project Structure](#project-structure)
 - [Development](#development)
 - [Pull Request Submission](#pull-request-submission)
+- [Continuous Integration](#continuous-integration)
 - [Useful Commands](#useful-commands)
   - [Getting npm to trust github actions](#getting-npm-to-trust-github-actions)
 
@@ -117,6 +118,55 @@ The number of commits will ideally be limited in number, unless extra commits ca
 - all commits must follow the conventional commit standard
 - a test must shipped with any PR, if possible
 - 100% coverage must be maintained
+
+---
+
+## Continuous Integration
+
+Presetter's CI runs on its own quality gate, the composite action in [`.github/actions/quality`](.github/actions/quality/action.yaml).
+Each workflow below calls the local copy, `./.github/actions/quality`, so every push tests its own commit's copy of the action. The coverage run for a pull request is the exception: `pull_request_target` runs the base branch's workflow and action.
+
+| Workflow                                           | Runs on                                              | What it does                                          |
+| -------------------------------------------------- | ---------------------------------------------------- | ----------------------------------------------------- |
+| [`test.yaml`](.github/workflows/test.yaml)         | every push, on Ubuntu, macOS and Windows             | type check, tests and build, without coverage or lint |
+| [`coverage.yaml`](.github/workflows/coverage.yaml) | pushes to `main` and `pull_request_target` on `main` | unit tests with coverage, uploaded to qlty            |
+| [`style.yaml`](.github/workflows/style.yaml)       | every push                                           | lint only; fails if lint rewrites a tracked file      |
+
+To reproduce them locally from the repository root:
+
+```shell
+# test.yaml
+$ pnpm run typecheck
+$ pnpm run test
+$ pnpm run build
+
+# coverage.yaml
+$ pnpm run test:coverage
+
+# style.yaml: lint, then make sure it left nothing to commit
+$ pnpm run lint
+$ git diff --exit-code
+```
+
+Presetter's test, coverage and style workflows run on `push` and `pull_request_target`, never `pull_request`, so its own quality CI always runs in full and never runs the conflict gate. Both apply to consumers that run the gate on `pull_request`:
+
+- The conflict gate fails the job before install when the pull request, or any layer below it in a pull request stack, conflicts with its base. It reads pull requests through the GitHub API, so those callers grant `pull-requests: read`.
+- Unit tests run vitest `--changed` against the merge base with the pull request's base branch (the layer below, for a stacked pull request), and integration tests against the merge base with the stack's final target. Coverage takes the same commit. Lint gets the changed files. A `workflow_dispatch` runs in full.
+
+To mimic a scoped run, pass the commit yourself, e.g. `pnpm run test -- --changed "$(git merge-base HEAD origin/main)"`.
+The action's step scripts have a local simulation, with a fake GitHub API, a throwaway pull request stack and a recording `pnpm`; run it with shellcheck after changing them:
+
+```shell
+$ bash .github/actions/quality/spec/simulate.sh
+$ shellcheck .github/actions/quality/*.sh .github/actions/quality/spec/*.sh
+$ actionlint .github/workflows/quality.yaml
+```
+
+The repository also ships [`.github/workflows/quality.yaml`](.github/workflows/quality.yaml), a reusable workflow that wraps the action for other repositories and cancels their superseded runs.
+Presetter's own CI doesn't call it: it pins the action at a release tag, which doesn't exist yet on a feature branch or a Release PR.
+`npm run release:pr` rewrites that pin to the version being released and fails if the rewrite doesn't match.
+When you change an action input, mirror it in the wrapper and in the [continuous integration guide](website/docs/advanced/continuous-integration.md).
+[ARCHITECTURE.md](ARCHITECTURE.md#shared-quality-gate) explains the design.
 
 ---
 

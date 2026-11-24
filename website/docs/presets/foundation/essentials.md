@@ -589,26 +589,29 @@ cat vitest.config.ts
 
 ### CI/CD Pipeline
 
-```yaml
-# .github/workflows/ci.yml
-name: CI
-on: [push, pull_request]
+Presetter's shared quality workflow runs this preset's `typecheck`, `test` and `lint` scripts on pnpm projects, scoping tests and lint to the changed files on pull requests:
+
+```yaml title=".github/workflows/quality.yaml"
+name: Quality
+
+on:
+  pull_request:
+    types: [opened, reopened, synchronize, ready_for_review]
+  push:
+    branches: [main]
+
+permissions:
+  contents: read
+  # the conflict gate reads pull requests
+  pull-requests: read
 
 jobs:
-  test:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v3
-      - uses: actions/setup-node@v3
-        with:
-          node-version: "lts/*"
-          cache: 'npm'
-      
-      - run: npm ci
-      - run: npm run lint
-      - run: npm run test
-      - run: npm run build
+  quality:
+    # replace v10.0.0 with the latest Presetter release
+    uses: alvis/presetter/.github/workflows/quality.yaml@v10.0.0
 ```
+
+See [Continuous Integration](../../advanced/continuous-integration.md) for inputs, private registries, coverage and monorepos.
 
 ### VS Code Integration
 
