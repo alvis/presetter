@@ -9,7 +9,7 @@ clean:lib: zx --eval "fs.remove('{output}')"
 clean:coverage: zx --eval "fs.remove('coverage')"
 clean:tsc: zx --eval "fs.remove('tsconfig.build.tsbuildinfo')"
 lint: run-s "lint:* -- {@:{source} {test}}" --
-lint:prettier: prettier --write --no-error-on-unmatched-pattern
+lint:prettier: prettier --write --ignore-unknown --no-error-on-unmatched-pattern
 lint:eslint: eslint --fix --format stylish --no-error-on-unmatched-pattern --no-warn-ignored --cache --cache-strategy content
 lint:fixme: leasot --ignore '**/node_modules' --skip-unsupported --exit-nicely package.json
 lint-staged: lint-staged
