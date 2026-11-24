@@ -1,0 +1,393 @@
+name: Quality
+description: pnpm quality gate for standalone and monorepo projects; pull request conflict gate, checkout, private registry auth, install, type check, tests on what changed, lint
+
+# callers own the job: triggers, runs-on, concurrency, permissions, timeouts, and any steps before or after this one
+# on pull_request, the conflict gate reads pull requests through github.token, so the job needs `pull-requests: read`
+# unless conflict-gate is false
+inputs:
+  checkout:
+    description: 'check out the repository first; set false when an earlier step already did, e.g. to run a local action before install; a caller that checks out itself needs `fetch-depth: 0` for changed-only pull requests: the fallback fetch of a missing branch cannot authenticate on a private repository checked out with `persist-credentials: false`, so such a run goes full'
+    default: 'true'
+  node-version:
+    description: pnpm runtime selector, e.g. lts or 24
+    default: lts
+  registries:
+    description: 'registries to authenticate, one per line as `<origin> [oidc-path=<path>] [audience=<aud>]`; each tries OIDC first and falls back to its token'
+    default: ''
+  registry-oidc-path:
+    description: path on each registry that trades a GitHub OIDC token for an install token, e.g. /-/oidc/token; empty presents the OIDC token itself, once <origin>/-/whoami accepts it
+    default: ''
+  registry-oidc-audience:
+    description: 'audience of the GitHub OIDC token; {origin} is the registry origin and {host} its hostname without port'
+    default: '{origin}'
+  registry-tokens:
+    description: fallback tokens as <registry origin>=<token> lines; pass from secrets
+    default: ''
+  install-args:
+    description: extra pnpm install arguments, e.g. --child-concurrency 4
+    default: ''
+  conflict-gate:
+    description: "on pull_request, refuse to run when the pull request or any layer of its stack conflicts with its base, and find the stack's final target; false skips the API reads, and integration tests then scope to the base branch"
+    default: 'true'
+  stack-stop-branches:
+    description: "branches, one per line, where the conflict gate's stack walk stops; the branch it stops at becomes the stack's final target; list long-lived branches such as a git-flow develop, so a release pull request from them is never treated as a stack layer; the default branch always stops the walk, and null or empty stops only there"
+    default: ${{ github.event.repository.default_branch }}
+  changed-only:
+    description: "on pull requests, unit tests run vitest `--changed` against the base branch, integration tests against the stack's final target, and lint gets the changed files; every other event runs in full, and pull_request_target, which is not a pull_request event, also skips the conflict gate"
+    default: 'true'
+  full-run-paths:
+    description: patterns, one per line (`*` also crosses `/`), whose change forces a full run
+    default: |
+      pnpm-lock.yaml
+      pnpm-workspace.yaml
+  cache-paths:
+    description: incremental tool caches (e.g. .eslintcache), one per line
+    default: ''
+  typecheck-script:
+    description: package script for type checking; always runs in full; null or empty skips
+    default: typecheck
+  typecheck-args:
+    description: arguments after `--`, e.g. --tsBuildInfoFile .cache/typecheck.tsbuildinfo
+    default: ''
+  unit-test-script:
+    description: package script for unit tests; null or empty skips
+    default: test
+  unit-test-args:
+    description: arguments after `--`, e.g. --project=UNIT
+    default: ''
+  integration-test-script:
+    description: package script for integration tests, e.g. test:int; null or empty skips
+    default: ''
+  integration-test-args:
+    default: ''
+  end-to-end-test-script:
+    description: package script for end-to-end tests, e.g. test:e2e; always runs in full; null or empty skips
+    default: ''
+  end-to-end-test-args:
+    default: ''
+  test-env:
+    description: secret KEY=VALUE lines exported only to the test runs; pass from secrets
+    default: ''
+  coverage-test-by:
+    description: unit | integration | end-to-end; the run that also collects coverage; null or empty skips
+    default: unit
+  coverage-test-args:
+    description: arguments added to the coverage-test-by run; on a changed-only run, coverage is also limited to the files changed since the same commit as `--changed`
+    default: --coverage
+  lint-test-script:
+    description: package script for linting; null or empty skips
+    default: lint
+  lint-test-args:
+    description: arguments after `--`
+    default: ''
+  lint-changed-files-args:
+    description: word placed before the changed paths on the lint run; empty passes the bare paths
+    default: ''
+  fail-on-lint-changes:
+    description: fail when lint rewrites tracked files, so autofixes cannot pass silently
+    default: 'true'
+
+outputs:
+  changed-files:
+    description: the changed files lint was scoped to, one per line; empty on a full run
+    value: ${{ steps.scope.outputs.changed-files }}
+  stack-target:
+    description: on pull_request, the branch the pull request stack finally merges into (a standalone pull request's base); empty on other events
+    value: ${{ steps.gate.outputs.target }}
+
+runs:
+  using: composite
+  steps:
+    - name: Input Validation
+      shell: bash
+      env:
+        COVERAGE_BY: ${{ inputs.coverage-test-by }}
+        UNIT_SCRIPT: ${{ inputs.unit-test-script }}
+        INTEGRATION_SCRIPT: ${{ inputs.integration-test-script }}
+        END_TO_END_SCRIPT: ${{ inputs.end-to-end-test-script }}
+      run: |
+        script=""
+        case "$COVERAGE_BY" in
+          '') ;;
+          unit) script="$UNIT_SCRIPT" ;;
+          integration) script="$INTEGRATION_SCRIPT" ;;
+          end-to-end) script="$END_TO_END_SCRIPT" ;;
+          *)
+            echo "::error::coverage-test-by must be empty, unit, integration or end-to-end"
+            exit 1
+            ;;
+        esac
+        if [ -n "$COVERAGE_BY" ] && [ -z "$script" ]; then
+          echo "::warning::coverage-test-by is $COVERAGE_BY, but that test script is empty; no coverage will be collected"
+        fi
+
+    # before install, so a pull request that cannot merge spends nothing on tests
+    - id: gate
+      name: Conflict Gate
+      if: ${{ github.event_name == 'pull_request' }}
+      shell: bash
+      env:
+        GH_TOKEN: ${{ github.token }}
+        PR_NUMBER: ${{ github.event.pull_request.number }}
+        DEFAULT_BRANCH: ${{ github.event.repository.default_branch }}
+        STACK_STOP_BRANCHES: ${{ inputs.stack-stop-branches }}
+        CONFLICT_GATE: ${{ inputs.conflict-gate }}
+      run: |
+        # NOTE: Windows runners check out with core.autocrlf=true, so the scripts may arrive with CRLF endings; strip
+        # the carriage returns before bash parses them (the assignment fails the step if the script cannot be read)
+        script=$(tr -d '\r' < "$GITHUB_ACTION_PATH/conflict-gate.sh")
+        bash -c "$script" conflict-gate.sh
+
+    - name: Code Checkout
+      if: ${{ inputs.checkout == 'true' }}
+      uses: actions/checkout@v7
+      with:
+        # the merge bases with the base branch and the stack's target need history; with persist-credentials off,
+        # change-scope.sh cannot fetch more later on a private repository, so a missing branch there means a full run
+        fetch-depth: ${{ (inputs.changed-only == 'true' && github.event_name == 'pull_request') && '0' || '1' }}
+        # later steps run repository scripts, which must not be able to read the checkout token
+        persist-credentials: false
+
+    - id: lockfile
+      name: Lockfile Detection
+      shell: bash
+      run: |
+        if [ -f pnpm-lock.yaml ]; then
+          echo "cache-path=pnpm-lock.yaml" >> "$GITHUB_OUTPUT"
+          echo "frozen=--frozen-lockfile" >> "$GITHUB_OUTPUT"
+        else
+          # repos that do not commit a lockfile key the store on their manifests
+          delimiter="ghadelim_$(openssl rand -hex 16 2>/dev/null || echo "$RANDOM$RANDOM$$")"
+          { echo "cache-path<<$delimiter"; echo package.json; [ -f pnpm-workspace.yaml ] && echo pnpm-workspace.yaml; echo "$delimiter"; } >> "$GITHUB_OUTPUT"
+          echo "frozen=" >> "$GITHUB_OUTPUT"
+        fi
+
+    - name: Setup pnpm And Node.js
+      uses: pnpm/setup@v3
+      with:
+        runtime: node@${{ inputs.node-version || 'lts' }}
+        cache: true
+        cache-dependency-path: ${{ steps.lockfile.outputs.cache-path }}
+        install: false
+
+    # auth and install share one step, so the tokens live only in this step's environment and its temporary npmrc
+    - name: Registry Auth And Dependencies Install
+      shell: bash
+      env:
+        REGISTRIES: ${{ inputs.registries }}
+        OIDC_PATH: ${{ inputs.registry-oidc-path }}
+        OIDC_AUDIENCE: ${{ inputs.registry-oidc-audience }}
+        REGISTRY_TOKENS: ${{ inputs.registry-tokens }}
+        FROZEN: ${{ steps.lockfile.outputs.frozen }}
+        INSTALL_ARGS: ${{ inputs.install-args }}
+      run: |
+        # github's bash keeps -e on: every probe and exchange below is guarded, so a failure falls through to the next method
+        set -uo pipefail
+        curl_options=(--max-time 30 --retry 2)
+        # a token holding a line break cannot be a header or an npmrc value
+        usable() { case "$1" in '' | *$'\n'* | *$'\r'*) return 1 ;; esac; }
+
+        if [ -n "${REGISTRIES//[[:space:]]/}" ]; then
+          # a per-job npmrc, seeded from the user's, keeps tokens out of the user npmrc and away from later steps
+          npmrc="$(mktemp "${RUNNER_TEMP:-${TMPDIR:-/tmp}}/quality-npmrc.XXXXXX")"
+          trap 'rm -f "$npmrc"' EXIT
+          # seed from the config pnpm would read, then point every name pnpm checks at the per-job file
+          user_npmrc="${pnpm_config_npmrc_auth_file:-${pnpm_config_userconfig:-${npm_config_userconfig:-${NPM_CONFIG_USERCONFIG:-$HOME/.npmrc}}}}"
+          # the trailing newline keeps the first auth line off a seed that lacks one (e.g. setup-node's npmrc)
+          if [ -f "$user_npmrc" ]; then { cat "$user_npmrc"; echo; } > "$npmrc"; fi
+          export pnpm_config_npmrc_auth_file="$npmrc" pnpm_config_userconfig="$npmrc" npm_config_userconfig="$npmrc" NPM_CONFIG_USERCONFIG="$npmrc"
+
+          index=0
+          while IFS= read -r line; do
+            line="${line%$'\r'}"
+            # a line is `<origin> [oidc-path=<path>] [audience=<aud>]`; the token fallback is keyed by the origin alone
+            read -r registry options <<< "$line"
+            registry="${registry%/}"
+            [ -z "$registry" ] && continue
+            host="${registry#*://}"
+            hostname="${host%%/*}"
+            hostname="${hostname%%:*}"
+            index=$((index + 1))
+            token=""
+            method=""
+
+            # per-registry options override the inputs
+            exchange_path="$OIDC_PATH"
+            audience="$OIDC_AUDIENCE"
+            read -ra words <<< "$options"
+            for word in ${words[@]+"${words[@]}"}; do
+              case "$word" in
+                oidc-path=*) exchange_path="${word#oidc-path=}" ;;
+                audience=*) audience="${word#audience=}" ;;
+                *) echo "::warning::$host: ignoring unknown registry option $word" ;;
+              esac
+            done
+            audience="${audience//'{origin}'/$registry}"
+            audience="${audience//'{host}'/$hostname}"
+
+            # prefer OIDC: needs the caller job to grant id-token: write
+            if [ -n "${ACTIONS_ID_TOKEN_REQUEST_URL:-}" ]; then
+              encoded=$(jq -rn --arg a "$audience" '$a|@uri') || encoded=""
+              [ -n "$encoded" ] && id_token=$(curl -fsSL "${curl_options[@]}" -H "Accept: application/json" -H "Authorization: bearer ${ACTIONS_ID_TOKEN_REQUEST_TOKEN:-}" \
+                "$ACTIONS_ID_TOKEN_REQUEST_URL&audience=$encoded" | jq -er .value) || id_token=""
+              usable "$id_token" || id_token=""
+
+              if [ -z "$id_token" ]; then
+                echo "::notice::$host: OIDC token unavailable, falling back to token"
+              else
+                echo "::add-mask::$id_token"
+                if [ -n "$exchange_path" ]; then
+                  # exchange mode: the registry trades the ID token for an install token
+                  token=$(curl -fsSL "${curl_options[@]}" -X POST -H "Authorization: Bearer $id_token" "$registry$exchange_path" | jq -er .token) || token=""
+                  usable "$token" || token=""
+                  method="OIDC exchange"
+                elif curl -fsS "${curl_options[@]}" -H "Accept: application/json" -H "Authorization: Bearer $id_token" "$registry/-/whoami" \
+                  | jq -e '.username // empty | select(type == "string" and . != "")' > /dev/null; then
+                  # direct mode: the registry accepts the ID token itself, shown by naming the user it maps to
+                  token="$id_token"
+                  method="OIDC ID token"
+                fi
+                [ -n "$token" ] || echo "::notice::$host: OIDC rejected by registry, falling back to token"
+              fi
+            fi
+
+            # fall back to the caller's token for this registry, listed with or without a trailing slash
+            if [ -z "$token" ]; then
+              token=$(printf '%s\n' "$REGISTRY_TOKENS" | registry="$registry" awk '
+                BEGIN { r = ENVIRON["registry"] }
+                { sub(/\r$/, "") }
+                index($0, r "=") == 1 { print substr($0, length(r) + 2); exit }
+                index($0, r "/=") == 1 { print substr($0, length(r) + 3); exit }')
+              usable "$token" || token=""
+              [ -n "$token" ] && method="registry-tokens"
+            fi
+
+            if [ -z "$token" ]; then
+              # fork PRs and public callers without secrets still install public packages
+              echo "::warning::$host: no OIDC and no token; installing anonymously"
+              continue
+            fi
+
+            echo "$host: authenticated via $method"
+            echo "::add-mask::$token"
+            # one variable per registry line, so two hosts can never share a token
+            variable="QUALITY_REGISTRY_TOKEN_$index"
+            export "$variable=$token"
+            # the npmrc holds a literal reference that pnpm expands at read time, never the token itself
+            # shellcheck disable=SC2016
+            printf '%s\n' "//${host}/:_authToken=\${$variable}" >> "$npmrc"
+          done <<< "$REGISTRIES"
+        fi
+
+        set -f
+        # shellcheck disable=SC2086
+        pnpm install $FROZEN --prefer-offline $INSTALL_ARGS
+
+    - id: scope
+      name: Change Scope Detection
+      shell: bash
+      env:
+        CHANGED_ONLY: ${{ inputs.changed-only == 'true' && github.event_name == 'pull_request' }}
+        EVENT: ${{ github.event_name }}
+        BASE_REF: ${{ github.event.pull_request.base.ref }}
+        TARGET_REF: ${{ steps.gate.outputs.target }}
+        FULL_RUN_PATHS: ${{ inputs.full-run-paths }}
+      run: |
+        script=$(tr -d '\r' < "$GITHUB_ACTION_PATH/change-scope.sh")
+        bash -c "$script" change-scope.sh
+
+    - name: Tool Cache Restoration
+      if: ${{ inputs.cache-paths != '' }}
+      uses: actions/cache/restore@v6
+      with:
+        key: quality-tools-${{ runner.os }}-${{ github.event.pull_request.head.sha || github.sha }}
+        # newest entry reachable from this branch or its base
+        restore-keys: quality-tools-${{ runner.os }}-
+        path: ${{ inputs.cache-paths }}
+
+    - name: Type Check
+      if: ${{ inputs.typecheck-script != '' }}
+      shell: bash
+      env:
+        SCRIPT: ${{ inputs.typecheck-script }}
+        ARGS: ${{ inputs.typecheck-args }}
+      run: |
+        set -f
+        # shellcheck disable=SC2086
+        set -- $ARGS
+        if [ $# -gt 0 ]; then pnpm run --if-present "$SCRIPT" -- "$@"; else pnpm run --if-present "$SCRIPT"; fi
+
+    - name: Unit Test
+      if: ${{ inputs.unit-test-script != '' }}
+      shell: bash
+      env:
+        SECRET_ENV: ${{ inputs.test-env }}
+        SCRIPT: ${{ inputs.unit-test-script }}
+        ARGS: ${{ inputs.unit-test-args }}
+        # the pull request's own changes: for a stacked pull request, since the layer below
+        CHANGED_SINCE: ${{ steps.scope.outputs.unit-base }}
+        COVERAGE_ARGS: ${{ inputs.coverage-test-by == 'unit' && inputs.coverage-test-args || '' }}
+      run: |
+        script=$(tr -d '\r' < "$GITHUB_ACTION_PATH/run-test.sh")
+        bash -c "$script" run-test.sh
+
+    - name: Integration Test
+      if: ${{ inputs.integration-test-script != '' }}
+      shell: bash
+      env:
+        SECRET_ENV: ${{ inputs.test-env }}
+        SCRIPT: ${{ inputs.integration-test-script }}
+        ARGS: ${{ inputs.integration-test-args }}
+        # what the whole stack brings to its final target, not only this layer
+        CHANGED_SINCE: ${{ steps.scope.outputs.integration-base }}
+        COVERAGE_ARGS: ${{ inputs.coverage-test-by == 'integration' && inputs.coverage-test-args || '' }}
+      run: |
+        script=$(tr -d '\r' < "$GITHUB_ACTION_PATH/run-test.sh")
+        bash -c "$script" run-test.sh
+
+    - name: End-to-End Test
+      if: ${{ inputs.end-to-end-test-script != '' }}
+      shell: bash
+      env:
+        SECRET_ENV: ${{ inputs.test-env }}
+        SCRIPT: ${{ inputs.end-to-end-test-script }}
+        ARGS: ${{ inputs.end-to-end-test-args }}
+        # end-to-end suites run whole flows, never a changed subset
+        CHANGED_SINCE: ''
+        COVERAGE_ARGS: ${{ inputs.coverage-test-by == 'end-to-end' && inputs.coverage-test-args || '' }}
+      run: |
+        script=$(tr -d '\r' < "$GITHUB_ACTION_PATH/run-test.sh")
+        bash -c "$script" run-test.sh
+
+    # runs last: lint rewrites fixable files, and a later test step would see them as changes
+    - name: Lint Test
+      if: ${{ inputs.lint-test-script != '' }}
+      shell: bash
+      env:
+        SCRIPT: ${{ inputs.lint-test-script }}
+        ARGS: ${{ inputs.lint-test-args }}
+        CHANGED_FILES: ${{ steps.scope.outputs.changed-files }}
+        CHANGED_FILES_ARGS: ${{ inputs.lint-changed-files-args }}
+        COVERAGE_ARGS: ''
+      run: |
+        script=$(tr -d '\r' < "$GITHUB_ACTION_PATH/run-test.sh")
+        bash -c "$script" run-test.sh
+
+    - name: Lint Drift Check
+      if: ${{ inputs.lint-test-script != '' && inputs.fail-on-lint-changes == 'true' }}
+      shell: bash
+      env:
+        SCRIPT: ${{ inputs.lint-test-script }}
+      run: |
+        if ! git diff --quiet; then
+          echo "::error::lint rewrote tracked files; run 'pnpm run $SCRIPT' locally and commit the result"
+          git diff --stat
+          exit 1
+        fi
+
+    - name: Tool Cache Storing
+      if: ${{ always() && inputs.cache-paths != '' }}
+      uses: actions/cache/save@v6
+      with:
+        key: quality-tools-${{ runner.os }}-${{ github.event.pull_request.head.sha || github.sha }}
+        path: ${{ inputs.cache-paths }}
