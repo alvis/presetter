@@ -1,4 +1,4 @@
-name: code coverage
+name: Code Coverage
 
 on:
   push:
@@ -8,26 +8,29 @@ on:
     branches:
       - main
 
+# the jobs only read the repository; the coverage upload authenticates with its own token
+permissions:
+  contents: read
+
 jobs:
   coverage:
+    name: Coverage
     runs-on: ubuntu-latest
     steps:
-      - name: checkout
-        uses: actions/checkout@v4
-      - name: setup pnpm
-        uses: pnpm/setup@v3
+      - name: Code Checkout
+        uses: actions/checkout@v7
         with:
-          runtime: node@lts
-          cache: true
-          install: false
-      - name: install dependencies
-        run: pnpm install
-      - name: run coverage
-        run: pnpm run test:coverage
-        env:
-          CI: true
-      - name: upload coverage
+          # later steps run repository scripts, which must not be able to read the checkout token
+          persist-credentials: false
+      - name: Quality
+        # neither event is pull_request, so the unit suite always runs in full
+        uses: ./.github/actions/quality
+        with:
+          checkout: false
+          typecheck-script: null
+          lint-test-script: null
+      - name: Coverage Upload
         uses: qltysh/qlty-action/coverage@v1
         with:
-          token: ${{secrets.QLTY_COVERAGE_TOKEN}}
+          token: ${{ secrets.QLTY_COVERAGE_TOKEN }}
           files: coverage/lcov.info

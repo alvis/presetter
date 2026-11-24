@@ -1,24 +1,34 @@
-name: code style
+name: Code Style
 
 on:
   push:
     branches:
       - '**'
+
+# the jobs only read the repository
+permissions:
+  contents: read
+
 jobs:
   style:
+    name: Style
     runs-on: ubuntu-latest
     steps:
-      - name: checkout
-        uses: actions/checkout@v4
-      - name: setup pnpm
-        uses: pnpm/setup@v3
+      # the local action, never the wrapper: the wrapper pins a released tag that a PR or release PR may not have yet
+      - name: Code Checkout
+        uses: actions/checkout@v7
         with:
-          runtime: node@lts
-          cache: true
-          install: false
-      - name: install dependencies
-        run: pnpm install
-      - name: run code style check
-        run: pnpm run lint
-        env:
-          CI: true
+          # later steps run repository scripts, which must not be able to read the checkout token
+          persist-credentials: false
+      - name: Quality
+        uses: ./.github/actions/quality
+        with:
+          checkout: false
+          # lint only: type checks and tests run in test.yaml
+          typecheck-script: null
+          unit-test-script: null
+          # no unit run to collect coverage from; leaving it at unit draws an input warning
+          coverage-test-by: null
+      # the conflict gate and changed-only scoping never run on this repository's push events, so this is their only hosted check
+      - name: Action Simulation
+        run: bash .github/actions/quality/spec/simulate.sh
