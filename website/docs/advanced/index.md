@@ -26,8 +26,8 @@ Optimize build times and resource usage.
 ### 📦 Dependency Management
 Strategies for efficient dependency handling.
 
-### 🚀 CI/CD Optimization
-Speed up continuous integration pipelines.
+### 🚀 Continuous Integration
+Run type checks, tests and lint in GitHub Actions with Presetter's shared quality gate. See [Continuous Integration](./continuous-integration.md).
 
 ## Architecture & Internals
 
