@@ -1,6 +1,3 @@
-import { delimiter } from 'node:path';
-
-import npmRunScript from '@npmcli/run-script';
 import { Listr } from 'listr2';
 
 import parse from 'yargs-parser';
@@ -8,12 +5,15 @@ import parse from 'yargs-parser';
 import { resolveProjectContext } from './context';
 import debug from './debugger';
 import { getScripts } from './preset';
+import { startScript } from './script';
 import { composeScripts } from './scripts';
+import { trapSignals } from './signals';
 import { parseGlobalArgs, parseTaskSpec, selectTasks } from './task';
 
 import type { ProjectContext } from '@presetter/types';
 import type { ListrTask, SimpleRenderer } from 'listr2';
 
+import type { SignalTrap } from './signals';
 import type { Task } from './task';
 
 /** a Listr task rendered by the simple renderer */
@@ -29,6 +29,7 @@ type RunnerTask = ListrTask<never, typeof SimpleRenderer>;
  * @param _.task task name
  * @param _.args array of arguments, passed to the task only and never to its hooks
  * @param _.concurrent whether the tasks join a list that runs concurrently
+ * @param _.trap the trap keeping the scripts from starting once a signal has arrived
  * @param _.lifecycleEvent the package.json script the package manager is running, if any
  * @returns Listr tasks running the hooks and the task in sequence
  */
@@ -40,6 +41,7 @@ function createListrTasks(_: {
   task: string;
   args: string[];
   concurrent: boolean;
+  trap: SignalTrap;
   lifecycleEvent?: string;
 }): RunnerTask[] {
   const { concurrent, lifecycleEvent, ...script } = _;
@@ -84,6 +86,7 @@ function createListrTasks(_: {
  * @param _.paths additional binary paths from preset roots
  * @param _.task task name
  * @param _.args array of arguments
+ * @param _.trap the trap keeping the script from starting once a signal has arrived
  * @returns a Listr task running the script
  */
 function createScriptTask(_: {
@@ -93,8 +96,9 @@ function createScriptTask(_: {
   paths: string[];
   task: string;
   args: string[];
+  trap: SignalTrap;
 }): RunnerTask {
-  const { scripts, template, task, args, context, paths } = _;
+  const { scripts, template, task, args, context, paths, trap } = _;
 
   return {
     title: `Running ${task}...`,
@@ -124,6 +128,7 @@ function createScriptTask(_: {
               taskSpec,
               globalArgs,
               concurrent,
+              trap,
             }),
           ),
         );
@@ -133,8 +138,21 @@ function createScriptTask(_: {
       }
       taskControl.output = `${scripts[task]} ${args.join(' ')}`;
 
-      // run the npm script with the provided arguments and package information
-      return runWithNPM({ task, args, context, paths, scripts });
+      // run the script with the provided arguments in the project root
+      // NOTE: skipping a script that a signal kept from starting stops Listr from reporting it as completed
+      return trap.guard(
+        () =>
+          startScript({
+            event: task,
+            command,
+            args,
+            cwd: context.projectRoot,
+            paths,
+          }),
+        () => {
+          taskControl.skip('interrupted by a signal');
+        },
+      );
     },
   };
 }
@@ -148,6 +166,7 @@ function createScriptTask(_: {
  * @param _.taskSpec task specification string
  * @param _.globalArgs array of global arguments
  * @param _.concurrent whether the tasks join a list that runs concurrently
+ * @param _.trap the trap keeping the scripts from starting once a signal has arrived
  * @returns a promise resolving to an array of Listr tasks
  */
 async function getListrTasksBySpec(_: {
@@ -157,8 +176,10 @@ async function getListrTasksBySpec(_: {
   taskSpec: string;
   globalArgs: string[];
   concurrent: boolean;
+  trap: SignalTrap;
 }): Promise<RunnerTask[]> {
   const { template, context, paths, taskSpec, globalArgs, concurrent } = _;
+  const { trap } = _;
 
   // parse the task specification and remove any quotes
   const task = parseTaskSpec(
@@ -174,6 +195,7 @@ async function getListrTasksBySpec(_: {
     selector: task.selector,
     args: task.args,
     concurrent,
+    trap,
   });
 }
 
@@ -186,6 +208,7 @@ async function getListrTasksBySpec(_: {
  * @param _.selector task selector string
  * @param _.args array of arguments
  * @param _.concurrent whether the tasks join a list that runs concurrently
+ * @param _.trap the trap keeping the scripts from starting once a signal has arrived
  * @param _.lifecycleEvent the package.json script the package manager is running, if any
  * @returns a promise resolving to an array of Listr tasks
  */
@@ -196,10 +219,11 @@ async function getListrTasks(_: {
   selector: string;
   args: string[];
   concurrent: boolean;
+  trap: SignalTrap;
   lifecycleEvent?: string;
 }): Promise<RunnerTask[]> {
   const { paths, template, context, selector, args } = _;
-  const { concurrent, lifecycleEvent } = _;
+  const { concurrent, trap, lifecycleEvent } = _;
 
   // clone the content for immutability
   const target = { ...context.packageJson.scripts } as Record<string, string>;
@@ -220,49 +244,10 @@ async function getListrTasks(_: {
       task,
       args,
       concurrent,
+      trap,
       lifecycleEvent,
     }),
   );
-}
-
-/**
- * run a task defined in the combined script definitions using npm-run-script
- * @param _ collection of arguments
- * @param _.task task name
- * @param _.args array of arguments
- * @param _.context project context
- * @param _.paths additional binary paths from preset roots
- * @param _.scripts combined script definitions
- * @returns a promise that will be resolved when the task is completed
- */
-async function runWithNPM(_: {
-  task: string;
-  args: string[];
-  context: ProjectContext;
-  paths: string[];
-  scripts: Record<string, string>;
-}): Promise<void> {
-  const {
-    task,
-    args,
-    context: { projectRoot },
-    scripts,
-  } = _;
-
-  const paths = [..._.paths, ...process.env.PATH!.split(delimiter)];
-
-  debug('RUNNING\n%O', { task, command: scripts[task], paths });
-
-  await npmRunScript({
-    event: task,
-    args,
-    env: {
-      PATH: paths.join(delimiter),
-    },
-    pkg: { scripts },
-    path: projectRoot,
-    stdio: 'inherit',
-  });
 }
 
 /**
@@ -292,30 +277,40 @@ export async function run(
   // get the merged script definitions
   const { paths, scripts: template } = await getScripts();
 
-  // get Listr tasks based on the provided tasks and package information
-  const nestedTasks = await Promise.all(
-    tasks.map(async (taskItem) =>
-      getListrTasks({
-        paths,
-        template,
-        context: distilled,
-        selector: taskItem.selector,
-        args: taskItem.args,
-        concurrent: parallel,
-        // NOTE: only a top-level task can be the script the package manager runs
-        lifecycleEvent: process.env.npm_lifecycle_event,
-      }),
-    ),
-  );
-  const listTasks = nestedTasks.flat();
+  // NOTE: from here a signal must reach the scripts and wait for them, not kill presetter and leave them behind
+  const trap = trapSignals();
 
-  // create a Listr instance with the list of tasks and configuration options
-  const listr = new Listr<never, 'simple'>(listTasks, {
-    concurrent: parallel,
-    exitOnError: true,
-    renderer: 'simple',
-  });
+  try {
+    // get Listr tasks based on the provided tasks and package information
+    const nestedTasks = await Promise.all(
+      tasks.map(async (taskItem) =>
+        getListrTasks({
+          paths,
+          template,
+          context: distilled,
+          selector: taskItem.selector,
+          args: taskItem.args,
+          concurrent: parallel,
+          trap,
+          // NOTE: only a top-level task can be the script the package manager runs
+          lifecycleEvent: process.env.npm_lifecycle_event,
+        }),
+      ),
+    );
+    const listTasks = nestedTasks.flat();
 
-  // run the Listr tasks
-  await listr.run();
+    // create a Listr instance with the list of tasks and configuration options
+    const listr = new Listr<never, 'simple'>(listTasks, {
+      concurrent: parallel,
+      exitOnError: true,
+      renderer: 'simple',
+      // NOTE: on SIGINT Listr abandons the running task and exits with 127 at once, before the script has wound down
+      registerSignalListeners: false,
+    });
+
+    // run the Listr tasks
+    await trap.supervise(listr.run());
+  } finally {
+    trap.release();
+  }
 }

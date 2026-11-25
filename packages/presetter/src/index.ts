@@ -2,6 +2,7 @@
 
 export * from '@presetter/types';
 
+export * from '#interrupted';
 export * from '#preset';
 export * from '#resolve';
 export * from '#run';
