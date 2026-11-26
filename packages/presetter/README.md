@@ -221,6 +221,8 @@ Preset authors declare literal package script commands in `setup.scripts`, for e
 
 Like `npm run`, `run` executes `pre<task>` before and `post<task>` after each task it runs, including tasks reached through `run-s` and `run-p`, when the merged scripts define them. Hooks get no arguments, `post<task>` runs only after the task succeeds, and a hook fires no hooks of its own. When the package manager runs the task as a `package.json` script, `run` skips the hooks that `package.json` defines, because the package manager has already run them. Delegates such as `"pretest": "run pretest"` are redundant; remove them.
 
+`run`, `run-s` and `run-p` pass `SIGINT`, `SIGTERM` and `SIGHUP` on to the scripts they are running, stay alive until those scripts have exited, and then exit with the status of the script, or `128` plus the signal number when the script was killed by a signal. Once a signal has arrived, no further task, including the `post<task>` hook, starts. This lets a CI runner that cancels a step with `SIGINT` give the test runner under it time to clean up. When used as a library, `run` rejects with `InterruptedError`, whose `exitCode` is that status.
+
 #### Bootstrap flags
 
 | Flag               | Alias | Default | Purpose                                                                                           |

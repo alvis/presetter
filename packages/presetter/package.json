@@ -55,7 +55,6 @@
     "typecheck": "npm run script -- typecheck --"
   },
   "dependencies": {
-    "@npmcli/run-script": "catalog:runtime",
     "@presetter/types": "workspace:*",
     "@stricli/core": "catalog:runtime",
     "chalk": "catalog:runtime",

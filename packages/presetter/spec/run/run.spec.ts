@@ -1,14 +1,36 @@
-import npmRunScript from '@npmcli/run-script';
 import { describe, expect, it, vi } from 'vitest';
 
+import { InterruptedError } from '#interrupted';
 import { run } from '#run';
+import { startScript } from '#script';
 
-vi.mock('@npmcli/run-script', () => ({
-  default: vi.fn(({ event, pkg }: Parameters<typeof npmRunScript>[0]) => {
-    if (pkg.scripts?.[event] === 'erroneous command') {
-      throw new Error('mock task failed');
-    }
-  }),
+import type { ScriptProcess } from '#script';
+
+vi.mock('#script', () => ({
+  startScript: vi.fn(
+    ({ command }: { command: string }): ScriptProcess =>
+      // NOTE: the script runs once presetter is waiting for it, so a signal it raises reaches its shell
+      Object.assign(
+        Promise.resolve().then(() => {
+          if (command === 'erroneous command') {
+            throw new Error('mock task failed');
+          }
+
+          // NOTE: a script receiving SIGINT, winding down and exiting with 130
+          if (command === 'interrupted command') {
+            process.emit('SIGINT');
+
+            throw createInterruption();
+          }
+
+          // NOTE: a script receiving SIGHUP and exiting normally
+          if (command === 'hung up command') {
+            process.emit('SIGHUP');
+          }
+        }),
+        { kill: vi.fn(() => true) },
+      ),
+  ),
 }));
 
 vi.mock('#context', () => ({
@@ -54,9 +76,23 @@ vi.mock('#preset', () => ({
       'aborted': 'erroneous command',
       'preaborted': 'preaborted command',
       'postaborted': 'postaborted command',
+      'interrupted': 'interrupted command',
+      'sequence': 'run-s halted other',
+      'halted': 'hung up command',
+      'posthalted': 'posthalted command',
     },
   })),
 }));
+
+/**
+ * create the error a script rejects with when it exits with 130 after SIGINT
+ * @returns the error
+ */
+function createInterruption(): Error {
+  return Object.assign(new Error('mock task interrupted'), {
+    exitCode: 130,
+  });
+}
 
 /**
  * lists the scripts executed so far, in order, with their arguments
@@ -64,7 +100,7 @@ vi.mock('#preset', () => ({
  */
 function getExecutedScripts(): Array<[event: string, args: string[]]> {
   return vi
-    .mocked(npmRunScript)
+    .mocked(startScript)
     .mock.calls.map(([{ event, args }]) => [event, args]);
 }
 
@@ -77,12 +113,12 @@ describe('fn:run', () => {
 
     await run(selectors);
 
-    expect(npmRunScript).toHaveBeenCalledTimes(2);
-    expect(npmRunScript).toHaveBeenNthCalledWith(
+    expect(startScript).toHaveBeenCalledTimes(2);
+    expect(startScript).toHaveBeenNthCalledWith(
       1,
       expect.objectContaining({ event: 'task' }),
     );
-    expect(npmRunScript).toHaveBeenNthCalledWith(
+    expect(startScript).toHaveBeenNthCalledWith(
       2,
       expect.objectContaining({ event: 'other' }),
     );
@@ -93,12 +129,12 @@ describe('fn:run', () => {
 
     await run(selectors);
 
-    expect(npmRunScript).toHaveBeenCalledTimes(2);
-    expect(npmRunScript).toHaveBeenNthCalledWith(
+    expect(startScript).toHaveBeenCalledTimes(2);
+    expect(startScript).toHaveBeenNthCalledWith(
       1,
       expect.objectContaining({ event: 'subtask:task1' }),
     );
-    expect(npmRunScript).toHaveBeenNthCalledWith(
+    expect(startScript).toHaveBeenNthCalledWith(
       2,
       expect.objectContaining({ event: 'subtask:task2' }),
     );
@@ -109,12 +145,12 @@ describe('fn:run', () => {
 
     await run(selectors);
 
-    expect(npmRunScript).toHaveBeenCalledTimes(2);
-    expect(npmRunScript).toHaveBeenNthCalledWith(
+    expect(startScript).toHaveBeenCalledTimes(2);
+    expect(startScript).toHaveBeenNthCalledWith(
       1,
       expect.objectContaining({ event: 'subtask:task1' }),
     );
-    expect(npmRunScript).toHaveBeenNthCalledWith(
+    expect(startScript).toHaveBeenNthCalledWith(
       2,
       expect.objectContaining({ event: 'subtask:task2' }),
     );
@@ -132,13 +168,12 @@ describe('fn:run', () => {
 
       await run(selectors);
 
-      expect(npmRunScript).toHaveBeenCalledTimes(1);
-      expect(npmRunScript).toHaveBeenCalledWith(
+      expect(startScript).toHaveBeenCalledTimes(1);
+      expect(startScript).toHaveBeenCalledWith(
         expect.objectContaining({
           event: 'custom',
-          pkg: expect.objectContaining({
-            scripts: expect.objectContaining({ custom: 'custom command' }),
-          }),
+          command: 'custom command',
+          cwd: '/fake/path',
         }),
       );
     });
@@ -148,13 +183,11 @@ describe('fn:run', () => {
 
       await run(selectors, { templateOnly: true });
 
-      expect(npmRunScript).toHaveBeenCalledTimes(1);
-      expect(npmRunScript).toHaveBeenCalledWith(
+      expect(startScript).toHaveBeenCalledTimes(1);
+      expect(startScript).toHaveBeenCalledWith(
         expect.objectContaining({
           event: 'custom',
-          pkg: expect.objectContaining({
-            scripts: expect.objectContaining({ custom: 'template command' }),
-          }),
+          command: 'template command',
         }),
       );
     });
@@ -277,6 +310,54 @@ describe('fn:run', () => {
         ['preaborted', []],
         ['aborted', []],
       ]);
+    });
+  });
+
+  describe('signals', () => {
+    it('should reject with the status of the script that a signal has stopped', async () => {
+      await expect(
+        run([{ selector: 'interrupted', args: [] }]),
+      ).rejects.toEqual(
+        new InterruptedError('SIGINT', 130, { cause: createInterruption() }),
+      );
+    });
+
+    it('should not start the remaining tasks of run-s once a signal has arrived', async () => {
+      await expect(run([{ selector: 'sequence', args: [] }])).rejects.toEqual(
+        new InterruptedError('SIGHUP', 129),
+      );
+
+      expect(getExecutedScripts()).toEqual([['halted', []]]);
+    });
+
+    it('should not start the post hook once a signal has arrived', async () => {
+      await expect(run([{ selector: 'halted', args: [] }])).rejects.toEqual(
+        new InterruptedError('SIGHUP', 129),
+      );
+
+      expect(getExecutedScripts()).toEqual([['halted', []]]);
+    });
+
+    it('should pass the signal to the running script', async () => {
+      await expect(run([{ selector: 'halted', args: [] }])).rejects.toThrow(
+        'interrupted by SIGHUP',
+      );
+
+      const script = vi.mocked(startScript).mock.results[0]!
+        .value as ScriptProcess;
+
+      expect(script.kill).toHaveBeenCalledWith('SIGHUP');
+    });
+
+    it('should stop listening to signals once the run has ended', async () => {
+      const listening = process.listenerCount('SIGINT');
+
+      await run([{ selector: 'task', args: [] }]);
+      await expect(
+        run([{ selector: 'interrupted', args: [] }]),
+      ).rejects.toThrow('interrupted by SIGINT');
+
+      expect(process.listenerCount('SIGINT')).toBe(listening);
     });
   });
 });
