@@ -247,6 +247,49 @@ describe('fn:entry', () => {
       );
     });
 
+    it('should drop one leading -- forwarded by pnpm', async () => {
+      await entry(['run', 'task', '--', '--', '--coverage']);
+
+      expect(run).toHaveBeenCalledWith(
+        [{ selector: 'task', args: ['--coverage'] }],
+        { templateOnly: false },
+      );
+    });
+
+    it('should keep every -- after the dropped leading one', async () => {
+      await entry(['run', 'task', '--', '--', '--', 'x']);
+
+      expect(run).toHaveBeenCalledWith(
+        [{ selector: 'task', args: ['--', 'x'] }],
+        { templateOnly: false },
+      );
+    });
+
+    it('should keep a -- that does not lead the global arguments', async () => {
+      await entry(['run', 'task', '--', '--coverage', '--', 'x']);
+
+      expect(run).toHaveBeenCalledWith(
+        [{ selector: 'task', args: ['--coverage', '--', 'x'] }],
+        { templateOnly: false },
+      );
+    });
+
+    it('should forward nothing when only the leading -- follows the separator', async () => {
+      await entry(['run', 'task', '--', '--']);
+
+      expect(run).toHaveBeenCalledWith([{ selector: 'task', args: [] }], {
+        templateOnly: false,
+      });
+    });
+
+    it('should keep a quoted -- given after the separator', async () => {
+      await entry(['run', 'task', '--', "'--'"]);
+
+      expect(run).toHaveBeenCalledWith([{ selector: 'task', args: ['--'] }], {
+        templateOnly: false,
+      });
+    });
+
     it('should reject an unknown flag given before --', async () => {
       await entry(['run', 'task', '--watch']);
 
@@ -301,6 +344,15 @@ describe('fn:entry', () => {
           selector: 'task2',
           args: ['arg-4', '--arg-5', 'arg-6', '--arg-7'],
         },
+      ]);
+    });
+
+    it('should drop one leading -- forwarded by pnpm before sharing the arguments with every task', async () => {
+      await entry(['run-s', 'task1 -- {@}', 'task2 -- {@}', '--', '--', 'x']);
+
+      expect(run).toHaveBeenCalledWith([
+        { selector: 'task1', args: ['x'] },
+        { selector: 'task2', args: ['x'] },
       ]);
     });
   });

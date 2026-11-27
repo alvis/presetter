@@ -285,6 +285,9 @@ function settle<FLAGS extends object, ARGS extends readonly string[]>(
 
 /**
  * split the arguments meant for presetter from the global arguments given after `--`
+ *
+ * everything after the first `--` is forwarded as is, except for one leading `--` of the global
+ * arguments, which is dropped (e.g. `run test -- -- --coverage` forwards `--coverage`)
  * @param args command line arguments
  * @returns arguments for presetter and the global arguments for every task
  */
@@ -292,12 +295,15 @@ function splitGlobalArgs(
   args: readonly string[],
 ): [inputs: string[], globalArgs: string[]] {
   const index = args.indexOf(END_OF_OPTIONS);
-
+  // without `--`, everything is presetter's and there are no global arguments
+  const end = index === -1 ? args.length : index;
   // NOTE: everything after `--` belongs to the tasks, so stricli must never see it,
   //       otherwise a task flag such as `--help` would be taken as presetter's own
-  return index === -1
-    ? [[...args], []]
-    : [args.slice(0, index), args.slice(index + 1)];
+  // NOTE: pnpm forwards its own `--` literally, so `pnpm run test -- --coverage` arrives as
+  //       `run test -- -- --coverage`; skip that one forwarded separator, keep any later `--`
+  const start = end + (args[end + 1] === END_OF_OPTIONS ? 2 : 1);
+
+  return [args.slice(0, end), args.slice(start)];
 }
 
 /**
