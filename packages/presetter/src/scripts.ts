@@ -121,6 +121,7 @@ const resolveRunner = (
 
       const resolved = [expandedCommand, ...extraArgs].join(' ');
       const assignments = prefix.trim();
+
       return assignments ? `(export ${assignments}; ${resolved})` : resolved;
     })
     .join(' && ');
@@ -138,11 +139,13 @@ const findReplacements = (
   context: Readonly<ScriptContext>,
   ast: File,
 ): Replacement[] =>
-  findRunCalls(ast, command).map((runCall): Replacement => ({
-    start: runCall.start,
-    end: runCall.end,
-    text: resolveRunner(runCall, command, context),
-  }));
+  findRunCalls(ast, command).map(
+    (runCall): Replacement => ({
+      start: runCall.start,
+      end: runCall.end,
+      text: resolveRunner(runCall, command, context),
+    }),
+  );
 
 /**
  * finds all `run` calls in an AST
@@ -161,6 +164,7 @@ const findRunCalls = (ast: File, source: string): RunCallExpr[] => {
         calls.push(parsed);
       }
     }
+
     return true;
   });
 
@@ -278,6 +282,7 @@ const unescapeDoubleQuoted = (value: string): string => {
     }
     result += char;
   }
+
   return result;
 };
 
