@@ -1,0 +1,173 @@
+name: Quality
+
+# reusable job around the quality action, for repos that need no steps of their own;
+# repos that do (steps before install or after lint) call alvis/presetter/.github/actions/quality directly
+#
+# callers own triggers and permissions: this workflow sets no permissions, as a called workflow can only narrow
+# what the calling job grants; a caller that sets them grants `contents: read`, `pull-requests: read` for the pull request
+# conflict gate, plus `id-token: write` for OIDC registry auth
+#
+# concurrency is built in: a newer run cancels the older one in the same group, see the job
+#
+# workflow inputs reject `null`: to skip a step, pass an empty string instead
+on:
+  workflow_call:
+    inputs:
+      runner:
+        description: 'runner label, or a JSON runs-on value such as {"group":"small"}'
+        type: string
+        default: ubuntu-latest
+      timeout-minutes:
+        description: minutes the job may run before it is cancelled
+        type: number
+        default: 30
+      node-version:
+        description: pnpm runtime selector, e.g. lts or 24
+        type: string
+        default: lts
+      registries:
+        description: 'registries to authenticate, one per line as `<origin> [oidc-path=<path>] [audience=<aud>]`; each tries OIDC first and falls back to its token'
+        type: string
+        default: ''
+      registry-oidc-path:
+        description: path on each registry that trades a GitHub OIDC token for an install token, e.g. /-/oidc/token; empty presents the OIDC token itself, once <origin>/-/whoami accepts it
+        type: string
+        default: ''
+      registry-oidc-audience:
+        description: 'audience of the GitHub OIDC token; {origin} is the registry origin and {host} its hostname without port'
+        type: string
+        default: '{origin}'
+      install-args:
+        description: extra pnpm install arguments, e.g. --child-concurrency 4
+        type: string
+        default: ''
+      conflict-gate:
+        description: "on pull_request, refuse to run when the pull request or any layer of its stack conflicts with its base, and find the stack's final target; false skips the API reads, and integration tests then scope to the base branch"
+        type: boolean
+        default: true
+      stack-stop-branches:
+        description: "branches, one per line, where the conflict gate's stack walk stops; the branch it stops at becomes the stack's final target; list long-lived branches such as a git-flow develop, so a release pull request from them is never treated as a stack layer; the default branch always stops the walk, and '' stops only there (workflow inputs reject null)"
+        type: string
+        default: ''
+      changed-only:
+        description: "on pull requests, unit tests run vitest `--changed` against the base branch, integration tests against the stack's final target, and lint gets the changed files; every other event runs in full, and pull_request_target, which is not a pull_request event, also skips the conflict gate"
+        type: boolean
+        default: true
+      full-run-paths:
+        description: patterns, one per line (`*` also crosses `/`), whose change forces a full run
+        type: string
+        default: |
+          pnpm-lock.yaml
+          pnpm-workspace.yaml
+      cache-paths:
+        description: incremental tool caches (e.g. .eslintcache), one per line
+        type: string
+        default: ''
+      typecheck-script:
+        description: "package script for type checking; always runs in full; pass '' to skip (workflow inputs reject null)"
+        type: string
+        default: typecheck
+      typecheck-args:
+        description: 'arguments after `--`, e.g. --tsBuildInfoFile .cache/typecheck.tsbuildinfo'
+        type: string
+        default: ''
+      unit-test-script:
+        description: "package script for unit tests; pass '' to skip (workflow inputs reject null)"
+        type: string
+        default: test
+      unit-test-args:
+        description: 'arguments after `--`, e.g. --project=UNIT'
+        type: string
+        default: ''
+      integration-test-script:
+        description: "package script for integration tests, e.g. test:int; pass '' to skip (workflow inputs reject null)"
+        type: string
+        default: ''
+      integration-test-args:
+        description: 'arguments after `--`'
+        type: string
+        default: ''
+      end-to-end-test-script:
+        description: "package script for end-to-end tests, e.g. test:e2e; always runs in full; pass '' to skip (workflow inputs reject null)"
+        type: string
+        default: ''
+      end-to-end-test-args:
+        description: 'arguments after `--`'
+        type: string
+        default: ''
+      coverage-test-by:
+        description: "unit | integration | end-to-end; the run that also collects coverage; pass '' to skip (workflow inputs reject null)"
+        type: string
+        default: unit
+      coverage-test-args:
+        description: 'arguments added to the coverage-test-by run; on a changed-only run, coverage is also limited to the files changed since the same commit as `--changed`'
+        type: string
+        default: --coverage
+      lint-test-script:
+        description: "package script for linting; pass '' to skip (workflow inputs reject null)"
+        type: string
+        default: lint
+      lint-test-args:
+        description: 'arguments after `--`'
+        type: string
+        default: ''
+      lint-changed-files-args:
+        description: word placed before the changed paths on the lint run; empty passes the bare paths
+        type: string
+        default: ''
+      fail-on-lint-changes:
+        description: fail when lint rewrites tracked files, so autofixes cannot pass silently
+        type: boolean
+        default: true
+    secrets:
+      registry-tokens:
+        description: fallback tokens as <registry origin>=<token> lines
+        required: false
+      test-env:
+        description: secret KEY=VALUE lines exported only to the test runs
+        required: false
+
+jobs:
+  quality:
+    name: Verify
+    # skip drafts; callers listen for ready_for_review to run on promotion
+    if: ${{ github.event_name != 'pull_request' || !github.event.pull_request.draft }}
+    # a label, or a JSON object or array such as {"group":"small"}
+    runs-on: ${{ (startsWith(inputs.runner, '{') || startsWith(inputs.runner, '[')) && fromJSON(inputs.runner) || inputs.runner }}
+    timeout-minutes: ${{ inputs.timeout-minutes }}
+    # cancel superseded runs; `-quality-` avoids cancelling a caller's own workflow-ref group, runner and node version split matrix legs
+    concurrency:
+      group: ${{ github.workflow }}-quality-${{ github.ref }}-${{ inputs.runner }}-${{ inputs.node-version }}
+      cancel-in-progress: true
+    steps:
+      - name: Quality
+        # NOTE: release:pr rewrites this ref to the version it publishes, so a tagged
+        #       workflow always runs the action released with it
+        uses: alvis/presetter/.github/actions/quality@v9.1.0
+        with:
+          node-version: ${{ inputs.node-version }}
+          registries: ${{ inputs.registries }}
+          registry-oidc-path: ${{ inputs.registry-oidc-path }}
+          registry-oidc-audience: ${{ inputs.registry-oidc-audience }}
+          registry-tokens: ${{ secrets.registry-tokens }}
+          install-args: ${{ inputs.install-args }}
+          conflict-gate: ${{ inputs.conflict-gate }}
+          stack-stop-branches: ${{ inputs.stack-stop-branches }}
+          changed-only: ${{ inputs.changed-only }}
+          full-run-paths: ${{ inputs.full-run-paths }}
+          cache-paths: ${{ inputs.cache-paths }}
+          typecheck-script: ${{ inputs.typecheck-script }}
+          typecheck-args: ${{ inputs.typecheck-args }}
+          unit-test-script: ${{ inputs.unit-test-script }}
+          unit-test-args: ${{ inputs.unit-test-args }}
+          integration-test-script: ${{ inputs.integration-test-script }}
+          integration-test-args: ${{ inputs.integration-test-args }}
+          end-to-end-test-script: ${{ inputs.end-to-end-test-script }}
+          end-to-end-test-args: ${{ inputs.end-to-end-test-args }}
+          test-env: ${{ secrets.test-env }}
+          coverage-test-by: ${{ inputs.coverage-test-by }}
+          coverage-test-args: ${{ inputs.coverage-test-args }}
+          lint-test-script: ${{ inputs.lint-test-script }}
+          lint-test-args: ${{ inputs.lint-test-args }}
+          lint-changed-files-args: ${{ inputs.lint-changed-files-args }}
+          fail-on-lint-changes: ${{ inputs.fail-on-lint-changes }}
