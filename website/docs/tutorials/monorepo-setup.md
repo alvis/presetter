@@ -448,30 +448,36 @@ alias dev-web="pnpm --filter @myorg/web-app run dev"
 
 ### GitHub Actions Example
 
-```yaml title=".github/workflows/ci.yml"
-name: CI
+Call Presetter's shared quality workflow from the workspace root. It installs with pnpm, type checks, tests and lints, and on pull requests scopes tests and lint to the changed files:
 
-on: [push, pull_request]
+```yaml title=".github/workflows/quality.yaml"
+name: Quality
+
+on:
+  pull_request:
+    types: [opened, reopened, synchronize, ready_for_review]
+  push:
+    branches: [main]
+
+permissions:
+  contents: read
+  # the conflict gate reads pull requests
+  pull-requests: read
 
 jobs:
-  test:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-      - uses: pnpm/action-setup@v2
-        with:
-          version: 8
-      - uses: actions/setup-node@v4
-        with:
-          node-version: "lts/*"
-          cache: 'pnpm'
-
-      - run: pnpm install --frozen-lockfile
-      - run: pnpm run typecheck
-      - run: pnpm run lint
-      - run: pnpm run test
-      - run: pnpm run build
+  quality:
+    # replace v10.0.0 with the latest Presetter release
+    uses: alvis/presetter/.github/workflows/quality.yaml@v10.0.0
+    with:
+      # the root scripts above fan out with `pnpm -r` and run inside each package, where the
+      # repository-relative paths of changed files match nothing, so test and lint everything
+      changed-only: false
+      cache-paths: |
+        .eslintcache
+        */*/.eslintcache
 ```
+
+Add a separate job or step for `pnpm run build` if CI should also build. See [Continuous Integration](../advanced/continuous-integration.md) for runners, private registries, coverage, and jobs with their own steps.
 
 ## Best Practices
 
