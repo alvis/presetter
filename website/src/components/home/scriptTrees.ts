@@ -94,7 +94,7 @@ export const scriptTrees: Record<string, readonly ScriptNode[]> = {
     node(
       1,
       'lint:prettier',
-      'prettier --write --no-error-on-unmatched-pattern',
+      'prettier --write --ignore-unknown --no-error-on-unmatched-pattern',
     ),
     node(
       1,
