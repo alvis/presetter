@@ -463,7 +463,7 @@ overrides: [
 
 ```typescript
 // lint-staged.config.js enhancement
-'*.{tsx,jsx}': ['presetter run stage'],  // Include React files in staging
+'src/**/*.[tj]sx': ['presetter run stage --'],  // Include React files in staging
 ```
 
 #### Type Generation

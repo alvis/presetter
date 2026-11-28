@@ -1,7 +1,11 @@
 import { existsSync, readdirSync } from 'node:fs';
 import { relative, resolve } from 'node:path';
 
-import { resolveAssets, resolvePreset } from 'presetter';
+import {
+  preset as definePreset,
+  resolveAssets,
+  resolvePreset,
+} from 'presetter';
 import { describe, expect, it, vi } from 'vitest';
 
 import preset, { DEFAULT_VARIABLES as variables } from '#index';
@@ -69,5 +73,21 @@ describe('fn:preset', () => {
     const result = resolveAssets(node, context);
 
     await expect(result).resolves.not.toThrow();
+  });
+
+  it('should pass staged jsx and tsx files to presetter run after a separator', async () => {
+    // the override only takes effect on a lint-staged config supplied by another preset (e.g. essentials)
+    const host = definePreset('host', {
+      extends: [preset],
+      assets: { '.lintstagedrc.json': {} },
+    });
+    const node = await resolvePreset(host, context);
+    const assets = await resolveAssets(node, context);
+
+    expect(assets['.lintstagedrc.json']).toEqual(
+      expect.objectContaining({
+        'src/**/*.[tj]sx': ['presetter run stage --'],
+      }),
+    );
   });
 });
